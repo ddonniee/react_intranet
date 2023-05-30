@@ -4,16 +4,16 @@ import axios from 'axios';
 function TicketHistory() {
 
   const [tickets, setTickets] = useState([]);
+  const [useEmail, setUseEmail] = useState('donnie.lee@pospot.kr')
 
   useEffect(() => {
     axios.get(process.env.REACT_APP_ZENDESK_URL, {
-      headers: {
-        "Authorization": `Bearer ${process.env.REACT_APP_ZENDESK_API_KEY}`,
-        'Access-Control-Allow-Origin' : process.env.REACT_APP_FRONT_URL,
-        'withCredentials':true
-      }
+      auth: {
+        'Username': useEmail,
+        'Password': process.env.REACT_APP_ZENDESK_API_KEY
+      },
     }).then((response) => {
-      setTickets(response.data);
+      setTickets('tickets',response.data);
     }).catch((err) => {
       console.log('error',err)
     });
@@ -29,3 +29,5 @@ function TicketHistory() {
 }
 
 export default TicketHistory;
+
+
