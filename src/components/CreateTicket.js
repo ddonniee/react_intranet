@@ -7,7 +7,7 @@ function CreateTicket() {
   const setting = {
     webWidget: {
       helpCenter: {
-        suppress: true,
+        suppress: false,
       },
       contactForm: {
         suppress: false,

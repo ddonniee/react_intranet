@@ -1,10 +1,14 @@
-import { useState } from "react"
-
+import { useContext, useState } from "react"
 import Editor from "../components/Editor"
- function Dashboard() {
+
+import { TestContext } from "../hooks/TestContext"
+
+function Dashboard() {
+
+    const testValue = useContext(TestContext)
     return (
         <>
-        <div>dd</div>
+        <div>{testValue.email}</div>
         <Editor />
         </>
     )

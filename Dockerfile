@@ -1,5 +1,5 @@
 # 노드버전
-FROM node:14.17.0
+FROM nodev18.16.0
 
 # 작업 디렉토리 설정
 WORKDIR /app
@@ -17,6 +17,6 @@ RUN npm install --global npm@6.14.13
 # 소스 코드 복사
 COPY . .
 
-# ㅠㅗ트 노출 및 실행 명령어
+# 포트 노출 및 실행 명령어
 EXPOSE 3000
 CMD ["npm", "start"]

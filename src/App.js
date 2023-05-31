@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import routes from "./routes";
 
-
+// test useContext
+import { TestContext } from "./hooks/TestContext";
 
 function App() {
 
-
+  const [user, setUser] = useState({
+    email: 'donnie.lee@pospot.kr',
+    name : 'donnie',
+    other : 'female'
+  })
   return (
     <>
-     
+    <TestContext.Provider value={user}>
       <BrowserRouter>
         <Routes>
           {routes.map((route, index) => (
@@ -23,6 +28,7 @@ function App() {
           ))}
         </Routes>
       </BrowserRouter>
+      </TestContext.Provider>
     </>
   );
 }

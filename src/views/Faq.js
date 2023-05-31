@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import ExportExcel from "../hooks/ExportExcel"
+import ExportExcel from "../utils/ExportExcel"
 
 
 function Faq() {
