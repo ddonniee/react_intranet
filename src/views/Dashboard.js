@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import Editor from "../components/Editor"
-
+import FileUpload from "../hooks/FileUpload"
 import { TestContext } from "../hooks/TestContext"
 
 function Dashboard() {
@@ -9,7 +9,9 @@ function Dashboard() {
     return (
         <>
         <div>{testValue.email}</div>
+       
         <Editor />
+        <FileUpload />
         </>
     )
 }

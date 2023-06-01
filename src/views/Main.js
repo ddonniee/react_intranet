@@ -9,7 +9,6 @@ function Main() {
           <h1>Main</h1>
           <CreateTicket />
           <TicketHistory />
-          <FileUpload />
         </div>
       );
 }
