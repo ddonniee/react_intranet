@@ -1,0 +1,51 @@
+@font-face {
+    font-family: 'Noto Sans KR', sans-serif;
+    src: url('../assets/font/NotoSansKR-Thin.otf') format('truetype');
+    font-weight: 100;
+}
+@font-face {
+    font-family: 'Noto Sans KR', sans-serif;
+    src: url('../assets/font/NotoSansKR-Light.otf') format('truetype');
+    font-weight: 300;
+}
+@font-face {
+    font-family: 'Noto Sans KR', sans-serif;
+    src: url('../assets/font/NotoSansKR-Regular.otf') format('truetype');
+    font-weight: 400;
+}
+@font-face {
+    font-family: 'Noto Sans KR', sans-serif;
+    src: url('../assets/font/NotoSansKR-Medium.otf') format('truetype');
+    font-weight: 500;
+}
+@font-face {
+    font-family: 'Noto Sans KR', sans-serif;
+    src: url('../assets/font/NotoSansKR-Bold.otf') format('truetype');
+    font-weight: 700;
+}
+@font-face {
+    font-family: 'Noto Sans KR', sans-serif;
+    src: url('../assets/font/NotoSansKR-Black.otf') format('truetype');
+    font-weight: 900;
+}
+
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    // letter-spacing: -0.02em;
+}
+
+/* 노트북 & PC (해상도 1024px)*/ 
+@media all and (min-width:1024px) {
+    //스타일 입력
+} 
+
+/* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 
+@media all and (min-width:768px) and (max-width:1023px) {
+    //스타일 입력
+} 
+
+/* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/ 
+@media all and (max-width:767px) {
+    //스타일 입력
+}

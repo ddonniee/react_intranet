@@ -1,7 +1,7 @@
 import React from "react";
 
 // import componenets
-const Main = React.lazy(() => import('./views/Main'))
+const Main = React.lazy(() => import('./views/Home/Main'))
 // Board
 const CStalk = React.lazy(() => import('./views/Board/CStalk'))
 const Notice =  React.lazy(()=> import('./views/Board/Notice'))
@@ -30,12 +30,13 @@ const StatisticsSetting = React.lazy(()=>import('./views/Setting&Management/Stat
  * 작성일 : 2023.05.18
  */
 const routes = [
-    { path:'/', exact: true, name:'KpiPerformance', element: KpiPerformance},
+    { path:'/', exact: true, name:'Main', element: Main},
     { path:'/cstalk', name:'CStalk' , element: CStalk},
     { path:'/notice', name:'Notice' , element: Notice},
     { path:'/ascholdingstatus', name:'AscHoldingStatus' , element: AscHoldingStatus},
     { path:'/evaluation', name:'Evaluation' , element: Evaluation},
     { path:'/individualtraining', name:'IndividualTraining' , element: IndividualTraining},
+    { path:'/kpiperformance', name:'KpiPerformance', element: KpiPerformance},
     { path:'/partsdeliverytime', name:'PartsDeliveryTime' , element: PartsDeliveryTime},
     { path:'/trainingstatus', name:'TrainingStatue' , element: TrainingStatue},
     { path:'/wip', name:'Wip' , element: Wip},
