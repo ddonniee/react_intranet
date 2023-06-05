@@ -6,11 +6,14 @@
 import { useContext, useState } from "react"
 import { TestContext } from "../../hooks/TestContext"
 
+
+import Header from "../../components/Header"
 function Faq() {
 
     // const testValue = useContext(TestContext)
     return (
         <>
+        <Header />
        <div>Faq</div>
         </>
     )

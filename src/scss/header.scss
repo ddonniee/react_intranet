@@ -1,0 +1,125 @@
+@import 'variables';
+
+.top-nav {
+    background-color: $primary-color-red; display: flex; box-sizing: border-box;
+}
+.nav-logo {
+    height: 100%; font-weight: 600; font-size: 20px;
+    background-color: $primary-color-grey; color: white; align-items: center; display: flex; justify-content: center; 
+} 
+.division {
+    width: 1px; background-color: rgba(255, 255, 255, 0.15);
+}
+ul, li {
+    list-style: none; padding: 0; margin: 0;
+}
+.nav-category {
+    align-self: center; height: 100%;
+}
+.nav-lists,
+.more-lists {
+    display: flex; align-items: center; height: 100%; 
+}
+.nav-lists  > li {
+    color: white; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center; position: relative;
+}
+.nav-division {
+    position: absolute; right: 0;
+}
+.nav-info {
+    margin-left: auto; display: flex;
+}
+.nav-info > div:first-child {
+    width : 50%;
+}
+.nav-info .profile {
+    align-self: center;
+}
+.nav-info .profile-circle {
+    background-color: white;
+    border-radius: 50%;
+    text-align-last: center;
+    margin: auto;
+}
+.nav-info .profile-circle img{
+    vertical-align: -webkit-baseline-middle;
+}
+.nav-info .search {
+    width: 50%; align-self: center; text-align: center;
+}
+.lower-tab {
+    background-color: $secondary-color-gery;
+    width: 100%; border-bottom: 1px solid $border-color-gery; position: relative;
+}
+.more-lists {
+    position: absolute; left: 256px;
+}
+.more-lists > li {
+    text-align: center;  font-weight: 600;
+    font-size: 21px;
+}
+/* 노트북 & PC (해상도 1024px)*/ 
+@media all and (min-width:1024px) {
+    .top-nav {
+        height: 81px; 
+    }
+    .nav-logo {
+        width: 257px; 
+    } 
+    .division {
+        height: 24px; margin: 0 14px;
+    }
+    .nav-lists  > li {
+        width: 240px; font-weight: 600; font-size: 21px; line-height: 24px;
+    }
+    .more-lists > li {
+        width: 246px; 
+    }
+    .nav-division {
+        width: 1px; height: 40px; background-color:  rgba(255, 255, 255, 0.2);
+    }
+    .nav-info {
+        width: 162px;
+    }
+    .nav-info .profile-circle {
+        height: 38px;
+        width: 38px;
+    }
+    .lower-tab {
+        height: 73px;
+    }
+    .nav-underline {
+        height: 2px;
+        position: absolute;
+        width: 74px;
+        bottom: 0px;
+        background: $primary-color-red;
+        z-index: 100;
+    }
+    .link-icon {
+        position: absolute;
+    top: 20px;
+    right: 10px;
+    }
+    .nav-modal{
+        width: 233px;
+        height: fit-content; position: absolute;
+        z-index: 1000;
+        top: 168px;
+        background: pink;
+        left: 265px;
+    }
+} 
+
+/* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 
+@media all and (min-width:768px) and (max-width:1023px) {
+    //스타일 입력
+} 
+
+/* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/ 
+@media all and (max-width:767px) {
+    //스타일 입력
+}
