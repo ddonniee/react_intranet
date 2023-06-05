@@ -1,15 +1,19 @@
-import React ,{useState} from "react";
+import { useContext, useState } from "react"
+import Editor from "../components/Editor"
+import FileUpload from "../hooks/FileUpload"
+import { TestContext } from "../hooks/TestContext"
 
-import TicketHistory from "./TicketHistory";
-import CreateTicket from "../components/CreateTicket";
-import FileUpload from "../hooks/FileUpload";
 function Main() {
-      return (
-        <div>
-          <h1>Main</h1>
-          <CreateTicket />
-          <TicketHistory />
-        </div>
-      );
+
+    const testValue = useContext(TestContext)
+    return (
+        <>
+        <div>{testValue.email}</div>
+       
+        <Editor />
+        <FileUpload />
+        </>
+    )
 }
+
 export default Main

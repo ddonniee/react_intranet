@@ -13,7 +13,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 function Editor() {
 
     const [txt, setTxt] = useState('');
-    const [dbtxt, setDbtxt] = useEffect
+    // const [dbtxt, setDbtxt] = useEffect
     
     const editorConfig = {
         // plugins: [UploadAdapter],

@@ -5,7 +5,7 @@
 작성일자 : 2023-05-13
 
 ## 버전관리
-node v14.17.0
+node v18.16.0
 npm v6.14.13
 Docker version 23.0.5
 
@@ -33,8 +33,9 @@ asc_portal
 │
 ├─assets          // 정적파일
 ├─components      // 재사용 컴포넌트
-├─hooks           // 재사용 기능 
-├─utils           // API 연동
+├─hooks           // React hook 
+├─scss            // css files 
+├─utils           // 재사용 함수
 └─views           // 페이지 소스
 
 ## 컴포넌트 설명
@@ -46,3 +47,4 @@ ExportExcel.js    // 배열전달시 엑셀로 추출
 
 ## hooks 설명
 TestContext.js    // 전역으로 user 정보 관리하는 hooks 
+FileUpload.js     // 대용량 파일 첨부

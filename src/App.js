@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import routes from "./routes";
+import './scss/style.scss';
 
 // test useContext
 import { TestContext } from "./hooks/TestContext";
