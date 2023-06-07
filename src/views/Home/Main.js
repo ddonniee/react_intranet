@@ -3,8 +3,15 @@ import LineChart from "../../components/Chart";
 import AgGrid from "../../components/AgGrid";
 import { axiosInstance } from "../../components/Common";
 
-import '../../scss/common.scss';
+import '../../scss/style.scss';
+import { ReactComponent as HomeIcon } from '../../assets/svgs/icon_home.svg';
 import { ReactComponent as KpiIcon } from '../../assets/svgs/icon_kpi.svg';
+import { ReactComponent as NoticeIcon } from '../../assets/svgs/icon_notice.svg';
+import { ReactComponent as FaqIcon } from '../../assets/svgs/icon_faq.svg';
+import { ReactComponent as CsIcon } from '../../assets/svgs/icon_cstalk.svg';
+import { ReactComponent as NewIcon } from '../../assets/svgs/icon_new.svg';
+import { ReactComponent as MoreIcon } from '../../assets/svgs/icon_more.svg';
+import { ReactComponent as ListIcon } from '../../assets/svgs/icon_list.svg';
 
 function Main() {
 
@@ -198,30 +205,110 @@ function Main() {
     ]
 
     return (
-        <div className="main-container">
-            <div className="inner-container">
+        <div className="container">
+            <div className="main-container">
                 <div className="nav">
-                    <p>{`Home > Support > Main`}</p>
+                    <p><HomeIcon />&nbsp;{` > Support > Main`}</p>
                 </div>
+                {/** KPI Performance */}
                 <div className="value">
                     <div className="chart">
                         <LineChart />
                     </div>
                     <div className="table">
-                        <p><KpiIcon />KPI Performance</p>
+                        <div className='title'>
+                            <p className='sub-title'><KpiIcon />&nbsp;KPI Performance</p>
+                            <MoreIcon />
+                        </div>
                         <div className='grid'>
                             <AgGrid data={data} column={column} paging={false} />
                         </div>
                     </div>
-                </div>
+                </div> 
+                {/** Notice, FAQ, CS Talk */}
                 <div className="card">
-                    <div className="card-1">
+                    {/** Notice */}
+                    <div className="card-notice">
                         <div className='title'>
-                            <p>Notice</p>
+                            <p className='sub-title'><NoticeIcon />&nbsp;Notice</p>
+                            <MoreIcon />
+                        </div>
+                        <div className='list'>
+                            <div className='left'>
+                                <div className='circle'>
+                                    <p className='day'>17</p>
+                                    <p className='month'>2023.05</p>
+                                </div>
+                            </div>
+                            <div className='right'>
+                                <div className='mainlist'>
+                                    <p className='bold'>Weekly Report of AC AS Back Order a September HE – OK55 Main Defect <NewIcon /></p>
+                                    <p className='normal'>GSFS Information – LED Arra Rank Collection time of GSFS Information – LED Arra Rank Collection time of</p>
+                                </div>
+                                <ul className='sublist'>
+                                    {
+                                        ['Weekly Report of AS Back Order a September',
+                                        'Back Order a September Weekly Report of AC',
+                                        'HE - OK55 Main Defect Back Order a September',
+                                        'GSFS Information - LED Arra'].map((row, i) => (
+                                            <li key={i}>
+                                                <p><ListIcon/> {row}</p> <p>2023.1.29</p>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    <div className="card-2"></div>
-                    <div className="card-3"></div>
+                    {/** FAQ */}
+                    <div className="card-faq">
+                        <div className='title'>
+                            <p className='sub-title'><FaqIcon />&nbsp;FAQ</p>
+                            <MoreIcon />
+                        </div>
+                        <div className='list'>
+                            {/* <div className='right'> */}
+                                <div className='mainlist'>
+                                    <p className='bold'>Weekly Report of AC AS Back Order a September <NewIcon /></p>
+                                </div>
+                                <ul className='sublist'>
+                                    {
+                                        ['Weekly Report of AS Back Order a September',
+                                        'Back Order a September Weekly Report of AC',
+                                        'HE - OK55 Main Defect Back Order a September',
+                                        'GSFS Information - LED Arra'].map((row, i) => (
+                                            <li key={i}>
+                                                <p><span className='qst-no'>Q 0{i+1}</span> {row}</p>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                            {/* </div> */}
+                        </div>
+                    </div>
+                    {/** CS Talk */}
+                    <div className="card-cstalk">
+                        <div className='title'>
+                            <p className='sub-title'><CsIcon />&nbsp;CS Talk</p>
+                            <MoreIcon />
+                        </div>
+                        <div className='list'>
+                            <div className='circle'>
+                                <p className='day'>17</p>
+                                <p className='month'>2023.05</p>
+                            </div>
+                            <div className='content'>
+                                <div className='mainlist'>
+                                    <p className='bold'>Weekly Report of AC AS Back Order a September HE – OK55 Main Defect</p>
+                                    <p className='normal'>
+                                        GSFS Information – LED Arra Rank Collection time of GSFS Information – LED
+                                        GSFS Information – LED Arra Rank Collection time of GSFS Information – LED
+                                        GSFS Information – LED Arra Rank Collection time of GSFS Information – LED
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
