@@ -1,0 +1,56 @@
+.main-container {
+    // max-width: 1560px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    .inner-container {
+        min-width: 1560px;
+
+        .nav {
+            border: 1px solid red;
+            text-align: right;
+        }
+
+        .value {
+            border: 1px solid blue;
+            // height: 689px;
+
+            .chart {
+                height: 50%;
+            }
+
+            .sub-title {
+                text-align: left;
+            }
+
+            .grid {
+                width: 100%;
+            }
+        }
+
+        .card {
+            border: 1px solid green;
+            display: flex;
+            justify-content: space-between;
+
+            .card-1 {
+                border: 1px solid black;
+                width: 50%;
+                height: 424px;
+            }
+            .card-2 {
+                border: 1px solid black;
+                width: 20%;
+                height: 424px;
+            }
+            .card-3 {
+                border: 1px solid black;
+                width: 20%;
+                height: 424px;
+            }
+        }
+    }
+}
