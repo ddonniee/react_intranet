@@ -7,9 +7,9 @@ import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 import 'ag-grid-enterprise';
 
 /**
- *  작성자 : 이은정
- *  작성일 : 2023.05.22
- *  기능 : 배열전달시 엑셀로 추출
+ *  작성자 : 원은정
+ *  작성일 : 2023.06.05
+ *  기능 : 테이블 그리드 생성
  * @param {
  * data : 행 데이터
  * column : 컬럼명
@@ -46,11 +46,16 @@ const AgGrid = ({data, column, paging}) => {
     const onGridReady = useCallback((params) => {
         // setRowData(data)
         // setColumnDefs(column)
+        // gridRef.current.api.sizeColumnsToFit();
     }, []);
 
     // DefaultColDef sets props common to all Columns
     const defaultColDef = useMemo(()=> ({
-        sortable: true
+        editable: false,
+        sortable: true,
+        // resizable: false,
+        // filter: false,
+        flex: 1,
     }));
 
     // Example > 그리드 클릭 시 row값 콘솔 출력
@@ -63,21 +68,24 @@ const AgGrid = ({data, column, paging}) => {
         gridRef.current.api.deselectAll();
     }, []);
 
+    const sizeToFit = useCallback(() => {
+        gridRef.current.api.sizeColumnsToFit();
+      }, []);
+
     return (
         <div>
           {
             data && (
             <>
-            {/* On div wrapping Grid a) specify theme CSS Class Class and b) sets Grid size */}
             {/* ag-grid */}
-            <div className="ag-theme-alpine" style={{height: 500}}>
+            <div className="ag-theme-alpine" style={{height: "500px"}}>
                 <AgGridReact 
                     ref={gridRef} // Ref for accessing Grid's API 
                     rowData={rowData} // Row Data for Rows 
                     columnDefs={columnDefs} // Column Defs for Columns 
                     defaultColDef={defaultColDef} // Default Column Properties 
                     animateRows={true} // Optional - set to 'true' to have rows animate when sorted
-                    rowSelection='multiple' // Options - allows click selection of rows 
+                    // rowSelection='multiple' // Options - allows click selection of rows 
                     onCellClicked={cellClickedListener} // Optional - registering for Grid Event 
                     pagination={true}
                     paginationPageSize={10}
