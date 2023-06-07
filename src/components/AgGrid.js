@@ -77,8 +77,8 @@ const AgGrid = ({data, column, paging}) => {
           {
             data && (
             <>
-            {/* ag-grid */}
-            <div className="ag-theme-alpine" style={{height: "500px"}}>
+            {/* ag-grid */} 
+            <div className="ag-theme-alpine">
                 <AgGridReact 
                     ref={gridRef} // Ref for accessing Grid's API 
                     rowData={rowData} // Row Data for Rows 
