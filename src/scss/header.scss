@@ -55,7 +55,7 @@ ul, li {
     width: 100%; border-bottom: 1px solid $border-color-gery; position: relative;
 }
 .more-lists {
-    position: absolute; left: 256px;
+    position: absolute; 
 }
 .more-lists > li {
     text-align: center;  font-weight: 600;
@@ -80,14 +80,18 @@ ul, li {
     background: white; border: 1px solid $primary-color-red; border-radius: 20px;
 }
 .nav-modal li {
-    padding-bottom: 25px;
-    text-align: left; font-weight: 400;
-    font-size: 19px; border-radius: 5px;
+    text-align: left; border-radius: 5px;
 }
 .nav-modal li:hover,
 .nav-modal li:focus {
     background-color: $chart-color-pink;
 }
+
+.nav-modal > img {
+    position: absolute;
+    top: -8px;
+}
+
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
     .top-nav {
@@ -118,6 +122,9 @@ ul, li {
     .lower-tab {
         height: 73px;
     }
+    .more-lists {
+        left: 256px;
+    }
     .nav-underline {
         height: 2px;
         position: absolute;
@@ -134,15 +141,73 @@ ul, li {
     .nav-modal{
         width: 183px; top: 80px; left: 13px; padding: 25px 25px 0 25px;
     }
-    .nav-modal > img {
-        position: absolute;
-        top: -8px;
+    
+    .nav-modal li {
+        padding-bottom: 25px; font-weight: 400;  border-radius: 5px;
     }
 } 
 
 /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 
 @media all and (min-width:768px) and (max-width:1023px) {
-    //스타일 입력
+    .top-nav {
+        height: 50px; 
+    }
+    .nav-logo img{
+        width : 57px;
+    }
+    .nav-logo > p {
+        font-size: 15px;  padding: 0 8px;
+    }
+    .division {
+        height: 16px; margin: 0 4px;
+    }
+    .nav-category {
+        height: 50px; flex-grow: 1;
+    }
+    .nav-lists  > li {
+        width: 108px; font-weight: 600; font-size: 11px; line-height: 24px;
+    }
+    .more-lists > li {
+        width: 110px; font-size: 11px; 
+    }
+    .nav-division {
+        width: 1px; height: 40px; background-color:  rgba(255, 255, 255, 0.2);
+    }
+    .nav-info {
+        min-width: 15%;
+    }
+    .nav-info .profile-circle {
+        height: 33px;
+        width: 33px;
+    }
+    .lower-tab {
+        height: 37px;
+    }
+    .more-lists {
+        left: 154px;
+    }
+    .nav-underline {
+        height: 2px;
+        position: absolute;
+        width: 74px;
+        bottom: 0px;
+        background: $primary-color-red;
+        z-index: 100;
+    }
+    .link-icon {
+        position: absolute;
+    top: 20px;
+    right: 10px;
+    }
+    .nav-modal{
+        width: 103px;  top: 54px;  left: -14px;  padding: 12px 12px 0 12px;
+    }
+    .nav-modal > img {
+        left: 58px;
+    }
+    .nav-modal li {
+        padding-bottom: 19px; font-size: 11px;
+    }
 } 
 
 /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/ 
