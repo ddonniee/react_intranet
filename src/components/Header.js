@@ -1,13 +1,17 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components';
 
 import Logo from '../assets/svgs/icon_logo.svg'
 import Profile from '../assets/svgs/icon_profile.svg'
 import Seeker from '../assets/svgs/icon_seeking.svg'
 import Link from '../assets/svgs/icon_link.svg'
+import Polygon from '../assets/svgs/icon_polygon.svg'
+
+import { generateRandomString, outsideClickHandler } from '../utils/CommonFunction';
 
 function Header() {
 
+    const headerRef = useRef(null);
     const [currentTab, setCurrentTab] = useState({
         upperTab : 'support',
         lowerTab : ''
@@ -15,9 +19,18 @@ function Header() {
     const [isOpenMenu, setIsOpenMenu] = useState(false); 
     const [isOpenThird, setIsOpenThird] = useState(false);
 
+    const secondMenuList = [
+        {id:'dashboard', name : 'Dashboard'},
+        {id:'process-support', name : 'Process Support'} ,
+        {id:'board', name: 'Board'},
+        {id:'setting', name:'Setting & Admin'} 
+    ]
+    const [thirdMenuList, setThirdMenuList] = useState([])
+
+    const [preventEffect, setPreventEffect] = useState(false)
     const handleClickTab = e => {
+       
         let tabID = e.target.id;
-        console.log(tabID)
         
         if(tabID==='support') {
         setIsOpenMenu(!isOpenMenu)
@@ -27,27 +40,52 @@ function Header() {
             lowerTab: ''
         });
         }else {
-            setIsOpenMenu(false)
+            setIsOpenMenu(false);
             clearState()
-            // url 연결 추가
         }
+
+        e.stopPropagation();
     }
-    
 
     const handleClickLowerTab = e => {
-        let thirdTab = e.target.id;
-        setCurrentTab({
-            ...currentTab,
-            lowerTab:thirdTab
-        })
+        let thirdTab = '';
+        if(e.target.tagName ==='P') {
+            thirdTab = e.target.title
+        }else {
+            thirdTab = e.target.id;;
+        }
+        console.log(thirdTab)
+        if(currentTab.lowerTab!==thirdTab) {
+            setCurrentTab({
+                ...currentTab,
+                lowerTab:thirdTab
+            })
+        }else {
+            setCurrentTab({
+                ...currentTab,
+                lowerTab:''
+            })
+        }
     }
+
+    const handleClickLink = e => {
+        let path = e.target.title;
+        window.location.assign(process.env.REACT_APP_FRONT_URL+path)
+    }
+
     const ThirdMenu = () => {
         return (
-            <div className='nav-modal'>
+            <div className='nav-modal' ref={headerRef}>
+                <img src={Polygon} alt='polygon' />
                 <ul>
-                    <li>dfs</li>
-                    <li>dsfdsf</li>
-                </ul>>
+                    {
+                        thirdMenuList.map((list,idx)=>{
+                            return(
+                                <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx+3)}>{list.name}</li>
+                            )
+                        })
+                    }
+                </ul>
             </div>
         )
     }
@@ -60,21 +98,66 @@ function Header() {
         })
     }
 
+    useEffect(() => {
+
+        const clickOutside = (e) => {
+          // 모달이 열려 있고 모달의 바깥쪽을 눌렀을 때 창 닫기
+          if (currentTab.lowerTab!==''  && headerRef.current && !headerRef.current.contains(e.target)) {
+            clearState();
+          }
+        };
+        document.addEventListener("mousedown", clickOutside);
+        return () => {
+          // Cleanup the event listener
+          document.removeEventListener("mousedown", clickOutside);
+        };
+      }, [currentTab.lowerTab]);
+
     useEffect(()=>{
-        if(currentTab.lowerTab!==''){
-            setIsOpenThird(true)
-        }else {
-            setIsOpenThird(false)
-        }
-    },[currentTab])
+            if(currentTab.lowerTab==='dashboard') {
+            setThirdMenuList(
+                [
+                {name : 'KPI performance', id:'kpi-performance', path : '/'},
+                {name : 'Asc Holding Status', id:'asc-holding-status', path : '/dashboard/ascholdingstatus'},
+                {name : 'Evaluation/Incentive', id:'evaluation-incentive', path : '/dashboard/evaluation'},
+                {name : 'Individual Training', id:'individual-training', path : '/dashboard/individualtraining'},
+                {name : 'Parts Delivery Time', id:'part-delivery-time', path : '/dashboard/partsdeliverytime'},
+                {name : 'Training Status', id:'training-status', path : '/dashboard/trainingstatus'},
+                {name : 'Work In Process', id:'work-in-process', path : '/dashboard/wip'},
+            ])
+            }else if(currentTab.lowerTab==='process-support') {
+            setThirdMenuList(
+                [
+                {name : 'Process & FAQ', path : '/process&support/faq'},
+                {name : 'Request & Q&A', path : '//process&support/raq'},
+            ])
+            }else if(currentTab.lowerTab==='board') {
+                setThirdMenuList([
+                    {name : 'Notice', path : '/board/cstalk'},
+                    {name : 'CS Talk', path : '/board/notice'},
+                ])
+            }else if(currentTab.lowerTab==='setting') {
+                setThirdMenuList([
+                    {name : 'KPI Target Setting', path : '/setting/kpitarget'},
+                    {name : 'Evaluation/Incentive Setting', path : '/setting/evaluation'},
+                    {name : 'FAQ Setting', path : '/setting/faq'},
+                    {name : 'Notice Setting', path : '/setting/notice'},
+                    {name : 'Statistics', path : '/setting/statistics'},
+                ])
+            }
+        },[currentTab.lowerTab])
     
+        useEffect(()=>{
+            console.log(thirdMenuList)
+        },[thirdMenuList])
+        
     return (
-        <Nav isSelected={currentTab.upperTab}>
-        <div className="top-nav">
+        <Nav upperDepth={currentTab.upperTab} lowerDepth={currentTab.lowerTab} thirdDepth={thirdMenuList?.thirdMenuList}>
+        <div className="top-nav" >
             <div className="nav-logo"><img src={Logo} alt='logo'/><div className='division'></div><p>CS PORTAL</p></div>
             <div className="nav-category">
                 <ul className='nav-lists'>
-                    <li id='support' onClick={handleClickTab}>Support{currentTab.upperTab==='support' && <div className='nav-underline'></div>}</li>
+                    <li id='support'  onClick={handleClickTab}>Support{currentTab.upperTab==='support' && <div className='nav-underline'></div>}</li>
                     <li id='business' onClick={handleClickTab}>Business<img className='link-icon' src={Link} alt='link' /><div className='nav-division'></div></li>
                     <li id='contents' onClick={handleClickTab}>Contents<img className='link-icon' src={Link} alt='link' /><div className='nav-division'></div></li>
                     <li id='training' onClick={handleClickTab}>Training<img className='link-icon' src={Link} alt='link' /><div className='nav-division'></div></li>
@@ -91,10 +174,23 @@ function Header() {
             ?
             <div className='lower-tab'>
                 <ul className='more-lists'>
-                    <li id='dashboard' onClick={handleClickLowerTab}>Dashboard</li>
-                    <li id='process-support' onClick={handleClickLowerTab}>Process Support</li>
-                    <li id='board' onClick={handleClickLowerTab}>Board</li>
-                    <li id='setting' onClick={handleClickLowerTab}>Setting & Admin</li>
+                    {secondMenuList.map((item,idx)=>{
+                        return (
+                        <>
+                        <li ref={headerRef} id={item.id} onClick={handleClickLowerTab} key={generateRandomString(idx+3)} ><p title={item.id}>{item.name}</p>
+                        {
+                            currentTab.lowerTab === item.id
+                            ?
+                            <>
+                            <ThirdMenu />
+                            </>
+                            :
+                            null
+                        }</li>
+                        
+                        </>
+                        )
+                    })}
                 </ul>
             </div>
             :
@@ -108,8 +204,10 @@ function Header() {
 export default Header
 
 const Nav = styled.div`
-    #${props=>props.isSelected} {
+    #${props=>props.upperDepth} {
         background-color: white; color: #BB0841; 
+    }
+    ${props => props.lowerDepth !== '' && `#${props.lowerDepth} > p { background : #FAF1F4; border-radius: 100px;}`}
     }
 `
 
