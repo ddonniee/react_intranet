@@ -165,6 +165,36 @@ function Main() {
             W05: '100.1',
             W06: '100.1',
         },
+        {
+            KPI: 'RTAT (D)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            Target: '100.1',
+            'Ach(%)': '100.1',
+            'YOY (year)': '100.1',
+            'YOY (Acc. Mon)': '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            W04: '100.1',
+            W05: '100.1',
+            W06: '100.1',
+        },
+        {
+            KPI: 'Repair NPS (P)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            Target: '100.1',
+            'Ach(%)': '100.1',
+            'YOY (year)': '100.1',
+            'YOY (Acc. Mon)': '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            W04: '100.1',
+            W05: '100.1',
+            W06: '100.1',
+        },
     ]
 
     return (
@@ -178,14 +208,18 @@ function Main() {
                         <LineChart />
                     </div>
                     <div className="table">
-                        <p className="sub-title"><KpiIcon />KPI Performance</p>
+                        <p><KpiIcon />KPI Performance</p>
                         <div className='grid'>
                             <AgGrid data={data} column={column} paging={false} />
                         </div>
                     </div>
                 </div>
                 <div className="card">
-                    <div className="card-1"></div>
+                    <div className="card-1">
+                        <div className='title'>
+                            <p>Notice</p>
+                        </div>
+                    </div>
                     <div className="card-2"></div>
                     <div className="card-3"></div>
                 </div>

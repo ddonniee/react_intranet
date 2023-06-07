@@ -16,19 +16,22 @@
 
         .value {
             border: 1px solid blue;
-            // height: 689px;
+            height: 689px;
 
             .chart {
                 height: 50%;
             }
 
-            .sub-title {
-                text-align: left;
-            }
-
             .grid {
                 width: 100%;
             }
+            .ag-theme-alpine {
+                height: 270px;
+            }
+        }
+        
+        p {
+            text-align: left;
         }
 
         .card {
