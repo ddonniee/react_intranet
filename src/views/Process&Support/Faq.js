@@ -8,13 +8,16 @@ import { TestContext } from "../../hooks/TestContext"
 
 
 import Header from "../../components/Header"
+import Title from "../../components/Title"
 function Faq() {
 
     // const testValue = useContext(TestContext)
     return (
         <>
         <Header />
-       <div>Faq</div>
+        <div className="inner-container">
+        <Title title='Process & FAQ' />
+        </div>
         </>
     )
 }

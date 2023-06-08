@@ -30,8 +30,8 @@ const StatisticsSetting = React.lazy(()=>import('./views/Setting&Management/Stat
  * 작성일 : 2023.05.18
  */
 const routes = [
-    { path:'/main', exact: true, name:'Main', element: Main}, // 임시
-    { path:'/', exact: true, name:'Main', element: KpiPerformance},
+    { path:'/', exact: true, name:'Main', element: Main}, 
+    { path:'/dashboard/kpiperformance',  name:'KpiPerformance', element: KpiPerformance},
     { path:'/board/cstalk', name:'CStalk' , element: CStalk},
     { path:'/board/notice', name:'Notice' , element: Notice},
     { path:'/dashboard/ascholdingstatus', name:'AscHoldingStatus' , element: AscHoldingStatus},
