@@ -12,4 +12,9 @@ export const generateRandomString = (num) => {
 
     return result;
 }
-
+/** Browser 언어 설정 읽어오는 함수 */
+export const getBrowserLanguage = () =>{
+    const browserLanguage = navigator.language;
+    
+    return browserLanguage;
+};
