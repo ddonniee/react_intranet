@@ -43,6 +43,9 @@ ul, li {
     border-radius: 50%;
     text-align-last: center;
     margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .nav-info .profile-circle img{
     vertical-align: -webkit-baseline-middle;
@@ -117,7 +120,7 @@ ul, li {
     }
     .nav-info .profile-circle {
         height: 38px;
-        width: 38px;
+        width: 38px; 
     }
     .lower-tab {
         height: 73px;

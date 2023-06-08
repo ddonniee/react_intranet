@@ -1,0 +1,116 @@
+@import '../variables';
+
+
+@import '../variables';
+
+.faq-lists {
+    display: flex;
+}
+.faq-lists li {
+     border: 1px solid $border-color-gery; padding :20px 25px; border-radius: 10px;
+}
+.faq-lists li:not(:last-child) {
+    margin-right: 10px; 
+}
+.faq-lists .faq-top {
+    display: flex; margin-bottom: 14px;
+}
+.faq-lists .faq-top p {
+    font-weight: 600;  font-size: 20px; line-height: 23px; letter-spacing: 0.01em;
+}
+.faq-lists .faq-top p:first-child {
+    color: $primary-color-red;
+}
+.faq-lists .faq-summary {
+    font-weight: 400; font-size: 17px; line-height: 23px; color: $txt-color-content;
+}
+.faq-category {
+    padding: 20px 25px;
+}
+.faq-category-lists {
+    display: flex; justify-content: space-between;
+}
+.faq-category-lists li {
+    align-self: center;
+}
+.faq-category-lists li div {
+    text-align: center;     padding-bottom: 10px;
+}
+.faq-contents {
+    display: flex; justify-content: space-between;
+}
+.faq-contents > div {
+    width: 50%;
+}
+.faq-category-lists p {
+    margin: 0; font-weight: 600;
+}
+.faq-left .ag-theme-alpine {
+    height: 500px;
+}
+.faq-left .ag-header {
+    display: none;
+}
+.faq-left .ag-center-cols-container {
+    height: 100% !important;
+}
+.faq-left .ag-center-cols-container > div {
+    height: 10% !important; border-bottom: 1px solid $border-color-gery !important;
+}
+.faq-right {
+    border: 1px solid $border-color-gery; border-radius: 14px;
+}
+.faq-right .ck-sticky-panel {
+    display: none !important;
+}
+.faq-right-top {
+    position: relative;
+}
+.faq-right-top span {
+    padding: 4px; align-self: center;
+}
+.faq-attach{
+    border: 1px solid $border-color-gery; border-radius: 5px; font-weight: 600;
+    font-size: 13px;
+}
+.user-action {
+    position: absolute; top: 0px; right: 0px; padding: 10px; font-weight: 600;
+    font-size: 13px;
+    line-height: 15px;
+}
+.user-action span img {
+    padding-right: 2px;
+}
+.faq-contents .ck-content {
+    min-height: 328px; height: fit-content;
+}
+/* 노트북 & PC (해상도 1024px)*/ 
+@media all and (min-width:1024px) {
+    .faq-lists li {
+        padding :20px 25px;
+   }
+   .faq-left .ag-cell:first-child {
+        width: 100px !important;
+   }
+   .faq-left .ag-cell:last-child {
+    position: absolute !important;
+    left: 80px !important; width: fit-content !important; text-align: left !important;
+    }
+    .faq-right-top {
+        height: 100px; padding: 15px 30px;
+    }
+    .faq-right-top > p {
+        font-weight: 700; font-size: 24px; line-height: 30px;
+    }
+   
+} 
+
+/* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 
+@media all and (min-width:768px) and (max-width:1023px) {
+   
+} 
+
+/* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/ 
+@media all and (max-width:767px) {
+    //스타일 입력
+}

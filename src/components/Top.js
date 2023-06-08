@@ -6,6 +6,7 @@ import Search from '../assets/svgs/icon_seeking.svg'
 import Home from '../assets/svgs/icon_home.svg'
 const Top = props =>{
     
+    const [isSearch, setIsSearch] = useState(props.search);
     const [title, setTitle] = useState('');
 
     const location = useLocation();
@@ -27,15 +28,18 @@ const Top = props =>{
 
         <div className="title-wrapper">
             
-            <div className="search-area">
+            {
+                isSearch &&
+                <div className="search-area">
                 <div>· Subsidiary</div>
                 <input type="text" />
                 <div>· Search</div>
                 <input />
                 <div className="search-wrapper"><img src={Search} alt='search-btn'/></div>
             </div>
+            }
 
-            <div className="page-title-area">{title}</div>
+            <div className="page-title-area" style={!isSearch ? {textAlign:'center'}:null}>{title}</div>
 
             <div className="page-path-area"><img src={Home} alt='home'/>{pagePath} <p className="bold-title">{title}</p></div>
         </div>

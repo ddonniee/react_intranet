@@ -107,7 +107,18 @@ ul.pagination li a.active {
     height: 30px;
     color: #337ab7;
 }
-
+.custom-flex-item {
+    display: flex;
+}
+.custom-self-align {
+    align-self: center;
+}
+.custom-hyphen {
+    padding: 0 5px;
+}
+.custom-justify-between {
+    justify-content: space-between;
+}
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
     //스타일 입력
