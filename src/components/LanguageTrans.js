@@ -3,8 +3,8 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 // JSON 파일 import
-import translationKo from "../utils/locales/translation.ko.json";
-import translationEn from "../utils/locales/translation.en.json";
+// import translationKo from "../utils/locales/translation.ko.json";
+// import translationEn from "../utils/locales/translation.en.json";
 
 // 국가 코드와 JSON 파일 match
 const resource = {
