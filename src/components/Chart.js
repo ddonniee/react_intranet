@@ -12,6 +12,7 @@ import {
     Filler,
     Legend,
 } from "chart.js";
+import '../scss/style.scss';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Title, Tooltip, Filler, Legend);
 

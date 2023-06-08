@@ -1,3 +1,4 @@
+@import 'variables';
 
 .main-container {
 
@@ -18,7 +19,7 @@
 
     /* KPI Performance 차트, 그리드 */
     .value {
-        border: 1px solid #D8D8D8;
+        border: 1px solid $line-color-grey;
         border-radius: 14px;
         // height: 689px;
         margin-bottom: 38px;
@@ -40,7 +41,7 @@
     }
 
     .title {
-        border-bottom: 1px solid #BB0841;
+        border-bottom: 1px solid $primary-color-red;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -68,7 +69,7 @@
         justify-content: space-between;
 
         div[class^=card-] {
-            border: 1px solid #D8D8D8;
+            border: 1px solid $line-color-grey;
             border-radius: 14px;
             height: 400px;
         }
@@ -98,7 +99,7 @@
                 width: 72px;
                 height: 72px;
                 border-radius: 50%;
-                background: #BB0841;
+                background: $primary-color-red;
                 color: #FFFFFF;
                 text-align: center;
  
@@ -122,16 +123,12 @@
                 margin-bottom: 20px;
 
                 .bold {
-                    // display: flex;
-                    // align-items: center;
-
                     font-weight: 600;
                     font-size: 16px;
                     line-height: 21px;
                     color: #333333;
 
                     svg {
-                        // margin-left: 7px;
                         margin-bottom: -3px;
                     }
                 }
@@ -173,5 +170,20 @@
 
             }
         }  
+    }
+
+    /* 노트북 & PC (해상도 1024px)*/ 
+    @media all and (min-width:1024px) {
+        //스타일 입력
+    } 
+
+    /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 
+    @media all and (min-width:768px) and (max-width:1023px) {
+        //스타일 입력
+    } 
+
+    /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/ 
+    @media all and (max-width:767px) {
+        //스타일 입력
     }
 }
