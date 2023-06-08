@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useMemo, useCallback, useLayoutEffe
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
 import Pagination from "react-js-pagination";
 
+import '../scss/style.scss';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 import 'ag-grid-enterprise';
