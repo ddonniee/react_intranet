@@ -4,7 +4,7 @@ import _paths from "../_paths";
 // icon
 import Search from '../assets/svgs/icon_seeking.svg'
 import Home from '../assets/svgs/icon_home.svg'
-const Title = props =>{
+const Top = props =>{
     
     const [title, setTitle] = useState('');
 
@@ -41,4 +41,4 @@ const Title = props =>{
         </div>
     )
 }
-export default Title;
+export default Top;

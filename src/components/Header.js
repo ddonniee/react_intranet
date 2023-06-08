@@ -17,7 +17,6 @@ function Header() {
         lowerTab : ''
     })
     const [isOpenMenu, setIsOpenMenu] = useState(false); 
-    const [isOpenThird, setIsOpenThird] = useState(false);
 
     const secondMenuList = [
         {id:'dashboard', name : 'Dashboard'},
@@ -27,7 +26,6 @@ function Header() {
     ]
     const [thirdMenuList, setThirdMenuList] = useState([])
 
-    const [preventEffect, setPreventEffect] = useState(false)
     const handleClickTab = e => {
        
         let tabID = e.target.id;
@@ -69,10 +67,15 @@ function Header() {
     }
 
     const handleClickLink = e => {
+        
         let path = e.target.title;
+        console.log(path)
         window.location.assign(process.env.REACT_APP_FRONT_URL+path)
     }
 
+    const handleClickLogo = e => {
+        window.location.assign(process.env.REACT_APP_FRONT_URL+'/')
+    }
     const ThirdMenu = () => {
         return (
             <div className='nav-modal' ref={headerRef}>
@@ -97,6 +100,7 @@ function Header() {
             lowerTab:''
         })
     }
+    
 
     useEffect(() => {
 
@@ -117,7 +121,7 @@ function Header() {
             if(currentTab.lowerTab==='dashboard') {
             setThirdMenuList(
                 [
-                {name : 'KPI performance', id:'kpi-performance', path : '/'},
+                {name : 'KPI performance', id:'kpi-performance', path : '/dashboard/kpiperformance'},
                 {name : 'Asc Holding Status', id:'asc-holding-status', path : '/dashboard/ascholdingstatus'},
                 {name : 'Evaluation/Incentive', id:'evaluation-incentive', path : '/dashboard/evaluation'},
                 {name : 'Individual Training', id:'individual-training', path : '/dashboard/individualtraining'},
@@ -154,7 +158,7 @@ function Header() {
     return (
         <Nav upperDepth={currentTab.upperTab} lowerDepth={currentTab.lowerTab} thirdDepth={thirdMenuList?.thirdMenuList}>
         <div className="top-nav" >
-            <div className="nav-logo"><img src={Logo} alt='logo'/><div className='division'></div><p>CS PORTAL</p></div>
+            <div className="nav-logo"><img src={Logo} alt='logo' onClick={handleClickLogo}/><div className='division'></div><p>CS PORTAL</p></div>
             <div className="nav-category">
                 <ul className='nav-lists'>
                     <li id='support'  onClick={handleClickTab}>Support{currentTab.upperTab==='support' && <div className='nav-underline'></div>}</li>
@@ -177,7 +181,7 @@ function Header() {
                     {secondMenuList.map((item,idx)=>{
                         return (
                         <>
-                        <li ref={headerRef} id={item.id} onClick={handleClickLowerTab} key={generateRandomString(idx+3)} ><p title={item.id}>{item.name}</p>
+                        <li  id={item.id} onClick={handleClickLowerTab} key={generateRandomString(idx+3)} ><p title={item.id}>{item.name}</p>
                         {
                             currentTab.lowerTab === item.id
                             ?
