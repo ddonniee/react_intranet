@@ -1,4 +1,4 @@
-@import 'variables';
+@import '../variables';
 
 .top-nav {
     background-color: $primary-color-red; display: flex; box-sizing: border-box;
@@ -139,7 +139,7 @@ ul, li {
     right: 10px;
     }
     .nav-modal{
-        width: 183px; top: 80px; left: 13px; padding: 25px 25px 0 25px;
+        width: 245px; top: 80px; left: 13px; padding: 25px 25px 0 25px;
     }
     
     .nav-modal li {

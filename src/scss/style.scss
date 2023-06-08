@@ -1,7 +1,7 @@
 // 공통 css
-@import 'common';
+@import './common/common.scss';
 // view 별 css
-@import 'main';
-@import 'kpiperformance';
-@import 'header';
-@import 'top';
+@import './common/main.scss';
+@import './dashboard/kpiperformance.scss';
+@import './common/header';
+@import './common/top.scss';
