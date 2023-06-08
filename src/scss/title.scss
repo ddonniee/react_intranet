@@ -20,6 +20,12 @@
 .title-wrapper .search-area input {
     margin: 0 10px; border-radius: 5px; border: 1px solid $border-color-gery;
 }
+.title-wrapper .page-path-area  {
+    display: flex;
+}
+.bold-title {
+    font-weight: 600; padding-left: 11px;
+}
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
    .page-path-area img {

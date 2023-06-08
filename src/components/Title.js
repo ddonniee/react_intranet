@@ -6,7 +6,7 @@ import Search from '../assets/svgs/icon_seeking.svg'
 import Home from '../assets/svgs/icon_home.svg'
 const Title = props =>{
     
-    const {title} = props;
+    const [title, setTitle] = useState('');
 
     const location = useLocation();
     
@@ -17,6 +17,7 @@ const Title = props =>{
         const matchingPath = _paths.find((path) => path.path === currentPath);
         if (matchingPath) {
         setPagePath(matchingPath.to);
+        setTitle(matchingPath.name)
         } else {
         setPagePath('');
         }
@@ -36,7 +37,7 @@ const Title = props =>{
 
             <div className="page-title-area">{title}</div>
 
-            <div className="page-path-area"><img src={Home} alt='home'/>{pagePath}</div>
+            <div className="page-path-area"><img src={Home} alt='home'/>{pagePath} <p className="bold-title">{title}</p></div>
         </div>
     )
 }
