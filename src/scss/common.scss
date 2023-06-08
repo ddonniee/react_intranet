@@ -1,45 +1,47 @@
 @font-face {
-    font-family: 'Noto Sans KR', sans-serif;
-    src: url('../assets/font/NotoSansKR-Thin.otf') format('truetype');
-    font-weight: 100;
-}
-@font-face {
-    font-family: 'Noto Sans KR', sans-serif;
-    src: url('../assets/font/NotoSansKR-Light.otf') format('truetype');
+    font-family: 'LG Smart', sans-serif;
+    src: url('../assets/font/LGSmart-Light.ttf') format('truetype');
     font-weight: 300;
 }
 @font-face {
-    font-family: 'Noto Sans KR', sans-serif;
-    src: url('../assets/font/NotoSansKR-Regular.otf') format('truetype');
+    font-family: 'LG Smart', sans-serif;
+    src: url('../assets/font/LGSmart-Regular.ttf') format('truetype');
     font-weight: 400;
 }
 @font-face {
-    font-family: 'Noto Sans KR', sans-serif;
-    src: url('../assets/font/NotoSansKR-Medium.otf') format('truetype');
-    font-weight: 500;
+    font-family: 'LG Smart', sans-serif;
+    src: url('../assets/font/LGSmart-SemiBold.ttf') format('truetype');
+    font-weight: 600;
 }
 @font-face {
-    font-family: 'Noto Sans KR', sans-serif;
-    src: url('../assets/font/NotoSansKR-Bold.otf') format('truetype');
+    font-family: 'LG Smart', sans-serif;
+    src: url('../assets/font/LGSmart-Bold.ttf') format('truetype');
     font-weight: 700;
-}
-@font-face {
-    font-family: 'Noto Sans KR', sans-serif;
-    src: url('../assets/font/NotoSansKR-Black.otf') format('truetype');
-    font-weight: 900;
 }
 
 /* 공통 */
 * {
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'LG Smart', sans-serif;
     font-weight: 400;
     // letter-spacing: -0.02em;
+    letter-spacing: 0.01em;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.inner-container {
+    max-width: 1560px;
+    margin: 0 auto; 
 }
 
 /* 그리드 */
 .ag-header-group-cell-label, .ag-header-cell-label {
     display: flex;
     justify-content: center !important;
+}
+
+.ag-header, .ag-row {
+    text-align: center;
 }
 
 /* 페이징 */
