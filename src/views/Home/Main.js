@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import LineChart from "../../components/Chart";
 import AgGrid from "../../components/AgGrid";
+import Header from '../../components/Header';
 import { axiosInstance } from "../../components/Common";
 
 import '../../scss/style.scss';
@@ -73,7 +74,7 @@ function Main() {
             width: 100
         },
         {
-            field: `YOY (Acc. Mon)`,
+            field: `YOY (Acc Mon)`,
             resizable: false,
             spanHeaderHeight: true,
             wrapHeaderText: true,
@@ -149,7 +150,7 @@ function Main() {
             Target: '100.1',
             'Ach(%)': '100.1',
             'YOY (year)': '100.1',
-            'YOY (Acc. Mon)': '100.1',
+            'YOY (Acc Mon)': '100.1',
             '202212': '100.1',
             '202301': '100.1',
             '202302': '100.1',
@@ -164,7 +165,7 @@ function Main() {
             Target: '100.1',
             'Ach(%)': '100.1',
             'YOY (year)': '100.1',
-            'YOY (Acc. Mon)': '100.1',
+            'YOY (Acc Mon)': '100.1',
             '202212': '100.1',
             '202301': '100.1',
             '202302': '100.1',
@@ -179,7 +180,7 @@ function Main() {
             Target: '100.1',
             'Ach(%)': '100.1',
             'YOY (year)': '100.1',
-            'YOY (Acc. Mon)': '100.1',
+            'YOY (Acc Mon)': '100.1',
             '202212': '100.1',
             '202301': '100.1',
             '202302': '100.1',
@@ -194,7 +195,7 @@ function Main() {
             Target: '100.1',
             'Ach(%)': '100.1',
             'YOY (year)': '100.1',
-            'YOY (Acc. Mon)': '100.1',
+            'YOY (Acc Mon)': '100.1',
             '202212': '100.1',
             '202301': '100.1',
             '202302': '100.1',
@@ -205,8 +206,9 @@ function Main() {
     ]
 
     return (
-        <div className="container">
-            <div className="main-container">
+        <div className="main-container">
+            <Header />
+            <div className="inner-container">
                 <div className="nav">
                     <p><HomeIcon />&nbsp;{` > Support > Main`}</p>
                 </div>
@@ -215,7 +217,7 @@ function Main() {
                     <div className="chart">
                         <LineChart />
                     </div>
-                    <div className="table">
+                    <div className="table"> 
                         <div className='title'>
                             <p className='sub-title'><KpiIcon />&nbsp;KPI Performance</p>
                             <MoreIcon />
@@ -277,8 +279,9 @@ function Main() {
                                         'Back Order a September Weekly Report of AC',
                                         'HE - OK55 Main Defect Back Order a September',
                                         'GSFS Information - LED Arra'].map((row, i) => (
-                                            <li key={i}>
-                                                <p><span className='qst-no'>Q 0{i+1}</span> {row}</p>
+                                            <li key={i} style={{padding: "11px 0"}}>
+                                                <span className='qst-no'> Q 0{i+1} </span>
+                                                <p style={{minWidth: "249px"}}> {row} </p> 
                                             </li>
                                         ))
                                     }

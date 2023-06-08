@@ -23,15 +23,15 @@
 * {
     font-family: 'LG Smart', sans-serif;
     font-weight: 400;
-    white-space: pre-line;
     // letter-spacing: -0.02em;
     letter-spacing: 0.01em;
     box-sizing: border-box;
     margin: 0;
 }
 
-.container {
-    max-width: 1560px; margin : 0 auto;
+.inner-container {
+    max-width: 1560px;
+    margin: 0 auto; 
 }
 
 /* 그리드 */

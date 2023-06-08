@@ -1,11 +1,10 @@
 
 .main-container {
-    // width: 1560px;
-    width: 100%;
 
+    /* 상단 우측 nav */
     .nav {
         text-align: right;
-        margin: 22px 0;
+        margin: 20px 0;
 
         p {
             display: flex;
@@ -17,6 +16,7 @@
         }
     }
 
+    /* KPI Performance 차트, 그리드 */
     .value {
         border: 1px solid #D8D8D8;
         border-radius: 14px;
@@ -26,19 +26,16 @@
 
         .chart {
             // height: 50%;
-            height: 280px;
+            height: 270px;
             margin: 28px 18px 8px 18px;
         }
 
         .grid {
             width: 100%;
-            // border-top: 1px solid #BB0841;
         }
 
         .ag-theme-alpine {    
             height: 267px;
-            // overflow: hidden;
-		    // height: auto;
         }
     }
 
@@ -55,18 +52,17 @@
         text-align: left;
         display: flex;
         align-items: center;
-        // padding-left: 12px;
-        // margin: 22px 26px;
 
         font-weight: 600;
-        font-size: 24px;
-        line-height: 28px;
+        font-size: 22px;
+        line-height: 26px;
 
         svg  {
             width: 30px !important;
         }
     }
 
+    /* Notice, FAQ, CS Talk 카드 */
     .card {
         display: flex;
         justify-content: space-between;
@@ -74,7 +70,7 @@
         div[class^=card-] {
             border: 1px solid #D8D8D8;
             border-radius: 14px;
-            height: 424px;
+            height: 400px;
         }
         .card-notice {
             width: 50%;
@@ -92,7 +88,7 @@
         }
         
         .list {
-            padding: 26px;
+            padding: 20px;
 
             .left {
                 margin-right: 19px;
@@ -120,17 +116,9 @@
                 }
             }
             
-            .right {
-                
-            }
             .mainlist {
                 flex-grow: 1;
-                // width: 200px;
                 word-break: keep-all;
-                // margin-left: 19px;
-                // flex-grow: 1;
-                // width: 200px;
-                // word-break: keep-all;
                 margin-bottom: 20px;
 
                 .bold {
@@ -159,30 +147,31 @@
             .sublist {
                 li {
                     border-top: 1px solid #D9D9D9;
-                    // padding: 10px 0;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    padding: 15px 0;
+                    padding: 15px 0; 
 
                     
-                    p {
+                    .qst-no {
+                        width: 85px;
                         font-weight: 600;
                         font-size: 16px;
-                        line-height: 21px;
-
-                        .qst-no {
-                            font-weight: 600;
-                            font-size: 16px;
-                            line-height: 17px;
-                            color: #BF0C3F;
-                        }
+                        line-height: 17px;
+                        color: #BF0C3F;
+                    }
+                    p {
+                        font-weight: 600;
+                        font-size: 15px;
+                        line-height: 19px;
                     }
                     svg { 
                         margin-right: 5px;
                     }
                 }
+
+
             }
-        }
+        }  
     }
 }
