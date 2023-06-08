@@ -214,7 +214,7 @@ function Main() {
                 </div>
                 {/** KPI Performance */}
                 <div className="value">
-                    <div className="chart">
+                    <div className="chart"> 
                         <LineChart />
                     </div>
                     <div className="table"> 
