@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import LineChart from "../../components/Chart";
 import AgGrid from "../../components/AgGrid";
 import Header from '../../components/Header';
-import { axiosInstance } from "../../components/Common";
 
 import '../../scss/style.scss';
 import { ReactComponent as HomeIcon } from '../../assets/svgs/icon_home.svg';
