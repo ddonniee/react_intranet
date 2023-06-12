@@ -35,6 +35,7 @@ import Dislike from '../../assets/svgs/icon_dislike.svg'
 
 function Faq() {
 
+    let auth = 1;
     // const testValue = useContext(TestContext)
     const [faqLists, setFaqLists] = useState([
         {
@@ -266,7 +267,7 @@ function Faq() {
         <>
         <Header />
         <div className="inner-container">
-            <Top search={true}/>
+            <Top search={ auth=== 1 ? true : false}/>
             {/** Top Area */}
             <div className="faq-nav">
                 <div className="faq-lists-wrapper">

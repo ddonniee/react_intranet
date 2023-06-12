@@ -99,6 +99,7 @@ function Header() {
             upperTab: 'support',
             lowerTab:''
         })
+        setThirdMenuList([])
     }
     
 
