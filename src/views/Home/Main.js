@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import LineChart from "../../components/Chart";
 import AgGrid from "../../components/AgGrid";
 import Header from '../../components/Header';
+import Top from '../../components/Top';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -230,9 +231,10 @@ function Main() {
         <div className="main-container">
             <Header />
             <div className="inner-container">
-                <div className="nav">
+                <Top auth={false} />
+                {/* <div className="nav">
                     <p><HomeIcon />&nbsp;{` > Support > Main`}</p>
-                </div>
+                </div> */}
                 {/** KPI Performance */}
                 <div className="value">
                     <div className="chart"> 

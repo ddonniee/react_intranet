@@ -5,7 +5,7 @@ const _paths = [
     {
         // component: Title,
         name: 'Main',
-        to: '> Support > main',
+        to: '> Support >',
         path:'/'
     },
     {
