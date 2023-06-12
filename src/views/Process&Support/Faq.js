@@ -36,6 +36,18 @@ import Dislike from '../../assets/svgs/icon_dislike.svg'
 function Faq() {
 
     let auth = 1;
+
+    const [subsidiary, setSubsidiary ] = useState([
+        {value:'1',label:'Canada'}, 
+        {value:'2',label:'USA'}, 
+        {value:'3',label:'Germany'}, 
+        {value:'4',label:'Austrailia'}, 
+        {value:'5',label:'Mexico'},
+        {value:'6',label:'Brazil'},
+        {value:'7',label:'Vietnam'},
+        {value:'8',label:'Indonesia'}
+    ])
+
     // const testValue = useContext(TestContext)
     const [faqLists, setFaqLists] = useState([
         {
@@ -261,13 +273,16 @@ function Faq() {
     const handleClickAction = e => {
         console.log('handleClickAction')
     }
-
+    const handleSelectBox = e => {
+        console.log(e)
+    }
+ 
 
     return (
         <>
         <Header />
         <div className="inner-container">
-            <Top search={ auth=== 1 ? true : false}/>
+            <Top auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} />
             {/** Top Area */}
             <div className="faq-nav">
                 <div className="faq-lists-wrapper">
@@ -324,7 +339,13 @@ function Faq() {
                     </div>
                     <div className="faq-right-middle"><Viewer content={content}/></div>
                     <div className="faq-right-bottom">
-                        <div className="faq-comment-wrapper"></div>
+                        <div className="faq-comment-wrapper">
+                            <span>Comments</span>
+                            <div>
+                                <textarea/>
+                                <button>Write</button>
+                            </div>
+                        </div>
                         <div className="faq-comment-list">
                             <ul>
                                 {

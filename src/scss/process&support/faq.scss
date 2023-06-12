@@ -84,6 +84,68 @@
 .faq-contents .ck-content {
     min-height: 328px; height: fit-content;
 }
+.faq-comment-wrapper {
+    background-color: #F2F2F2;min-height: 103px;
+    padding: 16px; height: fit-content;
+}
+.faq-comment-wrapper > span:first-child {
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 18px;
+}
+.faq-comment-wrapper > div {
+    padding: 5px 0;
+    display: flex;
+}
+.faq-comment-wrapper textarea {
+    flex-grow: 2;
+    margin-right: 10px;
+    border: none;
+    padding: 10px;
+    height: fit-content;
+}
+.faq-comment-wrapper textarea:target {
+    border: 1px solid red;
+}
+.faq-comment-wrapper button {
+    width: 69px;
+    height: 44px;
+    background: #323232;
+    border-radius: 5px;
+    padding-left: 1px;
+    color: white;
+    border: none;
+}
+.faq-comment-list {
+    padding : 10px 20px;
+
+}
+.faq-comment-list > ul > li {
+    padding: 10px 0;
+}
+.faq-comment-list > ul > li:not(:last-child) {
+    border-bottom: 1px solid $line-color-grey;
+}
+.faq-comment-list > ul > li span:first-child {
+    font-weight: 600;
+    font-size: 14px;
+}
+.faq-comment-list > ul > li span:nth-child(2) {
+    font-weight: 600;
+    font-size: 13px;
+}
+.faq-comment-list > ul > li span:last-child {
+    font-weight: 400;
+    font-size: 13px;
+    color: $txt-color-edit;
+}
+.faq-comment-list > ul > li span:last-child  p:nth-child(2) {
+    padding: 0 10px;
+}
+/* AG grid custom css*/
+.ag-root-wrapper {
+    border: none !important;
+}
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
     .faq-lists li {
