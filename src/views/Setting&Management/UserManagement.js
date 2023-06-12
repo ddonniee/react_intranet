@@ -9,19 +9,19 @@ import { ReactComponent as HomeIcon } from '../../assets/svgs/icon_home.svg';
 
 function UserManagement() {
 
-    const btn = document.querySelector('.btn-select');
-    const list = document.querySelector('.list-member');
+    // const btn = document.querySelector('.btn-select');
+    // const list = document.querySelector('.list-member');
 
-    btn.addEventListener('click', () => {
-        btn.classList.toggle('on');
-    });
+    // btn.addEventListener('click', () => {
+    //     btn.classList.toggle('on');
+    // });
 
-    list.addEventListener('click', (event) => {
-        if (event.target.nodeName === "BUTTON") {
-            btn.innerText = event.target.innerText;
-            btn.classList.remove('on');
-        }
-    });
+    // list.addEventListener('click', (event) => {
+    //     if (event.target.nodeName === "BUTTON") {
+    //         btn.innerText = event.target.innerText;
+    //         btn.classList.remove('on');
+    //     }
+    // });
 
     return (
         <div className='user-container'>

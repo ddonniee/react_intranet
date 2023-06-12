@@ -148,8 +148,8 @@ function Header() {
                     {name : 'FAQ Setting', path : '/setting/faq'},
                     {name : 'Notice Setting', path : '/setting/notice'},
                     {name : 'Statistics', path : '/setting/statistics'},
-                    {name : 'User Mangenent', path : '/setting/userMangenent'},
-                    {name : 'Common Code Mangement', path : '/setting/commonCodeMangement'},
+                    {name : 'User Management', path : '/setting/userManagement'},
+                    {name : 'Common Code Management', path : '/setting/commonCodeManagement'},
                 ])
             }
         },[currentTab.lowerTab])
