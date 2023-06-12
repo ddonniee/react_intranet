@@ -135,10 +135,10 @@ function UserManagement() {
                     <SelectBox options={centerOptions} onChange={handleSelectBox} />
                     <p>· Branch</p>
                     <SelectBox options={branchOptions} onChange={handleSelectBox} />
-                    <div className='circle'>
+                    <button className='circle'>
                         <p>Inquiry</p>
                         <IntersectIcon />
-                    </div>
+                    </button>
                     <div className='nav-line'></div>
                     <button className='nav-btn'>Edit</button>
                 </div>
