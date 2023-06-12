@@ -3,50 +3,153 @@ import LineChart from "../../components/Chart";
 import AgGrid from "../../components/AgGrid";
 import Header from '../../components/Header';
 import Top from '../../components/Top';
+import SelectBox from '../../components/SelectBox';
 
 import '../../scss/style.scss';
 import { ReactComponent as HomeIcon } from '../../assets/svgs/icon_home.svg';
+import { ReactComponent as IntersectIcon } from '../../assets/svgs/icon_intersect2.svg';
 
 function UserManagement() {
 
-    // const btn = document.querySelector('.btn-select');
-    // const list = document.querySelector('.list-member');
+    const SelectCellRenderer = (props) => {
+        const handleChange = (event) => {
+          const selectedValue = event.target.value;
+          props.setValue(selectedValue);
+        };
 
-    // btn.addEventListener('click', () => {
-    //     btn.classList.toggle('on');
-    // });
+        const jobType = [
+            'LGC Director', 'Subsidiary Admin', 'Subsidiary Staff'
+        ]
+      
+        return (
+          <select className='row-select' value={props.value} onChange={handleChange}>
+            {
+                jobType.map((job, i) => (
+                    <option key={i} value={job}>{job}</option>
+                ))
+            }
+            {/* <option value="Admin1">Subsidiary Admin</option>
+            <option value="Admin2">Subsidiary Admin</option>
+            <option value="Admin3">Subsidiary Admin</option> */}
+          </select>
+        );
+      };
 
-    // list.addEventListener('click', (event) => {
-    //     if (event.target.nodeName === "BUTTON") {
-    //         btn.innerText = event.target.innerText;
-    //         btn.classList.remove('on');
-    //     }
-    // });
+    const [column, setColumn] = useState([ // 컬럼 값 설정
+        { 
+            field: 'No',
+            resizable: false,
+            // spanHeaderHeight: true,
+            // pinned: 'left',
+            // width: 256,
+            // suppressAutoSize: true
+        },
+        { 
+            field: 'Subsidiary',
+            resizable: false,
+        },
+        { 
+            field: 'Center',
+            resizable: false,
+        },
+        { 
+            field: 'Branch',
+            resizable: false,
+        },
+        { 
+            field: 'Name',
+            resizable: false,
+        },
+        { 
+            field: 'Email',
+            resizable: false,
+        },
+        { 
+            field: 'User ID',
+            resizable: false,
+        },
+        { 
+            field: 'Phone No',
+            resizable: false,
+        },
+        { 
+            field: 'Mobile No',
+            resizable: false,
+        },
+        { 
+            field: 'Job Type',
+            resizable: false,
+            cellRendererFramework: SelectCellRenderer,
+        },
+    ]);
+
+    
+    const data = () => {
+        let row = [];
+        for(let i = 0; i < 20; i++) {
+            row[i] = {
+                'No': i+1,
+                'Subsidiary': 'LGEAI',
+                'Center': 'LGC',
+                'Branch': '-',
+                'Name': 'Alex Alex',
+                'Email': 'alex@lgeai.com',
+                'User ID': 'alex091',
+                'Phone No': '10-547-4751',
+                'Mobile No': '-',
+            };
+        }
+        return row;
+    }
+
+    const [rowData, setRowData] =  useState(data());
+    
+    const subOptions = [
+        { value: 'LGEAI', label: 'LGEAI' },
+        { value: 'LGEAI2', label: 'LGEAI2' },
+    ]
+
+    const centerOptions = [
+        { value: 'ASC', label: 'ASC' },
+        { value: 'ASC2', label: 'ASC2' },
+    ]
+
+    const branchOptions = [
+        { value: 'NW', label: 'NW' },
+        { value: 'NW2', label: 'NW2' },
+    ]
+
+    const handleSelectBox = (e) => {
+        console.log(e)
+    }
 
     return (
         <div className='user-container'>
             <Header />
             <div className='inner-container'>
-                {/* <Top search={false} /> */}
-                <div className="nav">
+                <Top auth={false} />
+                {/* <div className="nav">
                     <h2 className='user-title'>User Management</h2>
-                    <p className='user-nav'><HomeIcon />&nbsp;{` > Support > Main`}</p>
-                </div>
+                    <p><HomeIcon />&nbsp;{` > Support > Main`}</p>
+                </div> */}
                 <div className='user-nav'>
                     <p>· Subsidiary</p>
-                    <div class="cont-select">
-                        <button class="btn-select">LGEAI</button>
-                        <ul class="list-member">
-                            <li><button type="button">Python</button></li>
-                            <li><button type="button">Java</button></li>
-                            <li><button type="button">JavaScript</button></li>
-                            <li><button type="button">C#</button></li>
-                        </ul>
-                    </div>
+                    <SelectBox options={subOptions} onChange={handleSelectBox} />
                     <p>· Center Type</p>
-                    <input type='text' />
+                    <SelectBox options={subOptions} onChange={handleSelectBox} />
                     <p>· Branch</p>
-                    <input type='text' />
+                    <SelectBox options={subOptions} onChange={handleSelectBox} />
+                    <div className='circle'>
+                        <p>Inquiry</p>
+                        <IntersectIcon />
+                    </div>
+                    <div className='nav-line'></div>
+                    <button className='nav-btn'>Edit</button>
+                </div>
+                <div className='user-content'>
+                    <div className='grid'>
+                        <AgGrid data={rowData} column={column} paging={false} />
+                    </div>
                 </div>
             </div>
         </div>

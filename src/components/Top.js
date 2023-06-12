@@ -36,7 +36,7 @@ const Top = props =>{
     return(
 
         <div className="title-wrapper">
-            
+            <div className="title-inner">
             {
                 (auth && searchArea ) 
                 ?
@@ -47,12 +47,14 @@ const Top = props =>{
                 <input />
                 <div className="search-wrapper"><img src={Search} alt='search-btn'/></div>
                 </div>
-                :
-                <div className="empty_area">
-                </div>
+                : 
+                null
+                // <div className="empty_area">
+                // </div>
             }
 
             <div className={`page-title-area ${!searchArea ? 'custom-txt-align' : ''}`} style={!auth ? {textAlign:'center'}:null}>{title}</div>
+            </div>
 
             <div className="page-path-area"><img src={Home} alt='home'/>{pagePath} <p className="bold-title">{title}</p></div>
         </div>
