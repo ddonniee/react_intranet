@@ -282,7 +282,7 @@ function Faq() {
         <>
         <Header />
         <div className="inner-container">
-            <Top auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} />
+            <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} />
             {/** Top Area */}
             <div className="faq-nav">
                 <div className="faq-lists-wrapper">
