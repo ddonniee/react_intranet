@@ -104,6 +104,18 @@ const _paths = [
         to: '> Support > Setting & Admin >',
         path:'/setting/statistics'
     },
+    {
+        // component: Title,
+        name: 'User Management',
+        to: '> Support > Setting & Admin >',
+        path:'/setting/userManagement'
+    },
+    {
+        // component: Title,
+        name: 'Common Code Management',
+        to: '> Support > Setting & Admin >',
+        path:'/setting/commonCodeManagement'
+    },
 ]
 
 export default _paths
