@@ -128,17 +128,13 @@ function UserManagement() {
             <Header />
             <div className='inner-container'>
                 <Top auth={false} />
-                {/* <div className="nav">
-                    <h2 className='user-title'>User Management</h2>
-                    <p><HomeIcon />&nbsp;{` > Support > Main`}</p>
-                </div> */}
                 <div className='user-nav'>
                     <p>· Subsidiary</p>
                     <SelectBox options={subOptions} onChange={handleSelectBox} />
                     <p>· Center Type</p>
-                    <SelectBox options={subOptions} onChange={handleSelectBox} />
+                    <SelectBox options={centerOptions} onChange={handleSelectBox} />
                     <p>· Branch</p>
-                    <SelectBox options={subOptions} onChange={handleSelectBox} />
+                    <SelectBox options={branchOptions} onChange={handleSelectBox} />
                     <div className='circle'>
                         <p>Inquiry</p>
                         <IntersectIcon />
