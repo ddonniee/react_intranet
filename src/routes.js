@@ -13,6 +13,9 @@ const PartsDeliveryTime =  React.lazy(()=>import('./views/Dashboard/PartsDeilver
 // Process & Support
 const Faq = React.lazy(() => import('./views/Process&Support/Faq'))
 const Raq =  React.lazy(()=>import('./views/Process&Support/Raq'))
+const UserMangenent = React.lazy(() => import('./views/Process&Support/UserMangenent'))
+const CommonCodeMangement =  React.lazy(()=>import('./views/Process&Support/CommonCodeMangement'))
+
 // Board
 const Notice =  React.lazy(()=> import('./views/Board/Notice'))
 const CStalk = React.lazy(() => import('./views/Board/CStalk'))
@@ -42,6 +45,8 @@ const routes = [
     // Process Support
     { path:'/process&support/faq', name:'Faq' , element: Faq},
     { path:'/process&support/raq', name:'Raq' , element: Raq},
+    { path:'/process&support/userMangenent', name:'UserMangenent' , element: UserMangenent},
+    { path:'/process&support/commonCodeMangement', name:'CommonCodeMangement' , element: CommonCodeMangement},
     // Board
     { path:'/board/notice', name:'Notice' , element: Notice},
     { path:'/board/cstalk', name:'CStalk' , element: CStalk},
