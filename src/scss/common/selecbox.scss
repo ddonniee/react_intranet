@@ -8,3 +8,7 @@
 #react-select-2-listbox > * > *:hover {
     background-color: $chart-color-pink; color: $primary-color-red;
 }
+.custom-select .selected {
+    background-color: black !important;
+
+} 

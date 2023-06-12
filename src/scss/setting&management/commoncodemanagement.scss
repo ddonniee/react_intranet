@@ -37,6 +37,19 @@ font-size: 16px;
 line-height: 17px; 
 }
 
+.code-grid,
+.code-grid div {
+    height: 100%;
+}
+.code-lists-wrapper {
+    padding-top: 20px;
+}
+.code-lists-wrapper > div{
+    height: 100%; width: 49%; border-top: 3px solid $primary-color-red;
+}
+.ag-theme-alpine {
+    height: 60vmin;
+}
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
     .code-left img {

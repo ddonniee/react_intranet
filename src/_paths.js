@@ -5,37 +5,37 @@ const _paths = [
     {
         // component: Title,
         name: 'Main',
-        to: '> Support > main',
+        to: '> Support >',
         path:'/'
     },
     {
         // component: Title,
         name: 'KPI performance',
-        to: '> Support > Dashboard >rformance',
+        to: '> Support > Dashboard >',
         path:'/dashboard/kpiperformance'
     },
     {
         // component: Title,
         name: 'Evluation / Incentive',
-        to: '> Support > Dashboard >tion / Incentive',
+        to: '> Support > Dashboard >tion /',
         path:'/dashboard/evaluation'
     },
     {
         // component: Title,
         name: 'Training Status',
-        to: '> Support > Dashboard >ng Status',
+        to: '> Support > Dashboard >',
         path:'/dashboard/trainingstatus'
     },
     {
         // component: Title,
         name: 'Individual Training Status',
-        to: '> Support > Dashboard >dual Training Status',
+        to: '> Support > Dashboard >',
         path:'/dashboard/individualtraining'
     },
     {
         // component: Title,
         name: 'Work In Process',
-        to: '> Support > Dashboard >n Process',
+        to: '> Support > Dashboard >',
         path:'/dashboard/wip'
     },
     {
