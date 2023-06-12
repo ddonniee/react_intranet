@@ -135,6 +135,8 @@ function Header() {
                 [
                 {name : 'Process & FAQ', path : '/process&support/faq'},
                 {name : 'Request & Q&A', path : '//process&support/raq'},
+                {name : 'Process & FAQ', path : '/process&support/userMangenent'},
+                {name : 'Request & Q&A', path : '//process&support/commonCodeMangement'},
             ])
             }else if(currentTab.lowerTab==='board') {
                 setThirdMenuList([
