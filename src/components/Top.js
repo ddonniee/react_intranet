@@ -38,14 +38,18 @@ const Top = props =>{
         <div className="title-wrapper">
             
             {
-                (auth && searchArea ) && 
-                <div className="search-area">
+                (auth && searchArea ) 
+                ?
+                <div className="search-area custom-justify-between">
                 <div>· Subsidiary</div>
                 <SelectBox options={options} handleChange={handleChange} />
                 <div>· Search</div>
                 <input />
                 <div className="search-wrapper"><img src={Search} alt='search-btn'/></div>
-            </div>
+                </div>
+                :
+                <div className="empty_area">
+                </div>
             }
 
             <div className={`page-title-area ${!searchArea ? 'custom-txt-align' : ''}`} style={!auth ? {textAlign:'center'}:null}>{title}</div>

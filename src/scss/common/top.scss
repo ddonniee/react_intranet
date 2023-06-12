@@ -18,10 +18,13 @@
     align-self: center;
 }
 .title-wrapper .search-area input {
-    margin: 0 10px; border-radius: 5px; border: 1px solid $border-color-gery;
+    margin: 0 10px; border-radius: 5px; border: 1px solid $border-color-gery; padding: 0 10px; font-size: 16px;
+}
+.title-wrapper .search-area input:focus {
+    outline: none
 }
 .title-wrapper .page-path-area  {
-    display: flex;
+    display: flex; align-items: center;
 }
 .bold-title {
     font-weight: 600; padding-left: 11px;
@@ -30,6 +33,9 @@
 @media all and (min-width:1024px) {
    .page-path-area img {
         vertical-align: middle; padding: 4px;
+   }
+   .title-wrapper .search-area {
+        width: 555px;
    }
    .title-wrapper .search-area div {
     font-weight: 600;
@@ -41,6 +47,9 @@
    }
    .title-wrapper .search-wrapper img {
     width: 17px;
+   }
+   .empty_area {
+    width: 310px;
    }
 } 
 
