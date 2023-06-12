@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import LineChart from "../../components/Chart";
 import AgGrid from "../../components/AgGrid";
 import Header from '../../components/Header';
-// import SimpleSlider from '../../components/SimpleSlider';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';

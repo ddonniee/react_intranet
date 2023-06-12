@@ -1,0 +1,116 @@
+@import '../variables';
+
+.user-container {
+
+    /* 상단 우측 nav */
+    .nav {
+        // text-align: right;
+        margin: 50px 0;
+
+        h2 {
+            text-align: center;
+            margin-bottom: -15px;
+            
+            font-weight: 600;
+            font-size: 25px;
+            line-height: 29px;
+        }
+
+        p {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            font-size: 16px;
+            line-height: 19px;
+        }
+    }
+
+    /* 상단 검색 nav */
+    .user-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+        p {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 17px;
+        }
+
+        .cont-select {
+            position: relative;
+            width: 200px;
+
+            .btn-select {
+                width: 100%;
+                padding: 13px 30px 13px 14px;
+                font-size: 15px;
+                line-height: 14px;
+                background-color: #fff;
+                border: 1px solid #C4C4C4;
+                box-sizing: border-box;
+                border-radius: 10px;
+                cursor: pointer;
+                text-align: left;
+                background: url("../../assets/svgs/icon_arrow.svg") center right 14px no-repeat;
+                /* 말줄임 */
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+    
+            .btn-select:hover,
+            .btn-select:focus {
+                border: 1px solid $primary-color-grey;
+                outline: 3px solid #C4C4C4;
+            }
+    
+            .list-member {
+                display: none;
+                position: absolute;
+                width: 100%;
+                top: 42px;
+                left: 0;
+                border: 1px solid #C4C4C4;
+                box-sizing: border-box;
+                // box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.15);
+                border-radius: 10px;
+            }
+    
+            .btn-select.on {
+                // background: url("images/icon-Triangle-up.png") center right 14px no-repeat;
+            }
+    
+            .btn-select.on+.list-member {
+                display: block;
+            }
+    
+            .list-member li {
+                height: 40px;
+                padding: 5px 8px;
+                box-sizing: border-box;
+            }
+    
+            .list-member li button {
+                width: 100%;
+                padding: 7px 10px;
+                border: none;
+                background-color: #fff;
+                border-radius: 8px;
+                cursor: pointer;
+                text-align: left;
+                /* 말줄임 */
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+    
+            .list-member li button:hover,
+            .list-member li button:focus {
+                background-color: #F8E4FF;
+            }
+        }
+    }
+
+}
