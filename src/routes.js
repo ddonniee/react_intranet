@@ -13,8 +13,6 @@ const PartsDeliveryTime =  React.lazy(()=>import('./views/Dashboard/PartsDeilver
 // Process & Support
 const Faq = React.lazy(() => import('./views/Process&Support/Faq'))
 const Raq =  React.lazy(()=>import('./views/Process&Support/Raq'))
-const UserMangenent = React.lazy(() => import('./views/Process&Support/UserMangenent'))
-const CommonCodeMangement =  React.lazy(()=>import('./views/Process&Support/CommonCodeMangement'))
 
 // Board
 const Notice =  React.lazy(()=> import('./views/Board/Notice'))
@@ -25,6 +23,8 @@ const EvaluationSetting =  React.lazy(()=>import('./views/Setting&Management/Eva
 const FaqSetting =  React.lazy(()=>import('./views/Setting&Management/FaqSetting'))
 const NoticeSetting = React.lazy(()=>import('./views/Setting&Management/NoticeSetting'))
 const StatisticsSetting = React.lazy(()=>import('./views/Setting&Management/StatisticsSetting'))
+const UserMangenent = React.lazy(() => import('./views/Setting&Management/UserMangenent'))
+const CommonCodeMangement =  React.lazy(()=>import('./views/Setting&Management/CommonCodeMangement'))
 
 /**
  * 컴포넌트명 : routes.js
@@ -45,8 +45,7 @@ const routes = [
     // Process Support
     { path:'/process&support/faq', name:'Faq' , element: Faq},
     { path:'/process&support/raq', name:'Raq' , element: Raq},
-    { path:'/process&support/userMangenent', name:'UserMangenent' , element: UserMangenent},
-    { path:'/process&support/commonCodeMangement', name:'CommonCodeMangement' , element: CommonCodeMangement},
+
     // Board
     { path:'/board/notice', name:'Notice' , element: Notice},
     { path:'/board/cstalk', name:'CStalk' , element: CStalk},
@@ -56,5 +55,7 @@ const routes = [
     { path:'/setting/faq', name:'FaqSetting' , element: FaqSetting},
     { path:'/setting/notice', name:'NoticeSetting' , element: NoticeSetting},
     { path:'/setting/statistics', name:'StatisticsSetting' , element: StatisticsSetting},
+    { path:'/setting/userMangenent', name:'UserMangenent' , element: UserMangenent},
+    { path:'/setting/commonCodeMangement', name:'CommonCodeMangement' , element: CommonCodeMangement},
 ]
 export default routes

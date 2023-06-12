@@ -135,8 +135,6 @@ function Header() {
                 [
                 {name : 'Process & FAQ', path : '/process&support/faq'},
                 {name : 'Request & Q&A', path : '//process&support/raq'},
-                {name : 'Process & FAQ', path : '/process&support/userMangenent'},
-                {name : 'Request & Q&A', path : '//process&support/commonCodeMangement'},
             ])
             }else if(currentTab.lowerTab==='board') {
                 setThirdMenuList([
@@ -150,6 +148,8 @@ function Header() {
                     {name : 'FAQ Setting', path : '/setting/faq'},
                     {name : 'Notice Setting', path : '/setting/notice'},
                     {name : 'Statistics', path : '/setting/statistics'},
+                    {name : 'User Mangenent', path : '/setting/userMangenent'},
+                    {name : 'Common Code Mangement', path : '/setting/commonCodeMangement'},
                 ])
             }
         },[currentTab.lowerTab])
