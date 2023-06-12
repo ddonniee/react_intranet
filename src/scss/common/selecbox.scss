@@ -4,3 +4,7 @@
     min-width: 130px;
     margin: 0 10px;
 }
+
+#react-select-2-listbox > * > *:hover {
+    background-color: $chart-color-pink; color: $primary-color-red;
+}
