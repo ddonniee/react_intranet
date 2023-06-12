@@ -123,6 +123,9 @@ ul.pagination li a.active {
 .custom-justify-between {
     justify-content: space-between;
 }
+.custom-txt-align {
+    text-align: center;
+}
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
     //스타일 입력

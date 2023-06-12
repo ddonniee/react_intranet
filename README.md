@@ -41,7 +41,7 @@ asc_portal
 ## 컴포넌트 설명
 Editor.js         // wyswyg
 CreateTicket.je   // 위젯으로 바로 티켓 발행
-
+Top.js            // url 값으로 페이지 타이틀 및 경로 설정
 ## utils 설명
 ExportExcel.js    // 배열전달시 엑셀로 추출
 
