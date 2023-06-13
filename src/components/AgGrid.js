@@ -71,7 +71,24 @@ const AgGrid = ({data, column, paging}) => {
 
     const sizeToFit = useCallback(() => {
         gridRef.current.api.sizeColumnsToFit();
-      }, []);
+    }, []);
+
+    // 그리드 기본 높이 컨텐츠 길이에 맞게 fit
+    // useEffect(() => {
+    //     calculateGridHeight();
+    //     window.addEventListener('resize', calculateGridHeight);
+    //     return () => {
+    //       window.removeEventListener('resize', calculateGridHeight);
+    //     };
+    // }, []);
+
+    // const calculateGridHeight = () => {
+    //     const contentHeight = rowData.length * 40; // Adjust the row height as per your requirement
+    //     const gridContainer = document.querySelector('.ag-theme-alpine');
+    //     if (gridContainer) {
+    //         gridContainer.style.height = `${contentHeight}px`;
+    //     }
+    // };
 
     return (
         <div>
@@ -86,9 +103,9 @@ const AgGrid = ({data, column, paging}) => {
                     columnDefs={columnDefs} // Column Defs for Columns 
                     defaultColDef={defaultColDef} // Default Column Properties 
                     animateRows={true} // Optional - set to 'true' to have rows animate when sorted
-                    // rowSelection='multiple' // Options - allows click selection of rows 
+                    rowSelection='multiple' // Options - allows click selection of rows 
                     onCellClicked={cellClickedListener} // Optional - registering for Grid Event 
-                    pagination={true}
+                    pagination={paging ? true : false}
                     paginationPageSize={10}
                     suppressPaginationPanel={true}
                     suppressScrollOnNewData={true}

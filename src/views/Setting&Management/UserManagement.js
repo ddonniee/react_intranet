@@ -121,21 +121,21 @@ function UserManagement() {
         console.log(e)
     }
 
-    useEffect(() => {
-        calculateGridHeight();
-        window.addEventListener('resize', calculateGridHeight);
-        return () => {
-          window.removeEventListener('resize', calculateGridHeight);
-        };
-    }, []);
+    // useEffect(() => {
+    //     calculateGridHeight();
+    //     window.addEventListener('resize', calculateGridHeight);
+    //     return () => {
+    //       window.removeEventListener('resize', calculateGridHeight);
+    //     };
+    // }, []);
 
-    const calculateGridHeight = () => {
-        const contentHeight = rowData.length * 40; // Adjust the row height as per your requirement
-        const gridContainer = document.querySelector('.ag-theme-alpine');
-        if (gridContainer) {
-            gridContainer.style.height = `${contentHeight}px`;
-        }
-    };
+    // const calculateGridHeight = () => {
+    //     const contentHeight = rowData.length * 30; // Adjust the row height as per your requirement
+    //     const gridContainer = document.querySelector('.ag-theme-alpine');
+    //     if (gridContainer) {
+    //         gridContainer.style.height = `${contentHeight}px`;
+    //     }
+    // };
 
     return (
         <div className='user-container'>
