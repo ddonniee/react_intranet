@@ -1,21 +1,29 @@
 import React from "react";
-import SelectBox from "./SelectBox";
 
+import Select from "react-select";
 const SelectBoxRenderer = (props) => {
-  const { value, data, column, handleChange } = props;
+  const {column, handleChange } = props;
+
 
   // Options 데이터를 생성합니다.
   const options = column.options.map((option) => ({
-    value: option,
-    label: option,
+    value: option.value,
+    label: option.label,
   }));
 
   return (
-    <SelectBox
-      options={options}
-    //   value={{ value, label: value }}
-      handleChange={(selectedOption) => handleChange(selectedOption.value, data)}
-    />
+            <select
+            className="cell-select-box"
+            onChange={handleChange}>
+             {options.map((option) => (
+             <option 
+                key={option.value} 
+                value={option.value}
+               >
+                 {option.label}
+             </option>
+             ))}
+     </select>
   );
 };
 

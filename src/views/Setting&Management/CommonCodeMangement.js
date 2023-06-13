@@ -56,48 +56,166 @@ function CommonCodeMangement() {
             isUse : true
         }
     ])
+
+    const handleSelectBox = (event,params) => {
+    
+        const { data } = params.node;
+        const { checked } = event.target;
+
+        if (checked) {
+            setRowData([...rowData, data]);
+          } else {
+            setRowData(rowData.filter(item => item !== data));
+          }
+    }
+
+    
     const [codeColumn, setCodeColumn] = useState([
         { headerName: '' , field: 'isCheck', checkboxSelection: true},
         { headerName: 'Code ID' ,field: 'codeID' },
         { headerName: 'Code Name' ,field: 'codeName' },
         { headerName: 'Code Description' ,field: 'description' },
-        { headerName: 'Use Y/N' ,field: 'isUse', },
+        {
+            headerName: 'Use Y/N',
+            field: 'isUse',
+            cellRendererFramework: SelectBoxRenderer,
+            cellRendererParams: {
+              column: {
+                options: [{label : 'Y', value:true}, {label:'N', value:false}],
+              },
+              handleChange: handleSelectBox,
+            },
+          },
     ])
     
-    const handleSelectBox = e => {
-        console.log(e)
-    }
-
+   
 
     // donnie test
     const columnDefs = [
-        { headerName: 'Name', field: 'name' },
-        { headerName: 'Age', field: 'age' },
-        { headerName: 'Gender', field: 'gender' },
+        { headerName: '', field: 'isCheck',checkboxSelection: true, headerCheckboxSelection: true  },
+        { headerName: 'Code ID', field: 'codeID' },
+        { headerName: 'Code Name', field: 'codeName' },
+        { headerName: 'Code Description', field: 'description' },
         {
-          headerName: 'Status',
-          field: 'status',
+          headerName: 'Use Y/N',
+          field: 'isUse',
           cellRendererFramework: SelectBoxRenderer,
           cellRendererParams: {
             column: {
-              options: ['Active', 'Inactive', 'Pending'],
+              options: [{label : 'Y', value:true}, {label:'N', value:false}],
             },
-            handleChange: (value, data) => {
-              // 셀 값이 변경되었을 때 실행되는 핸들러 함수입니다.
-              // 선택한 값(value)과 해당 데이터(data)를 사용할 수 있습니다.
-              console.log('Selected value:', value);
-              console.log('Row data:', data);
-              // 데이터 업데이트 등의 작업을 수행할 수 있습니다.
-            },
+            handleChange: handleSelectBox,
           },
         },
       ];
 
-      const rowData = [
-        { name: 'John', age: 28, gender: 'Male', status: 'Active' },
-        { name: 'Jane', age: 32, gender: 'Female', status: 'Inactive' },
-        { name: 'Mike', age: 40, gender: 'Male', status: 'Pending' },
-      ];
+      const [rowData, setRowData] = useState([
+        {
+            isCheck : true,
+            codeID : 'C0001',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : 'Mailing',
+            codeName : 'Mailing',
+            description : 'Mailing address',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : 'SUB BI',
+            codeName : 'SUB a',
+            description : 'SUB',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : '-',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : '-',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : 'C0001',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : 'Mailing',
+            codeName : 'Mailing',
+            description : 'Mailing address',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : 'SUB BI',
+            codeName : 'SUB a',
+            description : 'SUB',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : '-',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : '-',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : 'C0001',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : 'Mailing',
+            codeName : 'Mailing',
+            description : 'Mailing address',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : 'SUB BI',
+            codeName : 'SUB a',
+            description : 'SUB',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : '-',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            codeID : '-',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        }
+      ]);
 
       
     return (
@@ -106,9 +224,6 @@ function CommonCodeMangement() {
         <div className="inner-container">
         {/** Top Area */}
         <Top auth={ auth=== 1 ? true : false} searchArea={false}/>
-            
-            
-
             {/** Search Area */}
             <div className="code-contents custom-flex-item custom-justify-between">
                 <div className="code-left">
@@ -144,8 +259,8 @@ function CommonCodeMangement() {
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                <div><AgGrid column={codeColumn} data={codeList} paging={false} /></div>
-                <div><AgGrid column={columnDefs} data={rowData} paging={false} /></div>
+                <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox={false} /></div>
+                <div><AgGrid column={columnDefs} data={rowData} paging={false} checkbox/></div>
             
             </div>
             <Zendesk />

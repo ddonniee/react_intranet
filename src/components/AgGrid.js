@@ -18,7 +18,7 @@ import 'ag-grid-enterprise';
  * }
  * @returns
 */
-const AgGrid = ({data, column, paging}) => {
+const AgGrid = ({data, column, paging, checkbox}) => {
     
     const gridRef = useRef(); // Optional - for accessing Grid's API
     const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
@@ -27,7 +27,7 @@ const AgGrid = ({data, column, paging}) => {
     /** 페이징 관련 ▼ ============================================================= */
     const [activePage, setActivePage] = useState(1); // 현재 페이지
     const [itemsPerPage] = useState(10); // 페이지당 아이템 갯수
-
+    const [isCheckBox, setIsCheckbox] = useState(checkbox); // check box 사용할 시 cell click 막기
     const setPage = (e) => {
         setActivePage(e);
         console.log('page ---->', e);
@@ -90,6 +90,20 @@ const AgGrid = ({data, column, paging}) => {
     //     }
     // };
 
+    const handleSelectBox = event =>{
+        const selectedNodes = event.api.getSelectedNodes();
+        const selectedData = selectedNodes.map(node => node.data);
+
+        console.log('check evnet',selectedData); // 체크된 셀의 정보 출력
+    }
+
+    useEffect(()=>{
+        if(checkbox) {
+            setIsCheckbox(true)
+        }else if(!checkbox) {
+            setIsCheckbox(false)
+        }
+    },[])
     return (
         <div>
           {
@@ -104,12 +118,14 @@ const AgGrid = ({data, column, paging}) => {
                     defaultColDef={defaultColDef} // Default Column Properties 
                     animateRows={true} // Optional - set to 'true' to have rows animate when sorted
                     rowSelection='multiple' // Options - allows click selection of rows 
-                    onCellClicked={cellClickedListener} // Optional - registering for Grid Event 
+                    onCellClicked={!checkbox && cellClickedListener} // Optional - registering for Grid Event 
                     pagination={paging ? true : false}
                     paginationPageSize={10}
                     suppressPaginationPanel={true}
                     suppressScrollOnNewData={true}
+                    suppressRowClickSelection={true}
                     onGridReady={onGridReady}
+                    onSelectionChanged={checkbox && handleSelectBox}
                 />
             </div>
             {/* react-js-pagination */}
