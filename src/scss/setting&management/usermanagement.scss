@@ -30,10 +30,24 @@
     .user-nav {
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: space-between;
         border: 1px solid #D6D6D6;
         border-radius: 14px;
         padding: 10px 20px;
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            width: 65%;
+            justify-content: space-around;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            width: 30%;
+            justify-content: space-evenly;
+        }
 
         p {
             font-weight: 600;
@@ -68,17 +82,34 @@
             border: 1px solid #EBEBEB;
         }
 
-        .nav-btn {
+        button[class^=nav-btn-] {
             width: 88px;
             height: 44px;
-            border: none;
-            background: #323232;
             border-radius: 5px;
-            color: white;
             font-weight: 600;
             font-size: 16px;
             line-height: 19px;
             cursor: pointer;
+        }
+
+        .nav-btn-black {
+            border: none;
+            background: $primary-color-grey;
+            color: #FFFFFF;
+        }
+        .nav-btn-white {
+            border: 1px solid $line-color-grey;
+            background: #FFFFFF;
+            color: #5F5F5F;
+        }
+        .nav-btn-red {
+            border: none;
+            background: $primary-color-red;
+            color: #FFFFFF;
+        }
+
+        .btn-modify button:first-child {
+            margin-right: 11px;
         }
     }
 

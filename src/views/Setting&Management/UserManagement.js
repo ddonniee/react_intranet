@@ -100,6 +100,7 @@ function UserManagement() {
 
     const [column, setColumn] = useState(userColumn);
     const [rowData, setRowData] =  useState(userData());
+    const [isModify, setIsModify] = useState(false);
     
     const subOptions = [
         { value: 'LGEAI', label: 'LGEAI' },
@@ -150,18 +151,35 @@ function UserManagement() {
                 {/** auth 권한체크로 수정 필요 */}
                 <Top auth={1} searchArea={false}/>
                 <div className='user-nav'>
-                    <p>· Subsidiary</p>
-                    <SelectBox options={subOptions} onChange={handleSelectBox} />
-                    <p>· Center Type</p>
-                    <SelectBox options={centerOptions} onChange={handleSelectBox} />
-                    <p>· Branch</p>
-                    <SelectBox options={branchOptions} onChange={handleSelectBox} />
-                    <button className='circle'>
-                        <p>Inquiry</p>
-                        <IntersectIcon />
-                    </button>
-                    <div className='nav-line'></div>
-                    <button className='nav-btn'>Edit</button>
+                    <div className='nav-left'>
+                        <p>· Subsidiary</p>
+                        <SelectBox options={subOptions} onChange={handleSelectBox} />
+                        <p>· Center Type</p>
+                        <SelectBox options={centerOptions} onChange={handleSelectBox} />
+                        <p>· Branch</p>
+                        <SelectBox options={branchOptions} onChange={handleSelectBox} />
+                    </div>
+                    <div className='nav-right'>
+                        <button className='circle'>
+                            <p>Inquiry</p>
+                            <IntersectIcon />
+                        </button>
+                        <div className='nav-line'></div>
+                        {
+                            isModify ?
+                            <div className='btn-modify'>
+                                <button className='nav-btn-white' onClick={() => setIsModify(false)}>Cancel</button>
+                                <button className='nav-btn-red' onClick={() => setIsModify(false)}>Save</button>
+                            </div>
+                            :
+                            <button className='nav-btn-black' onClick={() => setIsModify(true)}>Edit</button>
+                        }
+                    </div>
+                    {/* <button className='nav-btn-black'>Edit</button> */}
+                    {/* <div className='btn-modify'>
+                        <button className='nav-btn-white'>Cancel</button>
+                        <button className='nav-btn-red'>Save</button>
+                    </div> */}
                 </div>
                 <div className='user-content'>
                     <div className='grid'>

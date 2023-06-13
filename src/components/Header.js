@@ -138,8 +138,8 @@ function Header() {
             ])
             }else if(currentTab.lowerTab==='board') {
                 setThirdMenuList([
-                    {name : 'Notice', path : '/board/cstalk'},
-                    {name : 'CS Talk', path : '/board/notice'},
+                    {name : 'Notice', path : '/board/notice'},
+                    {name : 'CS Talk', path : '/board/cstalk'},
                 ])
             }else if(currentTab.lowerTab==='setting') {
                 setThirdMenuList([
