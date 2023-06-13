@@ -12,13 +12,8 @@ import EditCelldata from "../../components/EditCelldata"
 
 function CommonCodeMangement() {
 
+    /** TEST DATA START  */
     let auth = 1;
-
-    const [dropSelect, setDropSelect ] = useState([
-        {value:'all',label:'ALL'}, 
-        {value:'true',label:'Y'}, 
-        {value:'false',label:'N'}, 
-    ])
 
     const [codeList, setCodeList] = useState([
         {
@@ -57,7 +52,115 @@ function CommonCodeMangement() {
             isUse : true
         }
     ])
-
+    const [rowData, setRowData] = useState([
+        {
+            isCheck : true,
+            id : 'C0001',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0002',
+            codeName : 'Mailing',
+            description : 'Mailing address',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0003',
+            codeName : 'SUB a',
+            description : 'SUB',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0004',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0005',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0001',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0006',
+            codeName : 'Mailing',
+            description : 'Mailing address',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0007',
+            codeName : 'SUB a',
+            description : 'SUB',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0008',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0009',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0010',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C00011',
+            codeName : 'Mailing',
+            description : 'Mailing address',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0012',
+            codeName : 'SUB a',
+            description : 'SUB',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0013',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        },
+        {
+            isCheck : true,
+            id : 'C0014',
+            codeName : 'EW PERIOD',
+            description : 'EW Period',
+            isUse : true
+        }
+    ]);
+    /** TEST DATA END */
+    /** check item sates */
     const [codeCheckedList, setCodeCheckedList] = useState([]);
     const [detailCheckedList, setDetailCheckedList] = useState([]);
 
@@ -67,21 +170,27 @@ function CommonCodeMangement() {
     const handleCellValueChanged = params => {
         const {data} = params;
         console.log(' cellEditorParams: {handleCellValueChanged}',params)
-        setDetailCheckedList((prev)=> {
-            prev.map((item)=>(item.codeID===data.codeID ? data : item))
+        setRowData((prev)=> {
+            prev.map((item)=>(item.id===data.id ? data : item))
         })
     }
 
-    useEffect(()=>{
-        console.log(codeCheckedList)
-        console.log(detailCheckedList)
-    },[codeCheckedList, detailCheckedList])
-    
-    const [codeColumn, setCodeColumn] = useState([
+    const handleLeftCell = params => {
+        console.log('handlelelelellel')
+        const {data} = params;
+        console.log('data',data.id)
+        setCodeList((prev)=> {
+            prev.map((item)=>(item.id===data.id ? data : item))
+        })
+    }
+
+    /** AG grid columns */
+
+      const [codeColumn, setCodeColumn] = useState([
         { headerName: '' , field: 'isCheck', checkboxSelection: true,  headerCheckboxSelection: true },
-        { headerName: 'ID' ,field: 'id', },
-        { headerName: 'Code Name' ,field: 'codeName', },
-        { headerName: 'Code Description' ,field: 'description', },
+        { headerName: 'ID' ,field: 'id',editable:true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell} },
+        { headerName: 'Code Name' ,field: 'codeName',editable:true,  cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell}},
+        { headerName: 'Code Description' ,field: 'description',editable:true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell} },
         {
             headerName: 'Use Y/N',
             field: 'isUse',
@@ -95,12 +204,9 @@ function CommonCodeMangement() {
           },
     ])
     
-   
-
-    // donnie test
     const columnDefs = [
         { headerName: '', field: 'isCheck',checkboxSelection: true, headerCheckboxSelection: true  },
-        { headerName: 'Code ID', field: 'codeID',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
+        { headerName: 'Code ID', field: 'id',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         { headerName: 'Code Name', field: 'codeName',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         { headerName: 'Code Description', field: 'description',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         {
@@ -116,116 +222,15 @@ function CommonCodeMangement() {
         },
       ];
 
-      const [rowData, setRowData] = useState([
-        {
-            isCheck : true,
-            codeID : 'C0001',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : 'Mailing',
-            codeName : 'Mailing',
-            description : 'Mailing address',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : 'SUB BI',
-            codeName : 'SUB a',
-            description : 'SUB',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : '-',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : '-',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : 'C0001',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : 'Mailing',
-            codeName : 'Mailing',
-            description : 'Mailing address',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : 'SUB BI',
-            codeName : 'SUB a',
-            description : 'SUB',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : '-',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : '-',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : 'C0001',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : 'Mailing',
-            codeName : 'Mailing',
-            description : 'Mailing address',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : 'SUB BI',
-            codeName : 'SUB a',
-            description : 'SUB',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : '-',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            codeID : '-',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        }
-      ]);
-
       
 
+    // select box options
+    const [dropSelect, setDropSelect ] = useState([
+        {value:'all',label:'ALL'}, 
+        {value:'true',label:'Y'}, 
+        {value:'false',label:'N'}, 
+    ])
+    
       const addCode = e => {
         let title = e.target.className;
         // 코드 등록
@@ -235,10 +240,11 @@ function CommonCodeMangement() {
         } 
         // 코드 정보 등록
         else if(title==='code-detail') {
-            const newRow = { codeID: rowData.length + 1,  isCheck : true, codeName : '-', description : '', isUse : false};
+            const newRow = { id: rowData.length + 1,  isCheck : true, codeName : '-', description : '', isUse : false};
             setRowData([...rowData, newRow])
         }
       }
+      
     return (
         <>
         <Header />
@@ -280,8 +286,8 @@ function CommonCodeMangement() {
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList}  /></div>
-                <div><AgGrid column={columnDefs} data={rowData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setCodeList}/></div>
+                <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList}  changeValue={setCodeList}/></div>
+                <div><AgGrid column={columnDefs} data={rowData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>
             
             </div>
             <Zendesk />

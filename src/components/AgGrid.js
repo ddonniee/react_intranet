@@ -100,7 +100,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue}) => 
 
       const handleCellValueChanged = params =>{
         const {data} = params;
-        changeValue((prev=>prev.map(item=>item.codeID===data.codeID ? data:item)))
+        changeValue((prev=>prev.map(item=>item.id===data.id ? data:item)))
       }
     useEffect(()=>{
         if(checkbox) {
