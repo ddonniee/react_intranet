@@ -28,6 +28,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems}) => {
     const [activePage, setActivePage] = useState(1); // 현재 페이지
     const [itemsPerPage] = useState(10); // 페이지당 아이템 갯수
     const [isCheckBox, setIsCheckbox] = useState(checkbox); // check box 사용할 시 cell click 막기
+
     const setPage = (e) => {
         setActivePage(e);
         console.log('page ---->', e);
@@ -35,7 +36,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems}) => {
     };
     /** 페이징 관련 ▲ ============================================================= */
 
-    /**  Checkbox 관련 ▲ ============================================================= */
+    /** Checkbox 관련 ▲ ============================================================= */
     const [checkedList, setCheckedList] = useState([]);
     /** Checkbox 관련 ▲ ============================================================= */
 
@@ -68,31 +69,28 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems}) => {
         console.log('cellClicked', e.data);
     }, []);
 
-    // Example > 선택한 row 해제
-    const buttonListener = useCallback( e => {
-        gridRef.current.api.deselectAll();
+    // 그리드 기본 높이 컨텐츠 길이에 맞게 동적으로 설정
+    /*
+        개별적인 높이 고정(px)이 필요할 경우 화면별 css에 추가
+        .ag-theme-alpine {    
+            height: 267px !important;
+        }
+    */
+    useEffect(() => {
+        calculateGridHeight();
+        window.addEventListener('resize', calculateGridHeight);
+        return () => {
+            window.removeEventListener('resize', calculateGridHeight);
+        };
     }, []);
 
-    const sizeToFit = useCallback(() => {
-        gridRef.current.api.sizeColumnsToFit();
-    }, []);
-
-    // 그리드 기본 높이 컨텐츠 길이에 맞게 fit
-    // useEffect(() => {
-    //     calculateGridHeight();
-    //     window.addEventListener('resize', calculateGridHeight);
-    //     return () => {
-    //       window.removeEventListener('resize', calculateGridHeight);
-    //     };
-    // }, []);
-
-    // const calculateGridHeight = () => {
-    //     const contentHeight = rowData.length * 40; // Adjust the row height as per your requirement
-    //     const gridContainer = document.querySelector('.ag-theme-alpine');
-    //     if (gridContainer) {
-    //         gridContainer.style.height = `${contentHeight}px`;
-    //     }
-    // };
+    const calculateGridHeight = () => {
+        const contentHeight = (data?.length + 1) * 43; // 행 높이 승수 조정 (한 행의 높이 42px)
+        const gridContainer = document.querySelector('.ag-theme-alpine');
+        if (gridContainer) {
+            gridContainer.style.height = `${contentHeight}px`;
+        }
+    };
 
     const handleSelectBox = useCallback((event) => {
         const selectedNodes = event.api.getSelectedNodes();
@@ -107,6 +105,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems}) => {
             setIsCheckbox(false)
         }
     },[])
+
     return (
         <div>
           {

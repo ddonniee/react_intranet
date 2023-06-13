@@ -21,7 +21,6 @@ function UserManagement() {
           props.setValue(selectedValue);
         };
 
-      
         return (
           <select className='row-select' value={props.value} onChange={handleChange}>
             {
@@ -33,7 +32,7 @@ function UserManagement() {
         );
       };
 
-    const [column, setColumn] = useState([ // 컬럼 값 설정
+    const userColumn = [ // 컬럼 값 설정
         { 
             field: 'No',
             resizable: false,
@@ -79,10 +78,9 @@ function UserManagement() {
             resizable: false,
             cellRendererFramework: SelectCellRenderer,
         },
-    ]);
+    ];
 
-    
-    const data = () => {
+    const userData = () => {
         let row = [];
         for(let i = 0; i < 20; i++) {
             row[i] = {
@@ -100,7 +98,8 @@ function UserManagement() {
         return row;
     }
 
-    const [rowData, setRowData] =  useState(data());
+    const [column, setColumn] = useState(userColumn);
+    const [rowData, setRowData] =  useState(userData());
     
     const subOptions = [
         { value: 'LGEAI', label: 'LGEAI' },
@@ -117,8 +116,15 @@ function UserManagement() {
         { value: 'NW2', label: 'NW2' },
     ]
 
-    const handleSelectBox = (e) => {
-        console.log(e)
+    const handleSelectBox = (event,params) => {
+        const { data } = params.node;
+        const { checked } = event.target;
+
+        if (checked) {
+            setRowData([...rowData, data]);
+          } else {
+            setRowData(rowData.filter(item => item !== data));
+          }
     }
 
     // useEffect(() => {
