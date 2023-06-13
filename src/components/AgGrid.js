@@ -88,7 +88,7 @@ const AgGrid = ({data, column, paging}) => {
                     animateRows={true} // Optional - set to 'true' to have rows animate when sorted
                     // rowSelection='multiple' // Options - allows click selection of rows 
                     onCellClicked={cellClickedListener} // Optional - registering for Grid Event 
-                    pagination={paging ? true : false}
+                    pagination={true}
                     paginationPageSize={10}
                     suppressPaginationPanel={true}
                     suppressScrollOnNewData={true}

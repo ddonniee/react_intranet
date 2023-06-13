@@ -84,6 +84,9 @@
 .faq-contents .ck-content {
     min-height: 328px; height: fit-content;
 }
+.faq-attach-down img {
+    padding: 0 5px;
+}
 .faq-comment-wrapper {
     background-color: #F2F2F2;min-height: 103px;
     padding: 16px; height: fit-content;
@@ -104,8 +107,8 @@
     padding: 10px;
     height: fit-content;
 }
-.faq-comment-wrapper textarea:target {
-    border: 1px solid red;
+.faq-comment-wrapper textarea:focus {
+    outline: none;
 }
 .faq-comment-wrapper button {
     width: 69px;
