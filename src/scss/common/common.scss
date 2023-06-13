@@ -53,7 +53,6 @@
     --ag-range-selection-border-color: #BB0841 !important;
     --ag-input-border-color-invalid: #BB0841 !important;
     --ag-input-focus-box-shadow: 0 0 2px 0.1rem #FAF1F4 !important;
-    --ag-icon-size: 0px;
 }
 
 .ag-header-group-cell-label, .ag-header-cell-label {
@@ -83,6 +82,16 @@
 .ag-ltr .ag-cell-focus:not(.ag-cell-range-selected):focus-within {
     // border: 1px solid $primary-color-red !important;
     border: none !important;
+}
+
+.ag-header-icon.ag-header-cell-menu-button {
+    display: none !important;
+}
+
+.ag-header-cell:not(:nth-last-child(1)),
+.ag-header-group-cell:not(:nth-last-child(1)),
+.ag-ltr .ag-cell:not(:nth-last-child(1)) {
+    border-right: var(--ag-row-border-style) var(--ag-row-border-color) var(--ag-row-border-width) !important;
 }
 
 /* 페이징 */
