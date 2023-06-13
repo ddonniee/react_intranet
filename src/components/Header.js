@@ -82,7 +82,7 @@ function Header() {
                 <img src={Polygon} alt='polygon' />
                 <ul>
                     {
-                        thirdMenuList.map((list,idx)=>{
+                        thirdMenuList?.map((list,idx)=>{
                             return(
                                 <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx+3)}>{list.name}</li>
                             )

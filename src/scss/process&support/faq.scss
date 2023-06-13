@@ -28,19 +28,34 @@
     padding: 20px 25px;
 }
 .faq-category-lists {
-    display: flex; justify-content: space-between;
+    display: flex; justify-content: space-between; position: relative;
 }
 .faq-category-lists li {
-    align-self: center;
+    align-self: center; position: relative;
 }
 .faq-category-lists li div {
     text-align: center;     padding-bottom: 10px;
 }
+.faq-category-lists .icon-modal {
+    position: absolute; width: 146px; left: -10px; z-index: 999;
+}
+.faq-category-lists .icon-modal img {
+    position: relative;
+    top: 5px;
+}
+.faq-category-lists .icon-modal ul {
+    border: 2px solid $primary-color-red; border-radius: 15px; padding: 10px; background-color: white;
+}
+.faq-category-lists .icon-modal li {
+    padding: 5px; font-weight: 400;
+    font-size: 18px;
+    line-height: 30px;
+}
 .faq-contents {
-    display: flex; justify-content: space-between;
+    display: flex; justify-content: space-between; 
 }
 .faq-contents > div {
-    width: 50%;
+    width: 48%;
 }
 .faq-category-lists p {
     margin: 0; font-weight: 600;
@@ -56,6 +71,28 @@
 }
 .faq-left .ag-center-cols-container > div {
     height: 10% !important; border-bottom: 1px solid $border-color-gery !important;
+}
+// board
+.faq-custom-board {
+    height: 93%;  
+}
+.faq-custom-board li {
+    height: 10%;     display: flex;
+    align-items: center;  border-bottom: 2px solid $board-color-grey;
+}
+.faq-custom-board li:first-child {
+    border-top: 1px solid $board-color-grey;
+}
+.faq-custom-board li:hover {
+    background-color: $hover-color-pink;
+}
+.faq-custom-board li span:first-child {
+    width: 100px; text-align: center;
+}
+.faq-custom-board li span {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
 }
 .faq-right {
     border: 1px solid $border-color-gery; border-radius: 14px;
@@ -148,6 +185,24 @@
 /* AG grid custom css*/
 .ag-root-wrapper {
     border: none !important;
+}
+.faq-contents .pagination li{
+    margin: 0 5px;
+}
+.faq-contents .pagination li a,
+.faq-contents .pagination  .disabled {
+    color: $chart-color-grey;
+}
+.faq-contents .pagination .active {
+    background-color: white !important; border: 2px solid $primary-color-red; border-radius: 6px;
+}
+.faq-contents .pagination .active a {
+    color: $primary-color-red; font-weight: 600;
+}
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+    border: none;
+    border-top: 1px solid $border-color-gery;
+    border-bottom: 1px solid $border-color-gery;    overflow-y: scroll;
 }
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {

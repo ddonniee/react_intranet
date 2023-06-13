@@ -164,6 +164,9 @@ ul.pagination li a.active {
 .custom-txt-align {
     text-align: center;
 }
+.custom-hover:hover {
+    background-color: $hover-color-pink; color: $primary-color-red; font-weight: 700;
+}
 .primary-red-btn {
     background-color: $primary-color-red; color: white;
 }
