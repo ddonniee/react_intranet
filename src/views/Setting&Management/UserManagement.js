@@ -11,15 +11,16 @@ import { ReactComponent as IntersectIcon } from '../../assets/svgs/icon_intersec
 
 function UserManagement() {
 
+    const jobType = [
+        'LGC Director', 'Subsidiary Admin', 'Subsidiary Staff'
+    ]
+
     const SelectCellRenderer = (props) => {
         const handleChange = (event) => {
           const selectedValue = event.target.value;
           props.setValue(selectedValue);
         };
 
-        const jobType = [
-            'LGC Director', 'Subsidiary Admin', 'Subsidiary Staff'
-        ]
       
         return (
           <select className='row-select' value={props.value} onChange={handleChange}>
@@ -28,9 +29,6 @@ function UserManagement() {
                     <option key={i} value={job}>{job}</option>
                 ))
             }
-            {/* <option value="Admin1">Subsidiary Admin</option>
-            <option value="Admin2">Subsidiary Admin</option>
-            <option value="Admin3">Subsidiary Admin</option> */}
           </select>
         );
       };
@@ -122,6 +120,22 @@ function UserManagement() {
     const handleSelectBox = (e) => {
         console.log(e)
     }
+
+    useEffect(() => {
+        calculateGridHeight();
+        window.addEventListener('resize', calculateGridHeight);
+        return () => {
+          window.removeEventListener('resize', calculateGridHeight);
+        };
+    }, []);
+
+    const calculateGridHeight = () => {
+        const contentHeight = rowData.length * 40; // Adjust the row height as per your requirement
+        const gridContainer = document.querySelector('.ag-theme-alpine');
+        if (gridContainer) {
+            gridContainer.style.height = `${contentHeight}px`;
+        }
+    };
 
     return (
         <div className='user-container'>

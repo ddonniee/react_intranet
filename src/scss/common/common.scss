@@ -37,6 +37,10 @@
 }
 
 /* 그리드 */
+.ag-theme-alpine {
+    // --ag-range-selection-border-color: red;
+}
+
 .ag-header-group-cell-label, .ag-header-cell-label {
     display: flex;
     justify-content: center !important;
@@ -52,8 +56,19 @@
     line-height: 19px;
 }
 
-.ag-row-hover.ag-row *:not(select) {
-    background-color: $chart-color-pink;
+.ag-root-wrapper-body.ag-layout-normal {
+    min-height: 100px !important;
+    height: 100% !important;
+}
+
+.ag-body-horizontal-scroll {
+    display: none !important;
+}
+
+.ag-row-hover.ag-row *:not(select),
+.ag-row.ag-row-selected,
+.ag-checkbox-input-wrapper.ag-checked {
+    background-color: $chart-color-pink !important;
 }
 
 .ag-cell-focus {
