@@ -231,11 +231,8 @@ function Main() {
         <div className="main-container">
             <Header />
             <div className="inner-container">
-                <Top auth={false} />
-                {/* <div className="nav">
-                    <p><HomeIcon />&nbsp;{` > Support > Main`}</p>
-                </div> */}
-                {/** KPI Performance */}
+                {/** auth 권한체크로 수정 필요 */}
+                <Top auth={1} searchArea={false}/>
                 <div className="value">
                     <div className="chart"> 
                         <LineChart />
