@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import LineChart from "../../components/Chart";
-import AgGrid from "../../components/AgGrid";
 import Header from '../../components/Header';
 import Top from '../../components/Top';
+
+import AgGrid from "../../components/AgGrid";
+import EditCelldata from '../../components/EditCelldata';
+
 import SelectBox from '../../components/SelectBox';
 
 import '../../scss/style.scss';
@@ -15,7 +17,7 @@ function UserManagement() {
         'LGC Director', 'Subsidiary Admin', 'Subsidiary Staff'
     ]
 
-    const SelectCellRenderer = (props) => {
+    const SelectBoxRenderer = (props) => {
         const handleChange = (event) => {
           const selectedValue = event.target.value;
           props.setValue(selectedValue);
@@ -30,11 +32,40 @@ function UserManagement() {
             }
           </select>
         );
-      };
+    };
 
-    const userColumn = [ // 컬럼 값 설정
+    const [isModify, setIsModify] = useState(false);
+
+    const handleLeftCell = params => {
+        const {data} = params;
+        console.log('data', data.id)
+        setRowData((prev)=> {
+            prev.map((item)=>(item.id === data.id ? data : item))
+        })
+    }
+
+    const userData = () => {
+        let row = [];
+        for(let i = 0; i < 20; i++) {
+            row[i] = {
+                id: i+1,
+                subsidiary: 'LGEAI',
+                center: 'LGC',
+                branch: '-',
+                name: 'Alex Alex',
+                email: 'alex@lgeai.com',
+                userId: 'alex091',
+                phoneNo: '10-547-4751',
+                mobileNo: '-',
+            };
+        }
+        return row;
+    }
+
+    const [column, setColumn] = useState([ // 컬럼 값 설정
         { 
-            field: 'No',
+            headerName: 'No',
+            field: 'id',
             resizable: false,
             // spanHeaderHeight: true,
             // pinned: 'left',
@@ -42,65 +73,87 @@ function UserManagement() {
             // suppressAutoSize: true
         },
         { 
-            field: 'Subsidiary',
+            headerName: 'Subsidiary',
+            field: 'subsidiary',
             resizable: false,
+            // editable: true, 
+            cellEditorFramework: EditCelldata, 
+            singleClickEdit: true, 
+            cellEditorParams: {handleLeftCell}
         },
         { 
-            field: 'Center',
+            headerName: 'Center',
+            field: 'center',
             resizable: false,
+            // editable: true, 
+            cellEditorFramework: EditCelldata, 
+            singleClickEdit: true, 
+            cellEditorParams: {handleLeftCell}
         },
         { 
-            field: 'Branch',
+            headerName: 'Branch',
+            field: 'branch',
             resizable: false,
+            // editable: true, 
+            cellEditorFramework: EditCelldata, 
+            singleClickEdit: true, 
+            cellEditorParams: {handleLeftCell}
         },
         { 
-            field: 'Name',
+            headerName: 'Name',
+            field: 'name',
             resizable: false,
+            // editable: true, 
+            cellEditorFramework: EditCelldata, 
+            singleClickEdit: true, 
+            cellEditorParams: {handleLeftCell}
         },
         { 
-            field: 'Email',
+            headerName: 'Email',
+            field: 'email',
             resizable: false,
+            // editable: true, 
+            cellEditorFramework: EditCelldata, 
+            singleClickEdit: true, 
+            cellEditorParams: {handleLeftCell}
         },
         { 
-            field: 'User ID',
+            headerName: 'User ID',
+            field: 'userId',
             resizable: false,
+            // editable: true, 
+            cellEditorFramework: EditCelldata, 
+            singleClickEdit: true, 
+            cellEditorParams: {handleLeftCell}
         },
         { 
-            field: 'Phone No',
+            headerName: 'Phone No',
+            field: 'phoneNo',
             resizable: false,
+            // editable: true, 
+            cellEditorFramework: EditCelldata, 
+            singleClickEdit: true, 
+            cellEditorParams: {handleLeftCell}
         },
         { 
-            field: 'Mobile No',
+            headerName: 'Mobile No',
+            field: 'mobileNo',
             resizable: false,
+            // editable: true, 
+            cellEditorFramework: EditCelldata, 
+            singleClickEdit: true, 
+            cellEditorParams: {handleLeftCell}
         },
         { 
-            field: 'Job Type',
+            headerName: 'Job Type',
+            field: 'jobType',
             resizable: false,
-            cellRendererFramework: SelectCellRenderer,
+            cellRendererFramework: SelectBoxRenderer,
+            singleClickEdit: true, 
+            cellEditorParams: {handleLeftCell}
         },
-    ];
-
-    const userData = () => {
-        let row = [];
-        for(let i = 0; i < 20; i++) {
-            row[i] = {
-                'No': i+1,
-                'Subsidiary': 'LGEAI',
-                'Center': 'LGC',
-                'Branch': '-',
-                'Name': 'Alex Alex',
-                'Email': 'alex@lgeai.com',
-                'User ID': 'alex091',
-                'Phone No': '10-547-4751',
-                'Mobile No': '-',
-            };
-        }
-        return row;
-    }
-
-    const [column, setColumn] = useState(userColumn);
+    ]);
     const [rowData, setRowData] =  useState(userData());
-    const [isModify, setIsModify] = useState(false);
     
     const subOptions = [
         { value: 'LGEAI', label: 'LGEAI' },
@@ -127,22 +180,6 @@ function UserManagement() {
             setRowData(rowData.filter(item => item !== data));
           }
     }
-
-    // useEffect(() => {
-    //     calculateGridHeight();
-    //     window.addEventListener('resize', calculateGridHeight);
-    //     return () => {
-    //       window.removeEventListener('resize', calculateGridHeight);
-    //     };
-    // }, []);
-
-    // const calculateGridHeight = () => {
-    //     const contentHeight = rowData.length * 30; // Adjust the row height as per your requirement
-    //     const gridContainer = document.querySelector('.ag-theme-alpine');
-    //     if (gridContainer) {
-    //         gridContainer.style.height = `${contentHeight}px`;
-    //     }
-    // };
 
     return (
         <div className='user-container'>
@@ -175,15 +212,10 @@ function UserManagement() {
                             <button className='nav-btn-black' onClick={() => setIsModify(true)}>Edit</button>
                         }
                     </div>
-                    {/* <button className='nav-btn-black'>Edit</button> */}
-                    {/* <div className='btn-modify'>
-                        <button className='nav-btn-white'>Cancel</button>
-                        <button className='nav-btn-red'>Save</button>
-                    </div> */}
                 </div>
                 <div className='user-content'>
                     <div className='grid'>
-                        <AgGrid data={rowData} column={column} paging={false} />
+                        <AgGrid data={rowData} column={column} paging={false} changeValue={setRowData}/>
                     </div>
                 </div>
             </div>
