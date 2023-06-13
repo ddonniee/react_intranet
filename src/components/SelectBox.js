@@ -8,24 +8,13 @@ const SelectBox = (props) => {
     const customStyles = {
         control: (provided, state) => ({
             ...provided,
-            borderColor: state.isFocused ? '#BB0841' : 'grey',
+            borderColor:  state.isSelected ? '#BB0841' : state.isFocused ? '#BB0841' : 'grey',
             boxShadow: state.isFocused ? '0 0 0 2px rgba(255, 0, 0, 0.3)' : null,
-            backgroundColor: state.isSelected ? "red" : "white",
-            color: state.isSelected ? "white" : "black",
-            '&:hover': {
-                borderColor: '#BB0841',
-                backgroundColor: 'white'
-              },
-            '&:focus': {
-                borderColor: '#BB0841'
-              },
-            '&:selected': {
-                backgroundColor: 'black'
-            },
         }),
         option: (provided, state) => ({
             ...provided,
-            backgroundColor: state.isSelected ? '#BB0841' : 'white',
+            borderColor: state.isSelected ? '#BB0841' : state.isFocused ? '#BB0841' : 'grey',
+            backgroundColor: state.isSelected ? '#BB0841' : state.isFocused ? '#FAF1F4' : 'white',
           }),
     };
 

@@ -5,14 +5,20 @@
     margin: 0 10px;
 }
 
-#react-select-2-listbox > * > *:hover {
-    background-color: $chart-color-pink; color: $primary-color-red;
-}
-.custom-select .selected {
-    background-color: black !important;
+// #react-select-2-listbox > * > *:hover {
+//     background-color: $chart-color-pink; color: $primary-color-red;
+// }
+// .css-1nmdiq-menu > * > *:hover {
+//     background-color: $chart-color-pink; color: $primary-color-red;
+// }
+// .custom-select .selected {
+//     background-color: black !important;
 
-} 
-#react-select-4-listbox,
-#react-select-4-listbox > * {
-    z-index: 99999; background-color: pink;
+// } 
+// #react-select-4-listbox,
+// #react-select-4-listbox > * {
+//     z-index: 99999; background-color: pink;
+// }
+.css-19pgbrk-control:hover {
+    border-color: $primary-color-red !important;
 }
