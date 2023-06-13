@@ -134,7 +134,7 @@ function Header() {
             setThirdMenuList(
                 [
                 {name : 'Process & FAQ', path : '/process&support/faq'},
-                {name : 'Request & Q&A', path : '//process&support/raq'},
+                {name : 'Request & Q&A', path : '/process&support/raq'},
             ])
             }else if(currentTab.lowerTab==='board') {
                 setThirdMenuList([

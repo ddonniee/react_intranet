@@ -60,7 +60,7 @@ function CommonCodeMangement() {
         { headerName: 'Code ID' ,field: 'codeID' },
         { headerName: 'Code Name' ,field: 'codeName' },
         { headerName: 'Code Description' ,field: 'description' },
-        { headerName: 'Use Y/N' ,field: 'isUse' },
+        { headerName: 'Use Y/N' ,field: 'isUse', cellRenderer: 'selectBoxRenderer',cellRendererParams:{options:['Y','N']} },
     ])
     
     const handleSelectBox = e => {

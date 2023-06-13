@@ -142,11 +142,13 @@ ul, li {
     right: 10px;
     }
     .nav-modal{
-        width: 245px; top: 80px; left: 13px; padding: 25px 25px 0 25px;
+        width: 245px; top: 80px; left: 13px; padding: 25px 25px 0 25px; 
     }
-    
+    .nav-modal > ul{
+        margin-bottom: 10px;
+    }
     .nav-modal li {
-        padding-bottom: 25px; font-weight: 400;  border-radius: 5px;
+        padding: 12px; font-weight: 400;  border-radius: 5px;
     }
 } 
 
