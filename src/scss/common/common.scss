@@ -38,7 +38,22 @@
 
 /* 그리드 */
 .ag-theme-alpine {
-    // --ag-range-selection-border-color: red;
+    --ag-alpine-active-color: #FAF1F4 !important;
+    --ag-selected-row-background-color: #FAF1F4 !important;
+    --ag-row-hover-color: #FAF1F4 !important;
+    --ag-column-hover-color: #FAF1F4 !important;
+    --ag-input-focus-border-color: #FAF1F4 !important;
+    --ag-range-selection-background-color: #FAF1F4 !important;
+    --ag-range-selection-background-color-2: #FAF1F4 !important;
+    --ag-range-selection-background-color-3: #FAF1F4 !important;
+    --ag-range-selection-background-color-4: #FAF1F4 !important;
+    --ag-invalid-color: #FAF1F4 !important;
+    --ag-checkbox-checked-color: #BB0841 !important;
+    --ag-range-selection-border: none !important;
+    --ag-range-selection-border-color: #BB0841 !important;
+    --ag-input-border-color-invalid: #BB0841 !important;
+    --ag-input-focus-box-shadow: 0 0 2px 0.1rem #FAF1F4 !important;
+    --ag-icon-size: 0px;
 }
 
 .ag-header-group-cell-label, .ag-header-cell-label {
@@ -56,23 +71,18 @@
     line-height: 19px;
 }
 
-.ag-root-wrapper-body.ag-layout-normal {
-    min-height: 100px !important;
-    height: 100% !important;
-}
+// .ag-root-wrapper-body.ag-layout-normal {
+//     min-height: 100px !important;
+//     height: 100% !important;
+// }
 
 .ag-body-horizontal-scroll {
     display: none !important;
 }
 
-.ag-row-hover.ag-row *:not(select),
-.ag-row.ag-row-selected,
-.ag-checkbox-input-wrapper.ag-checked {
-    background-color: $chart-color-pink !important;
-}
-
-.ag-cell-focus {
-    border: 1px solid $primary-color-red !important;
+.ag-ltr .ag-cell-focus:not(.ag-cell-range-selected):focus-within {
+    // border: 1px solid $primary-color-red !important;
+    border: none !important;
 }
 
 /* 페이징 */
