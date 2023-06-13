@@ -127,7 +127,8 @@ function UserManagement() {
         <div className='user-container'>
             <Header />
             <div className='inner-container'>
-                <Top auth={false} />
+                {/** auth 권한체크로 수정 필요 */}
+                <Top auth={1} searchArea={false}/>
                 <div className='user-nav'>
                     <p>· Subsidiary</p>
                     <SelectBox options={subOptions} onChange={handleSelectBox} />

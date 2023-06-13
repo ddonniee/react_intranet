@@ -52,9 +52,13 @@
     line-height: 19px;
 }
 
-// .ag-cell-focus {
-//     border: 1px solid $primary-color-red !important;
-// }
+.ag-row-hover.ag-row *:not(select) {
+    background-color: $chart-color-pink;
+}
+
+.ag-cell-focus {
+    border: 1px solid $primary-color-red !important;
+}
 
 /* 페이징 */
 .pagination {
