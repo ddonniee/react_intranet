@@ -18,7 +18,7 @@ import 'ag-grid-enterprise';
  * }
  * @returns
 */
-const AgGrid = ({data, column, paging, checkbox, checkedItems}) => {
+const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue}) => {
     
     const gridRef = useRef(); // Optional - for accessing Grid's API
     const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
@@ -98,6 +98,10 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems}) => {
         checkedItems(selectedData);
       }, [checkedItems]);
 
+      const handleCellValueChanged = params =>{
+        const {data} = params;
+        changeValue((prev=>prev.map(item=>item.codeID===data.codeID ? data:item)))
+      }
     useEffect(()=>{
         if(checkbox) {
             setIsCheckbox(true)
@@ -128,6 +132,9 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems}) => {
                     suppressRowClickSelection={true}
                     onGridReady={onGridReady}
                     onSelectionChanged={checkbox && handleSelectBox}
+                    onCellValueChanged={handleCellValueChanged}
+                    // editType="fullRow"
+                    // singleClickEdit={true}
                 />
             </div>
             {/* react-js-pagination */}

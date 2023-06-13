@@ -8,6 +8,7 @@ import SelectBoxRenderer from "../../components/SelectBoxRenderer"
 
 import Search from '../../assets/svgs/icon_seeking.svg'
 import AgGrid from "../../components/AgGrid";
+import EditCelldata from "../../components/EditCelldata"
 
 function CommonCodeMangement() {
 
@@ -22,35 +23,35 @@ function CommonCodeMangement() {
     const [codeList, setCodeList] = useState([
         {
             isCheck : true,
-            codeID : 'C0001',
+            id : 'C0001',
             codeName : 'EW PERIOD',
             description : 'EW Period',
             isUse : true
         },
         {
             isCheck : true,
-            codeID : 'Mailing',
+            id : 'Mailing',
             codeName : 'Mailing',
             description : 'Mailing address',
             isUse : true
         },
         {
             isCheck : true,
-            codeID : 'SUB BI',
+            id : 'SUB BI',
             codeName : 'SUB a',
             description : 'SUB',
             isUse : true
         },
         {
             isCheck : true,
-            codeID : '-',
+            id : '-',
             codeName : 'EW PERIOD',
             description : 'EW Period',
             isUse : true
         },
         {
             isCheck : true,
-            codeID : '-',
+            id : '-',
             codeName : 'EW PERIOD',
             description : 'EW Period',
             isUse : true
@@ -61,21 +62,14 @@ function CommonCodeMangement() {
     const [detailCheckedList, setDetailCheckedList] = useState([]);
 
     const handleSelectBox = (event,params) => {
-    
-        const selectedCode = {
-            codeID: params.data.codeID,
-            codeName: params.data.codeName,
-            description: params.data.description,
-            isUse: params.newValue,
-          };
-        
-          if (params.newValue) {
-            setCodeCheckedList((prevCheckedList) => [...prevCheckedList, selectedCode]);
-          } else {
-            setCodeCheckedList((prevCheckedList) =>
-              prevCheckedList.filter((code) => code.codeID !== selectedCode.codeID)
-            );
-          }
+        console.log(event.value)
+    }
+    const handleCellValueChanged = params => {
+        const {data} = params;
+        console.log(' cellEditorParams: {handleCellValueChanged}',params)
+        setDetailCheckedList((prev)=> {
+            prev.map((item)=>(item.codeID===data.codeID ? data : item))
+        })
     }
 
     useEffect(()=>{
@@ -85,9 +79,9 @@ function CommonCodeMangement() {
     
     const [codeColumn, setCodeColumn] = useState([
         { headerName: '' , field: 'isCheck', checkboxSelection: true,  headerCheckboxSelection: true },
-        { headerName: 'Code ID' ,field: 'codeID' },
-        { headerName: 'Code Name' ,field: 'codeName' },
-        { headerName: 'Code Description' ,field: 'description' },
+        { headerName: 'ID' ,field: 'id', },
+        { headerName: 'Code Name' ,field: 'codeName', },
+        { headerName: 'Code Description' ,field: 'description', },
         {
             headerName: 'Use Y/N',
             field: 'isUse',
@@ -106,9 +100,9 @@ function CommonCodeMangement() {
     // donnie test
     const columnDefs = [
         { headerName: '', field: 'isCheck',checkboxSelection: true, headerCheckboxSelection: true  },
-        { headerName: 'Code ID', field: 'codeID' },
-        { headerName: 'Code Name', field: 'codeName' },
-        { headerName: 'Code Description', field: 'description' },
+        { headerName: 'Code ID', field: 'codeID',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
+        { headerName: 'Code Name', field: 'codeName',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
+        { headerName: 'Code Description', field: 'description',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         {
           headerName: 'Use Y/N',
           field: 'isUse',
@@ -284,8 +278,8 @@ function CommonCodeMangement() {
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList} /></div>
-                <div><AgGrid column={columnDefs} data={rowData} paging={false} checkbox checkedItems={setDetailCheckedList}/></div>
+                <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList}  /></div>
+                <div><AgGrid column={columnDefs} data={rowData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setCodeList}/></div>
             
             </div>
             <Zendesk />
