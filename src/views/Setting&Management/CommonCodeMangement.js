@@ -23,35 +23,35 @@ function CommonCodeMangement() {
     const [codeList, setCodeList] = useState([
         {
             isCheck : true,
-            id : 'C0001',
+            id : 1,
             codeName : 'EW PERIOD',
             description : 'EW Period',
             isUse : true
         },
         {
             isCheck : true,
-            id : 'Mailing',
+            id : 2,
             codeName : 'Mailing',
             description : 'Mailing address',
             isUse : true
         },
         {
             isCheck : true,
-            id : 'SUB BI',
+            id : 3,
             codeName : 'SUB a',
             description : 'SUB',
             isUse : true
         },
         {
             isCheck : true,
-            id : '-',
+            id : 4,
             codeName : 'EW PERIOD',
             description : 'EW Period',
             isUse : true
         },
         {
             isCheck : true,
-            id : '-',
+            id : 5,
             codeName : 'EW PERIOD',
             description : 'EW Period',
             isUse : true
@@ -230,11 +230,13 @@ function CommonCodeMangement() {
         let title = e.target.className;
         // 코드 등록
         if(title==='code') {
-
+            const newRow = { id: codeList.length + 1,  isCheck : true, codeName : '-', description : '', isUse : false};
+            setCodeList([...codeList, newRow])
         } 
         // 코드 정보 등록
         else if(title==='code-detail') {
-
+            const newRow = { codeID: rowData.length + 1,  isCheck : true, codeName : '-', description : '', isUse : false};
+            setRowData([...rowData, newRow])
         }
       }
     return (
