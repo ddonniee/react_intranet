@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import Header from "../../components/Header"
 import Zendesk from "../../components/Zendesk"
 import Top from "../../components/Top"
@@ -57,21 +57,34 @@ function CommonCodeMangement() {
         }
     ])
 
+    const [codeCheckedList, setCodeCheckedList] = useState([]);
+    const [detailCheckedList, setDetailCheckedList] = useState([]);
+
     const handleSelectBox = (event,params) => {
     
-        const { data } = params.node;
-        const { checked } = event.target;
-
-        if (checked) {
-            setRowData([...rowData, data]);
+        const selectedCode = {
+            codeID: params.data.codeID,
+            codeName: params.data.codeName,
+            description: params.data.description,
+            isUse: params.newValue,
+          };
+        
+          if (params.newValue) {
+            setCodeCheckedList((prevCheckedList) => [...prevCheckedList, selectedCode]);
           } else {
-            setRowData(rowData.filter(item => item !== data));
+            setCodeCheckedList((prevCheckedList) =>
+              prevCheckedList.filter((code) => code.codeID !== selectedCode.codeID)
+            );
           }
     }
 
+    useEffect(()=>{
+        console.log(codeCheckedList)
+        console.log(detailCheckedList)
+    },[codeCheckedList, detailCheckedList])
     
     const [codeColumn, setCodeColumn] = useState([
-        { headerName: '' , field: 'isCheck', checkboxSelection: true},
+        { headerName: '' , field: 'isCheck', checkboxSelection: true,  headerCheckboxSelection: true },
         { headerName: 'Code ID' ,field: 'codeID' },
         { headerName: 'Code Name' ,field: 'codeName' },
         { headerName: 'Code Description' ,field: 'description' },
@@ -218,6 +231,18 @@ function CommonCodeMangement() {
       ]);
 
       
+
+      const addCode = e => {
+        let title = e.target.className;
+        // 코드 등록
+        if(title==='code') {
+
+        } 
+        // 코드 정보 등록
+        else if(title==='code-detail') {
+
+        }
+      }
     return (
         <>
         <Header />
@@ -237,7 +262,7 @@ function CommonCodeMangement() {
                         </div>
                        
                         <div className="left-search-btn custom-self-align">
-                                <button>Add Code</button>
+                                <button onClick={addCode} className="code">Add Code</button>
                                 <button className="primary-red-btn">Save</button>
                         </div>
                     </div>
@@ -251,7 +276,7 @@ function CommonCodeMangement() {
                     <span>(C0001)</span>
                   </div>
                   <div className="right-search-btn custom-self-align">
-                                <button>Add Code</button>
+                                <button onClick={addCode} className="code-detail">Add Code</button>
                                 <button className="primary-red-btn">Save</button>
                   </div>
                 </div>
@@ -259,8 +284,8 @@ function CommonCodeMangement() {
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox={false} /></div>
-                <div><AgGrid column={columnDefs} data={rowData} paging={false} checkbox/></div>
+                <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList} /></div>
+                <div><AgGrid column={columnDefs} data={rowData} paging={false} checkbox checkedItems={setDetailCheckedList}/></div>
             
             </div>
             <Zendesk />

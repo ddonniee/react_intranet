@@ -18,7 +18,7 @@ import 'ag-grid-enterprise';
  * }
  * @returns
 */
-const AgGrid = ({data, column, paging, checkbox}) => {
+const AgGrid = ({data, column, paging, checkbox, checkedItems}) => {
     
     const gridRef = useRef(); // Optional - for accessing Grid's API
     const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
@@ -34,6 +34,10 @@ const AgGrid = ({data, column, paging, checkbox}) => {
         gridRef.current.api.paginationGoToPage(e);
     };
     /** 페이징 관련 ▲ ============================================================= */
+
+    /**  Checkbox 관련 ▲ ============================================================= */
+    const [checkedList, setCheckedList] = useState([]);
+    /** Checkbox 관련 ▲ ============================================================= */
 
     // 데이터, 컬럼명 설정
     useLayoutEffect(() => {
@@ -90,12 +94,11 @@ const AgGrid = ({data, column, paging, checkbox}) => {
     //     }
     // };
 
-    const handleSelectBox = event =>{
+    const handleSelectBox = useCallback((event) => {
         const selectedNodes = event.api.getSelectedNodes();
-        const selectedData = selectedNodes.map(node => node.data);
-
-        console.log('check evnet',selectedData); // 체크된 셀의 정보 출력
-    }
+        const selectedData = selectedNodes.map((node) => node.data);
+        checkedItems(selectedData);
+      }, [checkedItems]);
 
     useEffect(()=>{
         if(checkbox) {
