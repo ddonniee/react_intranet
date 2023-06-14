@@ -18,7 +18,7 @@ import 'ag-grid-enterprise';
  * }
  * @returns
 */
-const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue}) => {
+const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isModify}) => {
     
     const gridRef = useRef(); // Optional - for accessing Grid's API
     const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
@@ -47,7 +47,21 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue}) => 
         // setColumnDefs(column.map(col => ({
         //     field: col, filter: true
         // })))
-    }, [data]);
+
+        if(isModify) {
+            setColumnDefs((prevCol) =>
+                prevCol.map((col) => {
+                    return {...col, editable: true};
+                })
+            )
+        } else {
+            setColumnDefs((prevCol) =>
+                prevCol.map((col) => {
+                    return {...col, editable: false};
+                })
+            )
+        }
+    }, [data, isModify]);
 
     const onGridReady = useCallback((params) => {
         // setRowData(data)
@@ -102,6 +116,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue}) => 
         const {data} = params;
         changeValue((prev=>prev.map(item=>item.id===data.id ? data:item)))
       }
+
     useEffect(()=>{
         if(checkbox) {
             setIsCheckbox(true)

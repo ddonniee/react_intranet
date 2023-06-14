@@ -8,7 +8,6 @@ import EditCelldata from '../../components/EditCelldata';
 import SelectBox from '../../components/SelectBox';
 
 import '../../scss/style.scss';
-import { ReactComponent as HomeIcon } from '../../assets/svgs/icon_home.svg';
 import { ReactComponent as IntersectIcon } from '../../assets/svgs/icon_intersect2.svg';
 
 function UserManagement() {
@@ -85,7 +84,6 @@ function UserManagement() {
             headerName: 'Center',
             field: 'center',
             resizable: false,
-            // editable: true, 
             cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
@@ -94,7 +92,6 @@ function UserManagement() {
             headerName: 'Branch',
             field: 'branch',
             resizable: false,
-            // editable: true, 
             cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
@@ -103,7 +100,6 @@ function UserManagement() {
             headerName: 'Name',
             field: 'name',
             resizable: false,
-            // editable: true, 
             cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
@@ -112,7 +108,6 @@ function UserManagement() {
             headerName: 'Email',
             field: 'email',
             resizable: false,
-            // editable: true, 
             cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
@@ -121,7 +116,6 @@ function UserManagement() {
             headerName: 'User ID',
             field: 'userId',
             resizable: false,
-            // editable: true, 
             cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
@@ -130,7 +124,6 @@ function UserManagement() {
             headerName: 'Phone No',
             field: 'phoneNo',
             resizable: false,
-            // editable: true, 
             cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
@@ -139,7 +132,6 @@ function UserManagement() {
             headerName: 'Mobile No',
             field: 'mobileNo',
             resizable: false,
-            // editable: true, 
             cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
@@ -215,7 +207,7 @@ function UserManagement() {
                 </div>
                 <div className='user-content'>
                     <div className='grid'>
-                        <AgGrid data={rowData} column={column} paging={false} changeValue={setRowData}/>
+                        <AgGrid data={rowData} column={column} paging={false} changeValue={setRowData} isModify={isModify}/>
                     </div>
                 </div>
             </div>
