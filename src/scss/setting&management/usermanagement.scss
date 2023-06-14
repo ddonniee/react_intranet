@@ -2,30 +2,6 @@
 
 .user-container {
 
-    /* 상단 우측 nav */
-    .nav {
-        // text-align: right;
-        margin: 50px 0;
-
-        h2 {
-            text-align: center;
-            margin-bottom: -15px;
-            
-            font-weight: 600;
-            font-size: 25px;
-            line-height: 29px;
-        }
-
-        p {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-
-            font-size: 16px;
-            line-height: 19px;
-        }
-    }
-
     /* 상단 검색 nav */
     .user-nav {
         display: flex;
@@ -124,7 +100,7 @@
         .grid {
             flex: 1;
         }
-        
+
     }
 
     .row-select {

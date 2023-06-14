@@ -1,3 +1,187 @@
-.test {
-    background-color: red;
+@import '../variables';
+
+.kpi-container {
+
+    /* 상단 검색 nav */
+    .kpi-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid #D6D6D6;
+        border-radius: 14px;
+        padding: 10px 20px;
+        margin-bottom: 22px;
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            width: 15%;
+            justify-content: space-evenly;
+
+            .search {
+                display: flex;
+                align-items: center;
+            }
+
+            svg {
+                margin-right: 10px;
+            }
+
+            p {
+                font-weight: 600;
+                font-size: 21px;
+                line-height: 24px;
+                color: #4E4E4E;
+            }
+        }
+
+        .nav-center {
+            display: flex;
+            align-items: center;
+            width: 67%;
+            justify-content: space-between;
+
+            .nav-box {
+                display: flex;
+                flex-direction: column;
+                width: 30%;
+                align-items: flex-start;
+
+                .nav-search {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                }
+
+                .nav-search:first-child {
+                    margin-bottom: 15px;
+                }
+            }
+
+            .css-b62m3t-container {
+                width: 179px;
+            }
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            width: 15%;
+            justify-content: space-evenly;
+
+            .circle {
+                width: 88px;
+                height: 88px;
+                border: none;
+                border-radius: 50%;
+                background: $primary-color-red;
+                color: #FFFFFF;
+                text-align: center;
+                cursor: pointer;
+    
+                p {
+                    font-weight: 600;
+                    font-size: 20px;
+                    line-height: 23px;
+                    padding: 30px 0 5px 0;
+                }
+            }
+        }
+
+        p {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 17px;
+        }
+
+        .nav-line {
+            height: 84px;
+            border: 1px solid #EBEBEB;
+        }
+    }
+
+    /* 하단 tab */
+    .tab-menu {
+        display: flex;
+        margin-bottom: -1px;
+
+        .tab {
+            width: 227px;
+            height: 72px;
+            background: #FFFFFF;
+            border: 1px solid $line-color-grey;
+            border-radius: 10px 10px 0px 0px;
+            margin-left: 10px;
+            cursor: pointer;
+
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 28px;
+            color: #333333;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab.active {
+            border: none;
+            background-color: $primary-color-red;
+            color: #FFFFFF;
+        }
+    }
+
+    /* 하단 value */
+    .kpi-value {
+        border: 1px solid $line-color-grey;
+        border-radius: 14px;
+        // height: 689px;
+        margin-bottom: 38px;
+        overflow: auto;
+        // flex: 1;
+
+        .chart {
+            height: 270px;
+            margin: 28px 18px 8px 18px;
+        }
+
+        .grid {
+            width: 100%;
+        }
+
+        .ag-theme-alpine {    
+            height: 433px !important;
+        }
+    }
+
+    .title {
+        border-bottom: 1px solid $primary-color-red;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 17px 26px;
+
+        .excel {
+            width: 116px;
+            height: 36px;
+            background: #FFFFFF;
+            border: 1px solid #BEBEBE;
+            border-radius: 100px;
+            padding: 0 20px;
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+
+            p {
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 17px;
+                color: #2B2B2B;
+            }
+        }
+    }
+
 }

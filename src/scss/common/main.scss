@@ -2,21 +2,6 @@
 
 .main-container {
 
-    /* 상단 우측 nav */
-    .nav {
-        text-align: right;
-        margin: 20px 0;
-
-        p {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-
-            font-size: 16px;
-            line-height: 19px;
-        }
-    }
-
     /* KPI Performance 차트, 그리드 */
     .value {
         border: 1px solid $line-color-grey;

@@ -24,7 +24,6 @@ import { ReactComponent as IntersectIcon } from '../../assets/svgs/icon_Intersec
 
 function Main() {
 
-    const [rowData, setRowData] = useState([]); // 테이블 데이터 설정
     const [column, setColumn] = useState([ // 컬럼 값 설정
         { 
             field: 'KPI',
@@ -136,7 +135,7 @@ function Main() {
         },
     ]);
 
-    const data = [
+    const [rowData, setRowData] = useState([ // 테이블 데이터 설정
         {
             KPI: 'Volume(C)',
             '2022': '100.1', 
@@ -197,7 +196,7 @@ function Main() {
             W05: '100.1',
             W06: '100.1',
         },
-    ]
+    ]);
 
     const Prev = (props) => {
         const { className, style, onClick } = props;
@@ -246,7 +245,7 @@ function Main() {
                             <MoreIcon />
                         </div>
                         <div className='grid'>
-                            <AgGrid data={data} column={column} paging={false} />
+                            <AgGrid data={rowData} column={column} paging={false} />
                         </div>
                     </div>
                 </div>
