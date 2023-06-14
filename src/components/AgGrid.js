@@ -44,10 +44,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     useLayoutEffect(() => {
         setRowData(data)
         setColumnDefs(column)
-        // setColumnDefs(column.map(col => ({
-        //     field: col, filter: true
-        // })))
-
+        
         if(isModify) {
             setColumnDefs((prevCol) =>
                 prevCol.map((col) => {
@@ -69,7 +66,6 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
         // gridRef.current.api.sizeColumnsToFit();
     }, []);
 
-    // DefaultColDef sets props common to all Columns
     const defaultColDef = useMemo(()=> ({
         editable: false,
         sortable: true,
@@ -145,6 +141,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
                     suppressPaginationPanel={true}
                     suppressScrollOnNewData={true}
                     suppressRowClickSelection={true}
+                    suppressRowTransform={true}
                     onGridReady={onGridReady}
                     onSelectionChanged={checkbox && handleSelectBox}
                     onCellValueChanged={handleCellValueChanged}
