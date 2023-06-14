@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import LineChart from "../../components/Chart";
-import AgGrid from "../../components/AgGrid";
 import Header from '../../components/Header';
 import Top from '../../components/Top';
+import Zendesk from '../../components/Zendesk';
+
+import LineChart from "../../components/Chart";
+import AgGrid from "../../components/AgGrid";
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -342,6 +344,7 @@ function Main() {
                         </div>
                     </div>
                 </div>
+                <Zendesk />
             </div>
         </div>
     )

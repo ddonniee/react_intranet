@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import Top from '../../components/Top';
+import Zendesk from '../../components/Zendesk';
 
 import AgGrid from "../../components/AgGrid";
 import EditCelldata from '../../components/EditCelldata';
@@ -210,6 +211,7 @@ function UserManagement() {
                         <AgGrid data={rowData} column={column} paging={false} changeValue={setRowData} isModify={isModify}/>
                     </div>
                 </div>
+                <Zendesk />
             </div>
         </div>
     )
