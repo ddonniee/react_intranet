@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 
 import { styled } from "styled-components";
 import Zendesk from "../../components/Zendesk";
+import Alert from "../../components/Alert";
 
 import Reload from '../../assets/svgs/icon_reload.svg'
 import Link from '../../assets/svgs/icon_more.svg'
 import Check from '../../assets/svgs/icon_check.svg'
+import { generateRandomString } from "../../utils/CommonFunction";
+import Join from "./Modal/Join";
+import FindPW from "./Modal/FindPW";
 
 
 const Login = () =>{
@@ -15,13 +19,29 @@ const Login = () =>{
         pw : '',
         otp : '',
     })
+    // 로그인 실패시 알림창 
+    const [isFail, setIsFail] = useState(false);
+    // 회원가입 모달창
+    const [isJoin, setIsJoin] = useState(false);
+    const [isFindPw, setIsFindPw] = useState(false);
 
+    // 횟수에 따라 once 부분 바꾸는 로직 필요
+    const [alertTxt, setAlertTxt] = useState(`You entered your ID and PW incorrectly once.\nYou cannot log in if you enter incorrectly more than 5 times.`)
+
+    // 보안문자 서버에서 내려오는 이미지 저장
     const [securityUrl, setSecurityUrl] = useState('https://images.pexels.com/photos/17202950/pexels-photo-17202950.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')
+    // OTP 인증 로그인 여부
     const [isOtp, setIsOtp] = useState(false);
-
+    const linkList = [
+        {title : `REQUEST \n NEW ACCOUNT`, value:'join'},
+        {title : `FORGET \n PASSWORD`, value:'find-pw'},
+        {title : `OTP KEY \n REQUEST`, value:'req-otp'},
+        {title : `OTP TEMPORARY \n PASSWORD`, value:'req-tmp-otp'},
+    ]
     const handleCheckLogin = e => {
-        console.log(e)
-
+        // 로그인 처리
+        // 실패시
+        setIsFail(true)
     }
     const handleChangeInput = e =>{
         let title = e.target.id;
@@ -51,10 +71,23 @@ const Login = () =>{
             setIsOtp(!isOtp)
         }
     }
-    useEffect(()=>{
-        console.log('id',loginInfo.id)
-        console.log('pw',loginInfo.pw)
-    },[loginInfo])
+    const generateSecurityCode = e => {
+        // 서버에 보안문자 새로 요청
+        let newSecurity = 'https://cdn.pixabay.com/photo/2023/05/05/11/07/sweet-7972193_640.jpg'
+        setSecurityUrl(newSecurity);
+    }
+    const handleClickLink = e => {
+        let title = e.target.title;
+        if(title==='join') {
+           setIsJoin(!isJoin)
+        }else if(title==='find-pw') {
+            setIsFindPw(!isFindPw)
+        }else if(title==='req-otp') {
+
+        }else if(title==='req-tmp-otp') {
+
+        }
+    }
     return (
         <>
         <Style disable={(loginInfo.id === '' || loginInfo.pw ==='') && true} >
@@ -89,7 +122,7 @@ const Login = () =>{
                                     <div className="login-security-txt custom-justify-between">
                                         <div>
                                             <img src={securityUrl} className="security-num"/>
-                                            <img src={Reload} alt='reload-security-num' className="security-reload"/>
+                                            <img src={Reload} alt='reload-security-num' className="security-reload" onClick={generateSecurityCode}/>
                                         </div>
                                         <input className="secutiry-txt" type="text" />
                                     </div>
@@ -98,10 +131,13 @@ const Login = () =>{
                             </div>
                             <div className="login-info-right">
                                 <ul>
-                                    <li className="custom-justify-between"><span>{`REQUEST \n NEW ACCOUNT`}</span><img src={Link} alt='login-link'/></li>
-                                    <li className="custom-justify-between"><span>{`FORGET \n PASSWORD`}</span><img src={Link} alt='login-link'/></li>
-                                    <li className="custom-justify-between"><span>{`OTP KEY \n REQUEST`}</span><img src={Link} alt='login-link'/></li>
-                                    <li className="custom-justify-between"><span>{`OTP TEMPORARY \n PASSWORD`}</span><img src={Link} alt='login-link'/></li>
+                                    {
+                                        linkList?.map((list,idx)=>{
+                                            return (
+                                                <li title={list.value} key={generateRandomString(idx)} className="custom-justify-between" onClick={handleClickLink}><span title={list.value}>{list.title}</span><img  title={list.value} src={Link} alt='login-link'/></li>
+                                            )
+                                        })
+                                    }
                                 </ul>
                             </div>
                         </div>
@@ -110,8 +146,24 @@ const Login = () =>{
                             <span>{`This Web site is strictly restricted to only employees or business parrtners of LG Electronics \n Any illegal access will be punished according to related laws.`}</span>
                         </div>
                     </div>
+                   
                 </div>
                 <Zendesk />
+                    {
+                        isFail
+                        &&
+                        <Alert txt={alertTxt} onClose={()=>setIsFail(false)}/>
+                    }
+                    {
+                        isJoin
+                        &&
+                        <Join onClose={()=>setIsJoin(false)}/>
+                    }
+                     {
+                        isFindPw
+                        &&
+                        <FindPW onClose={()=>setIsFindPw(false)}/>
+                    }
             </div>
             </Style>
         </>

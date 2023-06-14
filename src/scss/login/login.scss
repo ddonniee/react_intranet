@@ -138,6 +138,68 @@ span {
     font-weight: 400; font-size: 14px;
     line-height: 16px;  
 }
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-title {
+    font-weight: 700; font-size: 20px; line-height: 23px; letter-spacing: 0.01em;
+  }
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 350px; min-height: 195px; height: fit-content; 
+    display: flex; flex-direction: column;
+    .alert-bottom {
+        text-align: right;
+    }
+    button {
+        background-color: $primary-color-red; color: white; font-weight: 600;
+        font-size: 14px; line-height: 22px; border-radius: 5px; border: none; width: 97px;
+        height: 32px;
+    }
+    .alert-top {
+       position: relative;
+       img {
+        position: absolute; right: 0;
+       }
+    }
+    .alert-only .alert-middle {
+        flex-grow: 2; padding: 10px;
+        span {
+            font-weight: 600; font-size: 15px; line-height: 22px; letter-spacing: 0.01em; 
+        }
+    }
+  }
+  .modal-join {
+    width: 420px; height: 526px;
+    .join-middle {
+        flex-grow: 4;
+    }
+    button {
+        width: 100%;
+    }
+    .join-top {
+        text-align: right;
+    }
+  }
+
+  /** 패스워드찾기 모달 */
+ .modal-pw {
+    .alert-middle-txt {
+        border: 1px solid $line-color-grey; border-radius: 10px; padding: 10px;
+    }
+ }
   
 } 
 
