@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes,useLocation } from "react-router-dom";
 import routes from "./routes";
 import './scss/style.scss';
 
@@ -13,6 +13,9 @@ function App() {
     name : 'donnie',
     other : 'female'
   })
+
+  let loginCheck = 1;
+ 
   return (
     <>
     <TestContext.Provider value={user}>

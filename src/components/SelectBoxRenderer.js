@@ -14,7 +14,8 @@ const SelectBoxRenderer = (props) => {
   return (
             <select
             className="cell-select-box"
-            onChange={handleChange}>
+            onChange={handleChange}
+            value={options.value}>
              {options.map((option) => (
              <option 
                 key={option.value} 

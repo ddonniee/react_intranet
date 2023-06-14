@@ -2,6 +2,8 @@ import React from "react";
 
 // import componenets
 const Main = React.lazy(() => import('./views/Home/Main'))
+// Login
+const Login = React.lazy(()=>import('./views/Login/Login'))
 // Dashboard
 const KpiPerformance =  React.lazy(()=>import('./views/Dashboard/KpiPerformance'))
 const Evaluation =  React.lazy(()=>import('./views/Dashboard/Evaluation'))
@@ -33,6 +35,8 @@ const CommonCodeManagement =  React.lazy(()=>import('./views/Setting&Management/
  */
 const routes = [
     { path:'/', exact: true, name:'Main', element: Main}, 
+    // Login
+    { path:'/login', name:'Login', element: Login},
     // Dashboard
     { path:'/dashboard/kpiperformance',  name:'KpiPerformance', element: KpiPerformance},
     { path:'/dashboard/evaluation', name:'Evaluation' , element: Evaluation},

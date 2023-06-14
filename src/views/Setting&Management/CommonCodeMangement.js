@@ -14,7 +14,11 @@ function CommonCodeMangement() {
 
     /** TEST DATA START  */
     let auth = 1;
+    let loginCheck = 0;
 
+    if(loginCheck===0) {
+        document.location.href='/login';
+    }
     const [codeList, setCodeList] = useState([
         {
             isCheck : true,
@@ -128,7 +132,7 @@ function CommonCodeMangement() {
             id : 'C0010',
             codeName : 'EW PERIOD',
             description : 'EW Period',
-            isUse : true
+            isUse : false
         },
         {
             isCheck : true,
@@ -142,7 +146,7 @@ function CommonCodeMangement() {
             id : 'C0012',
             codeName : 'SUB a',
             description : 'SUB',
-            isUse : true
+            isUse : false
         },
         {
             isCheck : true,
@@ -187,10 +191,10 @@ function CommonCodeMangement() {
     /** AG grid columns */
 
       const [codeColumn, setCodeColumn] = useState([
-        { headerName: '' , field: 'isCheck', checkboxSelection: true,  headerCheckboxSelection: true },
-        { headerName: 'ID' ,field: 'id',editable:true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell} },
-        { headerName: 'Code Name' ,field: 'codeName',editable:true,  cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell}},
-        { headerName: 'Code Description' ,field: 'description',editable:true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell} },
+        { headerName: '' , field: 'isCheck', checkboxSelection: true,  headerCheckboxSelection: true, width:100 },
+        { headerName: 'ID' ,field: 'id',editable:true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell} , width:200},
+        { headerName: 'Code Name' ,field: 'codeName',editable:true,  cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell}, width:200},
+        { headerName: 'Code Description' ,field: 'description',editable:true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell}, width:200 },
         {
             headerName: 'Use Y/N',
             field: 'isUse',
@@ -201,6 +205,7 @@ function CommonCodeMangement() {
               },
               handleChange: handleSelectBox,
             },
+            width:200
           },
     ])
     
