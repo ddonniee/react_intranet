@@ -90,16 +90,13 @@ function Notice() {
             writer : `Paul_Chapin`,
             date : `23.1.29`,
         },
-        {
-            num : '011',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...e`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
     ]);
 
     const [detail, setDetail] = useState({
         title : 'Invest In LG Electronics',
+        writer : 'Paul_Chapin',
+        date : 'Paul_Chapin',
+        type : 'All',
         attachment : 'Guide for CB03.pptx (531kKB)',
         content : 'How',
         comments : [
@@ -186,7 +183,12 @@ function Notice() {
                 </div>
                 <div className="notice-right">
                     <div className="notice-right-top">
-                        <p>{detail.title}</p>
+                        <p className="notice-title">{detail.title}</p>
+                        <p className="notice-title-detail">
+                            <span>Writer</span> : {detail.writer} &nbsp;
+                            <span>Date</span> : {detail.date} &nbsp;
+                            <span>Type</span> : {detail.type}
+                        </p>
                         <div className="custom-flex-item">
                             <AttachmentIcon /> 
                             <span>Attachment</span>
