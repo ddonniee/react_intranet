@@ -3,6 +3,7 @@ import React, {useState, useEffect} from "react";
 import Close from '../../../assets/svgs/icon_close.svg'
 import SelectBox from "../../../components/SelectBox";
 import { axiosInstance, generateRandomString } from "../../../utils/CommonFunction";
+import { styled } from "styled-components";
 
 const Join = props => {
 
@@ -18,25 +19,27 @@ const Join = props => {
    
     const clearForm = () =>{
         setJoinForm({
-            id: undefined,
-            branch: undefined,
-            email : undefined,
-            name : undefined,
-            phone : undefined,
-            mobile : undefined,
-            type : undefined,
+            id: '',
+            branch: '',
+            email : '',
+            name : '',
+            phone : '',
+            mobile : '',
+            type : '',
         })
     }   
     
     const [joinForm, setJoinForm] = useState({
-        id: undefined,
-        branch: undefined,
-        email : undefined,
-        name : undefined,
-        phone : undefined,
-        mobile : undefined,
-        type : undefined,
+        id: '',
+        branch: '',
+        email : '',
+        name : '',
+        phone : '',
+        mobile : '',
+        type : '',
     })
+    const [isMandatory, setIsMandatory] = useState(false);
+
     const handleSubmitForm = event => {
         event.preventDefault();
         event.stopPropagation();
@@ -59,8 +62,59 @@ const Join = props => {
         })
        
     }
+    const handleChangeInput = e => {
+        let title = e.target.id;
+        let value = e.target.value;
+
+        console.log(value,title)
+        if(title==='user-branch') {
+            setJoinForm({
+                ...joinForm,
+                branch : value
+            })
+        }else if(title==='user-email') {
+            setJoinForm({
+                ...joinForm,
+                email : value
+            })
+        }else if(title==='user-name') {
+            setJoinForm({
+                ...joinForm,
+                name: value
+            })
+        }else if(title==='user-id') {
+            setJoinForm({
+                ...joinForm,
+                id: value
+            })
+        }else if(title==='user-phone') {
+            setJoinForm({
+                ...joinForm,
+                phone: value
+            })
+        }else if(title==='user-mobile') {
+            setJoinForm({
+                ...joinForm,
+                mobile: value
+            })
+        }
+    }
+
+    useEffect(()=>{
+        console.log('dd',joinForm)
+        if(joinForm.id!=='' && joinForm.name !== '' && joinForm.email!=='' && joinForm.phone !== '' && joinForm.mobile !== '' && joinForm.branch !== '' ) {
+            setIsMandatory(true)
+        }else {
+            setIsMandatory(false)
+        }
+    },[joinForm])
+
+    useEffect(()=>{
+        console.log(isMandatory)
+    },[isMandatory])
     return (
         <>
+        <Style isActive={isMandatory?true:false}>
             <div className="modal" >
                 <form onSubmit={handleSubmitForm}>
                 <div className="modal-content modal-join">
@@ -69,27 +123,27 @@ const Join = props => {
                         <div className="alert-middle-info join-input">
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
                                 <lable htmlfor='user-branch' className='label-txt'>· SHIP TO</lable>
-                                <input type="text" id='user-barnch' name="user-barnch"></input>
+                                <input type="text" id='user-branch' name="user-branch" onChange={handleChangeInput}></input>
                             </div>
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
                                 <lable htmlfor='user-email' className='label-txt'>· EMAIL</lable>
-                                <input type="mail" id='user-email' name="user-email"></input>
+                                <input type="email" id='user-email' name="user-email" onChange={handleChangeInput}></input>
                             </div>
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
                                 <lable htmlfor='user-name' className='label-txt'>· NAME</lable>
-                                <input type="mail" id='user-name' name="user-name"></input>
+                                <input type="text" id='user-name' name="user-name" onChange={handleChangeInput}></input>
                             </div>
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
                                 <lable htmlfor='user-id' className='label-txt'>· USER ID</lable>
-                                <input type="mail" id='user-id'></input>
+                                <input type="text" id='user-id'  onChange={handleChangeInput}></input>
                             </div>
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
                                 <lable htmlfor='user-phone' className='label-txt'>· PHONE NO</lable>
-                                <input type="mail" id='user-phone' name="user-phone"></input>
+                                <input type="tel" id='user-phone' name="user-phone" onChange={handleChangeInput}></input>
                             </div>
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
-                                <lable htmlfor='user-mobile' className='label-txt'>· MOBILE NO</lable>
-                                <input type="mail" id='user-mobile' name="mobile"></input>
+                                <lable htmlfor='user-mobile' className='label-txt' >· MOBILE NO</lable>
+                                <input type="tel" id='user-mobile' name="mobile" onChange={handleChangeInput}></input>
                             </div>
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
                                 <lable htmlfor='user-type' className='label-txt'>· JOB TYPE</lable>
@@ -106,12 +160,19 @@ const Join = props => {
                         </div>
                     </div>
                     <div className="alert-bottom">
-                        <button type="submit">Apply</button>
+                        <button type="submit" disabled={isMandatory ? false : true} className="checkForm-btn">Apply</button>
                     </div>
                 </div>
                 </form>
             </div>
+            </Style>
         </>
     )
 }
 export default Join
+
+const Style = styled.div `
+.checkForm-btn {
+    background-color : ${props=>props.isActive ? '#BB0841' : '#666666'}
+}
+`
