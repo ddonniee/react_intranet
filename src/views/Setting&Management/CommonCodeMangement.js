@@ -16,9 +16,9 @@ function CommonCodeMangement() {
     let auth = 1;
     let loginCheck = 0;
 
-    if(loginCheck===0) {
-        document.location.href='/login';
-    }
+    // if(loginCheck===0) {
+    //     document.location.href='/login';
+    // }
     const [codeList, setCodeList] = useState([
         {
             isCheck : true,

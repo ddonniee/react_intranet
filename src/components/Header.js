@@ -93,6 +93,14 @@ function Header() {
         )
     }
 
+    const handleClickProfile = () => {
+        let loginCheck = 0;
+
+    if(loginCheck===0) {
+        document.location.href='/login';
+    }
+
+    }
     const clearState=()=>{
         setCurrentTab({
             ...currentTab,
@@ -171,7 +179,7 @@ function Header() {
                 </ul>
             </div>
             <div className="nav-info">
-                <div className='profile'><div className='profile-circle'><img src={Profile} alt='user-profile'/></div></div>
+                <div className='profile' onClick={handleClickProfile}><div className='profile-circle'><img src={Profile} alt='user-profile'/></div></div>
                 <div className='search'><img src={Seeker} alt='whole-search'/></div>
             </div>
         </div>
