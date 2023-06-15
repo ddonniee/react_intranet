@@ -10,6 +10,9 @@ import Check from '../../assets/svgs/icon_check.svg'
 import { generateRandomString } from "../../utils/CommonFunction";
 import Join from "./Modal/Join";
 import FindPW from "./Modal/FindPW";
+import Password from "./Modal/Password";
+import Otp from "./Modal/Otp";
+import TempOtp from "./Modal/TempOtp";
 
 
 const Login = () =>{
@@ -19,11 +22,13 @@ const Login = () =>{
         pw : '',
         otp : '',
     })
-    // 로그인 실패시 알림창 
-    const [isFail, setIsFail] = useState(false);
-    // 회원가입 모달창
-    const [isJoin, setIsJoin] = useState(false);
-    const [isFindPw, setIsFindPw] = useState(false);
+    
+    const [failModal, setFailModal] = useState(false);               // 로그인 실패시 알림창 
+    const [joinModal, setJoinModal] = useState(false);               // 회원가입 모달창
+    const [passwordModal, setPasswordModal] = useState(false);       // 패스워드찾기 모달창
+    const [otpModal, setOtpModal] = useState(false);                 // OTP 발급 모달창
+    const [tempOtpModal, setTempOtpModal] = useState(false);         // 일회용 OTP 모달창
+
 
     // 횟수에 따라 once 부분 바꾸는 로직 필요
     const [alertTxt, setAlertTxt] = useState(`You entered your ID and PW incorrectly once.\nYou cannot log in if you enter incorrectly more than 5 times.`)
@@ -41,7 +46,7 @@ const Login = () =>{
     const handleCheckLogin = e => {
         // 로그인 처리
         // 실패시
-        setIsFail(true)
+        setFailModal(true)
     }
     const handleChangeInput = e =>{
         let title = e.target.id;
@@ -79,15 +84,16 @@ const Login = () =>{
     const handleClickLink = e => {
         let title = e.target.title;
         if(title==='join') {
-           setIsJoin(!isJoin)
+           setJoinModal(!joinModal)
         }else if(title==='find-pw') {
-            setIsFindPw(!isFindPw)
+            setPasswordModal(!passwordModal)
         }else if(title==='req-otp') {
-
+            setOtpModal(!otpModal)
         }else if(title==='req-tmp-otp') {
-
+            setTempOtpModal(!tempOtpModal)
         }
     }
+
     return (
         <>
         <Style disable={(loginInfo.id === '' || loginInfo.pw ==='') && true} >
@@ -150,19 +156,30 @@ const Login = () =>{
                 </div>
                 <Zendesk />
                     {
-                        isFail
+                        failModal
                         &&
-                        <Alert txt={alertTxt} onClose={()=>setIsFail(false)}/>
+                        // Confirm 누르면 연결되는 event로 추후변경
+                        <Alert alertTxt={alertTxt} onClose={()=>setFailModal(false)} btnTxt='Confirm' onConfirm={()=>setFailModal(false)}/>
                     }
                     {
-                        isJoin
+                        joinModal
                         &&
-                        <Join onClose={()=>setIsJoin(false)}/>
+                        <Join onClose={()=>setJoinModal(false)}/>
                     }
                      {
-                        isFindPw
+                        passwordModal
                         &&
-                        <FindPW onClose={()=>setIsFindPw(false)}/>
+                        <Password onClose={()=>setPasswordModal(false)}/>
+                    }
+                    {
+                        otpModal
+                        &&
+                        <Otp onClose={()=>setOtpModal(false)} />
+                    }
+                    {
+                        tempOtpModal
+                        &&
+                        <TempOtp onClose={()=>setTempOtpModal(false)}/>
                     }
             </div>
             </Style>

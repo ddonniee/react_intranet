@@ -19,7 +19,7 @@ const FindPW = props => {
     return (
         <>
             <div className="modal">
-                <div className="modal-content modal-pw">
+                <div className="modal-content modal-privacy">
                     <div className="alert-top"><span className="modal-title">Privacy Policy (Mandatory)</span><img src={Close} alt="close-btn" onClick={onClose} /></div>
                     <div className="alert-middle">
                         <div className="alert-middle-txt">{infoTxt}</div>
