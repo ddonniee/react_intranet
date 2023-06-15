@@ -155,6 +155,9 @@ ul.pagination li a.active {
 .custom-self-align {
     align-self: center;
 }
+.custom-align-item {
+    align-items: center;
+}
 .custom-hyphen {
     padding: 0 5px;
 }
@@ -169,6 +172,16 @@ ul.pagination li a.active {
 }
 .primary-red-btn {
     background-color: $primary-color-red; color: white;
+}
+select:focus,
+    input:focus {
+        outline: none;
+    }
+.label-txt {
+    font-weight: 600;
+font-size: 16px;
+line-height: 17px;
+letter-spacing: 0.025em;
 }
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {

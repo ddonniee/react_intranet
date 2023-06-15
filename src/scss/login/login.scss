@@ -120,6 +120,28 @@ span {
 .security-reload {
     vertical-align: top;  padding: 3px;
 }
+.radio-btn{
+    width: 16px !important;
+    height: 16px !important;
+}
+.otp-btn {
+    margin: 10px 0;
+}
+.otp-checkbox {
+    padding: 10px 0;
+}
+.otp-checkbox div:first-child {
+    padding-right: 20px;
+}
+.otp-checkbox input[type="radio"] {
+    accent-color: $primary-color-red;
+}
+.tmp-otp #user-email{
+    width: 100%;
+}
+.cancel-btn {
+    background-color: white !important; color: $primary-color-red !important; border: 2px solid $primary-color-red !important; margin-right: 10px;
+}
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
   .login-area {
@@ -174,15 +196,25 @@ span {
         position: absolute; right: 0;
        }
     }
-    .alert-only .alert-middle {
-        flex-grow: 2; padding: 10px;
+    .modal-content {
+        .alert-middle  {
+            flex-grow: 2; padding: 10px;
+        }
         span {
             font-weight: 600; font-size: 15px; line-height: 22px; letter-spacing: 0.01em; 
         }
     }
   }
+
+  .alert-middle-txt {
+    border: 1px solid $line-color-grey; border-radius: 10px; padding: 10px;
+}
+
+  /** pw 오류 경고창 */
+ 
+  /** 회원가입 양식 폼 */
   .modal-join {
-    width: 420px; height: 526px;
+    width: 420px; height: 526px; 
     .join-middle {
         flex-grow: 4;
     }
@@ -192,15 +224,106 @@ span {
     .join-top {
         text-align: right;
     }
+    input,
+    .user-type {
+        width: 265px; height: 42px; border: 1px solid $border-color-gery;
+        border-radius: 5px;
+    }
+    .join-input >  div {
+            padding: 7px 0;
+            
+    }
+    .join-input  div label {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 17px;
+        letter-spacing: 0.025em;
+    }
+    .user-type *:hover {
+        background-color: $hover-color-pink; color: $primary-color-red;
+    }
+    .alert-middle {
+        padding-top: 15px;
+    }
+    .alert-bottom {
+        position: relative;
+    bottom: -20px;
+    }
+    select, 
+    input {
+        padding: 10px;
+    }
+
+    .custom-select {
+        width: 265px !important; margin: 0 !important; height: 42px !important;
+    }
+    .custom-select > div,
+    .custom-select > div > div:first-child {
+        height: 100%;
+    }
+    .custom-select > div > div:last-child {
+        height: fit-content;
+    } 
+    .custom-select div:first-child div:first-child div:first-child {
+        height: 42px !important; align-items: center;
+    }
+    
   }
 
-  /** 패스워드찾기 모달 */
- .modal-pw {
-    .alert-middle-txt {
-        border: 1px solid $line-color-grey; border-radius: 10px; padding: 10px;
+  /** privacy polisy 모달 */
+ .modal-privacy {
+    .alert-middle {
+        padding-top: 10px;
     }
+    .alert-middle-info {
+        padding: 10px 0;
+    }
+   
+    .pw-checkbox {
+        padding: 10px 0;
+    }
+    .alert-bottom {
+        padding: 10px 0;
+    }
+    button {
+        width: 100%; 
+    }
+   /** 비밀번호 찾기 모달 */
+   
  }
   
+ .modal-password {
+    .alert-middle {
+        padding-top: 10px;
+    }
+    .alert-middle-info {
+        padding: 10px 0;
+    }
+    .alert-middle-txt {
+        padding: 10px 10px 20px 10px;
+    }
+    .pw-checkbox {
+        padding: 10px 0;
+    }
+    button {
+        width: 100%; 
+    }
+   }
+ .modal-otp{
+    min-height: 300px;
+    height: fit-content;
+    padding-bottom: 40px;
+    .alert-middle-info > div{
+        padding: 5px 0;
+    }
+    .horizon-division {
+        width: 100%;
+    height: 2px;
+    background: $border-color-gery;
+    margin: 20px 0;
+    }
+ }
+ 
 } 
 
 /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 
