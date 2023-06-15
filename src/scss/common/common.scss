@@ -121,6 +121,7 @@ ul.pagination li {
     justify-content: center;
     align-items: center;
     font-size: 1rem;
+    margin: 0 5px;
 }
 
 ul.pagination li:first-child{
@@ -133,31 +134,36 @@ ul.pagination li:last-child{
 
 ul.pagination li a {
     text-decoration: none;
-    color: #337ab7;
+    color: $chart-color-grey;
     font-size: 1rem;
 }
 
 ul.pagination li.active a {
-    color: white;
+    color: $primary-color-red; 
+    font-weight: 600;
 }
 
 ul.pagination li.active {
-    background-color: #337ab7;
+    background-color: white !important; 
+    border: 2px solid $primary-color-red; 
+    border-radius: 6px;
 }
 
 ul.pagination li a:hover,
 ul.pagination li a.active {
-    color: blue;
+    color: $primary-color-red;
 }
 
 .page-selection {
     width: 48px;
     height: 30px;
-    color: #337ab7;
+    color: $hover-color-pink;
 }
+
 .custom-flex-item {
     display: flex;
 }
+
 .custom-self-align {
     align-self: center;
 }
@@ -167,28 +173,42 @@ ul.pagination li a.active {
 .custom-hyphen {
     padding: 0 5px;
 }
+
 .custom-justify-between {
     justify-content: space-between;
 }
+
 .custom-txt-align {
     text-align: center;
 }
+
 .custom-hover:hover {
     background-color: $hover-color-pink; color: $primary-color-red; font-weight: 700;
 }
+
 .primary-red-btn {
     background-color: $primary-color-red; color: white;
 }
+
+/* 에디터 */
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+    border: none;
+    border-top: 1px solid $border-color-gery;
+    border-bottom: 1px solid $border-color-gery;    
+    overflow-y: scroll;
+}
+
 select:focus,
-    input:focus {
-        outline: none;
-    }
+input:focus {
+    outline: none;
+}
 .label-txt {
     font-weight: 600;
-font-size: 16px;
-line-height: 17px;
-letter-spacing: 0.025em;
+    font-size: 16px;
+    line-height: 17px;
+    letter-spacing: 0.025em;
 }
+
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
     //스타일 입력
