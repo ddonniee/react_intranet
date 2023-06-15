@@ -1,0 +1,190 @@
+@import '../variables';
+
+.notice-container {
+
+    /* 하단 리스트, 상세페이지 */
+    .notice-content {
+        display: flex; 
+        justify-content: space-between;
+
+        .notice-left, .notice-right {
+            width: 49%;
+        }
+
+        .notice-count {
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 19px;
+            color: #626262;
+
+            span {
+                color: #A50035;
+            }
+        }
+
+        .notice-custom-board {
+            margin-bottom: 40px;
+
+            .notice-list {
+                border-bottom: 1px solid #E8E8E8;
+                padding: 9px 24px;
+                cursor: pointer;
+
+                .title {
+                    display: flex;
+                    align-items: center;
+                    font-weight: 600;
+                    font-size: 16px;
+                    line-height: 24px;
+                    color: #333333;
+
+                    svg:first-child {
+                        margin-right: 6px;
+                    }
+
+                    svg:last-child {
+                        margin-left: 6px;
+                    }
+                }
+
+                .etc {
+                    display: flex;
+                    justify-content: space-between;
+                    font-weight: 400;
+                    font-size: 15px;
+                    line-height: 24px;
+                    color: #5F5F5F;
+                }
+            }
+
+            .notice-list:first-child {
+                border-top: 1px solid #E8E8E8;
+            }
+
+            .notice-list:hover {
+                background-color: $hover-color-pink;
+            }
+        }
+
+        .notice-bottom {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -45px;
+
+            .notice-btn-circle {
+                width: 58px;
+                height: 58px;
+                border: none;
+                border-radius: 50%;
+                background: $primary-color-red;
+                color: #FFFFFF;
+                text-align: center;
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 16px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .notice-custom-board {
+        // height: 93%;  
+    }
+    .notice-custom-board li span:first-child {
+        width: 100px; 
+        text-align: center;
+    }
+    .notice-custom-board li span {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+    }
+    .notice-right {
+        border: 1px solid $border-color-gery; border-radius: 14px;
+    }
+    .notice-right .ck-sticky-panel {
+        display: none !important;
+    }
+    .notice-right-top {
+        position: relative;
+    }
+    .notice-right-top span {
+        padding: 4px; align-self: center;
+    }
+    .notice-attach{
+        border: 1px solid $border-color-gery; border-radius: 5px; font-weight: 600;
+        font-size: 13px;
+    }
+    .user-action {
+        position: absolute; top: 0px; right: 0px; padding: 10px; font-weight: 600;
+        font-size: 13px;
+        line-height: 15px;
+    }
+    .user-action span img {
+        padding-right: 2px;
+    }
+    .notice-contents .ck-content {
+        min-height: 328px; height: fit-content;
+    }
+    .notice-attach-down img {
+        padding: 0 5px;
+    }
+    .notice-comment-wrapper {
+        background-color: #F2F2F2;min-height: 103px;
+        padding: 16px; height: fit-content;
+    }
+    .notice-comment-wrapper > span:first-child {
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 18px;
+    }
+    .notice-comment-wrapper > div {
+        padding: 5px 0;
+        display: flex;
+    }
+    .notice-comment-wrapper textarea {
+        flex-grow: 2;
+        margin-right: 10px;
+        border: none;
+        padding: 10px;
+        height: fit-content;
+    }
+    .notice-comment-wrapper textarea:focus {
+        outline: none;
+    }
+    .notice-comment-wrapper button {
+        width: 69px;
+        height: 44px;
+        background: #323232;
+        border-radius: 5px;
+        padding-left: 1px;
+        color: white;
+        border: none;
+    }
+    .notice-comment-list {
+        padding : 10px 20px;
+
+    }
+    .notice-comment-list > ul > li {
+        padding: 10px 0;
+    }
+    .notice-comment-list > ul > li:not(:last-child) {
+        border-bottom: 1px solid $line-color-grey;
+    }
+    .notice-comment-list > ul > li span:first-child {
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .notice-comment-list > ul > li span:nth-child(2) {
+        font-weight: 600;
+        font-size: 13px;
+    }
+    .notice-comment-list > ul > li span:last-child {
+        font-weight: 400;
+        font-size: 13px;
+        color: $txt-color-edit;
+    }
+    .notice-comment-list > ul > li span:last-child  p:nth-child(2) {
+        padding: 0 10px;
+    }
+}

@@ -1,6 +1,7 @@
 // 공통 css
 @import './common/common.scss';
 @import './common/selecbox.scss';
+
 // view 별 css
 @import './common/main.scss';
 @import './common/header';
@@ -9,6 +10,8 @@
 @import './dashboard/kpiperformance.scss';
 
 @import './process&support/faq.scss';
+
+@import './board/notice.scss';
 
 @import './setting&management/usermanagement.scss';
 @import './setting&management/commoncodemanagement.scss';
