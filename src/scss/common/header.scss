@@ -6,6 +6,7 @@
 .nav-logo {
     height: 100%; font-weight: 600; font-size: 20px;
     background-color: $primary-color-grey; color: white; align-items: center; display: flex; justify-content: center; 
+    cursor: pointer;
 } 
 .division {
     width: 1px; background-color: rgba(255, 255, 255, 0.15);
@@ -25,6 +26,7 @@ ul, li {
     display: flex;
     align-items: center;
     justify-content: center; position: relative;
+    cursor: pointer;
 }
 .nav-division {
     position: absolute; right: 0;
@@ -46,12 +48,13 @@ ul, li {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 .nav-info .profile-circle img{
     vertical-align: -webkit-baseline-middle;
 }
 .nav-info .search {
-    width: 50%; align-self: center; text-align: center;
+    width: 50%; align-self: center; text-align: center; cursor: pointer;
 }
 .lower-tab {
     background-color: $secondary-color-gery;
@@ -68,7 +71,7 @@ ul, li {
     display: flex;
     align-items: center;
     justify-content: center;
-
+    cursor: pointer;
 }
 .more-lists > li > p {
     width: 80%;

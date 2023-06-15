@@ -94,6 +94,12 @@
     border-right: var(--ag-row-border-style) var(--ag-row-border-color) var(--ag-row-border-width) !important;
 }
 
+.ag-cell.cell-span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* 페이징 */
 .pagination {
     display: flex;

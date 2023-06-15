@@ -69,7 +69,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     const defaultColDef = useMemo(()=> ({
         editable: false,
         sortable: true,
-        // resizable: false,
+        // resizable: true,
         // filter: false,
         flex: 1,
     }));

@@ -14,33 +14,233 @@ import { ReactComponent as ExcelIcon } from '../../assets/svgs/icon_excel.svg';
 
 function KpiPerformance() {
 
+    const [rowData, setRowData] = useState([ // 테이블 데이터 설정
+        {
+            center: 'Total',
+            kpi: 'Volume(C)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            target: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            // center: 'Total',
+            kpi: 'Reclaim (%)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            target: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            // center: 'Total',
+            kpi: 'RTAT (D)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            target: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            // center: 'Total',
+            kpi: 'Repair NPS (P)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            target: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            center: 'ASC #1',
+            kpi: 'Volume(C)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            target: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            // center: 'ASC #1',
+            kpi: 'Reclaim (%)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            target: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            // center: 'ASC #1',
+            kpi: 'RTAT (D)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            target: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            // center: 'ASC #1',
+            kpi: 'Repair NPS (P)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            target: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            center: 'ASC #2',
+            kpi: 'Volume(C)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            target: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            // center: 'ASC #1',
+            kpi: 'Reclaim (%)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            target: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            // center: 'ASC #1',
+            kpi: 'RTAT (D)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            target: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            // center: 'ASC #1',
+            kpi: 'Repair NPS (P)',
+            '2022': '100.1', 
+            '01-02': '100.1',
+            target: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            '202212': '100.1',
+            '202301': '100.1',
+            '202302': '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+    ]);
+
     const rowSpan = (params) => {
         let center = params.data ? params.data.center : undefined;
-        if (center === 'Total') {
-          // have all Russia age columns width 2
-          return 4;
-        } else if (center === 'ASC #1') {
-          // have all United States column width 4
+        // console.log('center --->', center)
+        if (center === 'Total' || center === 'ASC #1' || center === 'ASC #2') {
           return 4;
         } else {
-          // all other rows should be just normal
           return 1;
         }
-    };
-
-    const getRowSpanData = () => {
-        const rowSpanData = {};
-    
-        rowData.forEach((row) => {
-          const center = row.center;
-          if (!rowSpanData[center]) {
-            rowSpanData[center] = 1;
-          } else {
-            rowSpanData[center]++;
-          }
-        });
-    
-        return rowSpanData;
     };
 
     const [column, setColumn] = useState([ // 컬럼 값 설정
@@ -48,11 +248,12 @@ function KpiPerformance() {
             headerName: '',
             field: 'center',
             spanHeaderHeight: true,
-            wrapHeaderText: true,
             pinned: 'left',
-            width: 70,
+            width: 60,
             rowSpan: rowSpan,
-            // rowSpan: rowSpan,
+            cellClassRules: {
+                'cell-span': " value==='Total' || value==='ASC #1' || value==='ASC #2' ",
+            },
         },
         { 
             headerName: 'KPI',
@@ -60,7 +261,7 @@ function KpiPerformance() {
             resizable: false,
             spanHeaderHeight: true,
             pinned: 'left',
-            width: 150,
+            width: 140,
             // suppressAutoSize: true
         },
         {
@@ -189,153 +390,6 @@ function KpiPerformance() {
             resizable: false,
             spanHeaderHeight: true,
             wrapHeaderText: true,
-        },
-    ]);
-
-    const [rowData, setRowData] = useState([ // 테이블 데이터 설정
-        {
-            center: 'Total',
-            kpi: 'Volume(C)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
-        },
-        {
-            center: 'Total',
-            kpi: 'Reclaim (%)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
-        },
-        {
-            center: 'Total',
-            kpi: 'RTAT (D)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
-        },
-        {
-            center: 'Total',
-            kpi: 'Repair NPS (P)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
-        },
-        {
-            center: 'ASC #1',
-            kpi: 'Volume(C)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
-        },
-        {
-            center: 'ASC #1',
-            kpi: 'Reclaim (%)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
-        },
-        {
-            center: 'ASC #1',
-            kpi: 'RTAT (D)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
-        },
-        {
-            center: 'ASC #1',
-            kpi: 'Repair NPS (P)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
         },
     ]);
 
