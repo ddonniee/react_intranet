@@ -139,7 +139,6 @@
         // height: 689px;
         margin-bottom: 38px;
         overflow: auto;
-        // flex: 1;
 
         .chart {
             height: 270px;
@@ -148,10 +147,15 @@
 
         .grid {
             width: 100%;
+            height: 100%;
         }
 
-        .ag-theme-alpine {    
-            height: 433px !important;
+        .cell-span {
+            // background-color: #00e5ff;
+            background-color: var(--ag-background-color);
+            border-bottom: var(--ag-row-border-style) var(--ag-row-border-color) var(--ag-row-border-width);
+            font-weight: 600;
+            font-size: 16px;
         }
     }
 

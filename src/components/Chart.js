@@ -82,7 +82,7 @@ const chartOptions = {
             enabled: true,
             filter: (item) => item.parsed.y !== null,
             callbacks: {
-              label: (context) => `Value: ${context.parsed.y}`,
+              label: (context) => `${context.dataset.label}: ${context.parsed.y}`,
             },
         },
     },
