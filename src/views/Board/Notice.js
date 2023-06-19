@@ -11,6 +11,7 @@ import Pagination from "react-js-pagination"
 import { generateRandomString } from "../../utils/CommonFunction"
 
 import '../../scss/style.scss';
+import { ReactComponent as SearchIcon } from '../../assets/svgs/icon_searchbtn.svg';
 import { ReactComponent as SpeakerIcon } from '../../assets/svgs/icon_speaker.svg';
 import { ReactComponent as NewIcon } from '../../assets/svgs/icon_new.svg';
 import { ReactComponent as AttachmentIcon } from '../../assets/svgs/icon_attachment.svg';
@@ -97,18 +98,18 @@ function Notice() {
         writer : 'Paul_Chapin',
         date : 'Paul_Chapin',
         type : 'All',
-        attachment : 'Guide for CB03.pptx (531kKB)',
+        attachment : 'Guide for CB03.pptx (531KB)',
         content : 'How',
         comments : [
-           { 
+            { 
             writer : 'writer',
             detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
             },
-             { 
+            { 
             writer : 'writer',
             detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
             },
-             { 
+            { 
             writer : 'writer',
             detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
             }
@@ -133,6 +134,32 @@ function Notice() {
         console.log(selectedList)
     }, [selectedList])
 
+    const subOptions = [
+        { value: 'LGEAI', label: 'LGEAI' },
+        { value: 'LGEAI2', label: 'LGEAI2' },
+    ]
+
+    const centerOptions = [
+        { value: 'ASC', label: 'ASC' },
+        { value: 'ASC2', label: 'ASC2' },
+    ]
+
+    const branchOptions = [
+        { value: 'NW', label: 'NW' },
+        { value: 'NW2', label: 'NW2' },
+    ]
+
+    const handleSelectBox = (event,params) => {
+        const { data } = params.node;
+        const { checked } = event.target;
+
+        if (checked) {
+            setBoardData([...boardData, data]);
+          } else {
+            setBoardData(boardData.filter(item => item !== data));
+          }
+    }
+
     return (
         <div className="notice-container">
         <Header />
@@ -140,7 +167,23 @@ function Notice() {
             {/** auth 권한체크로 수정 필요 */}
             <Top auth={1} searchArea={false}/>
             {/** Search Nav */}
-            <div className="notice-nav"></div>
+            <div className="notice-nav">
+                {/* <div className="nav-left"> */}
+                <div className="notice-nav-box custom-flex-item custom-align-item">
+                    <p>· Subsidiary</p>
+                    <input type="text" className="notice-nav-input"></input>
+                </div>
+                <div className="custom-flex-item custom-align-item">
+                    <p>· View</p>
+                    <SelectBox options={centerOptions} onChange={handleSelectBox} />
+                </div>
+                <div className="custom-flex-item custom-align-item">
+                    <p>· Search</p>
+                    <input type="text" className="notice-nav-input"></input>
+                    <SearchIcon />
+                </div>
+                {/* </div> */}
+            </div>
 
             {/** Content Area */}
             <Style selectId={selectedList.num}>
@@ -189,15 +232,17 @@ function Notice() {
                             <span>Date</span> : {detail.date} &nbsp;
                             <span>Type</span> : {detail.type}
                         </p>
-                        <div className="custom-flex-item">
+                        <div className="notice-title-attach">
                             <AttachmentIcon /> 
-                            <span>Attachment</span>
-                            <span className="custom-flex-item notice-attach-down">
-                                <span>{detail.attachment!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="notice-attach custom-flex-item"><p>{detail.attachment}</p><DownloadIcon /></span>
+                            <span className="notice-attach">Attachment</span>
+                            <span className="custom-flex-item">
+                                <span className="notice-attach-count">{detail.attachment !== '' && ` (1)`}</span>
+                                <p className="custom-hyphen custom-self-align">-</p>
+                                <span className="notice-attach-box"> <p>{detail.attachment}</p> <DownloadIcon /> </span>
                             </span>
                         </div>
                     </div>
-                    <div className="notice-right-middle"><Viewer content={content}/></div>
+                    <div className="notice-right-middle"> <Viewer content={content}/> </div>
                 </div>
             </div>
             </Style>

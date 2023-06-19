@@ -2,6 +2,33 @@
 
 .notice-container {
 
+    /* 상단 검색영역 */
+    .notice-nav {
+        margin-top: -20px;
+        margin-bottom: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 54%;
+
+        p {
+            margin-right: 10px;
+        }
+
+        .css-b62m3t-container {
+            width: 179px;
+        }
+        
+        .notice-nav-input {
+            width: 160px;
+            height: 42px;
+            background: #FFFFFF;
+            border: 1px solid #D8D8D8;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+    }
+
     /* 하단 리스트, 상세페이지 */
     .notice-content {
         display: flex; 
@@ -91,6 +118,9 @@
         .notice-right {
             border: 1px solid $border-color-gery; 
             border-radius: 14px;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
 
             .ck-sticky-panel {
                 display: none !important;
@@ -98,7 +128,7 @@
 
             .notice-right-top {
                 position: relative;
-                padding: 23px 30px;
+                padding: 16px 25px;
 
                 .notice-title {
                     font-weight: 700;
@@ -110,93 +140,73 @@
                 .notice-title-detail {
                     font-size: 14px;
                     line-height: 24px;
+                    padding-top: 4px;
 
                     span {
                         padding: 0;
                         font-weight: 600;
                     }
                 }
+
+                .notice-title-attach {
+                    display: flex;
+                    align-items: center;
+
+                    span {
+                        padding: 4px;
+                    }
+
+                    .notice-attach {
+                        margin-left: 4px;
+                    }
+
+                    .notice-attach-count {
+                        color: #A50035;
+                        margin-left: -5px;
+                    }
+
+                    .notice-attach-box {
+                        border: 1px solid $border-color-gery; 
+                        border-radius: 5px; 
+                        font-weight: 600;
+                        font-size: 13px;
+                        padding: 4px 8px;
+                        display: flex;
+                        align-items: center;
+
+                        p {
+                            margin: 0 4px;
+                        }
+                    }
+                }
+            }
+
+            .notice-right-middle {
+                flex: 1;
+
+                .ck.ck-editor,
+                .ck.ck-editor__main,
+                .ck.ck-editor__main>.ck-editor__editable {
+                    height: 100%;
+                }
+
+                h2, p {
+                    margin-left: 15px;
+                }
+
+                h2 {
+                    font-weight: 600;
+                    font-size: 20px;
+                    line-height: 26px;
+                    color: #333333;
+                }
+
+                p {
+                    font-size: 16px;
+                    line-height: 22px;
+                    color: #626262;
+                }
             }
         }
-    }
-
-    .notice-right-top span {
-        padding: 4px; align-self: center;
-    }
-    .notice-attach{
-        border: 1px solid $border-color-gery; border-radius: 5px; font-weight: 600;
-        font-size: 13px;
-    }
-    .user-action {
-        position: absolute; top: 0px; right: 0px; padding: 10px; font-weight: 600;
-        font-size: 13px;
-        line-height: 15px;
-    }
-    .user-action span img {
-        padding-right: 2px;
-    }
-    .notice-contents .ck-content {
-        min-height: 328px; height: fit-content;
-    }
-    .notice-attach-down img {
-        padding: 0 5px;
-    }
-    .notice-comment-wrapper {
-        background-color: #F2F2F2;min-height: 103px;
-        padding: 16px; height: fit-content;
-    }
-    .notice-comment-wrapper > span:first-child {
-        font-weight: 600;
-        font-size: 15px;
-        line-height: 18px;
-    }
-    .notice-comment-wrapper > div {
-        padding: 5px 0;
-        display: flex;
-    }
-    .notice-comment-wrapper textarea {
-        flex-grow: 2;
-        margin-right: 10px;
-        border: none;
-        padding: 10px;
-        height: fit-content;
-    }
-    .notice-comment-wrapper textarea:focus {
-        outline: none;
-    }
-    .notice-comment-wrapper button {
-        width: 69px;
-        height: 44px;
-        background: #323232;
-        border-radius: 5px;
-        padding-left: 1px;
-        color: white;
-        border: none;
-    }
-    .notice-comment-list {
-        padding : 10px 20px;
-
-    }
-    .notice-comment-list > ul > li {
-        padding: 10px 0;
-    }
-    .notice-comment-list > ul > li:not(:last-child) {
-        border-bottom: 1px solid $line-color-grey;
-    }
-    .notice-comment-list > ul > li span:first-child {
-        font-weight: 600;
-        font-size: 14px;
-    }
-    .notice-comment-list > ul > li span:nth-child(2) {
-        font-weight: 600;
-        font-size: 13px;
-    }
-    .notice-comment-list > ul > li span:last-child {
-        font-weight: 400;
-        font-size: 13px;
-        color: $txt-color-edit;
-    }
-    .notice-comment-list > ul > li span:last-child  p:nth-child(2) {
-        padding: 0 10px;
     }
 }
