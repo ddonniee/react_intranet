@@ -116,8 +116,9 @@ const Join = props => {
         <>
         <Style isActive={isMandatory?true:false}>
             <div className="modal" >
-                <form onSubmit={handleSubmitForm}>
+               
                 <div className="modal-content modal-join">
+                <form onSubmit={handleSubmitForm}>
                     <div className="alert-top"><span className="modal-title">Request New Account</span><img src={Close} alt="close-btn" onClick={onClose} /></div>
                     <div className="alert-middle">
                         <div className="alert-middle-info join-input">
@@ -162,8 +163,9 @@ const Join = props => {
                     <div className="alert-bottom">
                         <button type="submit" disabled={isMandatory ? false : true} className="checkForm-btn">Apply</button>
                     </div>
+                    </form>
                 </div>
-                </form>
+                
             </div>
             </Style>
         </>

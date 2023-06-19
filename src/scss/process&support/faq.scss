@@ -95,7 +95,7 @@
     line-height: 24px;
 }
 .faq-right {
-    border: 1px solid $border-color-gery; border-radius: 14px;
+    border: 1px solid $border-color-gery; border-radius: 14px; height: 760px;
 }
 .faq-right .ck-sticky-panel {
     display: none !important;
@@ -118,9 +118,7 @@
 .user-action span img {
     padding-right: 2px;
 }
-.faq-contents .ck-content {
-    min-height: 328px; height: fit-content;
-}
+
 .faq-attach-down img {
     padding: 0 5px;
 }
@@ -139,17 +137,15 @@
 }
 .faq-comment-wrapper textarea {
     flex-grow: 2;
-    margin-right: 10px;
     border: none;
     padding: 10px;
-    height: fit-content;
 }
 .faq-comment-wrapper textarea:focus {
     outline: none;
 }
 .faq-comment-wrapper button {
     width: 69px;
-    height: 44px;
+    // height: 44px;
     background: #323232;
     border-radius: 5px;
     padding-left: 1px;
@@ -157,8 +153,25 @@
     border: none;
 }
 .faq-comment-list {
-    padding : 10px 20px;
+    padding : 10px 20px; background-color: $board-color-grey;
 
+}
+.comment-input {
+    display: flex;
+    flex-direction: column;
+    width: 620px;
+}
+.comment-input span {
+    height: 24px;
+    background: white;
+    border-bottom: 1px solid $border-color-gery; font-weight: 600;
+    font-size: 12px;
+    line-height: 24px; padding-left: 10px;
+} 
+.comment-cnt-title {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px; padding-left: 10px;
 }
 .faq-comment-list > ul > li {
     padding: 10px 0;
@@ -170,11 +183,22 @@
     font-weight: 600;
     font-size: 14px;
 }
-.faq-comment-list > ul > li span:nth-child(2) {
-    font-weight: 600;
-    font-size: 13px;
+.comment-top div span:first-child {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px; letter-spacing: 0.01em; padding-right: 10px;
 }
-.faq-comment-list > ul > li span:last-child {
+.comment-top div span:last-child{
+    font-weight: 400;
+font-size: 12px;
+line-height: 24px; letter-spacing: 0.01em;
+}
+.comment-bottom span {
+    font-weight: 600;
+font-size: 12px;
+line-height: 24px; padding: 0 3px;
+}
+.faq-comment-list > ul > li .comment-top span p {
     font-weight: 400;
     font-size: 13px;
     color: $txt-color-edit;
@@ -186,6 +210,26 @@
 .ag-root-wrapper {
     border: none !important;
 }
+
+.faq-right {
+    overflow: auto; 
+  }
+  
+  /* 스크롤바 스타일링 */
+  .faq-right::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .faq-right::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  
+  .faq-right::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+
+  
 .faq-contents .pagination li{
     margin: 0 5px;
 }
@@ -202,7 +246,7 @@
 .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
     border: none;
     border-top: 1px solid $border-color-gery;
-    border-bottom: 1px solid $border-color-gery;    overflow-y: scroll;
+    border-bottom: 1px solid $border-color-gery; padding: 20px;
 }
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
@@ -217,7 +261,9 @@
     left: 80px !important; width: /*fit-content*/ 90% !important; text-align: left !important;
     }
     .faq-right-top {
-        height: 100px; padding: 15px 30px;
+        height: 100px; padding: 15px 30px; position: sticky; top: 0;
+        z-index: 300;
+        background: white;
     }
     .faq-right-top > p {
         font-weight: 700; font-size: 24px; line-height: 30px;
