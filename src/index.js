@@ -4,9 +4,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <App />
+    <App isMobile={isMobile}/>
 );
 
 // If you want to start measuring performance in your app, pass a function

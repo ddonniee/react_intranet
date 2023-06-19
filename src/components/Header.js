@@ -6,8 +6,9 @@ import Profile from '../assets/svgs/icon_profile.svg'
 import Seeker from '../assets/svgs/icon_seeking.svg'
 import Link from '../assets/svgs/icon_link.svg'
 import Polygon from '../assets/svgs/icon_polygon.svg'
+import Hamburger from '../assets/svgs/icon_hamburger.svg'
 
-import { generateRandomString, outsideClickHandler } from '../utils/CommonFunction';
+import { generateRandomString, detectUserAgent } from '../utils/CommonFunction';
 
 function Header() {
 
@@ -110,6 +111,10 @@ function Header() {
         setThirdMenuList([])
     }
     
+    const handleClickHamburger = e => {
+        console.log('handleClickHamburger')
+    }
+    
 
     useEffect(() => {
 
@@ -165,22 +170,47 @@ function Header() {
         useEffect(()=>{
             console.log(thirdMenuList)
         },[thirdMenuList])
+
+        const [isMobile, setIsMobile] = useState();
+        const checkUserAgent = () => {
+            let agent = detectUserAgent();
+            setIsMobile(agent==='pc'?false:true)
+        }
+        useEffect(()=>{
+            checkUserAgent()
+        },[])
+
         
     return (
         <Nav upperDepth={currentTab.upperTab} lowerDepth={currentTab.lowerTab} thirdDepth={thirdMenuList?.thirdMenuList}>
         <div className="top-nav" >
             <div className="nav-logo"><img src={Logo} alt='logo' onClick={handleClickLogo}/><div className='division'></div><p>CS PORTAL</p></div>
-            <div className="nav-category">
+           
+               {
+                !isMobile
+                &&
+                <div className="nav-category">
                 <ul className='nav-lists'>
-                    <li id='support'  onClick={handleClickTab}>Support{currentTab.upperTab==='support' && <div className='nav-underline'></div>}</li>
-                    <li id='business' onClick={handleClickTab}>Business<img className='link-icon' src={Link} alt='link' /><div className='nav-division'></div></li>
-                    <li id='contents' onClick={handleClickTab}>Contents<img className='link-icon' src={Link} alt='link' /><div className='nav-division'></div></li>
-                    <li id='training' onClick={handleClickTab}>Training<img className='link-icon' src={Link} alt='link' /><div className='nav-division'></div></li>
-                </ul>
+                <li id='support'  onClick={handleClickTab}>Support{currentTab.upperTab==='support' && <div className='nav-underline'></div>}</li>
+                <li id='business' onClick={handleClickTab}>Business<img className='link-icon' src={Link} alt='link' /><div className='nav-division'></div></li>
+                <li id='contents' onClick={handleClickTab}>Contents<img className='link-icon' src={Link} alt='link' /><div className='nav-division'></div></li>
+                <li id='training' onClick={handleClickTab}>Training<img className='link-icon' src={Link} alt='link' /><div className='nav-division'></div></li>
+            </ul>
             </div>
+               }
+            
             <div className="nav-info">
-                <div className='profile' onClick={handleClickProfile}><div className='profile-circle'><img src={Profile} alt='user-profile'/></div></div>
+                {
+                    !isMobile
+                    &&
+                    <div className='profile' onClick={handleClickProfile}><div className='profile-circle'><img src={Profile} alt='user-profile'/></div></div>
+                }
                 <div className='search'><img src={Seeker} alt='whole-search'/></div>
+                {
+                    isMobile
+                    &&
+                    <div className='ham_btn'><img src={Hamburger} alt='nav-btn' onClick={handleClickHamburger}/></div> 
+                }
             </div>
         </div>
 

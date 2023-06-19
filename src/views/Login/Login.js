@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 
 import { styled } from "styled-components";
-import Zendesk from "../../components/Zendesk";
-import Alert from "../../components/Alert";
 
-import Reload from '../../assets/svgs/icon_reload.svg'
-import Link from '../../assets/svgs/icon_more.svg'
-import Check from '../../assets/svgs/icon_check.svg'
-import { generateRandomString } from "../../utils/CommonFunction";
+// views
+import Header from "../../components/Header";
+// modal
 import Join from "./Modal/Join";
 import FindPW from "./Modal/FindPW";
 import Password from "./Modal/Password";
 import Otp from "./Modal/Otp";
 import TempOtp from "./Modal/TempOtp";
+// components
+import Zendesk from "../../components/Zendesk";
+import Alert from "../../components/Alert";
+// icons
+import Reload from '../../assets/svgs/icon_reload.svg'
+import Link from '../../assets/svgs/icon_more.svg'
+import Check from '../../assets/svgs/icon_check.svg'
+// functions
+import { detectUserAgent, generateRandomString } from "../../utils/CommonFunction";
+
 
 
 const Login = () =>{
@@ -38,10 +45,10 @@ const Login = () =>{
     // OTP 인증 로그인 여부
     const [isOtp, setIsOtp] = useState(false);
     const linkList = [
-        {title : `REQUEST \n NEW ACCOUNT`, value:'join'},
-        {title : `FORGET \n PASSWORD`, value:'find-pw'},
-        {title : `OTP KEY \n REQUEST`, value:'req-otp'},
-        {title : `OTP TEMPORARY \n PASSWORD`, value:'req-tmp-otp'},
+        {title : `REQUEST NEW ACCOUNT`, value:'join'},
+        {title : `FORGET PASSWORD`, value:'find-pw'},
+        {title : `OTP KEY REQUEST`, value:'req-otp'},
+        {title : `OTP TEMPORARY PASSWORD`, value:'req-tmp-otp'},
     ]
     const handleCheckLogin = e => {
         // 로그인 처리
@@ -94,14 +101,26 @@ const Login = () =>{
         }
     }
 
+    const [isMobile, setIsMobile] = useState();
+    const checkUserAgent = () => {
+        let agent = detectUserAgent();
+        setIsMobile(agent==='pc'?false:true)
+    }
+    useEffect(()=>{
+        checkUserAgent()
+    },[])
     return (
         <>
         <Style disable={(loginInfo.id === '' || loginInfo.pw ==='') && true} >
+            {
+                isMobile &&
+                <Header />
+            }
             <div className="inner-container">
                 <div className="login-background">
                     <div className="login-area">
-                        <div className="login-top"><span className="welcome-title">Welcome to LG CS portal</span></div>
-                        <div className="login-middle custom-justify-between" >
+                        <div className="login-top"><span className="welcome-title">{isMobile ? 'Login' : 'Welcome to LG CS portal' } </span></div>
+                        <div className="login-middle" >
                             <div className="login-info-left">
                                 <input type="text" id="login-id" placeholder="USER ID"  onChange={handleChangeInput}/>
                                 <input type="password" id="login-pw" placeholder="PASSWORD"  onChange={handleChangeInput}/>
@@ -154,7 +173,11 @@ const Login = () =>{
                     </div>
                    
                 </div>
-                <Zendesk />
+                {
+                    !isMobile
+                    &&
+                    <Zendesk />
+                }
                     {
                         failModal
                         &&

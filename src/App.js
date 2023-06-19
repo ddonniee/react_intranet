@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes,useLocation } from "react-router-dom";
 import routes from "./routes";
-import './scss/style.scss';
+// import './scss/style.scss';
+// import './m_scss/style.scss';
 
+import {detectUserAgent} from '../src/utils/CommonFunction'
 // test useContext
 import { TestContext } from "./hooks/TestContext";
 
-function App() {
-
-
- 
+function App({isMobile}) {
 
   const [user, setUser] = useState({
     email: 'donnie.lee@pospot.kr',
@@ -20,28 +19,22 @@ function App() {
   let loginCheck = 1;
 
   useEffect(() => {
-    const userAgent = navigator.userAgent;
-
-    if (userAgent.match(/Android/i)) {
-      // 안드로이드 기기에 대한 스타일을 적용하는 로직
-      console.log('Android')
-    } else if (userAgent.match(/iPhone|iPad|iPod/i)) {
-      // iOS 기기에 대한 스타일을 적용하는 로직
-      console.log('Android')
-    } else if (userAgent.match(/Windows/i)) {
-      // Windows 기기에 대한 스타일을 적용하는 로직
-      console.log('Windows')
-    } else if (userAgent.match(/Mac/i)) {
-      // Mac 기기에 대한 스타일을 적용하는 로직
-      console.log('Mac')
+    if (isMobile) {
+      import('./m_scss/style.scss');
     } else {
-      // 기타 기기에 대한 스타일을 적용하는 로직
-      console.log('else')
+      import('./scss/style.scss');
     }
 
-  }, []);
-
- 
+    return () => {
+      // 컴포넌트가 언마운트될 때 CSS 파일 제거
+      const linkElements = document.querySelectorAll('link[rel="stylesheet"]');
+      linkElements.forEach((element) => {
+        if (element.href.includes('mobile.css') || element.href.includes('pc.css')) {
+          element.remove();
+        }
+      });
+    };
+  }, [isMobile]);
  
   return (
     <>

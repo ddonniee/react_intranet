@@ -354,15 +354,8 @@ function Faq() {
             return updatedLists;
           });
         }
-      };
-    
-      useEffect(() => {
-        document.addEventListener('mousedown', handleOutsideClick);
-        return () => {
-          document.removeEventListener('mousedown', handleOutsideClick);
-        };
-      }, []);
-
+      }; 
+        
     return (
         <>
         

@@ -1,0 +1,228 @@
+@font-face {
+    font-family: 'LG Smart';
+    src: url('../../assets/font/LGSmart-Light.ttf') format('truetype');
+    font-weight: 300;
+}
+@font-face {
+    font-family: 'LG Smart';
+    src: url('../../assets/font/LGSmart-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+@font-face {
+    font-family: 'LG Smart';
+    src: url('../../assets/font/LGSmart-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+}
+@font-face {
+    font-family: 'LG Smart';
+    src: url('../../assets/font/LGSmart-Bold.ttf') format('truetype');
+    font-weight: 700;
+}
+
+@import '../variables.scss';
+
+/* 공통 */
+* {
+    font-family: 'LG Smart', sans-serif;
+    font-weight: 400;
+    // letter-spacing: -0.02em;
+    letter-spacing: 0.01em;
+    box-sizing: border-box;
+    margin: 0;
+}
+html, body {
+    height: 100%; margin: 0;
+}
+.inner-container {
+    max-width: 1560px;
+    margin: 0 auto; 
+    height: calc(100vh - 50px);
+}
+
+/* 그리드 */
+.ag-theme-alpine {
+    --ag-alpine-active-color: #FAF1F4 !important;
+    --ag-selected-row-background-color: #FAF1F4 !important;
+    --ag-row-hover-color: #FAF1F4 !important;
+    --ag-column-hover-color: #FAF1F4 !important;
+    --ag-input-focus-border-color: #FAF1F4 !important;
+    --ag-range-selection-background-color: #FAF1F4 !important;
+    --ag-range-selection-background-color-2: #FAF1F4 !important;
+    --ag-range-selection-background-color-3: #FAF1F4 !important;
+    --ag-range-selection-background-color-4: #FAF1F4 !important;
+    --ag-invalid-color: #FAF1F4 !important;
+    --ag-checkbox-checked-color: #BB0841 !important;
+    --ag-range-selection-border: none !important;
+    --ag-range-selection-border-color: #BB0841 !important;
+    --ag-input-border-color-invalid: #BB0841 !important;
+    --ag-input-focus-box-shadow: 0 0 2px 0.1rem #FAF1F4 !important;
+}
+
+.ag-header-group-cell-label, .ag-header-cell-label {
+    display: flex;
+    justify-content: center !important;
+}
+
+.ag-header, .ag-row {
+    text-align: center;
+}
+
+.ag-header-cell-text, .ag-header-group-text, .ag-cell-last-left-pinned {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+// .ag-root-wrapper-body.ag-layout-normal {
+//     min-height: 100px !important;
+//     height: 100% !important;
+// }
+
+.ag-body-horizontal-scroll {
+    display: none !important;
+}
+
+.ag-ltr .ag-cell-focus:not(.ag-cell-range-selected):focus-within {
+    // border: 1px solid $primary-color-red !important;
+    border: none !important;
+}
+
+.ag-header-icon.ag-header-cell-menu-button {
+    display: none !important;
+}
+
+.ag-header-cell:not(:nth-last-child(1)),
+.ag-header-group-cell:not(:nth-last-child(1)),
+.ag-ltr .ag-cell:not(:nth-last-child(1)) {
+    border-right: var(--ag-row-border-style) var(--ag-row-border-color) var(--ag-row-border-width) !important;
+}
+
+.ag-cell.cell-span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 페이징 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul.pagination li {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #e2e2e2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    margin: 0 5px;
+}
+
+ul.pagination li:first-child{
+    border-radius: 5px 0 0 5px;
+}
+
+ul.pagination li:last-child{
+    border-radius: 0 5px 5px 0;
+}
+
+ul.pagination li a {
+    text-decoration: none;
+    color: $chart-color-grey;
+    font-size: 1rem;
+}
+
+ul.pagination li.active a {
+    color: $primary-color-red; 
+    font-weight: 600;
+}
+
+ul.pagination li.active {
+    background-color: white !important; 
+    border: 2px solid $primary-color-red; 
+    border-radius: 6px;
+}
+
+ul.pagination li a:hover,
+ul.pagination li a.active {
+    color: $primary-color-red;
+}
+
+.page-selection {
+    width: 48px;
+    height: 30px;
+    color: $hover-color-pink;
+}
+
+.custom-flex-item {
+    display: flex;
+}
+
+.custom-self-align {
+    align-self: center;
+}
+.custom-align-item {
+    align-items: center;
+}
+.custom-hyphen {
+    padding: 0 5px;
+}
+
+.custom-justify-between {
+    justify-content: space-between;
+}
+
+.custom-txt-align {
+    text-align: center;
+}
+
+.custom-hover:hover {
+    background-color: $hover-color-pink; color: $primary-color-red; font-weight: 700;
+}
+
+.primary-red-btn {
+    background-color: $primary-color-red; color: white;
+}
+
+/* 에디터 */
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+    border: none;
+    border-top: 1px solid $border-color-gery;
+    border-bottom: 1px solid $border-color-gery;    
+    overflow-y: scroll;
+}
+
+select:focus,
+input:focus {
+    outline: none;
+}
+.label-txt {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 17px;
+    letter-spacing: 0.025em;
+}
+
+/* 노트북 & PC (해상도 1024px)*/ 
+@media all and (min-width:1024px) {
+    //스타일 입력
+} 
+
+/* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 
+@media all and (min-width:768px) and (max-width:1023px) {
+    //스타일 입력
+} 
+
+/* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/ 
+@media all and (max-width:767px) {
+    //스타일 입력
+}
