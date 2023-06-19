@@ -26,6 +26,8 @@
             border: 1px solid #D8D8D8;
             border-radius: 5px;
             margin: 0 10px;
+            padding: 0 10px;
+            font-size: 16px;
         }
     }
 
@@ -208,5 +210,22 @@
                 }
             }
         }
+    }
+
+    /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 
+    @media all and (min-width:768px) and (max-width:1023px) {
+        .notice-nav {
+            width: 80%;
+            margin-left: 2%;
+        }
+
+        .notice-content {
+            margin: 0 2%;
+        }
+    } 
+
+    /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/ 
+    @media all and (max-width:767px) {
+        //스타일 입력
     }
 }
