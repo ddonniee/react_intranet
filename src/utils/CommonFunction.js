@@ -63,12 +63,9 @@ export const loadCSS =(cssPath)=> {
     )
   ) {
     // 모바일용 CSS 파일 경로
-    alert('모바일환경')
-    loadCSS('../m_scss/style.scss');
     agent = 'mobile'
   } else {
     // PC용 CSS 파일 경로
-    loadCSS('../scss/style.scss');
     agent = 'pc'
   }
   return agent

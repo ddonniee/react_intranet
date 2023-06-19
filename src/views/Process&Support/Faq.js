@@ -33,12 +33,13 @@ import Attachment from '../../assets/svgs/icon_attachment.svg';
 import Download from '../../assets/svgs/icon_download.svg'
 import Like from '../../assets/svgs/icon_like.svg'
 import Dislike from '../../assets/svgs/icon_dislike.svg'
-
+import Comment from '../../assets/svgs/icon_co_comment.svg'
+import More_comment from '../../assets/svgs/icon_co_more.svg'
 
 function Faq() {
 
     let auth = 1;
-
+    const user = useContext(TestContext)
     const [subsidiary, setSubsidiary ] = useState([
         {value:'1',label:'Canada'}, 
         {value:'2',label:'USA'}, 
@@ -275,21 +276,39 @@ function Faq() {
         comments : [
            { 
             writer : 'writer',
+            time : '23.1.29 16:08',
             detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
+            ,comments : [
+                {writer : 'writer',
+                time : '23.1.30 16:00',
+                detail :' lemememlfkmsdlkf dfjkdsn fjksdn gkjdfng kjdsfnpasf dkmldksfj sdlfad sfaslddfj sdf'}
+            ]
             },
              { 
             writer : 'writer',
+            time : '23.1.29 16:08',
             detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
+            ,comments : [
+                {writer : 'writer',
+                time : '23.1.30 16:00',
+                detail :' lemememlfkmsdlkf dfjkdsn fjksdn gkjdfng kjdsfnpasf dkmldksfj sdlfad sfaslddfj sdf'}
+            ]
             },
              { 
             writer : 'writer',
+            time : '23.1.29 16:08',
             detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
+            ,comments : [
+            {writer : 'writer',
+            time : '23.1.30 16:00',
+            detail :' lemememlfkmsdlkf dfjkdsn fjksdn gkjdfng kjdsfnpasf dkmldksfj sdlfad sfaslddfj sdf'}
+           ]
             }
         ],
         like : 11,
         dislike : 7,
     })
-    const [content, setContent] = useState('<h1>How can I invest in LG Electronics? On which exchange is LG Electronics listed and what ard te ticker symbols ?</h1><p>LG Electronics Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p>');
+    const [content, setContent] = useState('<h1>How can I invest in LG Electronics? On which exchange is LG Electronics listed and what ard te ticker symbols ?</h1><p>LG Electronics Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p> <h1>How can I invest in LG Electronics? On which exchange is LG Electronics listed and what ard te ticker symbols ?</h1><p>LG Electronics Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p>');
 
     const [selectedList, setSelctedList] = useState({num:null, title:''});
     const handleClickAction = e => {
@@ -438,17 +457,20 @@ function Faq() {
                             </span>
                         </div>   
                         <div className="user-action custom-flex-item ">
-                            <span className="faq-like custom-flex-item " onClick={handleClickAction}><img src={Like} alt="btn_like"/><p>{detail.dislike}</p></span>   
+                            <span className="faq-like custom-flex-item" onClick={handleClickAction}><img src={Like} alt="btn_like"/><p>{detail.dislike}</p></span>   
                             <span >|</span>
-                            <span className="faq-dislike custom-flex-item " onClick={handleClickAction}><img src={Dislike} alt='btn_dislike'/><p>{detail.dislike}</p></span> 
+                            <span className="faq-dislike custom-flex-item" onClick={handleClickAction}><img src={Dislike} alt='btn_dislike'/><p>{detail.dislike}</p></span> 
                         </div> 
                     </div>
                     <div className="faq-right-middle"><Viewer content={content}/></div>
                     <div className="faq-right-bottom">
                         <div className="faq-comment-wrapper">
-                            <span>Comments</span>
-                            <div>
-                                <textarea/>
+                            <span>Comments</span><span className="comment-cnt-title">total <p className="custom-stress-txt comment-cnt">{detail.comments.length}</p></span>
+                            <div className="custom-justify-between">
+                                <div className="comment-input">
+                                    <span>Writer : {user.name}</span>
+                                    <textarea/>
+                                </div>
                                 <button>Write</button>
                             </div>
                         </div>
@@ -457,7 +479,30 @@ function Faq() {
                                 {
                                     detail.comments?.map((comment,idx)=>{
                                         return(
-                                            <li className="custom-flex-item custom-justify-between"><span>{comment.detail.slice(0,100)}</span><span>{comment.writer}</span><span className="custom-flex-item"><p>Edit</p><p>|</p><p>Delete</p></span></li>
+                                            <li>
+                                                <div className="comment-top custom-flex-item custom-justify-between">
+                                                    <div>
+                                                        <span>{comment.writer}</span>
+                                                        <span>{comment.time}</span>
+                                                    </div>
+                                                    <span className="custom-flex-item">
+                                                        <p>Delete</p><p>Answer</p>
+                                                    </span>
+                                                </div>
+                                                <div className="comment-middle">{comment.detail.slice(0,250)}{comment.detail.length>250 && <span className="custom-stress-txt">...More</span>}</div>
+                                                <div className="comment-bottom custom-flex-item custom-align-self">
+                                                    {comment.comments?.map((c,idx)=>{
+                                                        return (
+                                                            <>
+                                                            <img src={Comment} alt="under-comment" />
+                                                            <span>Comment</span>
+                                                            <span className="custom-stress-txt">{comment.comments.length}</span>
+                                                            <img src={More_comment} alt="under-comment" />
+                                                            </>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </li>
                                         )
                                     })
                                 }

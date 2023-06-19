@@ -29,8 +29,11 @@
     letter-spacing: 0.01em;
     box-sizing: border-box;
     margin: 0;
+    
 }
-
+html, body{
+    height: 100vh;
+}
 .inner-container {
     max-width: 1560px;
     margin: 0 auto; 
@@ -161,6 +164,14 @@ ul.pagination li a.active {
 }
 
 /* 공통 CSS */
+.custom-stress-txt {
+    color: $primary-color-red;
+}
+
+.comment-cnt{
+    display: contents;
+}
+
 .custom-flex-item {
     display: flex;
 }
@@ -197,8 +208,7 @@ ul.pagination li a.active {
 .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
     border: none;
     border-top: 1px solid $border-color-gery;
-    border-bottom: 1px solid $border-color-gery;    
-    overflow-y: scroll;
+    border-bottom: 1px solid $border-color-gery;   
 }
 
 select:focus,
