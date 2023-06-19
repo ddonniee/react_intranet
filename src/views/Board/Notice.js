@@ -11,7 +11,7 @@ import Pagination from "react-js-pagination"
 import { generateRandomString } from "../../utils/CommonFunction"
 
 import '../../scss/style.scss';
-import { ReactComponent as SearchIcon } from '../../assets/svgs/icon_searchbtn.svg';
+import { ReactComponent as SearchIcon } from '../../assets/svgs/icon_seeking.svg';
 import { ReactComponent as SpeakerIcon } from '../../assets/svgs/icon_speaker.svg';
 import { ReactComponent as NewIcon } from '../../assets/svgs/icon_new.svg';
 import { ReactComponent as AttachmentIcon } from '../../assets/svgs/icon_attachment.svg';
@@ -134,19 +134,9 @@ function Notice() {
         console.log(selectedList)
     }, [selectedList])
 
-    const subOptions = [
-        { value: 'LGEAI', label: 'LGEAI' },
-        { value: 'LGEAI2', label: 'LGEAI2' },
-    ]
-
-    const centerOptions = [
+    const viewOptions = [
         { value: 'ASC', label: 'ASC' },
         { value: 'ASC2', label: 'ASC2' },
-    ]
-
-    const branchOptions = [
-        { value: 'NW', label: 'NW' },
-        { value: 'NW2', label: 'NW2' },
     ]
 
     const handleSelectBox = (event,params) => {
@@ -175,12 +165,12 @@ function Notice() {
                 </div>
                 <div className="custom-flex-item custom-align-item">
                     <p>· View</p>
-                    <SelectBox options={centerOptions} onChange={handleSelectBox} />
+                    <SelectBox options={viewOptions} onChange={handleSelectBox} />
                 </div>
                 <div className="custom-flex-item custom-align-item">
                     <p>· Search</p>
                     <input type="text" className="notice-nav-input"></input>
-                    <SearchIcon />
+                    <button type="submit" className="notice-nav-btn custom-flex-item custom-align-item"> <SearchIcon /> </button>
                 </div>
                 {/* </div> */}
             </div>
@@ -220,12 +210,9 @@ function Notice() {
                             onChange={setPage} // 페이지 변경을 핸들링하는 함수
                         />
                     }
-                    <div className="notice-bottom">
-                        <button className="notice-btn-circle">Write</button>
-                    </div>
                 </div>
                 <div className="notice-right">
-                    <div className="notice-right-top">
+                    <div className="notice-view-top">
                         <p className="notice-title">{detail.title}</p>
                         <p className="notice-title-detail">
                             <span>Writer</span> : {detail.writer} &nbsp;
@@ -242,7 +229,7 @@ function Notice() {
                             </span>
                         </div>
                     </div>
-                    <div className="notice-right-middle"> <Viewer content={content}/> </div>
+                    <div className="notice-view-middle"> <Viewer content={content}/> </div>
                 </div>
             </div>
             </Style>

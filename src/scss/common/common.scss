@@ -160,6 +160,7 @@ ul.pagination li a.active {
     color: $hover-color-pink;
 }
 
+/* 공통 CSS */
 .custom-flex-item {
     display: flex;
 }
@@ -167,9 +168,11 @@ ul.pagination li a.active {
 .custom-self-align {
     align-self: center;
 }
+
 .custom-align-item {
     align-items: center;
 }
+
 .custom-hyphen {
     padding: 0 5px;
 }
