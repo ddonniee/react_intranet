@@ -31,13 +31,17 @@
     margin: 0;
     
 }
+
 html, body, #root{
     height: 100vh;
 }
+
 .inner-container {
     max-width: 1560px;
-    margin: 0 auto; height: calc(100vh - 81px);
+    margin: 0 auto;
+    height: calc(100vh - 81px);
 }
+
 .write-btn {
     position: absolute;
     bottom: 0;
@@ -49,10 +53,12 @@ html, body, #root{
     display: flex;
     align-items: center;
     justify-content: center; 
+
     span {
         font-weight: 600; font-size: 14px; line-height: 16px; text-align: center; letter-spacing: 0.025em;
     }
 }
+
 /* 그리드 */
 .ag-theme-alpine {
     --ag-alpine-active-color: #FAF1F4 !important;
@@ -87,17 +93,11 @@ html, body, #root{
     line-height: 19px;
 }
 
-// .ag-root-wrapper-body.ag-layout-normal {
-//     min-height: 100px !important;
-//     height: 100% !important;
-// }
-
 .ag-body-horizontal-scroll {
     display: none !important;
 }
 
 .ag-ltr .ag-cell-focus:not(.ag-cell-range-selected):focus-within {
-    // border: 1px solid $primary-color-red !important;
     border: none !important;
 }
 
