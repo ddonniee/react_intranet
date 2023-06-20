@@ -31,12 +31,12 @@
     margin: 0;
     
 }
-html, body{
+html, body, #root{
     height: 100vh;
 }
 .inner-container {
     max-width: 1560px;
-    margin: 0 auto; 
+    margin: 0 auto; height: calc(100vh - 81px);
 }
 
 /* 그리드 */
