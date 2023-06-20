@@ -4,7 +4,7 @@ import axios from 'axios';
 
 /** axios instance */
 export const axiosInstance = axios.create({
-    baseURL: 'https://www.ag-grid.com', // 서버 나오면 수정
+    baseURL: process.env.REACT_APP_SERVER_URL, // 서버 나오면 수정
     headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('Token'),
         'Content-Type': 'multipart/form-data'
@@ -12,7 +12,7 @@ export const axiosInstance = axios.create({
 });
 
 export const axiosJsonInstance = axios.create({
-    baseURL: 'https://www.ag-grid.com',
+    baseURL: process.env.REACT_APP_SERVER_URL,
     headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('Token'),
         'Content-Type': 'application/json; charset=utf-8'
