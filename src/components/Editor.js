@@ -29,7 +29,7 @@ function Editor() {
                 <div className="editor-top">
                     <div>
                         <label className="label-txt">· Writer</label>
-                        <input></input>
+                        <input disabled ></input>
                     </div>
                     <div>
                         <label className="label-txt">· Date</label>

@@ -105,6 +105,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     const handleSelectBox = useCallback((event) => {
         const selectedNodes = event.api.getSelectedNodes();
         const selectedData = selectedNodes.map((node) => node.data);
+        console.log(selectedData)
         checkedItems(selectedData);
       }, [checkedItems]);
 

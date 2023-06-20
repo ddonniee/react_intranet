@@ -31,6 +31,9 @@
 .code-right button:first-child {
     background-color: white; border: 1px solid $line-color-grey; margin-right: 11px;
 }
+.code-right .right-detail {
+    max-width: 580px;
+}
 .code-right .right-detail span {
     font-weight: 600;
 font-size: 16px;

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState,useLayoutEffect} from "react"
 import Header from "../../components/Header"
 import Zendesk from "../../components/Zendesk"
 import Top from "../../components/Top"
@@ -9,6 +9,8 @@ import SelectBoxRenderer from "../../components/SelectBoxRenderer"
 import Search from '../../assets/svgs/icon_seeking.svg'
 import AgGrid from "../../components/AgGrid";
 import EditCelldata from "../../components/EditCelldata"
+import axios from "axios"
+import { axiosJsonInstance, axiosTestInstance } from "../../utils/CommonFunction"
 
 function CommonCodeMangement() {
 
@@ -19,157 +21,35 @@ function CommonCodeMangement() {
     // if(loginCheck===0) {
     //     document.location.href='/login';
     // }
-    const [codeList, setCodeList] = useState([
-        {
-            isCheck : true,
-            id : 1,
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 2,
-            codeName : 'Mailing',
-            description : 'Mailing address',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 3,
-            codeName : 'SUB a',
-            description : 'SUB',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 4,
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 5,
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        }
-    ])
-    const [rowData, setRowData] = useState([
-        {
-            isCheck : true,
-            id : 'C0001',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 'C0002',
-            codeName : 'Mailing',
-            description : 'Mailing address',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 'C0003',
-            codeName : 'SUB a',
-            description : 'SUB',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 'C0004',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 'C0005',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 'C0001',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 'C0006',
-            codeName : 'Mailing',
-            description : 'Mailing address',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 'C0007',
-            codeName : 'SUB a',
-            description : 'SUB',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 'C0008',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 'C0009',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 'C0010',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : false
-        },
-        {
-            isCheck : true,
-            id : 'C00011',
-            codeName : 'Mailing',
-            description : 'Mailing address',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 'C0012',
-            codeName : 'SUB a',
-            description : 'SUB',
-            isUse : false
-        },
-        {
-            isCheck : true,
-            id : 'C0013',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        },
-        {
-            isCheck : true,
-            id : 'C0014',
-            codeName : 'EW PERIOD',
-            description : 'EW Period',
-            isUse : true
-        }
-    ]);
+
+    
+    const [rowData, setRowData] = useState([]);
     /** TEST DATA END */
+
     /** check item sates */
+    const [codeList, setCodeList] = useState([])
     const [codeCheckedList, setCodeCheckedList] = useState([]);
     const [detailCheckedList, setDetailCheckedList] = useState([]);
 
-    const handleSelectBox = (event,params) => {
+    const [reqData, setReqData] = useState({
+        useYn: 'All',
+        keyword : '', // code ID,Name 만
+      })  
+
+    const handleValueSearch = event => {
+        let value = event.target.value;
+        setReqData({
+            ...reqData,
+            keyword: value
+        })
+    }
+    const handleSelectBox = (event) => {
         console.log(event.value)
+        let value = event.value;
+        setReqData({
+            ...reqData,
+         useYn: value
+        })
     }
     const handleCellValueChanged = params => {
         const {data} = params;
@@ -183,25 +63,52 @@ function CommonCodeMangement() {
         console.log('handlelelelellel')
         const {data} = params;
         console.log('data',data.id)
-        setCodeList((prev)=> {
-            prev.map((item)=>(item.id===data.id ? data : item))
-        })
+        // setCodeList((prev)=> {
+        //     prev.map((item)=>(item.id===data.id ? data : item))
+        // })
     }
 
+    const handleSearchCode = () => {
+
+        console.log(reqData,';;;;;;;;;;;;;;;;;;;;;;;;')
+        var FormData = require('form-data');
+        var data = new FormData();
+        data.append('useYn', reqData.useYn);
+        if(reqData.keyword!=='') {
+            data.append('keyword', reqData.keyword);
+        } 
+        
+        var config = {
+          method: 'post',
+            maxBodyLength: Infinity,
+            // url: process.env.REACT_APP_SERVER_URL+'/codeManagement/list',
+        //   headers: { 
+        //     ...data.getHeaders()
+        //   },
+          data : data
+        };
+
+        axiosJsonInstance('/codeManagement/list', config).then(res=>{
+            let rawData = res.data.result
+            setCodeList(rawData)
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
     /** AG grid columns */
 
       const [codeColumn, setCodeColumn] = useState([
-        { headerName: '' , field: 'isCheck', checkboxSelection: true,  headerCheckboxSelection: true, width:100 },
-        { headerName: 'ID' ,field: 'id',editable:true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell} , width:200},
-        { headerName: 'Code Name' ,field: 'codeName',editable:true,  cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell}, width:200},
-        { headerName: 'Code Description' ,field: 'description',editable:true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell}, width:200 },
+        { headerName: '' , field: '', checkboxSelection: true,  headerCheckboxSelection: true, width:100 },
+        { headerName: 'ID' ,field: 'CODE_ID',editable:true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell} , width:200},
+        { headerName: 'Code Name' ,field: 'CODE_NAME',editable:true,  cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell}, width:200},
+        { headerName: 'Code Description' ,field: 'DESCRIPTION',editable:true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell}, width:200 },
         {
             headerName: 'Use Y/N',
-            field: 'isUse',
+            field: 'USE_YN',
             cellRendererFramework: SelectBoxRenderer,
             cellRendererParams: {
               column: {
-                options: [{label : 'Y', value:true}, {label:'N', value:false}],
+                options: [{label : 'Y', value:'Y'}, {label:'N', value:'N'}],
               },
               handleChange: handleSelectBox,
             },
@@ -209,18 +116,18 @@ function CommonCodeMangement() {
           },
     ])
     
-    const columnDefs = [
-        { headerName: '', field: 'isCheck',checkboxSelection: true, headerCheckboxSelection: true  },
-        { headerName: 'Code ID', field: 'id',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
-        { headerName: 'Code Name', field: 'codeName',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
-        { headerName: 'Code Description', field: 'description',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
+    const checkedColumn = [
+        { headerName: '', field: '',checkboxSelection: true, headerCheckboxSelection: true  },
+        { headerName: 'Code ID', field: 'CODE_ID',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
+        { headerName: 'Code Name', field: 'CODE_NAME',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
+        { headerName: 'Code Description', field: 'DESCRIPTION',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         {
           headerName: 'Use Y/N',
-          field: 'isUse',
+          field: 'Use Y/N',
           cellRendererFramework: SelectBoxRenderer,
           cellRendererParams: {
             column: {
-              options: [{label : 'Y', value:true}, {label:'N', value:false}],
+              options: [{label : 'Y', value:'Y'}, {label:'N', value:'N'}],
             },
             handleChange: handleSelectBox,
           },
@@ -231,9 +138,9 @@ function CommonCodeMangement() {
 
     // select box options
     const [dropSelect, setDropSelect ] = useState([
-        {value:'all',label:'ALL'}, 
-        {value:'true',label:'Y'}, 
-        {value:'false',label:'N'}, 
+        {value:'All',label:'ALL'}, 
+        {value:'Y',label:'Y'}, 
+        {value:'N',label:'N'}, 
     ])
     
       const addCode = e => {
@@ -250,6 +157,16 @@ function CommonCodeMangement() {
         }
       }
       
+      // API test
+
+      useLayoutEffect(()=>{
+        handleSearchCode()
+      },[])
+
+      useEffect(()=>{
+        console.log('reqData',reqData)
+      },[reqData])
+
     return (
         <>
         <Header />
@@ -264,8 +181,8 @@ function CommonCodeMangement() {
                             <div className="custom-self-align">· Use Y/B</div>
                             <SelectBox options={dropSelect} handleChange={handleSelectBox} />
                             <div className="custom-self-align search-txt">· Search</div>
-                            <input />
-                            <div className="search-wrapper"><img src={Search} alt='search-btn'/></div>
+                            <input onChange={handleValueSearch}/>
+                            <div className="search-wrapper" onClick={handleSearchCode}><img src={Search} alt='search-btn'/></div>
                         </div>
                        
                         <div className="left-search-btn custom-self-align">
@@ -280,7 +197,10 @@ function CommonCodeMangement() {
                 <div className="code-right custom-flex-item custom-justify-between" >
                   <div className="right-detail custom-self-align">
                     <span>Code Detail</span>
-                    <span>(C0001)</span>
+                   <span>
+                        ({codeCheckedList.map((item,idx) => <> {item.CODE_ID}
+                        {idx !== codeCheckedList.length - 1 && ','}</>)})
+                    </span>
                   </div>
                   <div className="right-search-btn custom-self-align">
                                 <button onClick={addCode} className="code-detail">Add Code</button>
@@ -291,8 +211,8 @@ function CommonCodeMangement() {
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList}  changeValue={setCodeList}/></div>
-                <div><AgGrid column={columnDefs} data={rowData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>
+                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList}  changeValue={setCodeList}/></div>}
+                {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={codeCheckedList} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>}
             
             </div>
             <Zendesk />
