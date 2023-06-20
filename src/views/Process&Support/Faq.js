@@ -509,10 +509,11 @@ function Faq() {
                             </ul>
                         </div>
                     </div>
+                    <Zendesk />
                 </div>
             </div>
 
-            <Zendesk />
+           
         </div>
         </Style>
         </>

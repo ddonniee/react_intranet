@@ -24,30 +24,60 @@ function Editor() {
         // 에디터 설정 커스터마이징시 활성화
       };
     return (
-        <>
-        <CKEditor
-            editor={ ClassicEditor }
-            data="<p>Hello from CKEditor 5!</p>"
-            // config={editorConfig}
-            onReady={ editor => {
-                // You can store the "editor" and use when it is needed.
-                console.log( 'Editor is ready to use!', editor );
-            } }
-            onChange={ ( event, editor ) => {
-                const data = editor.getData();
-                const dbTxt = encodeURIComponent(data)
-                setTxt(dbTxt)
-                console.log( { txt, data } );
-            } }
-            onBlur={ ( event, editor ) => {
-                console.log( 'Blur.', editor );
-            } }
-            onFocus={ ( event, editor ) => {
-                console.log( 'Focus.', editor );
-            } }
-        />
-        <button onClick={(e)=>console.log(e)}>save</button>
-        </>
+        <div className="editor-wrapper">
+            <form>
+                <div className="editor-top">
+                    <div>
+                        <label className="label-txt">· Writer</label>
+                        <input></input>
+                    </div>
+                    <div>
+                        <label className="label-txt">· Date</label>
+                        <input></input>
+                    </div>
+                    <div>
+                        <label className="label-txt">· Subject</label>
+                        <input></input>
+                    </div>
+                </div>
+                <div className="editor-middle">
+                    <div className="custom-flex-item custom-justify-between">
+                        <label className="label-txt">· Detail</label>
+                        <CKEditor
+                        editor={ ClassicEditor }
+                        data="<p>Hello from CKEditor 5!</p>"
+                        // config={editorConfig}
+                        onReady={ editor => {
+                            // You can store the "editor" and use when it is needed.
+                            console.log( 'Editor is ready to use!', editor );
+                        } }
+                        onChange={ ( event, editor ) => {
+                            const data = editor.getData();
+                            const dbTxt = encodeURIComponent(data)
+                            setTxt(dbTxt)
+                            console.log( { txt, data } );
+                        } }
+                        onBlur={ ( event, editor ) => {
+                            console.log( 'Blur.', editor );
+                        } }
+                        onFocus={ ( event, editor ) => {
+                            console.log( 'Focus.', editor );
+                        } }
+                    />
+                    </div>
+                    <div>
+                        <label className="label-txt">· Attachment</label>
+                        <div></div>
+                        <label htmlFor="file-btn">Select</label>
+                        <input type="file" style={{display:'none'}} id="file-btn"></input>
+                    </div>
+                </div>
+                <div className="editor-bottom">
+                    <button onClick={(e)=>console.log(e)}>Cancel</button>
+                    <button className="primary-red-btn" onClick={(e)=>console.log(e)}>Save</button>
+                </div>
+            </form>
+        </div>
     )
 }
 export default Editor

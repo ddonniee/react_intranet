@@ -28,6 +28,7 @@ import Like from '../../assets/svgs/icon_like.svg'
 import Dislike from '../../assets/svgs/icon_dislike.svg'
 import Comment from '../../assets/svgs/icon_co_comment.svg'
 import More_comment from '../../assets/svgs/icon_co_more.svg'
+import Editor from "../../components/Editor"
 
 function CStalk() {
 
@@ -46,6 +47,8 @@ function CStalk() {
         {value:'8',label:'Indonesia'}
     ])
 
+    const [isWrite, setIsWrite] = useState(false); // 글 작성시 에디터 on, viewer off
+    
     const handleSelectSubsidiary = e => {
         console.log('handleSelectSubsidiary')
     }
@@ -163,19 +166,6 @@ function CStalk() {
 
     const [selectedList, setSelctedList] = useState({ num: null, title: '' });
 
-    const handleClickRow = (e, item) => {
-        if(selectedList.num === null || selectedList.num !== item.num) {
-            setSelctedList(item)
-        }else {
-            setSelctedList({ num: null, title: '' })
-        }
-    }
-    const handleClickAction = e => {
-        console.log('handleClickAction')
-    }
-    useEffect( ()=> {
-        console.log(selectedList)
-    }, [selectedList])
 
     const subOptions = [
         { value: 'LGEAI', label: 'LGEAI' },
@@ -203,6 +193,17 @@ function CStalk() {
           }
     }
 
+    const handleClickRow = (e, item) => {
+        if(selectedList.num === null || selectedList.num !== item.num) {
+            setSelctedList(item)
+        }else {
+            setSelctedList({ num: null, title: '' })
+        }
+    }
+    const handleClickAction = e => {
+        console.log('handleClickAction')
+    }
+
     return (
         <div className="notice-container faq-container">
         <Header />
@@ -210,6 +211,7 @@ function CStalk() {
             {/** auth 권한체크로 수정 필요 */}
             <Top auth={1} searchArea={false}/>
             {/** Search Nav */}
+            <div>
             <div className="notice-nav custom-flex-item">
                 {/* <div className="nav-left"> */}
                 <div className="notice-nav-box custom-flex-item custom-align-item">
@@ -258,8 +260,14 @@ function CStalk() {
                         />
                     }
                     {/* <AgGrid data={boardData} column={column} paging={true} /> */}
+                    <div className="write-btn" onClick={()=>setIsWrite(!isWrite)}><span>Write</span></div>
                 </div>
-                <div className="faq-right" >
+                {
+                    isWrite
+                    ?
+                    <Editor />
+                    :
+                    <div className="faq-right" >
                     <div className="faq-right-top">
                         <p>{detail.title}</p>
                         <div className="custom-flex-item">
@@ -320,9 +328,11 @@ function CStalk() {
                         </div>
                     </div>
                 </div>
+                }
             </div>
 
             <Zendesk />
+            </div>
         </div>
         </div>
     )

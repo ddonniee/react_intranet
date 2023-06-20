@@ -38,7 +38,21 @@ html, body, #root{
     max-width: 1560px;
     margin: 0 auto; height: calc(100vh - 81px);
 }
-
+.write-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 61px;
+    height: 61px;
+    border-radius: 50%;
+    background: $primary-color-red; color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    span {
+        font-weight: 600; font-size: 14px; line-height: 16px; text-align: center; letter-spacing: 0.025em;
+    }
+}
 /* 그리드 */
 .ag-theme-alpine {
     --ag-alpine-active-color: #FAF1F4 !important;
@@ -205,10 +219,15 @@ ul.pagination li a.active {
 }
 
 /* 에디터 */
-.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+.ck.ck-editor {
+    width: 588px;
+}
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused),
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-blurred) {
     border: none;
     border-top: 1px solid $border-color-gery;
     border-bottom: 1px solid $border-color-gery;   
+    min-height: 430px; padding: 20px; 
 }
 
 select:focus,
@@ -221,7 +240,33 @@ input:focus {
     line-height: 17px;
     letter-spacing: 0.025em;
 }
-
+.editor-top > div {
+    display: flex;
+    padding: 20px;
+    align-items: center;height: 70px;
+    label,
+    .label-txt {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 17px; letter-spacing: 0.025em;
+        width: 120px;
+        
+    }
+    input {
+        flex-grow: 4; border: none; border-bottom: 1px solid $border-color-gery
+    }
+}
+.editor-middle > div:first-child {
+    padding: 20px;
+}
+.editor-middle {
+    .label-txt {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 17px; letter-spacing: 0.025em;
+        width: 120px;
+    }
+}
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
     //스타일 입력
