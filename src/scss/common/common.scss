@@ -222,6 +222,7 @@ ul.pagination li a.active {
 .ck.ck-editor {
     width: 588px;
 }
+
 .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused),
 .ck.ck-editor__main>.ck-editor__editable:not(.ck-blurred) {
     border: none;
@@ -234,12 +235,14 @@ select:focus,
 input:focus {
     outline: none;
 }
+
 .label-txt {
     font-weight: 600;
     font-size: 16px;
     line-height: 17px;
     letter-spacing: 0.025em;
 }
+
 .editor-top > div {
     display: flex;
     padding: 20px;
@@ -256,9 +259,11 @@ input:focus {
         flex-grow: 4; border: none; border-bottom: 1px solid $border-color-gery
     }
 }
+
 .editor-middle > div:first-child {
     padding: 20px;
 }
+
 .editor-middle {
     .label-txt {
         font-weight: 600;
@@ -267,6 +272,40 @@ input:focus {
         width: 120px;
     }
 }
+
+/* 데이트피커 */
+.custom-cal {
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    padding: 0 10px;
+
+    .custom-picker {
+        display: flex;
+        align-items: center;
+        border: none;
+        background-color: var(--ag-selected-row-background-color);
+        box-sizing: border-box;
+        width: 100%;
+        height: 40px;
+        color: #5F5F5F;
+        font-size: 16px;
+        line-height: 19px;
+       
+        // border: 1px solid #CCCCCC;
+        // border-radius: 5px;
+        // padding: 10px;
+
+        // &:focus {
+        //     border: 2px solid $primary-color-red;
+        // }
+    }
+
+    svg {
+        margin-bottom: -3px;
+    }
+}
+
+
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
     //스타일 입력

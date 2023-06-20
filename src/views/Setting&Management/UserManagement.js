@@ -122,22 +122,6 @@ function UserManagement() {
             cellEditorParams: {handleLeftCell}
         },
         { 
-            headerName: 'Phone No',
-            field: 'phoneNo',
-            resizable: false,
-            cellEditorFramework: EditCelldata, 
-            singleClickEdit: true, 
-            cellEditorParams: {handleLeftCell}
-        },
-        { 
-            headerName: 'Mobile No',
-            field: 'mobileNo',
-            resizable: false,
-            cellEditorFramework: EditCelldata, 
-            singleClickEdit: true, 
-            cellEditorParams: {handleLeftCell}
-        },
-        { 
             headerName: 'Job Type',
             field: 'jobType',
             resizable: false,
