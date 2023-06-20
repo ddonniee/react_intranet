@@ -63,9 +63,9 @@ function CommonCodeMangement() {
         console.log('handlelelelellel')
         const {data} = params;
         console.log('data',data.id)
-        // setCodeList((prev)=> {
-        //     prev.map((item)=>(item.id===data.id ? data : item))
-        // })
+        setCodeList((prev)=> {
+            prev.map((item)=>(item.id===data.id ? data : item))
+        })
     }
 
     const handleSearchCode = () => {
@@ -97,27 +97,27 @@ function CommonCodeMangement() {
     }
     /** AG grid columns */
 
-      const [codeColumn, setCodeColumn] = useState([
-        { headerName: '' , field: '', checkboxSelection: true,  headerCheckboxSelection: true, width:100 },
-        { headerName: 'ID' ,field: 'CODE_ID',editable:true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell} , width:200},
-        { headerName: 'Code Name' ,field: 'CODE_NAME',editable:true,  cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell}, width:200},
-        { headerName: 'Code Description' ,field: 'DESCRIPTION',editable:true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleLeftCell}, width:200 },
+    const [codeColumn, setCodeColumn] = useState([
+        { headerName: '', field: '', checkboxSelection: true, headerCheckboxSelection: true, width: 100 },
+        { headerName: 'ID', field: 'CODE_ID', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
+        { headerName: 'Code Name', field: 'CODE_NAME', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
+        { headerName: 'Code Description', field: 'DESCRIPTION', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
         {
-            headerName: 'Use Y/N',
-            field: 'USE_YN',
-            cellRendererFramework: SelectBoxRenderer,
-            cellRendererParams: {
-              column: {
-                options: [{label : 'Y', value:'Y'}, {label:'N', value:'N'}],
-              },
-              handleChange: handleSelectBox,
+          headerName: 'Use Y/N',
+          field: 'USE_YN',
+          cellRendererFramework: SelectBoxRenderer,
+          cellRendererParams: {
+            column: {
+              options: [{ label: 'Y', value: 'Y' }, { label: 'N', value: 'N' }],
             },
-            width:200
+            handleChange: handleSelectBox,
           },
-    ])
+          width: 200
+        },
+      ]);
     
+
     const checkedColumn = [
-        { headerName: '', field: '',checkboxSelection: true, headerCheckboxSelection: true  },
         { headerName: 'Code ID', field: 'CODE_ID',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         { headerName: 'Code Name', field: 'CODE_NAME',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         { headerName: 'Code Description', field: 'DESCRIPTION',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
@@ -143,19 +143,12 @@ function CommonCodeMangement() {
         {value:'N',label:'N'}, 
     ])
     
-      const addCode = e => {
-        let title = e.target.className;
-        // 코드 등록
-        if(title==='code') {
-            const newRow = { id: codeList.length + 1,  isCheck : true, codeName : '-', description : '', isUse : false};
-            setCodeList([...codeList, newRow])
-        } 
-        // 코드 정보 등록
-        else if(title==='code-detail') {
-            const newRow = { id: rowData.length + 1,  isCheck : true, codeName : '-', description : '', isUse : false};
-            setRowData([...rowData, newRow])
-        }
-      }
+       
+        const addCode = () => {
+            const newItem = { CODE_ID: '', CODE_NAME: '', DESECRIPTION : '', USE_YN : 'Y' };
+            setCodeList(prevData => [...prevData, newItem]);
+          };
+
       
       // API test
 
@@ -167,6 +160,37 @@ function CommonCodeMangement() {
         console.log('reqData',reqData)
       },[reqData])
 
+      
+      const [testData, setTestData] = useState([])
+      useEffect(() => {
+
+        var data = new FormData();
+        var arr = new Array();
+
+        codeCheckedList.forEach(item=>arr.push(item.CODE_ID));
+
+        data.append('codeIdList', JSON.stringify(arr));
+        
+        var config = {
+          method: 'post',
+            maxBodyLength: Infinity,
+        //   headers: { 
+        //     ...data.getHeaders()
+        //   },
+          data :data
+        };
+        axiosJsonInstance('/codeManagement/subList', config).then(res=>{
+            let rawData = res.data.result
+            setTestData(rawData)
+            // setCodeList(rawData)
+            console.log(res,'res')
+        }).catch((error)=>{
+            console.error(error)
+        })
+
+      }, [codeCheckedList]);
+      
+      
     return (
         <>
         <Header />
@@ -211,8 +235,8 @@ function CommonCodeMangement() {
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList}  changeValue={setCodeList}/></div>}
-                {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={codeCheckedList} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>}
+                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList}  changeValue={setCodeList} /></div>}
+                {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>}
             
             </div>
             <Zendesk />

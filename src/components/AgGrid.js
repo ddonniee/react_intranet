@@ -61,9 +61,9 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     }, [data, isModify]);
 
     const onGridReady = useCallback((params) => {
-        // setRowData(data)
-        // setColumnDefs(column)
-        // gridRef.current.api.sizeColumnsToFit();
+        setRowData(data)
+        setColumnDefs(column)
+        gridRef.current.api.sizeColumnsToFit();
     }, []);
 
     const defaultColDef = useMemo(()=> ({
@@ -105,11 +105,11 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     const handleSelectBox = useCallback((event) => {
         const selectedNodes = event.api.getSelectedNodes();
         const selectedData = selectedNodes.map((node) => node.data);
-        console.log(selectedData)
         checkedItems(selectedData);
       }, [checkedItems]);
 
       const handleCellValueChanged = params =>{
+        console.log(params,'===========+++++++++++++++++++++')
         const {data} = params;
         changeValue((prev=>prev.map(item=>item.id===data.id ? data:item)))
       }
@@ -143,11 +143,12 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
                     suppressScrollOnNewData={true}
                     suppressRowClickSelection={true}
                     suppressRowTransform={true}
+                    suppressClickEdit={true}
                     onGridReady={onGridReady}
                     onSelectionChanged={checkbox && handleSelectBox}
                     onCellValueChanged={handleCellValueChanged}
                     // editType="fullRow"
-                    // singleClickEdit={true}
+                    singleClickEdit={true}
                 />
             </div>
             {/* react-js-pagination */}
