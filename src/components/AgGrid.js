@@ -18,7 +18,7 @@ import 'ag-grid-enterprise';
  * }
  * @returns
 */
-const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isModify}) => {
+const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isModify, cellData}) => {
     
     const gridRef = useRef(); // Optional - for accessing Grid's API
     const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
@@ -58,7 +58,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
                 })
             )
         }
-    }, [data, isModify]);
+    }, [data]);
 
     const onGridReady = useCallback((params) => {
         // setRowData(data)
@@ -76,6 +76,9 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
 
     // Example > 그리드 클릭 시 row값 콘솔 출력
     const cellClickedListener = useCallback( e => {
+        if(cellData) {
+            cellData(e.data);
+        }
         console.log('cellClicked', e.data);
     }, []);
 

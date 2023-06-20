@@ -6,7 +6,7 @@ import axios from 'axios';
 export const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL, // 서버 나오면 수정
     headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('Token'),
+        // 'Authorization': 'Bearer ' + localStorage.getItem('Token'),
         'Content-Type': 'multipart/form-data'
     }
 });
