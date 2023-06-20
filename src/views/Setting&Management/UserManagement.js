@@ -105,12 +105,6 @@ function UserManagement() {
         );
     });
 
-    const CustomCellEditor = React.forwardRef((props, ref) => {
-        // Implement your editor UI and logic here
-        return <input type="text" ref={ref} value={props.value} 
-        onChange={(e) => props.setValue(e.target.value)} />;
-      });
-
     const handleLeftCell = params => {
         const {data} = params;
         console.log('data', data.id)
