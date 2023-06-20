@@ -7,6 +7,7 @@ import Zendesk from "../../components/Zendesk"
 import SelectBox from '../../components/SelectBox'
 import Viewer from "../../components/Viewer"
 import Pagination from "react-js-pagination"
+import CustomDatePicker from "../../components/DatePicker"
 
 import { generateRandomString } from "../../utils/CommonFunction"
 
@@ -15,6 +16,7 @@ import { ReactComponent as SearchIcon } from '../../assets/svgs/icon_seeking.svg
 import { ReactComponent as SpeakerIcon } from '../../assets/svgs/icon_speaker.svg';
 import { ReactComponent as NewIcon } from '../../assets/svgs/icon_new.svg';
 import { ReactComponent as MoreIcon } from '../../assets/svgs/icon_more.svg';
+import { ReactComponent as CalendarIcon } from '../../assets/svgs/icon_calendar.svg';
 
 function NoticeSetting() {
 
@@ -226,15 +228,29 @@ function NoticeSetting() {
                     </div>
                     <div className="notice-write-row">
                         <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>
-                        <div className="right radio-row"> 
-                            <span> <input type="radio" className="notice-write-radio" name="release" value="1" checked/>All </span>
-                            <span> <input type="radio" className="notice-write-radio" name="release" value="2"/>LGC </span>
-                            <span> <input type="radio" className="notice-write-radio" name="release" value="3"/>ASC </span>
+                        <div className="right radio-row custom-flex-item"> 
+                            <label id="custom-label">
+                                <input className="hiddenRadio" type="radio" name="release" value="1" />
+                                <div className="showRadio"></div>
+                                <span>All</span>
+                            </label>
+                            <label id="custom-label">
+                                <input className="hiddenRadio" type="radio" name="release" value="2" />
+                                <div className="showRadio"></div>
+                                <span>LGC</span>
+                            </label>
+                            <label id="custom-label">
+                                <input className="hiddenRadio" type="radio" name="release" value="3" />
+                                <div className="showRadio"></div>
+                                <span>ASC</span>
+                            </label>
                         </div>
                     </div>
                     <div className="notice-write-row">
                         <div className="left custom-flex-item custom-align-item"> <p>· Period</p> </div>
-                        <div className="right"> <input type="text" className="notice-write-input"></input> </div>
+                        <div className="right">
+                            <CustomDatePicker isDuration={true} />
+                        </div>
                     </div>
                     <div className="notice-write-row">
                         <div className="left custom-flex-item custom-align-item"> <p>· Subject</p> </div>

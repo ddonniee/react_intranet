@@ -229,7 +229,7 @@
             .notice-write-row {
                 display: flex;
 
-                div {
+                > div {
                     padding: 15px 30px;
                 }
 
@@ -299,6 +299,34 @@
                         line-height: 22px;
                         color: #5F5F5F;
                     }
+
+                    #custom-label {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        cursor: pointer;
+                        font-size: 16px;
+                        color: #5F5F5F;
+
+                        .hiddenRadio {
+                            display: none;
+                        }
+                        
+                        .hiddenRadio:checked + .showRadio {
+                            background: url("../../assets/svgs/icon_radiocheck.svg") no-repeat;
+                            background-size: contain;
+                        }
+                        
+                        .showRadio {
+                            width: 16px;
+                            height: 16px;
+                            padding: 0;
+                            
+                            background: url("../../assets/svgs/icon_radio.svg") no-repeat;
+                            background-size: contain;
+                        }
+                    }
+                    
                 }
             }
 

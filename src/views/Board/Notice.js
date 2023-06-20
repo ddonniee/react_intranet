@@ -158,7 +158,6 @@ function Notice() {
             <Top auth={1} searchArea={false}/>
             {/** Search Nav */}
             <div className="notice-nav">
-                {/* <div className="nav-left"> */}
                 <div className="notice-nav-box custom-flex-item custom-align-item">
                     <p>· Subsidiary</p>
                     <input type="text" className="notice-nav-input"></input>
@@ -172,7 +171,6 @@ function Notice() {
                     <input type="text" className="notice-nav-input"></input>
                     <button type="submit" className="notice-nav-btn custom-flex-item custom-align-item"> <SearchIcon /> </button>
                 </div>
-                {/* </div> */}
             </div>
 
             {/** Content Area */}
