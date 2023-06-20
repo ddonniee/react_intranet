@@ -29,9 +29,23 @@
             padding: 0 10px;
             font-size: 16px;
         }
+
+        .notice-nav-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: $primary-color-red;
+            cursor: pointer;
+            justify-content: center;
+
+            svg {
+                width: 16px;
+            }
+        }
     }
 
-    /* 하단 리스트, 상세페이지 */
+    /* 하단 리스트, 상세페이지(board), 작성페이지(setting) */
     .notice-content {
         display: flex; 
         justify-content: space-between;
@@ -116,7 +130,7 @@
             }
         }
 
-        /* 상세페이지 */
+        /* 상세페이지, 작성페이지 */
         .notice-right {
             border: 1px solid $border-color-gery; 
             border-radius: 14px;
@@ -128,7 +142,8 @@
                 display: none !important;
             }
 
-            .notice-right-top {
+            /* 상세페이지 */
+            .notice-view-top {
                 position: relative;
                 padding: 16px 25px;
 
@@ -183,7 +198,7 @@
                 }
             }
 
-            .notice-right-middle {
+            .notice-view-middle {
                 flex: 1;
 
                 .ck.ck-editor,
@@ -207,6 +222,120 @@
                     font-size: 16px;
                     line-height: 22px;
                     color: #626262;
+                }
+            }
+
+            /* 작성페이지 */
+            .notice-write-row {
+                display: flex;
+
+                div {
+                    padding: 15px 30px;
+                }
+
+                .radio-row {
+                    padding: 25px 30px;
+                }
+
+                .left {
+                    width: 25%;
+                    border-right: 1px solid $line-color-grey;
+                    border-bottom: 1px solid $line-color-grey;
+
+                    p {
+                        font-weight: 600;
+                        font-size: 16px;
+                        line-height: 17px;
+                        color: #2B2B2B;
+                    }
+
+                    svg {
+                        margin-left: 5px;
+                    }
+                }
+
+                .right {
+                    width: 75%;
+                    border-bottom: 1px solid $line-color-grey;
+
+                    span {
+                        margin-right: 20px;
+
+                        input[type=radio] {
+                            margin-right: 5px;
+                        }
+                    }
+
+                    .notice-write-input {
+                        width: 100%;
+                        height: 40px;
+                        background: #FFFFFF;
+                        border: 1px solid #D8D8D8;
+                        border-radius: 5px;
+                        padding: 0 10px;
+                        font-size: 16px;
+                    }
+    
+                    .notice-attach-input {
+                        width: 30%;
+                    }
+
+                    .file-delete-btn {
+                        width: 72px;
+                        height: 40px;
+                        background: #E8E8E8;
+                        border-radius: 100px;
+                        border: none;
+                        margin-left: 11px;
+
+                        font-weight: 600;
+                        font-size: 14px;
+                        line-height: 22px;
+                        color: $primary-color-red;
+                    }
+
+                    .attach-desc {
+                        font-size: 12px;
+                        line-height: 22px;
+                        color: #5F5F5F;
+                    }
+                }
+            }
+
+            .notice-btn-row {
+                display: flex;
+                justify-content: space-between;
+                background: #F2F2F2;
+                padding: 36px 19px;
+
+                button {
+                    width: 88px;
+                    height: 44px;
+                    border-radius: 5px;
+                    font-weight: 600;
+                    font-size: 16px;
+                    line-height: 19px;
+                    cursor: pointer;
+                }
+
+                .notice-btn-black {
+                    border: none;
+                    background: $primary-color-grey;
+                    color: #FFFFFF;
+                }
+                .notice-btn-white {
+                    border: 1px solid $line-color-grey;
+                    background: #FFFFFF;
+                    color: #5F5F5F;
+                }
+                .notice-btn-red {
+                    border: none;
+                    background: $primary-color-red;
+                    color: #FFFFFF;
+                }
+        
+                div button:first-child {
+                    margin-right: 11px;
                 }
             }
         }

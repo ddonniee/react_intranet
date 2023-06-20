@@ -162,12 +162,16 @@ ul.pagination li a.active {
     height: 30px;
     color: $hover-color-pink;
 }
+
+/* 공통 CSS */
 .custom-stress-txt {
     color: $primary-color-red;
 }
+
 .comment-cnt{
     display: contents;
 }
+
 .custom-flex-item {
     display: flex;
 }
@@ -175,9 +179,11 @@ ul.pagination li a.active {
 .custom-self-align {
     align-self: center;
 }
+
 .custom-align-item {
     align-items: center;
 }
+
 .custom-hyphen {
     padding: 0 5px;
 }
