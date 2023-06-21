@@ -7,6 +7,8 @@
 
 # testing
 /coverage
+/src/views/Setting&Management/CommonCodeMangement copy.js
+/src/components/AgGrid copy.js
 
 # production
 /build

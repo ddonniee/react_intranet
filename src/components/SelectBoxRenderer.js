@@ -13,11 +13,11 @@ const SelectBoxRenderer = (params) => {
 
   let columnField = params.data.USE_YN;
   const [selectedValue, setSelectedValue] = useState(columnField);
+
   const handleUserGroupChange = event => {
     let value = event.target.value;
-    console.log(event)
     setSelectedValue(value);
-    // handleChange()
+    // handleChange(value)
   };
 
   return (

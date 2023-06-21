@@ -43,6 +43,7 @@ function CommonCodeMangement() {
             keyword: value
         })
     }
+    // 검색영역 셀렉트박스 이벤트 핸들러
     const handleSelectBox = (event) => {
         console.log(event.value)
         let value = event.value;
@@ -95,6 +96,11 @@ function CommonCodeMangement() {
             console.log(error)
         })
     }
+
+    const handleChangeUse = (e,v) => {
+        let value = e.target
+        console.log(value,v)
+    }
     /** AG grid columns */
 
     const [codeColumn, setCodeColumn] = useState([
@@ -110,7 +116,7 @@ function CommonCodeMangement() {
             column: {
               options: [{ label: 'Y', value: 'Y' }, { label: 'N', value: 'N' }],
             },
-            handleChange: handleSelectBox,
+            handleChange: handleChangeUse,
           },
           valueGetter: function(params) {
             return params.data.name; // 셀의 값을 가져옴
@@ -137,7 +143,7 @@ function CommonCodeMangement() {
             column: {
               options: [{label : 'Y', value:'Y'}, {label:'N', value:'N'}],
             },
-            handleChange: handleSelectBox,
+            handleChange: handleChangeUse,
           },
         },
       ];
@@ -151,7 +157,6 @@ function CommonCodeMangement() {
         {value:'N',label:'N'}, 
     ])
     
-       
         const addCode = () => {
             const newItem = { CODE_ID: '', CODE_NAME: '', DESECRIPTION : '', USE_YN : 'Y' };
             setCodeList(prevData => [...prevData, newItem]);
@@ -200,6 +205,9 @@ function CommonCodeMangement() {
 
       }, [codeCheckedList]);
       
+      useEffect(()=>{
+        console.log(codeList)
+      },[codeList])
       
     return (
         <>

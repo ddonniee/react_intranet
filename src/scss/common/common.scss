@@ -35,7 +35,10 @@
 html, body, #root{
     height: 100vh;
 }
-
+.cell-select-box > *:hover {
+    background-color: $hover-color-pink;
+    border: none;
+  }
 .inner-container {
     max-width: 1560px;
     margin: 0 auto;
@@ -100,9 +103,15 @@ html, body, #root{
 .ag-body-horizontal-scroll {
     display: none !important;
 }
-
+.ag-cell-focus, 
+.ag-cell-inline-editing {
+    background-color: white; font-weight: 700;
+}
+.ag-cell-inline-editing input {
+    border: none !important; text-align: center;
+}
 .ag-ltr .ag-cell-focus:not(.ag-cell-range-selected):focus-within {
-    border: none !important;
+    border: 1px solid $primary-color-red !important;
 }
 
 .ag-header-icon.ag-header-cell-menu-button {
