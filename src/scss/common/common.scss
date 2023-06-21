@@ -78,7 +78,8 @@ html, body, #root{
     --ag-range-selection-border-color: #BB0841 !important;
     --ag-input-border-color-invalid: #BB0841 !important;
     --ag-input-focus-box-shadow: 0 0 2px 0.1rem #FAF1F4 !important;
-    min-height: 700px; height: min-content;
+    min-height: 700px; 
+    height: min-content;
 }
 
 .ag-header-group-cell-label, .ag-header-cell-label {

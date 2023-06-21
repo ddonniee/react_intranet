@@ -101,10 +101,13 @@
             flex: 1;
         }
 
+        .ag-theme-alpine {    
+            height: 50vh !important;
+        }
     }
 
     .row-select {
-        padding: 5px 2px;
+        padding: 5px;
         border: 1px solid #CCCCCC;
         border-radius: 5px;
     }
