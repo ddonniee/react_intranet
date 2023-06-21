@@ -408,6 +408,16 @@ function KpiPerformance() {
         { value: 'NW2', label: 'NW2' },
     ]
 
+    const divOptions = [
+        { value: 'ASC', label: 'ASC' },
+        { value: 'ASC2', label: 'ASC2' },
+    ]
+
+    const prodOptions = [
+        { value: 'NW', label: 'NW' },
+        { value: 'NW2', label: 'NW2' },
+    ]
+
     const handleSelectBox = (event,params) => {
         const { data } = params.node;
         const { checked } = event.target;
@@ -499,7 +509,7 @@ function KpiPerformance() {
                             <p>· Subsidiary</p> <SelectBox options={subOptions} onChange={handleSelectBox} />
                         </div>
                         <div className='nav-search'>
-                            <p>· Division</p> <SelectBox options={branchOptions} onChange={handleSelectBox} />
+                            <p>· Division</p> <SelectBox options={divOptions} onChange={handleSelectBox} />
                         </div>
                     </div>
                     <div className='nav-box'>
@@ -507,7 +517,7 @@ function KpiPerformance() {
                             <p>· Center</p> <SelectBox options={centerOptions} onChange={handleSelectBox} />
                         </div>
                         <div className='nav-search'>
-                            <p>· Product</p> <SelectBox options={branchOptions} onChange={handleSelectBox} />
+                            <p>· Product</p> <SelectBox options={prodOptions} onChange={handleSelectBox} />
                         </div>
                     </div>
                     <div className='nav-box'>
@@ -515,7 +525,7 @@ function KpiPerformance() {
                             <p>· Branch</p> <SelectBox options={branchOptions} onChange={handleSelectBox} />
                         </div>
                         <div className='nav-search' style={{visibility: "hidden"}}>
-                            <p>· Branch</p> <SelectBox />
+                            <p>· Branch</p> <SelectBox options={subOptions} />
                         </div>
                     </div>
                 </div>

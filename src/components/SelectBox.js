@@ -24,7 +24,7 @@ const SelectBox = (props) => {
             options={options}
             onChange={handleChange}
             styles={customStyles}
-            
+            defaultValue={options[0]}
         />
     )
 }
