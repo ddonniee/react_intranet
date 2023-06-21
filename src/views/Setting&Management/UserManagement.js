@@ -16,7 +16,7 @@ function UserManagement() {
 
     /* 검색 영역 ****************************************************************/
     const subOptions = [
-        { value: 'LGEAI', label: 'LGEAI' },
+        { value: 'LGEAI', label: 'LGEAI', checked: true },
         { value: 'LGEAI2', label: 'LGEAI2' },
     ]
 
@@ -55,10 +55,19 @@ function UserManagement() {
     const handleButtonClick = (bool) => {
         setIsModify(bool);
 
-        // setRowData((prevCol) =>
-        //     prevCol.map((col, i) => {
-        //         return {...col, editable: bool};
-        // }))
+        setColumn((prevCol) =>
+            prevCol.map((col, i) => {
+                // console.log(col.field === 'jobType' ? 'ddd' : 'sss')
+                if(col.field === 'jobType') {
+                    console.log('@@@@@@@@@@@@@@@@@@@@@@@', col)
+                    return {...col, cellRendererFramework: SelectBoxRendererEdit};
+                }
+        }))
+        setRowData((prevCol) =>
+            prevCol.map((col, i) => {
+                console.log('???????????????????????????',col)
+                return {...col, editable: bool};
+        }))
         // setTimeout(() => {
         //     console.log('??????????????????', rowData)
         // }, 1000);
@@ -114,6 +123,7 @@ function UserManagement() {
     }
 
     const [rowData, setRowData] =  useState([]); // 사용자 목록
+    const [originData, setOriginData] = useState([]); // 기존 사용자 목록
     const [column, setColumn] = useState([ // 컬럼 값 설정
         { 
             headerName: 'No',
@@ -178,7 +188,7 @@ function UserManagement() {
             field: 'jobType',
             resizable: false,
             cellRendererFramework: SelectBoxRenderer,
-            cellEditorFramework: SelectBoxRendererEdit,
+            // cellEditorFramework: SelectBoxRendererEdit,
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
         },
@@ -192,45 +202,70 @@ function UserManagement() {
         // 사용자목록 조회 API
         axiosInstance.post('/userManagement/list'/*, searchData*/).then(res => {
             const array = res?.data.result;
-            console.log('사용자 목록 ---->', res)
+            // console.log('사용자 목록 ---->', res)
 
             const newArray = array.map((obj, index) => ({
                 ...obj,
                 id: index + 1
             }));
             setRowData(newArray);
+            setOriginData(array);
             
         }).catch(error => {
             console.error(error);
         });
     }
 
+    // console.log('origin?????????', originData[0])
+    // console.log('modify??????????', rowData[0])
+
     useEffect(() => {
         getList();
         console.log('searchData ---->', searchData)
-    }, [searchData]);    
+    }, [searchData]);
 
     const [editData, setEditData] = useState();
 
     console.log('editData ---->', editData?.userId, '/', editData?.jobType);
 
-    useEffect(() => {
-        //
-    }, [editData])
+    const extractChangedPart = (originalArray, modifiedArray) => {
+        const changedPart = [];
+      
+        originalArray.forEach((item, index) => {
+          const modifiedItem = modifiedArray[index];
+          if ((JSON.stringify(item.userId) === JSON.stringify(modifiedItem.userId)) &&
+            (JSON.stringify(item.jobType) !== JSON.stringify(modifiedItem.jobType))) {
+            changedPart.push({ userId: modifiedItem.userId, jobType: modifiedItem.jobType });
+          }
+        });
+      
+        return changedPart;
+    }
+
+    const editUserTest = () => {
+        const changedPart = extractChangedPart(originData, rowData);
+        console.log('change??????????', rowData)
+        console.log('origin??????????', originData)
+        
+        console.log('change ---->', changedPart)
+    }
 
     const editUser = () => {
-        const formData = new FormData();
-        formData.append('userId', editData?.userId);
-        formData.append('jobType', editData?.jobType);
+        // const formData = new FormData();
+        // formData.append('userId', editData?.userId);
+        // formData.append('jobType', editData?.jobType);
+        const changedPart = extractChangedPart(originData, rowData);
+        const changedUser = JSON.stringify(changedPart);
         
-        console.log('editUser ---->', Object.fromEntries(formData));
+        console.log('editUser ---->', changedUser);
         
         // 사용자정보 수정 API
-        axiosInstance.post('/userManagement/update', formData).then(res => {    
+        axiosJsonInstance.post('/userManagement/update', changedUser).then(res => {    
             let resdata = res.data;
-            console.log('update >>>>>>>>>>', resdata);
+            
             if(resdata.code == 200) {
               getList();
+              alert('바뀜');
             } else {
               alert(resdata.msg);
             }

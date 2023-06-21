@@ -14,7 +14,7 @@ export const axiosInstance = axios.create({
 export const axiosJsonInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
     headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('Token'),
+        // 'Authorization': 'Bearer ' + localStorage.getItem('Token'),
         'Content-Type': 'application/json; charset=utf-8'
     }
 });
