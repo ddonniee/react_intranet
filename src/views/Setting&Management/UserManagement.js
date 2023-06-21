@@ -16,7 +16,7 @@ function UserManagement() {
 
     /* 검색 영역 ****************************************************************/
     const subOptions = [
-        { value: 'LGEAI', label: 'LGEAI', checked: true },
+        { value: 'LGEAI', label: 'LGEAI' },
         { value: 'LGEAI2', label: 'LGEAI2' },
     ]
 
