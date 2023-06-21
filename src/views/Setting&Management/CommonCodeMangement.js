@@ -10,7 +10,8 @@ import Search from '../../assets/svgs/icon_seeking.svg'
 import AgGrid from "../../components/AgGrid";
 import EditCelldata from "../../components/EditCelldata"
 import axios from "axios"
-import { axiosJsonInstance, axiosTestInstance } from "../../utils/CommonFunction"
+import { axiosInstance, axiosJsonInstance, axiosTestInstance, getBrowserLanguage } from "../../utils/CommonFunction"
+import Alert from "../../components/Alert"
 
 function CommonCodeMangement() {
 
@@ -22,7 +23,10 @@ function CommonCodeMangement() {
     //     document.location.href='/login';
     // }
 
-    
+    /** Check User region */
+    let browserLanguage = getBrowserLanguage();
+   
+
     const [rowData, setRowData] = useState([]);
     /** TEST DATA END */
 
@@ -35,6 +39,10 @@ function CommonCodeMangement() {
         useYn: 'All',
         keyword : '', // code ID,Name 만
       })  
+
+    /** Alert Modal */
+    const [alertModal, setAlertModal] = useState(false);
+    const [alertTxt, setAlertTxt] = useState('');
 
     const handleValueSearch = event => {
         let value = event.target.value;
@@ -60,18 +68,24 @@ function CommonCodeMangement() {
         })
     }
 
-    const handleLeftCell = params => {
-        console.log('handlelelelellel')
-        const {data} = params;
-        console.log('data',data.id)
-        setCodeList((prev)=> {
-            prev.map((item)=>(item.id===data.id ? data : item))
-        })
-    }
+    useEffect(()=>{
+        console.log('rowData :', rowData)
+    },[rowData])
+
+    const handleLeftCell = (field, id, value) => {
+        setCodeList((prev) => {
+          return prev.map((item) => {
+            if (item.codeId === id) {
+              return { ...item, 
+                [field]: value };
+            }
+            return item;
+          });
+        });
+      };
 
     const handleSearchCode = () => {
 
-        console.log(reqData,';;;;;;;;;;;;;;;;;;;;;;;;')
         var FormData = require('form-data');
         var data = new FormData();
         data.append('useYn', reqData.useYn);
@@ -90,27 +104,71 @@ function CommonCodeMangement() {
         };
 
         axiosJsonInstance('/codeManagement/list', config).then(res=>{
-            let rawData = res.data.result
-            setCodeList(rawData)
+            let rawData = res.data.result;
+            let updatedData = rawData.map(item => ({
+              ...item,
+              type: 'update'
+            }));
+            setCodeList(updatedData);
         }).catch((error)=>{
             console.log(error)
         })
     }
 
-    const handleChangeUse = (e,v) => {
-        let value = e.target
-        console.log(value,v)
+    const handleChangeUse = (id,value) => {
+        setCodeList((prev) => {
+            return prev.map((item) => {
+              if (item.codeId === id) {
+                return { ...item, 
+                  useYn : value };
+              }
+              return item;
+            });
+          });
     }
     /** AG grid columns */
 
-    const [codeColumn, setCodeColumn] = useState([
+
+
+    const onSaveEditCode = e => {
+
+        var config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        // headers: { },
+        data : codeList
+        };
+
+        axiosJsonInstance('/codeManagement/update',config)
+        .then(function (response) {
+            let resData = response.data;
+            console.log(resData.code===200)
+            if(resData.code===200) {
+                setAlertTxt(`You've inserted or updated code information`)
+            }else {
+                setAlertTxt('Fail')
+            }
+        })
+        .catch(function (error) {
+        console.log(error);
+        });
+
+    }
+
+    useEffect(()=>{
+        if(alertTxt!=='') {
+            setAlertModal(true)
+        }
+    },[alertTxt])
+
+    const codeColumn =[
         { headerName: '', field: '', checkboxSelection: true, headerCheckboxSelection: true, width: 100 },
-        { headerName: 'ID', field: 'CODE_ID', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
-        { headerName: 'Code Name', field: 'CODE_NAME', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
-        { headerName: 'Code Description', field: 'DESCRIPTION', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
+        { headerName: 'ID', field: 'codeId', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
+        { headerName: 'Code Name', field: 'codeName', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
+        { headerName: 'Code Description', field: 'description', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
         {
           headerName: 'Use Y/N',
-          field: 'USE_YN',
+          field: 'useYn',
           cellRendererFramework: SelectBoxRenderer,
           cellRendererParams: {
             column: {
@@ -128,16 +186,16 @@ function CommonCodeMangement() {
           },
           width: 200
         },
-      ]);
+      ]
     
 
     const checkedColumn = [
-        { headerName: 'Code ID', field: 'CODE_ID',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
-        { headerName: 'Code Name', field: 'CODE_NAME',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
-        { headerName: 'Code Description', field: 'DESCRIPTION',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
+        { headerName: 'Code ID', field: 'codeId',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
+        { headerName: 'Code Name', field: 'codeName',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
+        { headerName: 'Code Description', field: 'description',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         {
           headerName: 'Use Y/N',
-          field: 'Use Y/N',
+          field: 'useYn',
           cellRendererFramework: SelectBoxRenderer,
           cellRendererParams: {
             column: {
@@ -158,7 +216,7 @@ function CommonCodeMangement() {
     ])
     
         const addCode = () => {
-            const newItem = { CODE_ID: '', CODE_NAME: '', DESECRIPTION : '', USE_YN : 'Y' };
+            const newItem = { codeId: '', codeName: '', description : '', useYn : 'Y' };
             setCodeList(prevData => [...prevData, newItem]);
           };
 
@@ -184,7 +242,7 @@ function CommonCodeMangement() {
         var arr = new Array();
 
         console.log(arr)
-        codeCheckedList.forEach(item=>arr.push(item.CODE_ID));
+        codeCheckedList.forEach(item=>arr.push(item.codeId));
         
         var config = {
           method: 'post',
@@ -229,7 +287,7 @@ function CommonCodeMangement() {
                        
                         <div className="left-search-btn custom-self-align">
                                 <button onClick={addCode} className="code">Add Code</button>
-                                <button className="primary-red-btn">Save</button>
+                                <button className="primary-red-btn" onClick={onSaveEditCode}>Save</button>
                         </div>
                     </div>
 
@@ -240,7 +298,7 @@ function CommonCodeMangement() {
                   <div className="right-detail custom-self-align">
                     <span>Code Detail</span>
                    <span className="max-length-txt">
-                        ({codeCheckedList.map((item,idx) => <> {idx < 6 ? item.CODE_ID : null}
+                        ({codeCheckedList.map((item,idx) => <> {idx < 6 ? item.codeId : null}
                         {(idx < 5 && idx !== codeCheckedList.length - 1) && ','}</>)}
                         {
                             codeCheckedList.length > 6 ? '... )' : ')'
@@ -256,11 +314,15 @@ function CommonCodeMangement() {
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList}  changeValue={setCodeList} /></div>}
+                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true}/></div>}
                 {/* {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>} */}
                 <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>
             </div>
             <Zendesk />
+           {
+            alertModal &&
+            <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} btnTxt='Close' twoBtn={false} />
+           }
        </div>
         </>
     )
