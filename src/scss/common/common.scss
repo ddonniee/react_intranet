@@ -58,7 +58,9 @@ html, body, #root{
         font-weight: 600; font-size: 14px; line-height: 16px; text-align: center; letter-spacing: 0.025em;
     }
 }
-
+.max-length-txt {
+    text-overflow: ellipsis; 
+}
 /* 그리드 */
 .ag-theme-alpine {
     --ag-alpine-active-color: #FAF1F4 !important;

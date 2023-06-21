@@ -112,6 +112,14 @@ function CommonCodeMangement() {
             },
             handleChange: handleSelectBox,
           },
+          valueGetter: function(params) {
+            return params.data.name; // 셀의 값을 가져옴
+          },
+          valueSetter: function(params) {
+            params.data.name = params.newValue; // 셀의 값을 설정함
+            // 여기서 params.data.defaultValue를 사용하여 셀의 초기값을 설정할 수 있음
+            return true;
+          },
           width: 200
         },
       ]);
@@ -164,12 +172,14 @@ function CommonCodeMangement() {
       const [testData, setTestData] = useState([])
       useEffect(() => {
 
-        var data = new FormData();
+        if(codeCheckedList.length===0) {
+            setTestData([])
+            return 
+        }
         var arr = new Array();
 
+        console.log(arr)
         codeCheckedList.forEach(item=>arr.push(item.CODE_ID));
-
-        data.append('codeIdList', JSON.stringify(arr));
         
         var config = {
           method: 'post',
@@ -177,7 +187,7 @@ function CommonCodeMangement() {
         //   headers: { 
         //     ...data.getHeaders()
         //   },
-          data :data
+          data :arr
         };
         axiosJsonInstance('/codeManagement/subList', config).then(res=>{
             let rawData = res.data.result
@@ -221,9 +231,12 @@ function CommonCodeMangement() {
                 <div className="code-right custom-flex-item custom-justify-between" >
                   <div className="right-detail custom-self-align">
                     <span>Code Detail</span>
-                   <span>
-                        ({codeCheckedList.map((item,idx) => <> {item.CODE_ID}
-                        {idx !== codeCheckedList.length - 1 && ','}</>)})
+                   <span className="max-length-txt">
+                        ({codeCheckedList.map((item,idx) => <> {idx < 6 ? item.CODE_ID : null}
+                        {(idx < 5 && idx !== codeCheckedList.length - 1) && ','}</>)}
+                        {
+                            codeCheckedList.length > 6 ? '... )' : ')'
+                        }
                     </span>
                   </div>
                   <div className="right-search-btn custom-self-align">
@@ -236,8 +249,8 @@ function CommonCodeMangement() {
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
                 {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList}  changeValue={setCodeList} /></div>}
-                {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>}
-            
+                {/* {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>} */}
+                <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>
             </div>
             <Zendesk />
        </div>
