@@ -102,11 +102,12 @@
         }
 
         .ag-theme-alpine {    
-            height: 50vh !important;
+            min-height: 100vh !important;
         }
     }
 
     .row-select {
+        width: 100%;
         padding: 5px;
         border: 1px solid #CCCCCC;
         border-radius: 5px;
