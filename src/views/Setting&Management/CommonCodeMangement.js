@@ -81,10 +81,25 @@ function CommonCodeMangement() {
         console.log('rowData :', rowData)
     },[rowData])
 
-    const handleLeftCell = (field, id, value) => {
+    const handleLeftCell = (field, seq, id, value) => {
+        
+        console.log(field, seq, id, value)
+        if (field === 'codeId') {
+            let codeIdExists = false;
+            codeList.forEach((item) => {
+              if (item.codeSeq !== seq && item.codeId === value) {
+                setAlertTxt('The Code ID already exists.');
+                codeIdExists = true;
+              }
+            });
+            if (codeIdExists) {
+              return;
+            }
+        }
+        console.log('실행되면 안됨')
         setCodeList((prev) => {
           return prev.map((item) => {
-            if (item.codeId === id) {
+            if (item.codeSeq === seq) {
               return { ...item, 
                 [field]: value };
             }
@@ -135,34 +150,44 @@ function CommonCodeMangement() {
             });
           });
     }
+    
+    const handleCellClick = () => {
+        console.log('eee')
+    }
     /** AG grid columns */
 
     const [isNewCode, setIsNewCode] = useState(false)
 
+    const handleCheckId = () =>{
+
+        if(isNewCode) {
+            console.log('handleCheckId')
+            let newItems = [];
+            codeList.map(item=>{
+                item.type==='insert' && newItems.push(item)
+            })
+            codeList.map(item=>{
+                newItems.map(newItem=>{
+                    (item.codeId===newItem.codeId && item.codeSeq !== newItem.codeSeq && newItem.codeId !== '') && 
+                    setAlertTxt('The Code ID already exist.')
+                    return false;
+                })
+            })
+        }
+    }
     const addCode = () => {
-        const newItem = { codeId: '', codeName: '', description : '', useYn : 'Y', type:'insert' };
+        console.log('addCode')
+        const newItem = { codeSeq: codeList.length+1, codeId: '', codeName: '', description : '', useYn : 'Y', type:'insert' };
         setCodeList(prevData => [...prevData, newItem]);
         setIsNewCode(true)
         };
 
     const onSaveEditCode = e => {
 
-        if(isNewCode) {
+        console.log(codeList)
 
-            let newItems = [];
-            codeList.map(item=>{
-                item.type==='insert' && newItems.push(item.codeId)
-            })
-            codeList.map(item=>{
-                newItems.map(newItem=>{
-                    (item.codeId===newItem && item.type !=='insert') && 
-                    setAlertTxt('The Code ID already exist.')
-                    return false;
-                })
-            })
-            
-            return false;
-        }
+        // return false
+        
         var config = {
         method: 'post',
         maxBodyLength: Infinity,
@@ -176,19 +201,20 @@ function CommonCodeMangement() {
             console.log(resData.code===200)
             if(resData.code===200) {
                 setAlertTxt(`You've inserted or updated code information`)
+                handleSearchCode()
             }else {
                 setAlertTxt('Fail')
             }
         })
         .catch(function (error) {
-        console.log(error);
+                console.log('error',error);
         });
 
     }
 
       const codeColumn =[
         { headerName: '', field: '', checkboxSelection: true, headerCheckboxSelection: true, width: 100 },
-        { headerName: 'ID', field: 'codeId', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
+        { headerName: 'ID', field: 'codeId', editable: false, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
         { headerName: 'Code Name', field: 'codeName', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
         { headerName: 'Code Description', field: 'description', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
         {
@@ -226,6 +252,7 @@ function CommonCodeMangement() {
               options: [{label : 'Y', value:'Y'}, {label:'N', value:'N'}],
             },
             handleChange: handleChangeUse,
+            handleCellClick: handleCellClick,
           },
         },
       ];
@@ -236,10 +263,16 @@ function CommonCodeMangement() {
         }
     },[alertTxt])
 
+    useEffect(()=>{
+        if(!alertModal) {
+            setAlertTxt('')
+        }
+    },[alertModal])
   
       // API test
 
       useLayoutEffect(()=>{
+      
         handleSearchCode()
       },[])
       
@@ -275,7 +308,9 @@ function CommonCodeMangement() {
       }, [codeCheckedList]);
       
       useEffect(()=>{
+        console.log(isNewCode, alertModal)
         console.log(codeList)
+        handleCheckId();
       },[codeList])
       
     return (
@@ -325,7 +360,7 @@ function CommonCodeMangement() {
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false} checkbox checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true}/></div>}
+                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true}/></div>}
                 {/* {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>} */}
                 <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>
             </div>
