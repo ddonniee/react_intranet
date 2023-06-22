@@ -3,7 +3,7 @@ import Select from 'react-select';
 
 const SelectBox = (props) => {
     
-    const {options, handleChange, name} = props;
+    const {options, handleChange} = props;
 
     const customStyles = {
         control: (provided, state) => ({

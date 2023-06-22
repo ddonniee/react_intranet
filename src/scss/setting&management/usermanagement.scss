@@ -111,5 +111,9 @@
         padding: 5px;
         border: 1px solid #CCCCCC;
         border-radius: 5px;
+
+        :disabled {
+            color: $primary-color-grey;
+        }
     }
 }
