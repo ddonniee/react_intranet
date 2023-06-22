@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback, useLayoutEffect } from 'react';
-import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
+// import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
+import { AgGridReact } from '@ag-grid-community/react';
 import Pagination from "react-js-pagination";
 
 import '../scss/style.scss';
-import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
-import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
-import 'ag-grid-enterprise';
+import '@ag-grid-community/styles/ag-grid.css';
+import '@ag-grid-community/styles/ag-theme-alpine.css';
+// import 'ag-grid-enterprise';
 
 /**
  *  작성자 : 원은정
