@@ -14,29 +14,26 @@ import { ReactComponent as IntersectIcon } from '../../assets/svgs/icon_intersec
 
 function UserManagement() {
 
+    // 로그인유저 정보
+    // const USER_INFO = sessionStorage.getItem('UserInfo');
+
+    const USER_CORP_CODE = 'LGEAI' // 로그인유저 법인코드
+    const USER_CENTER_TYPE = 'ASC' // 로그인유저 센터타입
+
     /* 검색 영역 ****************************************************************/
     const [searchData, setSearchData] = useState(); // 검색데이터
 
-    const [subOptions, setSubOptions] = useState();
-    // const subOptions = [
-    //     { value: 'LGEAI', label: 'LGEAI', group: 'corporationCode' },
-    //     { value: 'LGEKR', label: 'LGEKR', group: 'corporationCode' },
-    //     { value: 'LGEES', label: 'LGEES', group: 'corporationCode' },
-    // ]
+    const [subOptions, setSubOptions] = useState([]); // 법인 selectbox 데이터
+    // const [centerOptions, setCenterOptions] = useState([]); // 센터타입 selectbox 데이터
+    const [branchOptions, setBranchOptions] = useState([]); // 브랜치 selectbox 데이터
 
     const centerOptions = [
         { value: 'LGC', label: 'LGC', group: 'centerType' },
         { value: 'ASC', label: 'ASC', group: 'centerType' },
     ]
 
-    const branchOptions = [
-        { value: 'Harper electric shop', label: 'Harper electric shop', group: 'branchCode' },
-        { value: 'Isabella radio shop', label: 'Isabella radio shop', group: 'branchCode' },
-        { value: 'Sophia radio shop', label: 'Sophia radio shop', group: 'branchCode' },
-    ]
-
     const handleSelectBox = (e) => {
-        // console.log('select ---->', e)
+        console.log('select ---->', e)
         let group = e.group;
         let value = e.value;
 
@@ -60,42 +57,41 @@ function UserManagement() {
     ]
     const [isModify, setIsModify] = useState(false); // 수정 여부 (Edit 버튼)
 
-    const handleButtonClick = (bool) => {
-        setIsModify(bool);
+    useEffect(() => {
+        console.log('수정여부 ---->', isModify)
 
         setColumn((prevCol) =>
             prevCol.map((col, i) => {
                 if(col.field === 'jobType') {
-                    return {...col, cellRendererFramework: SelectBoxRendererEdit};
+                    if(isModify) {
+                        return { ...col, cellRendererFramework: SelectBoxRendererEdit };
+                    } else {
+                        return { ...col, cellRendererFramework: SelectBoxRenderer };
+                    }
                 }
+                return { ...col };
         }))
 
         setRowData((prevCol) =>
             prevCol.map((col, i) => {
-                return {...col, editable: bool};
+                return { ...col };
         }))
 
-        // setTimeout(() => {
-        //     console.log('??????????????????', rowData)
-        //     console.log('!!!!!!!!!!!!!!!!!!', column)
-        // }, 1000);
-    };
-
-    console.log('isModify ---->', isModify);
+        !isModify && getList();
+    }, [isModify])
 
     const SelectBoxRenderer = (props) => {
-
-        const handleChange = (event) => {
-            const selectedValue = event.target.value;
+        const handleChange = (e) => {
+            const selectedValue = e.target.value;
             props.setValue(selectedValue);
             console.log('job type ---->', selectedValue);
         };
 
         return (
-          <select className='row-select' value={props.value} onChange={handleChange}>
+          <select className='row-select' value={props.value} onChange={handleChange} disabled={!isModify}>
             {
                 jobType.map((job, i) => (
-                    <option key={i} value={job} disabled={!isModify}> {job} </option>
+                    <option key={i} value={job}> {job} </option>
                 ))
             }
           </select>
@@ -103,7 +99,6 @@ function UserManagement() {
     };
 
     const SelectBoxRendererEdit = React.forwardRef((props, ref) => {
-
         const handleChange = (e) => {
             const newValue = e.target.value;
             props.api.stopEditing();
@@ -146,44 +141,31 @@ function UserManagement() {
             headerName: 'Subsidiary',
             field: 'corporationCode',
             resizable: false,
-            // editable: true, 
-            singleClickEdit: true, 
-            cellEditorParams: {handleLeftCell}
         },
         { 
             headerName: 'Center',
             field: 'centerType',
             resizable: false,
-            singleClickEdit: true, 
-            cellEditorParams: {handleLeftCell}
         },
         { 
             headerName: 'Branch',
             field: 'branchName',
             resizable: false,
-            singleClickEdit: true, 
-            cellEditorParams: {handleLeftCell}
         },
         { 
             headerName: 'Name',
             field: 'userName',
             resizable: false,
-            singleClickEdit: true, 
-            cellEditorParams: {handleLeftCell}
         },
         { 
             headerName: 'Email',
             field: 'emailAddr',
             resizable: false,
-            singleClickEdit: true, 
-            cellEditorParams: {handleLeftCell}
         },
         { 
             headerName: 'User ID',
             field: 'userId',
             resizable: false,
-            singleClickEdit: true, 
-            cellEditorParams: {handleLeftCell}
         },
         { 
             headerName: 'Job Type',
@@ -232,15 +214,55 @@ function UserManagement() {
         }).catch(error => {
             console.error(error);
         });
+
+        // 법인목록 조회 API
+        axiosInstance.post('/corporation/list').then(res => {
+            const data = res?.data.result;
+            // console.log('법인 기존 목록 ---->', data)
+
+            const newArray = data.map((obj, index) => ({
+                value: obj.corporationCode,
+                label: obj.corporationCode,
+                group: 'corporationCode'
+            }));
+            console.log('법인 목록 ---->', newArray)
+
+            setSubOptions(newArray);
+            
+        }).catch(error => {
+            console.error(error);
+        });
+
+        // 브랜치목록 조회 API
+        const branchForm = new FormData();
+        branchForm.append('corporationCode', USER_CORP_CODE); // 로그인유저 법인코드
+        // branchForm.append('centerType', USER_CENTER_TYPE); // 로그인유저 센터타입
+
+        axiosInstance.post('/branch/list', branchForm).then(res => {
+            const data = res?.data.result;
+            // console.log('브랜치 기존 목록 ---->', data)
+
+            const newArray = data.map((obj, index) => ({
+                value: obj.branchCode,
+                label: obj.branchName,
+                group: 'branchCode'
+            }));
+            console.log('브랜치 목록 ---->', newArray)
+
+            setBranchOptions(newArray);
+
+        }).catch(error => {
+            console.error(error);
+        });
     }
 
     useLayoutEffect(() => {
         getList();
     }, []);
 
-    useEffect(() => {
-        console.log('searchData ---->', searchData)
-    }, [searchData]);
+    // useEffect(() => {
+    //     console.log('searchData ---->', searchData)
+    // }, [searchData]);
 
     const extractChangedPart = (originalArray, modifiedArray) => {
         const changedPart = [];
@@ -267,10 +289,12 @@ function UserManagement() {
             let resdata = res.data;
             
             if(resdata.code == 200) {
-              getList();
-              alert('바뀜');
+                getList();
+                alert('수정되었습니다.');
+                window.location.reload();
             } else {
-              alert(resdata.msg);
+            //   alert(resdata.msg);
+                console.log(resdata);
             }
         }).catch(error => {
             console.error(error);
@@ -301,17 +325,17 @@ function UserManagement() {
                         {
                             isModify ?
                             <div className='btn-modify'>
-                                <button className='nav-btn-white' onClick={() => handleButtonClick(false)}>Cancel</button>
-                                <button className='nav-btn-red' onClick={() => {handleButtonClick(false); editUser();}}>Save</button>
+                                <button className='nav-btn-white' onClick={() => setIsModify(false)}>Cancel</button>
+                                <button className='nav-btn-red' onClick={() => {setIsModify(false); editUser();}}>Save</button>
                             </div>
                             :
-                            <button className='nav-btn-black' onClick={() => handleButtonClick(true)}>Edit</button>
+                            <button className='nav-btn-black' onClick={() => setIsModify(true)}>Edit</button>
                         }
                     </div>
                 </div>
                 <div className='user-content'>
                     <div className='grid'>
-                        <AgGrid data={rowData} column={column} paging={false} changeValue={setRowData} isModify={isModify} />
+                        <AgGrid data={rowData} column={column} paging={false} changeValue={setRowData} />
                     </div>
                 </div>
                 <Zendesk />
