@@ -34,6 +34,8 @@ const EditCelldata = (props) => {
   };
 
   const handleKeyDown = (event) => {
+
+    console.log(event.key)
     if (event.key === 'Tab') {
 
       if(props.handleLeftCell) {

@@ -31,7 +31,8 @@ function CommonCodeMangement() {
 
     /** check item sates */
     const [codeList, setCodeList] = useState([])
-    const [codeCheckedList, setCodeCheckedList] = useState([]);
+    // const [codeCheckedList, setCodeCheckedList] = useState([]);  multi 선택시 사용
+    const [codeCheckedList, setCodeCheckedList] = useState();
     const [detailCheckedList, setDetailCheckedList] = useState([]);
 
     const [reqData, setReqData] = useState({
@@ -62,7 +63,6 @@ function CommonCodeMangement() {
     }
     // 검색영역 셀렉트박스 이벤트 핸들러
     const handleSelectBox = (event) => {
-        console.log(event.value)
         let value = event.value;
         setReqData({
             ...reqData,
@@ -70,7 +70,6 @@ function CommonCodeMangement() {
         })
     }
     const handleCellValueChanged = (field, parentSeq ,seq, id, value) => {
-        console.log(field, parentSeq ,seq, id, value)
         if (field === 'codeId') {
             let codeIdExists = false;
             subList.forEach((item) => {
@@ -83,7 +82,6 @@ function CommonCodeMangement() {
               return;
             }
         }
-        console.log('실행되면 안됨')
         setSublist((prev) => {
           return prev.map((item) => {
             if (item.codeSeq === seq) {
@@ -95,13 +93,7 @@ function CommonCodeMangement() {
         });
     }
 
-    useEffect(()=>{
-        console.log('rowData :', rowData)
-    },[rowData])
-
     const handleLeftCell = (field, seq, id, value) => {
-        
-        console.log(field, seq, id, value)
         if (field === 'codeId') {
             let codeIdExists = false;
             codeList.forEach((item) => {
@@ -114,7 +106,6 @@ function CommonCodeMangement() {
               return;
             }
         }
-        console.log('실행되면 안됨')
         setCodeList((prev) => {
           return prev.map((item) => {
             if (item.codeSeq === seq) {
@@ -154,6 +145,8 @@ function CommonCodeMangement() {
     }
 
     const handleChangeUse = (id,value) => {
+
+      console.log(id,value)
         setCodeList((prev) => {
             return prev.map((item) => {
               if (item.codeId === id) {
@@ -165,6 +158,19 @@ function CommonCodeMangement() {
           });
     }
     
+    const handleLowerUse = (id,value) => {
+
+      console.log(id,value)
+        setSublist((prev) => {
+            return prev.map((item) => {
+              if (item.codeId === id) {
+                return { ...item, 
+                  useYn : value };
+              }
+              return item;
+            });
+          });
+    }
     /** AG grid columns */
 
     const [isNewCode, setIsNewCode] = useState(false)
@@ -172,7 +178,6 @@ function CommonCodeMangement() {
     const handleCheckId = () =>{
 
         if(isNewCode) {
-            console.log('handleCheckId')
             let newItems = [];
             codeList.map(item=>{
                 item.type==='insert' && newItems.push(item)
@@ -187,21 +192,18 @@ function CommonCodeMangement() {
         }
     }
     const addCode = (depth) => {
-        console.log('addCode')
         let newItem = {};
         if(depth==='upper-code') {
             newItem = { codeSeq: codeList.length+1, codeId: '', codeName: '', description : '', useYn : 'Y', type:'insert' };
             setCodeList(prevData => [...prevData, newItem]);
         }else if(depth==='lower-code') {
-            newItem = { codeSeq: subList.length+1, codeId: '', codeName: '', parentCodeSeq: '', description : '', useYn : 'Y', type:'insert' };
+            newItem = { codeSeq: subList.length+1, codeId: '', codeName: '', parentCodeSeq: codeCheckedList?.codeSeq, description : '', useYn : 'Y', type:'insert' };
             setSublist(prevData => [...prevData, newItem])
         }
         setIsNewCode(true)
         };
 
     const onSaveEditCode = (e, depth) => {
-
-        console.log(codeList,depth)
 
         let isValid = true;
         let data = [];
@@ -234,7 +236,6 @@ function CommonCodeMangement() {
                 axiosJsonInstance('/codeManagement/update',config)
                 .then(function (response) {
                     let resData = response.data;
-                    console.log(resData.code===200)
                     if(resData.code===200) {
                         setAlertTxt(`You've inserted or updated code information`)
                         handleSearchCode()
@@ -251,8 +252,8 @@ function CommonCodeMangement() {
     }
 
       const codeColumn =[
-        { headerName: '', field: '', checkboxSelection: true, headerCheckboxSelection: true, width: 100 },
-        { headerName: 'ID', field: 'codeId', editable: false, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
+        // { headerName: '', field: '', checkboxSelection: true, headerCheckboxSelection: true, width: 100 },
+        { headerName: 'ID', field: 'codeId', editable: false, cellEditorFramework: EditCelldata, singleClickEdit: false, cellEditorParams: { handleLeftCell }, width: 200 },
         { headerName: 'Code Name', field: 'codeName', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
         { headerName: 'Code Description', field: 'description', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
         {
@@ -278,7 +279,7 @@ function CommonCodeMangement() {
       ]
 
     const checkedColumn = [
-        { headerName: 'Code ID', field: 'codeId',editable: false, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
+        { headerName: 'Code ID', field: 'codeId',editable: false, cellEditorFramework: EditCelldata, singleClickEdit: false, cellEditorParams: {handleCellValueChanged} },
         { headerName: 'Code Name', field: 'codeName',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         { headerName: 'Code Description', field: 'description',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         {
@@ -289,7 +290,7 @@ function CommonCodeMangement() {
             column: {
               options: [{label : 'Y', value:'Y'}, {label:'N', value:'N'}],
             },
-            handleChange: handleChangeUse,
+            handleChange: handleLowerUse,
           },
         },
       ];
@@ -316,23 +317,16 @@ function CommonCodeMangement() {
       const [subList, setSublist] = useState([])
       useEffect(() => {
 
-        console.log('codeCheckedList',codeCheckedList)
-
-        if(codeCheckedList.length===0) {
+        if(codeCheckedList===null) {
             setSublist([])
             return 
         }
         var arr = new Array();
 
-        console.log(arr)
-        codeCheckedList.forEach(item=>arr.push(item.codeSeq));
-        
+        arr.push(codeCheckedList?.codeSeq)
         var config = {
           method: 'post',
             maxBodyLength: Infinity,
-        //   headers: { 
-        //     ...data.getHeaders()
-        //   },
           data :arr
         };
 
@@ -343,8 +337,6 @@ function CommonCodeMangement() {
                 type: 'update'
               }));
               setSublist(updatedData);
-            // setCodeList(rawData)
-            console.log(rawData,'res')
         }).catch((error)=>{
             console.error(error)
         })
@@ -352,11 +344,10 @@ function CommonCodeMangement() {
       }, [codeCheckedList]);
       
       useEffect(()=>{
-        console.log(isNewCode, alertModal)
-        console.log(codeList)
         handleCheckId();
       },[codeList])
       
+   
     return (
         <>
         <Header />
@@ -386,12 +377,11 @@ function CommonCodeMangement() {
                 
                 <div className="code-right custom-flex-item custom-justify-between" >
                   <div className="right-detail custom-self-align">
-                    <span>Code Detail</span>
+                    <span>Code Detail </span>
                    <span className="max-length-txt">
-                        ({subList?.map((item,idx) => <> {idx < 6 ? item.codeId : null}
-                        {(idx < 5 && idx !== subList.length - 1) && ','}</>)}
                         {
-                            subList.length > 6 ? '... )' : ')'
+                          codeCheckedList && 
+                          `( ${codeCheckedList.codeId} )`
                         }
                     </span>
                   </div>
@@ -404,9 +394,9 @@ function CommonCodeMangement() {
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                {codeList.length !== 0 && <div><AgGrid column={codeColumn} checkbox data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true}/></div>}
+                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true} multiple={false}/></div>}
                 {/* {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>} */}
-                <div><AgGrid column={checkedColumn} data={subList} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData} isModify={true}/></div>
+                <div><AgGrid column={checkedColumn} data={subList} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData} isModify={true} multiple={false}/></div>
             </div>
             <Zendesk />
            {

@@ -249,6 +249,9 @@ line-height: 24px; padding: 0 3px;
     border-top: 1px solid $border-color-gery;
     border-bottom: 1px solid $border-color-gery; padding: 20px;
 }
+.ck.ck-editor {
+    width: 588px;
+}
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
     .faq-lists li {

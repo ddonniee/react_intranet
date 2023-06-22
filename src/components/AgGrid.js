@@ -18,11 +18,12 @@ import 'ag-grid-enterprise';
  * }
  * @returns
 */
-const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isModify}) => {
+const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isModify, multiple}) => {
     
     const gridRef = useRef(); // Optional - for accessing Grid's API
     const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
-    const [columnDefs, setColumnDefs] = useState();
+    const [columnDefs, setColumnDefs] = useState(column);
+    const [isMultiple, setIsMultiple] = useState(multiple);
 
     /** 페이징 관련 ▼ ============================================================= */
     const [activePage, setActivePage] = useState(1); // 현재 페이지
@@ -58,10 +59,10 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
                 })
             )
         }
-        console.log('AgGrid render')
-    }, [data]);
+    }, [data, isModify]);
 
     const onGridReady = useCallback((params) => {
+        console.log('onGirdReadt')
         setRowData(data)
         setColumnDefs(column)
         gridRef.current.api.sizeColumnsToFit();
@@ -76,10 +77,16 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     }));
 
     // Example > 그리드 클릭 시 row값 콘솔 출력
-    const cellClickedListener = useCallback( e => {
-        console.log('cellClicked', e.data);
-    }, []);
+    // const cellClickedListener = useCallback( e => {
+    //     console.log('cellClicked', e);
+    // }, []);
 
+    const cellClickedListener =  e => {
+        let selectedData=e.data;
+        checkedItems(selectedData);
+        // const selectedNodes = e.api.getSelectedNodes();
+        // const selectedData = selectedNodes.map((node) => node.data);
+    }; 
     // 그리드 기본 높이 컨텐츠 길이에 맞게 동적으로 설정
     /*
         개별적인 높이 고정(px)이 필요할 경우 화면별 css에 추가
@@ -109,11 +116,11 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
         checkedItems(selectedData);
       }, [checkedItems]);
 
-      const handleCellValueChanged = params =>{
-        console.log(params,'===========+++++++++++++++++++++')
-        const {data} = params;
-        changeValue((prev=>prev.map(item=>item.id===data.id ? data:item)))
-      }
+    //   const handleCellValueChanged = params =>{
+    //     console.log(params,'===========+++++++++++++++++++++')
+    //     const {data} = params;
+    //     changeValue((prev=>prev.map(item=>item.id===data.id ? data:item)))
+    //   }
 
     useEffect(()=>{
         if(checkbox) {
@@ -136,20 +143,22 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
                     columnDefs={columnDefs} // Column Defs for Columns 
                     defaultColDef={defaultColDef} // Default Column Properties 
                     animateRows={true} // Optional - set to 'true' to have rows animate when sorted
-                    rowSelection='multiple' // Options - allows click selection of rows 
-                    onCellClicked={!checkbox && cellClickedListener} // Optional - registering for Grid Event 
+                    rowSelection={isMultiple ? 'multiple' : 'single'} // Options - allows click selection of rows 
+                    onCellClicked={cellClickedListener} // Optional - registering for Grid Event 
                     pagination={paging ? true : false}
                     paginationPageSize={10}
                     suppressPaginationPanel={true}
                     suppressScrollOnNewData={true}
                     suppressRowClickSelection={true}
                     suppressRowTransform={true}
-                    suppressClickEdit={true}
+                    suppressClickEdit={false}
                     onGridReady={onGridReady}
-                    onSelectionChanged={checkbox && handleSelectBox}
-                    onCellValueChanged={handleCellValueChanged}
+                    onSelectionChanged={handleSelectBox}
+                    // onCellValueChanged={handleCellValueChanged}
                     // editType="fullRow"
-                    singleClickEdit={true}
+                    // singleClickEdit={true}
+                    
+                    
                 />
             </div>
             {/* react-js-pagination */}

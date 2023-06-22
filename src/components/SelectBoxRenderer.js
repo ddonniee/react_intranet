@@ -19,7 +19,6 @@ const SelectBoxRenderer = (params) => {
     let id = params.data.codeId;
     setSelectedValue(value);
     handleChange(id,value)
-    console.log(params.data.codeId)
   };
 
   return (
