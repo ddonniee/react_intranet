@@ -25,7 +25,6 @@ function CommonCodeMangement() {
 
     /** Check User region */
     let browserLanguage = getBrowserLanguage();
-   
 
     const [rowData, setRowData] = useState([]);
     /** TEST DATA END */
@@ -44,12 +43,22 @@ function CommonCodeMangement() {
     const [alertModal, setAlertModal] = useState(false);
     const [alertTxt, setAlertTxt] = useState('');
 
+  
+
+    // select box options
+    const [dropSelect, setDropSelect ] = useState([
+        {value:'All',label:'ALL'}, 
+        {value:'Y',label:'Y'}, 
+        {value:'N',label:'N'}, 
+    ])
+
     const handleValueSearch = event => {
         let value = event.target.value;
         setReqData({
             ...reqData,
             keyword: value
         })
+        
     }
     // 검색영역 셀렉트박스 이벤트 핸들러
     const handleSelectBox = (event) => {
@@ -128,10 +137,32 @@ function CommonCodeMangement() {
     }
     /** AG grid columns */
 
+    const [isNewCode, setIsNewCode] = useState(false)
 
+    const addCode = () => {
+        const newItem = { codeId: '', codeName: '', description : '', useYn : 'Y', type:'insert' };
+        setCodeList(prevData => [...prevData, newItem]);
+        setIsNewCode(true)
+        };
 
     const onSaveEditCode = e => {
 
+        if(isNewCode) {
+
+            let newItems = [];
+            codeList.map(item=>{
+                item.type==='insert' && newItems.push(item.codeId)
+            })
+            codeList.map(item=>{
+                newItems.map(newItem=>{
+                    (item.codeId===newItem && item.type !=='insert') && 
+                    setAlertTxt('The Code ID already exist.')
+                    return false;
+                })
+            })
+            
+            return false;
+        }
         var config = {
         method: 'post',
         maxBodyLength: Infinity,
@@ -155,13 +186,7 @@ function CommonCodeMangement() {
 
     }
 
-    useEffect(()=>{
-        if(alertTxt!=='') {
-            setAlertModal(true)
-        }
-    },[alertTxt])
-
-    const codeColumn =[
+      const codeColumn =[
         { headerName: '', field: '', checkboxSelection: true, headerCheckboxSelection: true, width: 100 },
         { headerName: 'ID', field: 'codeId', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
         { headerName: 'Code Name', field: 'codeName', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
@@ -187,7 +212,6 @@ function CommonCodeMangement() {
           width: 200
         },
       ]
-    
 
     const checkedColumn = [
         { headerName: 'Code ID', field: 'codeId',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
@@ -206,31 +230,18 @@ function CommonCodeMangement() {
         },
       ];
 
-      
+    useEffect(()=>{
+        if(alertTxt!=='') {
+            setAlertModal(true)
+        }
+    },[alertTxt])
 
-    // select box options
-    const [dropSelect, setDropSelect ] = useState([
-        {value:'All',label:'ALL'}, 
-        {value:'Y',label:'Y'}, 
-        {value:'N',label:'N'}, 
-    ])
-    
-        const addCode = () => {
-            const newItem = { codeId: '', codeName: '', description : '', useYn : 'Y' };
-            setCodeList(prevData => [...prevData, newItem]);
-          };
-
-      
+  
       // API test
 
       useLayoutEffect(()=>{
         handleSearchCode()
       },[])
-
-      useEffect(()=>{
-        console.log('reqData',reqData)
-      },[reqData])
-
       
       const [testData, setTestData] = useState([])
       useEffect(() => {

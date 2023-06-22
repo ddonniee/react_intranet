@@ -88,7 +88,7 @@ html, body, #root{
 .ag-header-group-cell-label, .ag-header-cell-label {
     display: flex;
     justify-content: center !important;
-}
+} 
 
 .ag-header, .ag-row {
     text-align: center;
@@ -129,7 +129,9 @@ html, body, #root{
     align-items: center;
     justify-content: center;
 }
-
+.ag-popup {
+    position: absolute;
+}
 /* 페이징 */
 .pagination {
     display: flex;
