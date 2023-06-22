@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import Header from '../../components/Header';
 import Top from '../../components/Top';
 import { axiosInstance, axiosJsonInstance } from '../../utils/CommonFunction';
@@ -15,30 +15,38 @@ import { ReactComponent as IntersectIcon } from '../../assets/svgs/icon_intersec
 function UserManagement() {
 
     /* 검색 영역 ****************************************************************/
-    const subOptions = [
-        { value: 'LGEAI', label: 'LGEAI' },
-        { value: 'LGEAI2', label: 'LGEAI2' },
-    ]
+    const [searchData, setSearchData] = useState(); // 검색데이터
+
+    const [subOptions, setSubOptions] = useState();
+    // const subOptions = [
+    //     { value: 'LGEAI', label: 'LGEAI', group: 'corporationCode' },
+    //     { value: 'LGEKR', label: 'LGEKR', group: 'corporationCode' },
+    //     { value: 'LGEES', label: 'LGEES', group: 'corporationCode' },
+    // ]
 
     const centerOptions = [
-        { value: 'LGC', label: 'LGC' },
-        { value: 'ASC', label: 'ASC' },
+        { value: 'LGC', label: 'LGC', group: 'centerType' },
+        { value: 'ASC', label: 'ASC', group: 'centerType' },
     ]
 
     const branchOptions = [
-        { value: 'branch_a', label: 'branch_a' },
-        { value: 'branch_b', label: 'branch_b' },
+        { value: 'Harper electric shop', label: 'Harper electric shop', group: 'branchCode' },
+        { value: 'Isabella radio shop', label: 'Isabella radio shop', group: 'branchCode' },
+        { value: 'Sophia radio shop', label: 'Sophia radio shop', group: 'branchCode' },
     ]
 
-    const handleSelectBox = (event, params) => {
-        const { data } = params.node;
-        const { checked } = event.target;
+    const handleSelectBox = (e) => {
+        // console.log('select ---->', e)
+        let group = e.group;
+        let value = e.value;
 
-        if (checked) {
-            setRowData([...rowData, data]);
-          } else {
-            setRowData(rowData.filter(item => item !== data));
-          }
+        if(group === 'corporationCode') {
+            setSearchData({ ...searchData, corporationCode: value })
+        } else if(group === 'centerType') {
+            setSearchData({ ...searchData, centerType: value })
+        } else if(group === 'branchCode') {
+            setSearchData({ ...searchData, branchCode: value })
+        }
     }
 
     /* 조회 영역 ****************************************************************/
@@ -57,19 +65,19 @@ function UserManagement() {
 
         setColumn((prevCol) =>
             prevCol.map((col, i) => {
-                // console.log(col.field === 'jobType' ? 'ddd' : 'sss')
                 if(col.field === 'jobType') {
-                    console.log('@@@@@@@@@@@@@@@@@@@@@@@', col)
                     return {...col, cellRendererFramework: SelectBoxRendererEdit};
                 }
         }))
+
         setRowData((prevCol) =>
             prevCol.map((col, i) => {
-                console.log('???????????????????????????',col)
                 return {...col, editable: bool};
         }))
+
         // setTimeout(() => {
         //     console.log('??????????????????', rowData)
+        //     console.log('!!!!!!!!!!!!!!!!!!', column)
         // }, 1000);
     };
 
@@ -87,7 +95,7 @@ function UserManagement() {
           <select className='row-select' value={props.value} onChange={handleChange}>
             {
                 jobType.map((job, i) => (
-                    <option key={i} value={job} disabled> {job} </option>
+                    <option key={i} value={job} disabled={!isModify}> {job} </option>
                 ))
             }
           </select>
@@ -139,7 +147,6 @@ function UserManagement() {
             field: 'corporationCode',
             resizable: false,
             // editable: true, 
-            // cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
         },
@@ -147,7 +154,6 @@ function UserManagement() {
             headerName: 'Center',
             field: 'centerType',
             resizable: false,
-            // cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
         },
@@ -155,7 +161,6 @@ function UserManagement() {
             headerName: 'Branch',
             field: 'branchName',
             resizable: false,
-            // cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
         },
@@ -163,7 +168,6 @@ function UserManagement() {
             headerName: 'Name',
             field: 'userName',
             resizable: false,
-            // cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
         },
@@ -171,7 +175,6 @@ function UserManagement() {
             headerName: 'Email',
             field: 'emailAddr',
             resizable: false,
-            // cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
         },
@@ -179,7 +182,6 @@ function UserManagement() {
             headerName: 'User ID',
             field: 'userId',
             resizable: false,
-            // cellEditorFramework: EditCelldata, 
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
         },
@@ -194,15 +196,31 @@ function UserManagement() {
         },
     ]);
 
-    const [searchData, setSearchData] = useState({  // 검색데이터
-        // page: 1,
-    });
+    const getSearch = () => {
+        const formData = new FormData();
+
+        if(searchData.corporationCode) {
+            formData.append('corporationCode', searchData?.corporationCode);
+        } 
+        if(searchData.centerType) {
+            formData.append('centerType', searchData?.centerType);
+        } 
+        if(searchData.branchCode) {
+            formData.append('branchCode', searchData?.branchCode);
+        }
+        let data = undefined;
+        if(searchData) data = formData;
+
+        console.log('search result >>>>>>', Object.fromEntries(data))
+
+        getList(data);
+    }
     
-    const getList = () => {
+    const getList = (search) => {
         // 사용자목록 조회 API
-        axiosInstance.post('/userManagement/list'/*, searchData*/).then(res => {
+        axiosInstance.post('/userManagement/list', search).then(res => {
             const array = res?.data.result;
-            // console.log('사용자 목록 ---->', res)
+            console.log('사용자 목록 ---->', array)
 
             const newArray = array.map((obj, index) => ({
                 ...obj,
@@ -216,17 +234,13 @@ function UserManagement() {
         });
     }
 
-    // console.log('origin?????????', originData[0])
-    // console.log('modify??????????', rowData[0])
+    useLayoutEffect(() => {
+        getList();
+    }, []);
 
     useEffect(() => {
-        getList();
         console.log('searchData ---->', searchData)
     }, [searchData]);
-
-    const [editData, setEditData] = useState();
-
-    console.log('editData ---->', editData?.userId, '/', editData?.jobType);
 
     const extractChangedPart = (originalArray, modifiedArray) => {
         const changedPart = [];
@@ -242,18 +256,7 @@ function UserManagement() {
         return changedPart;
     }
 
-    const editUserTest = () => {
-        const changedPart = extractChangedPart(originData, rowData);
-        console.log('change??????????', rowData)
-        console.log('origin??????????', originData)
-        
-        console.log('change ---->', changedPart)
-    }
-
     const editUser = () => {
-        // const formData = new FormData();
-        // formData.append('userId', editData?.userId);
-        // formData.append('jobType', editData?.jobType);
         const changedPart = extractChangedPart(originData, rowData);
         const changedUser = JSON.stringify(changedPart);
         
@@ -283,14 +286,14 @@ function UserManagement() {
                 <div className='user-nav'>
                     <div className='nav-left'>
                         <p>· Subsidiary</p>
-                        <SelectBox options={subOptions} onChange={handleSelectBox} />
+                        <SelectBox name='corporationCode' options={subOptions} handleChange={handleSelectBox} />
                         <p>· Center Type</p>
-                        <SelectBox options={centerOptions} onChange={handleSelectBox} />
+                        <SelectBox name='centerType' options={centerOptions} handleChange={handleSelectBox} />
                         <p>· Branch</p>
-                        <SelectBox options={branchOptions} onChange={handleSelectBox} />
+                        <SelectBox name='branchCode' options={branchOptions} handleChange={handleSelectBox} />
                     </div>
                     <div className='nav-right'>
-                        <button className='circle'>
+                        <button className='circle' onClick={getSearch} >
                             <p>Inquiry</p>
                             <IntersectIcon />
                         </button>
@@ -308,7 +311,7 @@ function UserManagement() {
                 </div>
                 <div className='user-content'>
                     <div className='grid'>
-                        <AgGrid data={rowData} column={column} paging={false} changeValue={setRowData} isModify={isModify} cellData={setEditData}/>
+                        <AgGrid data={rowData} column={column} paging={false} changeValue={setRowData} isModify={isModify} />
                     </div>
                 </div>
                 <Zendesk />

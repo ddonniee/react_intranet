@@ -81,8 +81,8 @@ html, body, #root{
     --ag-range-selection-border-color: #BB0841 !important;
     --ag-input-border-color-invalid: #BB0841 !important;
     --ag-input-focus-box-shadow: 0 0 2px 0.1rem #FAF1F4 !important;
-    min-height: 700px; 
-   
+    // min-height: 700px; 
+    height: min-content;
 }
 
 .ag-header-group-cell-label, .ag-header-cell-label {
@@ -103,12 +103,12 @@ html, body, #root{
 .ag-body-horizontal-scroll {
     display: none !important;
 }
-.ag-cell-focus:not(.ag-cell:first-child), 
-.ag-cell-inline-editing:not(.ag-cell:first-child) {
+.ag-cell-focus, 
+.ag-cell-inline-editing {
     background-color: white; font-weight: 700;
 }
 .ag-cell-inline-editing input {
-    border: none !important; text-align: center;font-weight: 700;
+    border: none !important; text-align: center;
 }
 .ag-ltr .ag-cell-focus:not(.ag-cell-range-selected):focus-within {
     border: 1px solid $primary-color-red !important;
