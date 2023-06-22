@@ -23,22 +23,31 @@ const EditCelldata = (props) => {
   };
 
   const handleInputBlur = () => {
-    console.log('handleInputBlur')
-    props.handleLeftCell(fieldName, editRow,editId, value);
+    if(props.handleLeftCell) {
+      props.handleLeftCell(fieldName, editRow,editId, value);
+    }else if(props.handleCellValueChanged) {
+      let parentCode = props.data.parentCodeSeq;
+      console.log('fieldName, parentCode,editRow, editId, value',fieldName, parentCode,editRow, editId, value)
+      props.handleCellValueChanged(fieldName, parentCode,editRow, editId, value)
+    }
     // setValue('')
   };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Tab') {
 
-      
-      event.preventDefault(); // prevent default behavior
-      props.handleLeftCell(fieldName, editRow, value);
-      const nextColumn = props.columnApi.getColumnAfter(props.column);
-      props.api.startEditingCell({
-        rowIndex: props.node.rowIndex,
-        colKey: nextColumn.getColId()
-      });
+      if(props.handleLeftCell) {
+        event.preventDefault(); // prevent default behavior
+        props.handleLeftCell(fieldName, editRow, value);
+        const nextColumn = props.columnApi.getColumnAfter(props.column);
+        props.api.startEditingCell({
+          rowIndex: props.node.rowIndex,
+          colKey: nextColumn.getColId()
+        });
+      }else if(props.handleCellValueChanged) {
+        console.log('handleCellValueChanged', props)
+      }
+    
     }
   };
 
@@ -49,12 +58,6 @@ const EditCelldata = (props) => {
     setValue(props.value); // Update the component's value when props.value changes
   }, [props.value]);
 
-  useEffect(() => {
-   console.log(editRow,'====================')
-  }, [editRow, fieldName, props.node.rowIndex, props.colDef.field]);
-  
-
-  
   return (
     <input
       type="text"

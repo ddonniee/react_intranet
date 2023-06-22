@@ -132,6 +132,20 @@ html, body, #root{
 .ag-popup {
     position: absolute;
 }
+ /* 스크롤바 스타일링 */
+ .ag-body-vertical-scroll-viewport::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .ag-body-vertical-scroll-viewport::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  
+  .ag-body-vertical-scroll-viewport::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  } 
+  
 /* 페이징 */
 .pagination {
     display: flex;

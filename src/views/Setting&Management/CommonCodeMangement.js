@@ -69,12 +69,30 @@ function CommonCodeMangement() {
          useYn: value
         })
     }
-    const handleCellValueChanged = params => {
-        const {data} = params;
-        console.log(' cellEditorParams: {handleCellValueChanged}',params)
-        setRowData((prev)=> {
-            prev.map((item)=>(item.id===data.id ? data : item))
-        })
+    const handleCellValueChanged = (field, parentSeq ,seq, id, value) => {
+        console.log(field, parentSeq ,seq, id, value)
+        if (field === 'codeId') {
+            let codeIdExists = false;
+            subList.forEach((item) => {
+              if (item.codeSeq !== seq && item.codeId === value) {
+                setAlertTxt('The Code ID already exists.');
+                codeIdExists = true;
+              }
+            });
+            if (codeIdExists) {
+              return;
+            }
+        }
+        console.log('실행되면 안됨')
+        setSublist((prev) => {
+          return prev.map((item) => {
+            if (item.codeSeq === seq) {
+              return { ...item, 
+                [field]: value };
+            }
+            return item;
+          });
+        });
     }
 
     useEffect(()=>{
@@ -120,10 +138,6 @@ function CommonCodeMangement() {
         var config = {
           method: 'post',
             maxBodyLength: Infinity,
-            // url: process.env.REACT_APP_SERVER_URL+'/codeManagement/list',
-        //   headers: { 
-        //     ...data.getHeaders()
-        //   },
           data : data
         };
 
@@ -151,9 +165,6 @@ function CommonCodeMangement() {
           });
     }
     
-    const handleCellClick = () => {
-        console.log('eee')
-    }
     /** AG grid columns */
 
     const [isNewCode, setIsNewCode] = useState(false)
@@ -175,40 +186,67 @@ function CommonCodeMangement() {
             })
         }
     }
-    const addCode = () => {
+    const addCode = (depth) => {
         console.log('addCode')
-        const newItem = { codeSeq: codeList.length+1, codeId: '', codeName: '', description : '', useYn : 'Y', type:'insert' };
-        setCodeList(prevData => [...prevData, newItem]);
+        let newItem = {};
+        if(depth==='upper-code') {
+            newItem = { codeSeq: codeList.length+1, codeId: '', codeName: '', description : '', useYn : 'Y', type:'insert' };
+            setCodeList(prevData => [...prevData, newItem]);
+        }else if(depth==='lower-code') {
+            newItem = { codeSeq: subList.length+1, codeId: '', codeName: '', parentCodeSeq: '', description : '', useYn : 'Y', type:'insert' };
+            setSublist(prevData => [...prevData, newItem])
+        }
         setIsNewCode(true)
         };
 
-    const onSaveEditCode = e => {
+    const onSaveEditCode = (e, depth) => {
 
-        console.log(codeList)
+        console.log(codeList,depth)
 
-        // return false
+        let isValid = true;
+        let data = [];
+        if(depth==='upper-code') {
+            codeList.forEach(item=>{
+                if(item.codeId ==='' || item.codeName === '' || item.description === '') {
+                    setAlertTxt('You need to insert all the information to resister code.')
+                    isValid = false;
+                }
+            })
+            data = codeList;
+        } else if(depth==='lower-code') {
+            subList.forEach(item=>{
+                if(item.codeId ==='' || item.codeName === '' || item.description === '') {
+                    setAlertTxt('You need to insert all the information to resister code.')
+                    isValid = false;
+                }
+            })
+            data=subList;
+        }
+
+        if(isValid) {
+            var config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                // headers: { },
+                data : data
+                };
         
-        var config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        // headers: { },
-        data : codeList
-        };
-
-        axiosJsonInstance('/codeManagement/update',config)
-        .then(function (response) {
-            let resData = response.data;
-            console.log(resData.code===200)
-            if(resData.code===200) {
-                setAlertTxt(`You've inserted or updated code information`)
-                handleSearchCode()
-            }else {
-                setAlertTxt('Fail')
-            }
-        })
-        .catch(function (error) {
-                console.log('error',error);
-        });
+                axiosJsonInstance('/codeManagement/update',config)
+                .then(function (response) {
+                    let resData = response.data;
+                    console.log(resData.code===200)
+                    if(resData.code===200) {
+                        setAlertTxt(`You've inserted or updated code information`)
+                        handleSearchCode()
+                        setIsNewCode(false);
+                    }else {
+                         setAlertTxt('Fail')
+                    }
+                })
+                .catch(function (error) {
+                        console.log('error',error);
+                });
+        }
 
     }
 
@@ -235,12 +273,12 @@ function CommonCodeMangement() {
             // 여기서 params.data.defaultValue를 사용하여 셀의 초기값을 설정할 수 있음
             return true;
           },
-          width: 200
+          width: 200,
         },
       ]
 
     const checkedColumn = [
-        { headerName: 'Code ID', field: 'codeId',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
+        { headerName: 'Code ID', field: 'codeId',editable: false, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         { headerName: 'Code Name', field: 'codeName',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         { headerName: 'Code Description', field: 'description',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
         {
@@ -252,7 +290,6 @@ function CommonCodeMangement() {
               options: [{label : 'Y', value:'Y'}, {label:'N', value:'N'}],
             },
             handleChange: handleChangeUse,
-            handleCellClick: handleCellClick,
           },
         },
       ];
@@ -276,17 +313,19 @@ function CommonCodeMangement() {
         handleSearchCode()
       },[])
       
-      const [testData, setTestData] = useState([])
+      const [subList, setSublist] = useState([])
       useEffect(() => {
 
+        console.log('codeCheckedList',codeCheckedList)
+
         if(codeCheckedList.length===0) {
-            setTestData([])
+            setSublist([])
             return 
         }
         var arr = new Array();
 
         console.log(arr)
-        codeCheckedList.forEach(item=>arr.push(item.codeId));
+        codeCheckedList.forEach(item=>arr.push(item.codeSeq));
         
         var config = {
           method: 'post',
@@ -296,11 +335,16 @@ function CommonCodeMangement() {
         //   },
           data :arr
         };
+
         axiosJsonInstance('/codeManagement/subList', config).then(res=>{
             let rawData = res.data.result
-            setTestData(rawData)
+            let updatedData = rawData.map(item => ({
+                ...item,
+                type: 'update'
+              }));
+              setSublist(updatedData);
             // setCodeList(rawData)
-            console.log(res,'res')
+            console.log(rawData,'res')
         }).catch((error)=>{
             console.error(error)
         })
@@ -332,8 +376,8 @@ function CommonCodeMangement() {
                         </div>
                        
                         <div className="left-search-btn custom-self-align">
-                                <button onClick={addCode} className="code">Add Code</button>
-                                <button className="primary-red-btn" onClick={onSaveEditCode}>Save</button>
+                                <button onClick={()=>addCode('upper-code')} className="code">Add Code</button>
+                                <button className="primary-red-btn" onClick={(e)=>onSaveEditCode(e,'upper-code')}>Save</button>
                         </div>
                     </div>
 
@@ -344,25 +388,25 @@ function CommonCodeMangement() {
                   <div className="right-detail custom-self-align">
                     <span>Code Detail</span>
                    <span className="max-length-txt">
-                        ({codeCheckedList.map((item,idx) => <> {idx < 6 ? item.codeId : null}
-                        {(idx < 5 && idx !== codeCheckedList.length - 1) && ','}</>)}
+                        ({subList?.map((item,idx) => <> {idx < 6 ? item.codeId : null}
+                        {(idx < 5 && idx !== subList.length - 1) && ','}</>)}
                         {
-                            codeCheckedList.length > 6 ? '... )' : ')'
+                            subList.length > 6 ? '... )' : ')'
                         }
                     </span>
                   </div>
                   <div className="right-search-btn custom-self-align">
-                                <button onClick={addCode} className="code-detail">Add Code</button>
-                                <button className="primary-red-btn">Save</button>
+                                <button onClick={()=>addCode('lower-code')} className="code-detail">Add Code</button>
+                                <button className="primary-red-btn"  onClick={(e)=>onSaveEditCode(e,'lower-code')}>Save</button>
                   </div>
                 </div>
             </div>
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true}/></div>}
+                {codeList.length !== 0 && <div><AgGrid column={codeColumn} checkbox data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true}/></div>}
                 {/* {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>} */}
-                <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>
+                <div><AgGrid column={checkedColumn} data={subList} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData} isModify={true}/></div>
             </div>
             <Zendesk />
            {
