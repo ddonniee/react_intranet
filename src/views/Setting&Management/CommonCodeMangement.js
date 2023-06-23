@@ -175,10 +175,9 @@ function CommonCodeMangement() {
 
     const [isNewCode, setIsNewCode] = useState(false)
 
-    const handleCheckId = () =>{
-
-        if(isNewCode) {
-            let newItems = [];
+    const handleCheckId = (depth) =>{
+      let newItems = [];
+        if(isNewCode && depth==='upper-code') {
             codeList.map(item=>{
                 item.type==='insert' && newItems.push(item)
             })
@@ -189,16 +188,37 @@ function CommonCodeMangement() {
                     return false;
                 })
             })
+        }else if(isNewCode && depth==='lower-code') {
+          subList.map(item=>{
+            item.type==='insert' && newItems.push(item)
+        })
+          codeList.map(item=>{
+            newItems.map(newItem=>{
+                (item.codeId===newItem.codeId && item.codeSeq !== newItem.codeSeq && newItem.codeId !== '') && 
+                setAlertTxt('The Code ID already exist.')
+                return false;
+            })
+        })
+          subList.map(item=>{
+           newItems.map(newItem=>{
+            (item.codeId===newItem.codeId && item.codeSeq !== newItem.codeSeq && newItem.codeId !== '') && 
+            setAlertTxt('The Code ID already exist.')
+                return false;
+           }) 
+          }) 
         }
     }
     const addCode = (depth) => {
+      
         let newItem = {};
         if(depth==='upper-code') {
             newItem = { codeSeq: codeList.length+1, codeId: '', codeName: '', description : '', useYn : 'Y', type:'insert' };
             setCodeList(prevData => [...prevData, newItem]);
-        }else if(depth==='lower-code') {
+        }else if(depth==='lower-code' && codeCheckedList) {
             newItem = { codeSeq: subList.length+1, codeId: '', codeName: '', parentCodeSeq: codeCheckedList?.codeSeq, description : '', useYn : 'Y', type:'insert' };
             setSublist(prevData => [...prevData, newItem])
+        }else if(depth==='lower-code' && !codeCheckedList) {
+          setAlertTxt('No upper code has been selected')
         }
         setIsNewCode(true)
         };
@@ -292,7 +312,7 @@ function CommonCodeMangement() {
             },
             handleChange: handleLowerUse,
           },
-        },
+        }, 
       ];
 
     useEffect(()=>{
@@ -344,9 +364,11 @@ function CommonCodeMangement() {
       }, [codeCheckedList]);
       
       useEffect(()=>{
-        handleCheckId();
+        handleCheckId('upper-code');
       },[codeList])
-      
+      useEffect(()=>{
+        handleCheckId('lower-code')
+      },[subList])
    
     return (
         <>
@@ -394,7 +416,7 @@ function CommonCodeMangement() {
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true} multiple={false}/></div>}
+                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={handleLeftCell} isModify={true} multiple={false}/></div>}
                 {/* {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>} */}
                 <div><AgGrid column={checkedColumn} data={subList} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData} isModify={true} multiple={false}/></div>
             </div>

@@ -16,6 +16,7 @@ const EditCelldata = (props) => {
     setFieldName(props.colDef.field);
   }, [props.data, props.colDef]);
 
+  console.log(props,'00000000000000000000')
   const handleInputChange = (event) => {
     
     let value = event.target.value;
@@ -35,8 +36,8 @@ const EditCelldata = (props) => {
 
   const handleKeyDown = (event) => {
 
-    console.log(event.key)
-    if (event.key === 'Tab') {
+    let type = event.key
+    if (type=== 'Tab') {
 
       if(props.handleLeftCell) {
         event.preventDefault(); // prevent default behavior

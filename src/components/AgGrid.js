@@ -1,13 +1,12 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback, useLayoutEffect } from 'react';
-import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
+// import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
+import { AgGridReact } from '@ag-grid-community/react';
 import Pagination from "react-js-pagination";
 
 import '../scss/style.scss';
-import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
-import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
-import 'ag-grid-enterprise';
-
-/**
+import '@ag-grid-community/styles/ag-grid.css';
+import '@ag-grid-community/styles/ag-theme-alpine.css'
+/** 
  *  작성자 : 원은정
  *  작성일 : 2023.06.05
  *  기능 : 테이블 그리드 생성
@@ -82,8 +81,15 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     // }, []);
 
     const cellClickedListener =  e => {
+        console.log('========================',e)
         let selectedData=e.data;
         checkedItems(selectedData);
+        // changeValue(data)
+        if(data[0].parentCodeSeq===null) {
+            console.log('cellClickedListener',e)
+        }else {
+            console.log('cellClickedListener',e)
+        }
         // const selectedNodes = e.api.getSelectedNodes();
         // const selectedData = selectedNodes.map((node) => node.data);
     }; 

@@ -17,7 +17,6 @@ const Top = props =>{
     const {auth, options, handleChange, searchArea} = props;
     const [title, setTitle] = useState('');
 
-    console.log(auth, options, handleChange)
     const location = useLocation();
     
     const [pagePath, setPagePath] = useState('');
