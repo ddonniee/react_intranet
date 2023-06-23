@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 import Editor from "../components/Editor"
 import FileUpload from "../hooks/FileUpload"
 import { TestContext } from "../hooks/TestContext"
+import Favorite from "../components/Favorite"
 
 function Main() {
 
@@ -10,7 +11,7 @@ function Main() {
         <>
         <div>{testValue.email}</div>
        
-        <Editor />
+        <Favorite />
         <FileUpload />
         </>
     )

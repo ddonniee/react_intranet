@@ -29,6 +29,7 @@ import Dislike from '../../assets/svgs/icon_dislike.svg'
 import Comment from '../../assets/svgs/icon_co_comment.svg'
 import More_comment from '../../assets/svgs/icon_co_more.svg'
 import Editor from "../../components/Editor"
+import Favorite from "../../components/Favorite"
 
 function CStalk() {
 
@@ -46,6 +47,8 @@ function CStalk() {
         {value:'7',label:'Vietnam'},
         {value:'8',label:'Indonesia'}
     ])
+
+    const [favoriteModal, setFavoriteModal] = useState(false);
 
     const [isWrite, setIsWrite] = useState(false); // 글 작성시 에디터 on, viewer off
     
@@ -233,7 +236,6 @@ function CStalk() {
             {/** Content Area */}
             <div className="faq-contents">
                 <div className="faq-left">
-
                 <div className="faq-count">
                         Total <span>{boardData.length}</span>
                     </div>
@@ -332,6 +334,14 @@ function CStalk() {
             </div>
 
             <Zendesk />
+
+            {/* test */}
+            <button onClick={()=>setFavoriteModal(true)}>test btn</button>
+            {
+                favoriteModal 
+                &&
+                <Favorite onClose={()=>setFavoriteModal(false)}/>
+            }
             </div>
         </div>
         </div>

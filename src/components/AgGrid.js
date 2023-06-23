@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback, useLayoutEffect } from 'react';
-// import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
-import { AgGridReact } from '@ag-grid-community/react';
+import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
 import Pagination from "react-js-pagination";
 
 import '../scss/style.scss';
-import '@ag-grid-community/styles/ag-grid.css';
-import '@ag-grid-community/styles/ag-theme-alpine.css'
-/** 
+import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
+import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
+import 'ag-grid-community';
+
+/**
  *  작성자 : 원은정
  *  작성일 : 2023.06.05
  *  기능 : 테이블 그리드 생성
