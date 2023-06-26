@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, } from "react";
+import $, { event } from "jquery";
 
 const EditCelldata = (props) => {
 
@@ -33,7 +34,8 @@ const EditCelldata = (props) => {
     setValue(value);
   };
 
-  const handleInputBlur = () => {
+  const handleInputBlur = event => {
+    console.log(event)
     if(props.handleLeftCell) {
       props.handleLeftCell(fieldName, editRow,editId, value);
     }else if(props.handleCellValueChanged) {
@@ -47,6 +49,7 @@ const EditCelldata = (props) => {
   const handleKeyDown = (event) => {
 
     let type = event.key
+    console.log('handleKeyDown', event.currentTarget.value)
     if (type=== 'Tab') {
 
       if(props.handleLeftCell) {
@@ -65,7 +68,6 @@ const EditCelldata = (props) => {
   };
 
   const handleCellClick = e => {
-    console.log('handle cell click')
     previousInputRef.current = refInput.current;
     handleCellRef()
   }

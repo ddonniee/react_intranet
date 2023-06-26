@@ -13,7 +13,7 @@ function App({isMobile}) {
   const [user, setUser] = useState({
     email: 'donnie.lee@pospot.kr',
     name : 'donnie',
-    role : 'sub-admin',
+    role : 'SA',
     // token : sessionStorage.getItem('UserInfo'); // 직급에 따라 토큰 값 받아오기
   })
 

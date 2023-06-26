@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect, useMemo, useCallback, useLayoutEffe
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
 import Pagination from "react-js-pagination";
 
+import $ from 'jquery';
+
 import '../scss/style.scss';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
@@ -75,7 +77,6 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
   
 
     const onGridReady = useCallback((params) => {
-        console.log('onGirdReadt')
         setRowData(data)
         setColumnDefs(column)
         gridRef.current.api.sizeColumnsToFit();
@@ -87,6 +88,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
         // resizable: true,
         // filter: false,
         flex: 1,
+        
     }));
 
     // Example > 그리드 클릭 시 row값 콘솔 출력
@@ -97,7 +99,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     const cellClickedListener =  e => {
         let selectedData=e.data;
         checkedItems && checkedItems(selectedData);
-        changeValue(data)
+        data && changeValue(data)
         // const selectedNodes = e.api.getSelectedNodes();
         // const selectedData = selectedNodes.map((node) => node.data);
     }; 
@@ -134,8 +136,8 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
       const handleCellValueChanged = params =>{
       
         const {data} = params;
-        console.log(data,'onBlue!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-        // changeValue((prev=>prev.map(item=>item.id===data.id ? data:item)))
+        console.log(params,'ehandleCellValueChanged')
+        // changeValue((prev=>prev.map(item=>item.'id===data.id ? data:item)))
       }
     
     useEffect(()=>{
@@ -146,6 +148,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
         }
     },[])
 
+  
     return (
         <div>
           {
@@ -170,10 +173,12 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
                     suppressClickEdit={false}
                     onGridReady={onGridReady}
                     onSelectionChanged={handleSelectBox}
-                    onCellMouseDown={handleCellValueChanged}
-                    // onCellValueChanged={handleCellValueChanged}
+                    suppressCellFocus={isModify ? false : true}
+                    onCellValueChanged={handleCellValueChanged}
                     // editType="fullRow"
                     // singleClickEdit={true}
+                    
+                    
                 />
             </div>
             {/* react-js-pagination */}

@@ -25,8 +25,10 @@ function CommonCodeMangement() {
      */
     
     /** TEST DATA START  */
-    let auth = 1;
-    let loginCheck = 0;
+    const [auth, setAuth] = useState({
+      isViewer : false,
+      isWriter : false,
+    })
 
     // if(loginCheck===0) {
     //     document.location.href='/login';
@@ -40,7 +42,23 @@ function CommonCodeMangement() {
     const [token, setToken] = useState('');
 
     useEffect(()=>{
+      console.log(user)
       let role = user.role;
+      if(role==='LK') {
+        setAuth({
+          ...auth,
+          isViewer : true
+        })
+      }else if(role==='SA') {
+        setAuth({
+          ...auth,
+          isViewer : true,
+          isWriter : true
+        })
+      }else {
+        alert('No right to Access')
+        document.location.href='/login';
+      }
     },[])
 
     const [rowData, setRowData] = useState([]);
@@ -112,6 +130,7 @@ function CommonCodeMangement() {
     
  
     const handleLeftCell = (field, seq, id, value) => {
+      console.log('field, seq, id, value',field, seq, id, value)
         if (field === 'codeId') {
             let codeIdExists = false;
             codeList.forEach((item) => {
@@ -237,6 +256,10 @@ function CommonCodeMangement() {
             newItem = { codeSeq: codeList.length+1, codeId: '', codeName: '', description : '', useYn : 'Y', type:'insert' };
             setCodeList(prevData => [...prevData, newItem]);
         }else if(depth==='lower-code' && codeCheckedList) {
+            if(codeCheckedList.type==='insert') {
+              setAlertTxt('Please save upper code first')
+              return false
+            }
             newItem = { codeSeq: subList.length+1, codeId: '', codeName: '', parentCodeSeq: codeCheckedList?.codeSeq, description : '', useYn : 'Y', type:'insert' };
             setSublist(prevData => [...prevData, newItem])
         }else if(depth==='lower-code' && !codeCheckedList) {
@@ -283,7 +306,8 @@ function CommonCodeMangement() {
                         handleSearchCode()
                         setIsNewCode(false);
                     }else {
-                         setAlertTxt('Fail')
+                        setAlertTxt(resData.msg)
+                        //  console.log(resData)
                     }
                 })
                 .catch(function (error) {
@@ -293,37 +317,48 @@ function CommonCodeMangement() {
 
     }
 
-      const codeColumn =[
-        // { headerName: '', field: '', checkboxSelection: true, headerCheckboxSelection: true, width: 100 },
-        { headerName: 'Code ID', field: 'codeId', editable: false,  width: 200 },
-        { headerName: 'Code Name', field: 'codeName', editable: true, width: 200 },
-        { headerName: 'Code Description', field: 'description', editable: true, width: 200 },
-        {
-          headerName: 'Use Y/N',
-          field: 'useYn',
-          cellRendererFramework: SelectBoxRenderer,
-          cellRendererParams: {
-            column: {
-              options: [{ label: 'Y', value: 'Y' }, { label: 'N', value: 'N' }],
-            },
-            handleChange: handleChangeUse,
-          },
-          valueGetter: function(params) {
-            return params.data.name; // 셀의 값을 가져옴
-          },
-          valueSetter: function(params) {
-            params.data.name = params.newValue; // 셀의 값을 설정함
-            // 여기서 params.data.defaultValue를 사용하여 셀의 초기값을 설정할 수 있음
-            return true;
-          },
-          width: 200,
-        },
-      ]
+    // const codeColumn =[
+    //   // { headerName: '', field: '', checkboxSelection: true, headerCheckboxSelection: true, width: 100 },
+    //   { headerName: 'ID', field: 'codeId', editable: isNewCode ? true : false, cellEditorFramework: EditCelldata, singleClickEdit: false, cellEditorParams: { handleLeftCell }, width: 200 },
+    //   { headerName: 'Code Name', field: 'codeName', editable: auth.isWriter ? true : false, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
+    //   { headerName: 'Code Description', field: 'description', editable: auth.isWriter ? true : false, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
+    //   {
+    //     headerName: 'Use Y/N',
+    //     field: 'useYn',
+    //     cellRendererFramework: SelectBoxRenderer,
+    //     cellRendererParams: {
+    //       column: {
+    //         options: [{ label: 'Y', value: 'Y' }, { label: 'N', value: 'N' }],
+    //       },
+    //       handleChange: handleChangeUse,
+    //     },
+    //     valueGetter: function(params) {
+    //       return params.data.name; // 셀의 값을 가져옴
+    //     },
+    //     valueSetter: function(params) {
+    //       params.data.name = params.newValue; // 셀의 값을 설정함
+    //       // 여기서 params.data.defaultValue를 사용하여 셀의 초기값을 설정할 수 있음
+    //       return true;
+    //     },
+    //     width: 200,
+    //   },
+    // ]
 
-    const checkedColumn = [
-      { headerName: 'Code ID', field: 'codeId', editable: false,  width: 200 },
-      { headerName: 'Code Name', field: 'codeName', editable: true, width: 200 },
-      { headerName: 'Code Description', field: 'description', editable: true, width: 200 },
+    
+    const codeColumn =[
+      // { headerName: '', field: '', checkboxSelection: true, headerCheckboxSelection: true, width: 100 },
+      { headerName: 'ID', field: 'codeId', editable: isNewCode ? true : false, cellEditor : 'agTextCellEditor', cellEditorParams: {
+            useFormatter: true,
+            maxLength: 200
+        },width: 200 },
+      { headerName: 'Code Name', field: 'codeName', editable: auth.isWriter ? true : false, cellEditor : 'agTextCellEditor', cellEditorParams: {
+            useFormatter: true,
+            maxLength: 200
+        },idth: 200 },
+      { headerName: 'Code Description', field: 'description', editable: auth.isWriter ? true : false, cellEditor : 'agTextCellEditor', cellEditorParams: {
+            useFormatter: true,
+            maxLength: 200
+        },idth: 200 },
       {
         headerName: 'Use Y/N',
         field: 'useYn',
@@ -333,6 +368,31 @@ function CommonCodeMangement() {
             options: [{ label: 'Y', value: 'Y' }, { label: 'N', value: 'N' }],
           },
           handleChange: handleChangeUse,
+        },
+        valueGetter: function(params) {
+          return params.data.name; // 셀의 값을 가져옴
+        },
+        valueSetter: function(params) {
+          params.data.name = params.newValue; // 셀의 값을 설정함
+          // 여기서 params.data.defaultValue를 사용하여 셀의 초기값을 설정할 수 있음
+          return true;
+        },
+        width: 200,
+      },
+    ]
+    const checkedColumn = [
+      { headerName: 'Code ID', field: 'codeId', editable: isNewCode ? true : false, cellEditor : 'agTextCellEditor', cellEditorParams : {cellEditor : 'agTextCellEditor', cellEditorParams: {}} , width: 200 },
+      { headerName: 'Code Name', field: 'codeName', editable: auth.isWriter ? true : false, cellEditor : 'agTextCellEditor', cellEditorParams : {            useFormatter: true,}, width: 200 },
+      { headerName: 'Code Description', field: 'description', editable: auth.isWriter ? true : false, cellEditor : 'agTextCellEditor', cellEditorParams : {            maxLength: 200} , width: 200 },
+      {
+        headerName: 'Use Y/N',
+        field: 'useYn',
+        cellRendererFramework: SelectBoxRenderer,
+        cellRendererParams: {
+          column: {
+            options: [{ label: 'Y', value: 'Y' }, { label: 'N', value: 'N' }],
+          },
+          handleChange: handleLowerUse,
         },
         valueGetter: function(params) {
           return params.data.name; // 셀의 값을 가져옴
@@ -389,7 +449,7 @@ function CommonCodeMangement() {
               }));
               setSublist(updatedData);
         }).catch((error)=>{
-            console.error(error)
+            console.log(error)
         })
 
       }, [codeCheckedList]);
@@ -419,10 +479,14 @@ function CommonCodeMangement() {
                             <div className="search-wrapper" onClick={handleSearchCode}><img src={Search} alt='search-btn'/></div>
                         </div>
                        
-                        <div className="left-search-btn custom-self-align">
+                        {
+                          auth.isWriter
+                          &&
+                          <div className="left-search-btn custom-self-align">
                                 <button onClick={()=>addCode('upper-code')} className="code">Add Code</button>
                                 <button className="primary-red-btn" onClick={(e)=>onSaveEditCode(e,'upper-code')}>Save</button>
                         </div>
+                        }
                     </div>
 
                    
@@ -438,18 +502,22 @@ function CommonCodeMangement() {
                         }
                     </span>
                   </div>
-                  <div className="right-search-btn custom-self-align">
+                  {
+                    auth.isWriter
+                    &&
+                    <div className="right-search-btn custom-self-align">
                                 <button onClick={()=>addCode('lower-code')} className="code-detail">Add Code</button>
                                 <button className="primary-red-btn"  onClick={(e)=>onSaveEditCode(e,'lower-code')}>Save</button>
                   </div>
+                  }
                 </div>
             </div>
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true} multiple={false}/></div>}
+                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={isNewCode} multiple={false}/></div>}
                 {/* {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>} */}
-                <div><AgGrid column={checkedColumn} data={subList} paging={false} checkedItems={setDetailCheckedList} changeValue={setSublist} isModify={true} multiple={false}/></div>
+                <div><AgGrid column={checkedColumn} data={subList} paging={false} checkedItems={setDetailCheckedList} changeValue={setSublist} isModify={isNewCode} multiple={false}/></div>
             </div>
             <Zendesk />
            {
