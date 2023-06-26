@@ -49,6 +49,14 @@ function CStalk() {
     ])
 
     const [favoriteModal, setFavoriteModal] = useState(false);
+    /** 모달 외부영역 스크롤 방지 */
+    useEffect(() => {
+        if (favoriteModal) {
+          document.body.style.overflow = 'hidden'; // 스크롤 방지 설정
+        } else {
+          document.body.style.overflow = ''; // 스크롤 방지 해제
+        }
+      }, [favoriteModal]);
 
     const [isWrite, setIsWrite] = useState(false); // 글 작성시 에디터 on, viewer off
     
@@ -331,12 +339,13 @@ function CStalk() {
                     </div>
                 </div>
                 }
+                 <button style={{position:'absolute'}} onClick={()=>setFavoriteModal(true)}>test btn</button>
             </div>
 
             <Zendesk />
 
             {/* test */}
-            <button onClick={()=>setFavoriteModal(true)}>test btn</button>
+           
             {
                 favoriteModal 
                 &&

@@ -15,6 +15,11 @@ import Alert from "../../components/Alert"
 
 function CommonCodeMangement() {
 
+
+    const inputElement = document.querySelector('div[col-id="codeId"]');
+    console.log(inputElement)
+    // inputElement. = true;
+    
     /** TEST DATA START  */
     let auth = 1;
     let loginCheck = 0;
@@ -92,7 +97,7 @@ function CommonCodeMangement() {
           });
         });
     }
-
+    
     const handleLeftCell = (field, seq, id, value) => {
         if (field === 'codeId') {
             let codeIdExists = false;
@@ -416,7 +421,7 @@ function CommonCodeMangement() {
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={handleLeftCell} isModify={true} multiple={false}/></div>}
+                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true} multiple={false}/></div>}
                 {/* {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>} */}
                 <div><AgGrid column={checkedColumn} data={subList} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData} isModify={true} multiple={false}/></div>
             </div>

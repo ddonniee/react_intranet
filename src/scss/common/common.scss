@@ -34,7 +34,20 @@
 
 html, body, #root{
     height: 100vh;
+    overflow: auto;
 }
+#root::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  #root::-webkit-scrollbar-thumb {
+    background-color: $border-color-gery;
+    border-radius: 4px;
+  }
+  
+  #root::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }  
 .cell-select-box > *:hover {
     background-color: $hover-color-pink;
     border: none;
@@ -205,7 +218,9 @@ ul.pagination li a.active {
     height: 30px;
     color: $hover-color-pink;
 }
-
+body .modal {
+    overflow: hidden;
+}
 /* 공통 CSS */
 .custom-stress-txt {
     color: $primary-color-red;

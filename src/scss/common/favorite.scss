@@ -31,6 +31,9 @@
         ul:first-child li {
             min-width: 168px;
         }
+        ul li ul {
+            padding-top: 6px;
+        }
         ul li ul li {
             display: flex;
             padding-top: 10px;

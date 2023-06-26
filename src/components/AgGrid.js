@@ -19,11 +19,13 @@ import 'ag-grid-community';
  * @returns
 */
 const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isModify, multiple}) => {
+
+    console.log('multipe',multiple)
     
     const gridRef = useRef(); // Optional - for accessing Grid's API
     const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
     const [columnDefs, setColumnDefs] = useState(column);
-    const [isMultiple, setIsMultiple] = useState(multiple);
+    const [isMultiple, setIsMultiple] = useState(multiple); // row 다중선택여부
 
     /** 페이징 관련 ▼ ============================================================= */
     const [activePage, setActivePage] = useState(1); // 현재 페이지
@@ -82,10 +84,11 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     // }, []);
 
     const cellClickedListener =  e => {
-        console.log('========================',e)
+        
         let selectedData=e.data;
-        checkedItems(selectedData);
-        // changeValue(data)
+        console.log('========================',selectedData)
+        // checkedItems(selectedData);
+        changeValue(data)
         if(data[0].parentCodeSeq===null) {
             console.log('cellClickedListener',e)
         }else {
@@ -120,15 +123,17 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     const handleSelectBox = useCallback((event) => {
         const selectedNodes = event.api.getSelectedNodes();
         const selectedData = selectedNodes.map((node) => node.data);
+        
         checkedItems(selectedData);
       }, [checkedItems]);
 
-    //   const handleCellValueChanged = params =>{
-    //     console.log(params,'===========+++++++++++++++++++++')
-    //     const {data} = params;
-    //     changeValue((prev=>prev.map(item=>item.id===data.id ? data:item)))
-    //   }
-
+      const handleCellValueChanged = params =>{
+      
+        const {data} = params;
+        console.log(data,'handleCellValueChanged')
+        // changeValue((prev=>prev.map(item=>item.id===data.id ? data:item)))
+      }
+    
     useEffect(()=>{
         if(checkbox) {
             setIsCheckbox(true)
@@ -161,7 +166,8 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
                     suppressClickEdit={false}
                     onGridReady={onGridReady}
                     onSelectionChanged={handleSelectBox}
-                    // onCellValueChanged={handleCellValueChanged}
+                    // onCellEditingStopped={handleCellValueChanged}
+                    onCellValueChanged={handleCellValueChanged}
                     // editType="fullRow"
                     // singleClickEdit={true}
                     

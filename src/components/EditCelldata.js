@@ -6,7 +6,16 @@ const EditCelldata = (props) => {
   const [editRow, setEditRow] = useState('');
   const [editId, setEditId] = useState('')
   const [fieldName, setFieldName] = useState('');
+
   const refInput = useRef(null);
+  const previousInputRef = useRef(null);
+
+  const handleCellRef = () => {
+    if (previousInputRef.current) {
+      previousInputRef.current.blur(); // 이전 셀의 input 요소에서 포커스 해제
+    }
+    previousInputRef.current = refInput.current; // 현재 셀의 input 요소를 이전 셀로 설정
+  };
 
   useEffect(() => {
     // focus on the input
@@ -16,7 +25,6 @@ const EditCelldata = (props) => {
     setFieldName(props.colDef.field);
   }, [props.data, props.colDef]);
 
-  console.log(props,'00000000000000000000')
   const handleInputChange = (event) => {
     
     let value = event.target.value;
@@ -24,6 +32,7 @@ const EditCelldata = (props) => {
   };
 
   const handleInputBlur = () => {
+    console.log('---')
     if(props.handleLeftCell) {
       props.handleLeftCell(fieldName, editRow,editId, value);
     }else if(props.handleCellValueChanged) {
@@ -69,7 +78,7 @@ const EditCelldata = (props) => {
       onChange={handleInputChange}
       onBlur={handleInputBlur}
       onKeyDown={handleKeyDown}
-      onClick={handleCellClick}
+      onClick={handleCellRef}
       style={{ width: "80%", height: "80%" }}
     />
   );

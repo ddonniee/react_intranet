@@ -17,6 +17,7 @@ function Header() {
         upperTab : 'support',
         lowerTab : ''
     })
+    
     const [isOpenMenu, setIsOpenMenu] = useState(false); 
 
     const secondMenuList = [
@@ -182,7 +183,7 @@ function Header() {
 
         
     return (
-        <Nav upperDepth={currentTab.upperTab} lowerDepth={currentTab.lowerTab} thirdDepth={thirdMenuList?.thirdMenuList}>
+        <Nav upperdepth={currentTab.upperTab} lowerdepth={currentTab.lowerTab} thirdDepth={thirdMenuList?.thirdMenuList}>
         <div className="top-nav" >
             <div className="nav-logo"><img src={Logo} alt='logo' onClick={handleClickLogo}/><div className='division'></div><p>CS PORTAL</p></div>
            
@@ -249,10 +250,10 @@ function Header() {
 export default Header
 
 const Nav = styled.div`
-    #${props=>props.upperDepth} {
+    #${props=>props.upperdepth} {
         background-color: white; color: #BB0841; 
     }
-    ${props => props.lowerDepth !== '' && `#${props.lowerDepth} > p { background : #FAF1F4; border-radius: 100px;}`}
+    ${props => props.lowerdepth !== '' && `#${props.lowerdepth} > p { background : #FAF1F4; border-radius: 100px;}`}
     }
 `
 

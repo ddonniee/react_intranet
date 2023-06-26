@@ -24,6 +24,7 @@ const SelectBoxRenderer = (params) => {
   return (
             <select
             className="cell-select-box"
+            aria-readonly={selectedValue==='codeId'?true:false}
             onChange={handleUserGroupChange}
             value={selectedValue}>
              {options.map((option,idx) => (
