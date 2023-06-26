@@ -1,5 +1,6 @@
-import { useContext, useState, useEffect } from "react"
+import { useContext, useState, useEffect, useLayoutEffect } from "react"
 import { styled } from "styled-components"
+import { axiosInstance, axiosJsonInstance, axiosInstance2 } from '../../utils/CommonFunction';
 
 import Header from "../../components/Header"
 import Top from "../../components/Top"
@@ -16,139 +17,172 @@ import { ReactComponent as SpeakerIcon } from '../../assets/svgs/icon_speaker.sv
 import { ReactComponent as NewIcon } from '../../assets/svgs/icon_new.svg';
 import { ReactComponent as AttachmentIcon } from '../../assets/svgs/icon_attachment.svg';
 import { ReactComponent as DownloadIcon } from '../../assets/svgs/icon_download.svg';
+import moment from "moment/moment";
 
 function Notice() {
 
+    /**
+     * Notice 권한
+     * 
+     * 본사 Staff : 전체 내용 표시
+     * 법인 관리자 : 소속 법인 내용만 표시
+     * LGC 관리자/엔지니어 : LGC 고정
+     * ASC 관리자/엔지니어 : ASC 고정
+     */
+
+    const USER_CORP_CODE = 'LGEAI' // 로그인유저 법인코드
+    const USER_CENTER_TYPE = 'ASC' // 로그인유저 센터타입
+
     /** 페이징 관련 ▼ ============================================================= */
     const [activePage, setActivePage] = useState(1); // 현재 페이지
-    const [itemsPerPage] = useState(10); // 페이지당 아이템 갯수
+    const [pageInfo, setPageInfo] = useState({
+        activePage: 1,     // 현재 페이지
+        itemsPerPage: 10,  // 페이지 당 아이템 갯수
+        totalCount: 0      // 전체 목록 수
+    });
 
     const setPage = (e) => {
-        setActivePage(e);
+        // setActivePage(e);
+        setPageInfo({ ...pageInfo, activePage: e })
+        setSearchData({ ...searchData, page: e })
         console.log('page ---->', e);
     };
     /** 페이징 관련 ▲ ============================================================= */
 
-    const [boardData, setBoardData] = useState([
-        {
-            num : '001',
-            title : `R007 - Used Parts Q'ty larger than avaliable`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-            top : true,
-        },
-        {
-            num : '002',
-            title : `What is LG Electronics' credit rating?`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '003',
-            title : `How do I sign up to receive regular Investor Relations (IR) email updates?`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '004',
-            title : `Which reporting convetion does LGE use when posting its finantial information?`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '005',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '006',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '007',
-            title : `R007 - Used Parts Q'ty larger than avaliable`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '008',
-            title : `How do I sign up to receive regular Investor Relations (IR) email updates?`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '009',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '010',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...e`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-    ]);
+    /* 검색 영역 ****************************************************************/
+    const [searchData, setSearchData] = useState({
+        page: 1,
+        type: 'N',
+    }); // 검색데이터
 
-    const [detail, setDetail] = useState({
-        title : 'Invest In LG Electronics',
-        writer : 'Paul_Chapin',
-        date : 'Paul_Chapin',
-        type : 'All',
-        attachment : 'Guide for CB03.pptx (531KB)',
-        content : 'How',
-        comments : [
-            { 
-            writer : 'writer',
-            detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-            },
-            { 
-            writer : 'writer',
-            detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-            },
-            { 
-            writer : 'writer',
-            detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-            }
-        ],
-        like : 11,
-        dislike : 7,
-    })
+    const [subOptions, setSubOptions] = useState([]); // 법인 selectbox 데이터
+    const centerOptions = [ // view 조건 selectbox 데이터
+        { value: 'ALL', label: 'ALL', group: 'centerType' },
+        { value: 'LGC', label: 'LGC', group: 'centerType' },
+        { value: 'ASC', label: 'ASC', group: 'centerType' },
+    ]
 
-    const [content, setContent] = useState('<h1>How can I invest in LG Electronics? On which exchange is LG Electronics listed and what ard te ticker symbols ?</h1><p>LG Electronics Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p>');
+    const handleSelectBox = (e) => {
+        console.log('select ---->', e)
+        let group = e.group;
+        let value = e.value;
 
-    const [selectedList, setSelctedList] = useState({ num: null, title: '' });
-
-    const handleClickRow = (e, item) => {
-        if(selectedList.num === null || selectedList.num !== item.num) {
-            setSelctedList(item)
-        }else {
-            setSelctedList({ num: null, title: '' })
+        if(group === 'corporationCode') {
+            setSearchData({ ...searchData, subsidiary: value })
+        } else if(group === 'centerType') {
+            setSearchData({ ...searchData, view: value })
         }
     }
 
-    useEffect( ()=> {
-        console.log(selectedList)
-    }, [selectedList])
+    const [boardData, setBoardData] = useState([]); // notice 목록
+    const [selectedList, setSelctedList] = useState(); // 목록에서 선택한 항목
+    const [detail, setDetail] = useState(); // notice 상세
 
-    const viewOptions = [
-        { value: 'ASC', label: 'ASC' },
-        { value: 'ASC2', label: 'ASC2' },
-    ]
+    // const handleSelectBox = (event,params) => {
+    //     const { data } = params.node;
+    //     const { checked } = event.target;
 
-    const handleSelectBox = (event,params) => {
-        const { data } = params.node;
-        const { checked } = event.target;
+    //     if (checked) {
+    //         setBoardData([...boardData, data]);
+    //       } else {
+    //         setBoardData(boardData.filter(item => item !== data));
+    //       }
+    // }
 
-        if (checked) {
-            setBoardData([...boardData, data]);
-          } else {
-            setBoardData(boardData.filter(item => item !== data));
-          }
+    const getList = () => {
+        let sdata = new FormData();
+        for(const key in searchData) {
+            sdata.append(key, searchData[key])
+        }
+        console.log('search result >>>>>>', Object.fromEntries(sdata))
+
+        // 공지사항 목록 조회 API
+        axiosInstance2.post('/notice/list', sdata).then(res => {
+            const data = res?.data.result;
+            console.log('공지사항 목록 ---->', data)
+
+            setBoardData(data);
+
+            if (searchData.page == 1) {  // 검색 결과 1페이지 첫번째 항목의 rn 저장 (total)
+                setPageInfo({ ...pageInfo, totalCount: data[0]?.rn });
+            }
+            console.log('total ---->', data[0]?.rn)
+            
+        }).catch(error => {
+            console.error(error);
+        });
     }
+
+    const getSelectList = () => {
+        // 법인목록 조회 API
+        axiosInstance.post('/corporation/list').then(res => {
+            const data = res?.data.result;
+            // console.log('법인 기존 목록 ---->', data)
+
+            const newArray = data.map((obj, index) => ({
+                value: obj.corporationCode,
+                label: obj.corporationCode,
+                group: 'corporationCode'
+            }));
+            console.log('법인 목록 ---->', newArray)
+
+            setSubOptions(newArray);
+            
+        }).catch(error => {
+            console.error(error);
+        });
+    }
+
+    const getDetail = () => {
+        let sdata = new FormData();
+        for(const key in selectedList) {
+            sdata.append(key, selectedList[key])
+        }
+        console.log('search result >>>>>>', Object.fromEntries(sdata))
+
+        // 공지사항 상세 조회 API
+        axiosInstance2.post('/notice/detail', sdata).then(res => {
+            const data = res?.data.result;
+            console.log('공지사항 상세 ---->', data)
+
+            if(data.attachments) {
+                setDetail({ ...data, fileName: JSON.parse(data.attachments).fileName, uploadPath: JSON.parse(data.attachments).uploadPath });
+            } else {
+                setDetail(data);
+            }
+            
+        }).catch(error => {
+            console.error(error);
+        });
+    }
+
+    useLayoutEffect(() => {
+        getList();
+        getSelectList();
+    }, []);
+
+    const submitInput = () => {
+        const input = document.getElementById('notice-nav-input').value;
+        setSearchData({ ...searchData, search: input });
+    }
+
+    useEffect(() => {
+        getList();
+        // console.log('searchData ---->', searchData)
+    }, [searchData]);
+
+    const handleClickRow = (e, item) => {
+        if(selectedList?.noticeId === null || selectedList?.noticeId !== item.noticeId) {
+            setSelctedList({ noticeId: item.noticeId, tableName: item.tableName })
+        } else {
+            setSelctedList()
+        }
+    }
+
+    useEffect(() => {
+        selectedList && getDetail();
+        // console.log('select list ---->', selectedList)
+    }, [selectedList])
 
     return (
         <div className="notice-container">
@@ -160,36 +194,37 @@ function Notice() {
             <div className="notice-nav">
                 <div className="notice-nav-box custom-flex-item custom-align-item">
                     <p>· Subsidiary</p>
-                    <input type="text" className="notice-nav-input"></input>
+                    <SelectBox options={subOptions} handleChange={handleSelectBox} />
                 </div>
                 <div className="custom-flex-item custom-align-item">
                     <p>· View</p>
-                    <SelectBox options={viewOptions} onChange={handleSelectBox} />
+                    <SelectBox options={centerOptions} handleChange={handleSelectBox} />
                 </div>
                 <div className="custom-flex-item custom-align-item">
                     <p>· Search</p>
-                    <input type="text" className="notice-nav-input"></input>
-                    <button type="submit" className="notice-nav-btn custom-flex-item custom-align-item"> <SearchIcon /> </button>
+                    <input type="text" className="notice-nav-input" id="notice-nav-input"></input>
+                    <button className="notice-nav-btn custom-flex-item custom-align-item" onClick={submitInput}> <SearchIcon /> </button>
                 </div>
             </div>
 
             {/** Content Area */}
-            <Style selectId={selectedList.num}>
+            <Style selectId={selectedList?.noticeId}>
             <div className="notice-content">
                 <div className="notice-left">
                     <div className="notice-count">
-                        Total <span>{boardData.length}</span>
+                        {/* Total <span>{boardData.length}</span> */}
+                        Total <span>{pageInfo?.totalCount}</span>
                     </div>
                     <ul className="notice-custom-board">
                         {
-                            boardData?.map((item,idx) => {
+                            boardData?.map((item, idx) => {
                                 return(
-                                    <li className="notice-list" key={generateRandomString(idx)} id={`list-item-${item.num}`} onClick={(e)=>handleClickRow(e,item)}>
+                                    <li className="notice-list" key={generateRandomString(idx)} id={`list-item-${item.noticeId}`} onClick={(e)=>handleClickRow(e, item)}>
                                         <div className="title">
                                             {item.top ? <SpeakerIcon /> : null} {item.title} {item.top ? <NewIcon /> : null}
                                         </div>
                                         <div className="etc">
-                                            <p>{item.writer}</p> <p>{item.date}</p>
+                                            <p>{item.writerID}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
                                         </div>
                                     </li>
                                 )
@@ -199,9 +234,9 @@ function Notice() {
                     {
                         boardData &&
                         <Pagination 
-                            activePage={activePage} // 현재 페이지
-                            itemsCountPerPage={itemsPerPage} // 한 페이지 당 보여줄 아이템 수
-                            totalItemsCount={boardData?.length} // 총 아이템 수
+                            activePage={pageInfo?.activePage} // 현재 페이지
+                            itemsCountPerPage={pageInfo?.itemsPerPage} // 한 페이지 당 보여줄 아이템 수
+                            totalItemsCount={pageInfo?.totalCount} // 총 아이템 수
                             pageRangeDisplayed={5} // paginator의 페이지 범위
                             prevPageText={"‹"} // "이전"을 나타낼 텍스트
                             nextPageText={"›"} // "다음"을 나타낼 텍스트
@@ -210,24 +245,36 @@ function Notice() {
                     }
                 </div>
                 <div className="notice-right">
-                    <div className="notice-view-top">
-                        <p className="notice-title">{detail.title}</p>
-                        <p className="notice-title-detail">
-                            <span>Writer</span> : {detail.writer} &nbsp;
-                            <span>Date</span> : {detail.date} &nbsp;
-                            <span>Type</span> : {detail.type}
-                        </p>
-                        <div className="notice-title-attach">
-                            <AttachmentIcon /> 
-                            <span className="notice-attach">Attachment</span>
-                            <span className="custom-flex-item">
-                                <span className="notice-attach-count">{detail.attachment !== '' && ` (1)`}</span>
-                                <p className="custom-hyphen custom-self-align">-</p>
-                                <span className="notice-attach-box"> <p>{detail.attachment}</p> <DownloadIcon /> </span>
-                            </span>
+                    {
+                        detail ?
+                        <>
+                        <div className="notice-view-top">
+                            <p className="notice-title">{detail?.title}</p>
+                            <p className="notice-title-detail">
+                                <span>Writer</span> : {detail?.writerName} &nbsp;
+                                <span>Date</span> : {moment(detail?.createdAt).format('YY.M.DD')} &nbsp;
+                                <span>Type</span> : {detail?.view}
+                            </p>
+                            <div className="notice-title-attach">
+                                <AttachmentIcon /> 
+                                <span className="notice-attach">Attachment</span>
+                                <span className="custom-flex-item">
+                                    <span className="notice-attach-count">{detail?.attachment !== '' && ` (1)`}</span>
+                                    <p className="custom-hyphen custom-self-align">-</p>
+                                    <span className="notice-attach-box"> 
+                                        <p>{detail?.fileName}</p>
+                                        <a href={process.env.REACT_APP_FRONT_URL /*+ detail?.uploadPath*/} target='_blank' download> <DownloadIcon /> </a>
+                                    </span>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="notice-view-middle"> <Viewer content={content}/> </div>
+                        <div className="notice-view-middle"> <Viewer content={detail?.content}/> </div>
+                        </>
+                        :
+                        <div className="notice-view-none">
+                            <p>If you select a list, you can see the contents</p>
+                        </div>
+                    }
                 </div>
             </div>
             </Style>

@@ -22,6 +22,13 @@ import { ReactComponent as CalendarIcon } from '../../assets/svgs/icon_calendar.
 
 function NoticeSetting() {
 
+    /**
+     * Notice Setting 권한
+     * 
+     * 본사 Staff : 조회만 가능
+     * 법인 Admin : 조회 & 작성
+     */
+
     /** 페이징 관련 ▼ ============================================================= */
     const [activePage, setActivePage] = useState(1); // 현재 페이지
     const [itemsPerPage] = useState(10); // 페이지당 아이템 갯수
