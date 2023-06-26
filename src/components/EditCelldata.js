@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, } from "react";
-import $ from "jquery";
 
 const EditCelldata = (props) => {
 
@@ -35,7 +34,6 @@ const EditCelldata = (props) => {
   };
 
   const handleInputBlur = () => {
-    console.log('-222222222222222222222--')
     if(props.handleLeftCell) {
       props.handleLeftCell(fieldName, editRow,editId, value);
     }else if(props.handleCellValueChanged) {

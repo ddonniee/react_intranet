@@ -1,12 +1,12 @@
 import { useContext, useState } from "react"
 import Editor from "../components/Editor"
 import FileUpload from "../hooks/FileUpload"
-import { TestContext } from "../hooks/TestContext"
+import { UserContext } from "../hooks/UserContext"
 import Favorite from "../components/Favorite"
 
 function Main() {
 
-    const testValue = useContext(TestContext)
+    const testValue = useContext(UserContext)
     return (
         <>
         <div>{testValue.email}</div>

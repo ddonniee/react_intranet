@@ -6,7 +6,7 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import { styled } from "styled-components";
 
-import { TestContext } from "../../hooks/TestContext"
+import { UserContext } from "../../hooks/UserContext"
 import Pagination from "react-js-pagination";
 // Components
 import Header from "../../components/Header"
@@ -39,7 +39,7 @@ import More_comment from '../../assets/svgs/icon_co_more.svg'
 function Faq() {
 
     let auth = 1;
-    const user = useContext(TestContext)
+    const user = useContext(UserContext)
     const [subsidiary, setSubsidiary ] = useState([
         {value:'1',label:'Canada'}, 
         {value:'2',label:'USA'}, 

@@ -6,14 +6,15 @@ import routes from "./routes";
 
 import {detectUserAgent} from '../src/utils/CommonFunction'
 // test useContext
-import { TestContext } from "./hooks/TestContext";
+import { UserContext } from "./hooks/UserContext";
 
 function App({isMobile}) {
 
   const [user, setUser] = useState({
     email: 'donnie.lee@pospot.kr',
     name : 'donnie',
-    other : 'female'
+    role : 'sub-admin',
+    // token : sessionStorage.getItem('UserInfo'); // 직급에 따라 토큰 값 받아오기
   })
 
   let loginCheck = 1;
@@ -38,7 +39,7 @@ function App({isMobile}) {
  
   return (
     <>
-    <TestContext.Provider value={user}>
+    <UserContext.Provider value={user}>
       <BrowserRouter>
         <Routes>
           {routes.map((route, index) => (
@@ -52,7 +53,7 @@ function App({isMobile}) {
           ))}
         </Routes>
       </BrowserRouter>
-      </TestContext.Provider>
+      </UserContext.Provider>
     </>
   );
 }

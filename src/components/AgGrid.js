@@ -86,11 +86,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
         checkedItems && checkedItems(selectedData);
         
         console.log(changeValue)
-        if(data[0].parentCodeSeq===null) {
-            changeValue(data)
-        }else {
-            // console.log('cellClickedListener',e)
-        }
+        changeValue(data)
         // const selectedNodes = e.api.getSelectedNodes();
         // const selectedData = selectedNodes.map((node) => node.data);
     }; 
@@ -163,13 +159,10 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
                     suppressClickEdit={false}
                     onGridReady={onGridReady}
                     onSelectionChanged={handleSelectBox}
-                    onChange={e=>console.log(e)}
                     // onCellEditingStopped={handleCellValueChanged}
                     // onCellValueChanged={handleCellValueChanged}
                     // editType="fullRow"
                     // singleClickEdit={true}
-                    
-                    
                 />
             </div>
             {/* react-js-pagination */}

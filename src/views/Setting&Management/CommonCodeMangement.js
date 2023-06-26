@@ -1,4 +1,4 @@
-import React, {useEffect, useState,useLayoutEffect} from "react"
+import React, {useEffect, useState,useLayoutEffect, useContext} from "react"
 import Header from "../../components/Header"
 import Zendesk from "../../components/Zendesk"
 import Top from "../../components/Top"
@@ -13,10 +13,16 @@ import axios from "axios"
 import { axiosInstance, axiosJsonInstance, axiosTestInstance, getBrowserLanguage } from "../../utils/CommonFunction"
 import Alert from "../../components/Alert"
 
+import {UserContext} from '../../hooks/UserContext'
 function CommonCodeMangement() {
 
 
-    // inputElement. = true;
+    /** 
+     * 메뉴 접근 권한
+     * 본사 staff - 조회
+     * 법인 admin - 조회 및 작성
+     * 법인관리자, LGC 관리자, LGC 엔지니어, ASC 관리자, ASC 엔지니어 접근 권한 X
+     */
     
     /** TEST DATA START  */
     let auth = 1;
@@ -28,6 +34,15 @@ function CommonCodeMangement() {
 
     /** Check User region */
     let browserLanguage = getBrowserLanguage();
+
+    // 로그인 정보 받을 때 처리하기
+    const user = useContext(UserContext);
+    console.log('UserContext',user.role)
+    const [token, setToken] = useState('');
+
+    useEffect(()=>{
+      let role = user.role;
+    },[])
 
     const [rowData, setRowData] = useState([]);
     /** TEST DATA END */
@@ -159,6 +174,7 @@ function CommonCodeMangement() {
               ...item,
               type: 'update'
             }));
+            console.log(rawData,'axios')
             setCodeList(updatedData);
         }).catch((error)=>{
             console.log(error)
@@ -437,7 +453,7 @@ function CommonCodeMangement() {
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
                 {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true} multiple={false}/></div>}
                 {/* {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>} */}
-                <div><AgGrid column={checkedColumn} data={subList} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData} isModify={true} multiple={false}/></div>
+                <div><AgGrid column={checkedColumn} data={subList} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setSublist} isModify={true} multiple={false}/></div>
             </div>
             <Zendesk />
            {
