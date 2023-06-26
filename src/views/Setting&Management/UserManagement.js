@@ -291,7 +291,7 @@ function UserManagement() {
             
             if(resdata.code == 200) {
                 getList();
-                alert('수정되었습니다.');
+                alert(`It's been completed`);
                 window.location.reload();
             } else {
             //   alert(resdata.msg);

@@ -29,13 +29,13 @@
     letter-spacing: 0.01em;
     box-sizing: border-box;
     margin: 0;
-    
 }
 
 html, body, #root{
     height: 100vh;
     overflow: auto;
 }
+
 #root::-webkit-scrollbar {
     width: 8px;
   }
@@ -48,10 +48,12 @@ html, body, #root{
   #root::-webkit-scrollbar-track {
     background-color: #f1f1f1;
   }  
+
 .cell-select-box > *:hover {
     background-color: $hover-color-pink;
     border: none;
   }
+
 .inner-container {
     max-width: 1560px;
     margin: 0 auto;
@@ -74,9 +76,11 @@ html, body, #root{
         font-weight: 600; font-size: 14px; line-height: 16px; text-align: center; letter-spacing: 0.025em;
     }
 }
+
 .max-length-txt {
     text-overflow: ellipsis; 
 }
+
 /* 그리드 */
 .ag-theme-alpine {
     --ag-alpine-active-color: #FAF1F4 !important;
@@ -94,7 +98,7 @@ html, body, #root{
     --ag-range-selection-border-color: #BB0841 !important;
     --ag-input-border-color-invalid: #BB0841 !important;
     --ag-input-focus-box-shadow: 0 0 2px 0.1rem #FAF1F4 !important;
-    // min-height: 700px; 
+    // min-height: 700px;
     height: min-content;
 }
 
