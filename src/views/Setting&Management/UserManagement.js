@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
-import Header from '../../components/Header';
-import Top from '../../components/Top';
 import { axiosInstance, axiosJsonInstance } from '../../utils/CommonFunction';
 
+import Header from '../../components/Header';
+import Top from '../../components/Top';
 import Zendesk from '../../components/Zendesk';
 import AgGrid from "../../components/AgGrid";
 import EditCelldata from '../../components/EditCelldata';
@@ -59,7 +59,7 @@ function UserManagement() {
     const [isModify, setIsModify] = useState(false); // 수정 여부 (Edit 버튼)
 
     useEffect(() => {
-        console.log('수정여부 ---->', isModify)
+        // console.log('수정여부 ---->', isModify)
 
         setColumn((prevCol) =>
             prevCol.map((col, i) => {
@@ -215,7 +215,9 @@ function UserManagement() {
         }).catch(error => {
             console.error(error);
         });
+    }
 
+    const getSelectList = () => {
         // 법인목록 조회 API
         axiosInstance.post('/corporation/list').then(res => {
             const data = res?.data.result;
@@ -259,6 +261,7 @@ function UserManagement() {
 
     useLayoutEffect(() => {
         getList();
+        getSelectList();
     }, []);
 
     // useEffect(() => {

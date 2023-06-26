@@ -11,6 +11,15 @@ export const axiosInstance = axios.create({
     }
 });
 
+export const axiosInstance2 = axios.create({ // 희정님 로컬서버 (notice, cstalk, qna)
+    baseURL: 'http://192.168.0.30:8090',
+    maxBodyLength: Infinity,
+    headers: {
+        'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_STAFF,
+        'Content-Type': 'multipart/form-data'
+    }
+});
+
 export const axiosJsonInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
     headers: {
