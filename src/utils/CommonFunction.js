@@ -6,8 +6,7 @@ import axios from 'axios';
 export const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL, // 서버 나오면 수정
     headers: {
-        // 'Authorization': 'Bearer ' + localStorage.getItem('Token'),
-        'Authorization': 'Bearer ' + process.env.TEMP_JWT_SUBSIDIARY_STAFF,
+        'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
         'Content-Type': 'multipart/form-data'
     }
 });
@@ -15,8 +14,7 @@ export const axiosInstance = axios.create({
 export const axiosJsonInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
     headers: {
-        // 'Authorization': 'Bearer ' + localStorage.getItem('Token'),
-        'Authorization': 'Bearer ' + process.env.TEMP_JWT_SUBSIDIARY_STAFF,
+        'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
         'Content-Type': 'application/json; charset=utf-8'
     }
 });
