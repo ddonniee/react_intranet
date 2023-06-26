@@ -180,6 +180,7 @@
 
                     .notice-attach-count {
                         color: #A50035;
+                        font-weight: 600;
                         margin-left: -5px;
                     }
 
@@ -188,12 +189,18 @@
                         border-radius: 5px; 
                         font-weight: 600;
                         font-size: 13px;
-                        padding: 4px 8px;
+                        padding: 4px 10px;
                         display: flex;
                         align-items: center;
 
                         p {
-                            margin: 0 4px;
+                            margin-right: 8px
+                        }
+
+                        a {
+                            color: white;
+                            cursor: pointer;
+                            margin-bottom: -4px;
                         }
                     }
                 }
@@ -208,8 +215,13 @@
                     height: 100%;
                 }
 
+                .ck.ck-editor__editable_inline>:first-child {
+                    margin-top: 0;
+                }
+
                 h2, p {
-                    margin-left: 15px;
+                    // margin-left: 10px;
+                    margin: 0 5px;
                 }
 
                 h2 {
@@ -224,6 +236,14 @@
                     line-height: 22px;
                     color: #626262;
                 }
+            }
+
+            .notice-view-none {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
 
             /* 작성페이지 */

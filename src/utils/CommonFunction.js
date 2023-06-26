@@ -15,7 +15,7 @@ export const axiosInstance2 = axios.create({ // 희정님 로컬서버 (notice, 
     baseURL: 'http://192.168.0.30:8090',
     maxBodyLength: Infinity,
     headers: {
-        'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_STAFF,
+        'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
         'Content-Type': 'multipart/form-data'
     }
 });

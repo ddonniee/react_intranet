@@ -21,18 +21,30 @@ import moment from "moment/moment";
 
 function Notice() {
 
-    // 로그인유저 정보
-    // const USER_INFO = sessionStorage.getItem('UserInfo');
+    /**
+     * Notice 권한
+     * 
+     * 본사 Staff : 전체 내용 표시
+     * 법인 관리자 : 소속 법인 내용만 표시
+     * LGC 관리자/엔지니어 : LGC 고정
+     * ASC 관리자/엔지니어 : ASC 고정
+     */
 
     const USER_CORP_CODE = 'LGEAI' // 로그인유저 법인코드
     const USER_CENTER_TYPE = 'ASC' // 로그인유저 센터타입
 
     /** 페이징 관련 ▼ ============================================================= */
     const [activePage, setActivePage] = useState(1); // 현재 페이지
-    const [itemsPerPage] = useState(10); // 페이지당 아이템 갯수
+    const [pageInfo, setPageInfo] = useState({
+        activePage: 1,     // 현재 페이지
+        itemsPerPage: 10,  // 페이지 당 아이템 갯수
+        totalCount: 0      // 전체 목록 수
+    });
 
     const setPage = (e) => {
-        setActivePage(e);
+        // setActivePage(e);
+        setPageInfo({ ...pageInfo, activePage: e })
+        setSearchData({ ...searchData, page: e })
         console.log('page ---->', e);
     };
     /** 페이징 관련 ▲ ============================================================= */
@@ -63,34 +75,8 @@ function Notice() {
     }
 
     const [boardData, setBoardData] = useState([]); // notice 목록
-    const [detail, setDetail] = useState({}); // notice 상세
-    //     title : 'Invest In LG Electronics',
-    //     writer : 'Paul_Chapin',
-    //     date : 'Paul_Chapin',
-    //     type : 'All',
-    //     attachment : 'Guide for CB03.pptx (531KB)',
-    //     content : 'How',
-    //     comments : [
-    //         { 
-    //         writer : 'writer',
-    //         detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-    //         },
-    //         { 
-    //         writer : 'writer',
-    //         detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-    //         },
-    //         { 
-    //         writer : 'writer',
-    //         detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-    //         }
-    //     ],
-    //     like : 11,
-    //     dislike : 7,
-    // })
-
-    const [content, setContent] = useState('<h1>How can I invest in LG Electronics? On which exchange is LG Electronics listed and what ard te ticker symbols ?</h1><p>LG Electronics Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p>');
-
-    const [selectedList, setSelctedList] = useState();
+    const [selectedList, setSelctedList] = useState(); // 목록에서 선택한 항목
+    const [detail, setDetail] = useState(); // notice 상세
 
     // const handleSelectBox = (event,params) => {
     //     const { data } = params.node;
@@ -116,6 +102,11 @@ function Notice() {
             console.log('공지사항 목록 ---->', data)
 
             setBoardData(data);
+
+            if (searchData.page == 1) {  // 검색 결과 1페이지 첫번째 항목의 rn 저장 (total)
+                setPageInfo({ ...pageInfo, totalCount: data[0]?.rn });
+            }
+            console.log('total ---->', data[0]?.rn)
             
         }).catch(error => {
             console.error(error);
@@ -149,12 +140,16 @@ function Notice() {
         }
         console.log('search result >>>>>>', Object.fromEntries(sdata))
 
-        // 공지사항 목록 조회 API
+        // 공지사항 상세 조회 API
         axiosInstance2.post('/notice/detail', sdata).then(res => {
             const data = res?.data.result;
             console.log('공지사항 상세 ---->', data)
 
-            setDetail(data);
+            if(data.attachments) {
+                setDetail({ ...data, fileName: JSON.parse(data.attachments).fileName, uploadPath: JSON.parse(data.attachments).uploadPath });
+            } else {
+                setDetail(data);
+            }
             
         }).catch(error => {
             console.error(error);
@@ -217,7 +212,8 @@ function Notice() {
             <div className="notice-content">
                 <div className="notice-left">
                     <div className="notice-count">
-                        Total <span>{boardData.length}</span>
+                        {/* Total <span>{boardData.length}</span> */}
+                        Total <span>{pageInfo?.totalCount}</span>
                     </div>
                     <ul className="notice-custom-board">
                         {
@@ -238,9 +234,9 @@ function Notice() {
                     {
                         boardData &&
                         <Pagination 
-                            activePage={activePage} // 현재 페이지
-                            itemsCountPerPage={itemsPerPage} // 한 페이지 당 보여줄 아이템 수
-                            totalItemsCount={boardData?.length} // 총 아이템 수
+                            activePage={pageInfo?.activePage} // 현재 페이지
+                            itemsCountPerPage={pageInfo?.itemsPerPage} // 한 페이지 당 보여줄 아이템 수
+                            totalItemsCount={pageInfo?.totalCount} // 총 아이템 수
                             pageRangeDisplayed={5} // paginator의 페이지 범위
                             prevPageText={"‹"} // "이전"을 나타낼 텍스트
                             nextPageText={"›"} // "다음"을 나타낼 텍스트
@@ -249,24 +245,36 @@ function Notice() {
                     }
                 </div>
                 <div className="notice-right">
-                    <div className="notice-view-top">
-                        <p className="notice-title">{detail.title}</p>
-                        <p className="notice-title-detail">
-                            <span>Writer</span> : {detail.writer} &nbsp;
-                            <span>Date</span> : {detail.date} &nbsp;
-                            <span>Type</span> : {detail.type}
-                        </p>
-                        <div className="notice-title-attach">
-                            <AttachmentIcon /> 
-                            <span className="notice-attach">Attachment</span>
-                            <span className="custom-flex-item">
-                                <span className="notice-attach-count">{detail.attachment !== '' && ` (1)`}</span>
-                                <p className="custom-hyphen custom-self-align">-</p>
-                                <span className="notice-attach-box"> <p>{detail.attachment}</p> <DownloadIcon /> </span>
-                            </span>
+                    {
+                        detail ?
+                        <>
+                        <div className="notice-view-top">
+                            <p className="notice-title">{detail?.title}</p>
+                            <p className="notice-title-detail">
+                                <span>Writer</span> : {detail?.writerName} &nbsp;
+                                <span>Date</span> : {moment(detail?.createdAt).format('YY.M.DD')} &nbsp;
+                                <span>Type</span> : {detail?.view}
+                            </p>
+                            <div className="notice-title-attach">
+                                <AttachmentIcon /> 
+                                <span className="notice-attach">Attachment</span>
+                                <span className="custom-flex-item">
+                                    <span className="notice-attach-count">{detail?.attachment !== '' && ` (1)`}</span>
+                                    <p className="custom-hyphen custom-self-align">-</p>
+                                    <span className="notice-attach-box"> 
+                                        <p>{detail?.fileName}</p>
+                                        <a href={process.env.REACT_APP_FRONT_URL /*+ detail?.uploadPath*/} target='_blank' download> <DownloadIcon /> </a>
+                                    </span>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="notice-view-middle"> <Viewer content={content}/> </div>
+                        <div className="notice-view-middle"> <Viewer content={detail?.content}/> </div>
+                        </>
+                        :
+                        <div className="notice-view-none">
+                            <p>If you select a list, you can see the contents</p>
+                        </div>
+                    }
                 </div>
             </div>
             </Style>
