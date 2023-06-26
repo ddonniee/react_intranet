@@ -61,6 +61,19 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
         }
     }, [data, isModify]);
 
+    
+  useEffect(() => {
+    setRowData(data);
+    
+    const updatedColumns = column.map((col) => ({
+      ...col,
+      editable: col.editable ? true : false
+    }));
+    
+    setColumnDefs(updatedColumns);
+  }, [data, column]);
+  
+
     const onGridReady = useCallback((params) => {
         console.log('onGirdReadt')
         setRowData(data)
@@ -84,8 +97,6 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     const cellClickedListener =  e => {
         let selectedData=e.data;
         checkedItems && checkedItems(selectedData);
-        
-        console.log(changeValue)
         changeValue(data)
         // const selectedNodes = e.api.getSelectedNodes();
         // const selectedData = selectedNodes.map((node) => node.data);
@@ -123,7 +134,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
       const handleCellValueChanged = params =>{
       
         const {data} = params;
-        console.log(data,'handleCellValueChanged')
+        console.log(data,'onBlue!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         // changeValue((prev=>prev.map(item=>item.id===data.id ? data:item)))
       }
     
@@ -159,7 +170,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
                     suppressClickEdit={false}
                     onGridReady={onGridReady}
                     onSelectionChanged={handleSelectBox}
-                    // onCellEditingStopped={handleCellValueChanged}
+                    onCellMouseDown={handleCellValueChanged}
                     // onCellValueChanged={handleCellValueChanged}
                     // editType="fullRow"
                     // singleClickEdit={true}

@@ -37,7 +37,6 @@ function CommonCodeMangement() {
 
     // 로그인 정보 받을 때 처리하기
     const user = useContext(UserContext);
-    console.log('UserContext',user.role)
     const [token, setToken] = useState('');
 
     useEffect(()=>{
@@ -111,24 +110,7 @@ function CommonCodeMangement() {
         });
     }
     
-    const [test, setTest] = useState([
-      {
-        codeId : '1',
-        codeName : '난 테스트코드',
-        codeSeq : 'd',
-        description : '테스트용이야',
-        useYn : 'N',
-        parentCodeSeq : null,
-      },
-      {
-        codeId : '2',
-        codeName : '난 테스트코드 친구',
-        codeSeq : 'd',
-        description : '테스트용이야22',
-        useYn : 'N',
-        parentCodeSeq : null,
-      }
-    ])
+ 
     const handleLeftCell = (field, seq, id, value) => {
         if (field === 'codeId') {
             let codeIdExists = false;
@@ -175,7 +157,12 @@ function CommonCodeMangement() {
               type: 'update'
             }));
             console.log(rawData,'axios')
-            setCodeList(updatedData);
+            if(rawData[0].parentCodeSeq===null) {
+              setCodeList(updatedData);
+            }
+            else {
+              setSublist(updatedData)
+            }
         }).catch((error)=>{
             console.log(error)
         })
@@ -308,7 +295,7 @@ function CommonCodeMangement() {
 
       const codeColumn =[
         // { headerName: '', field: '', checkboxSelection: true, headerCheckboxSelection: true, width: 100 },
-        { headerName: 'ID', field: 'codeId', editable: false,  width: 200 },
+        { headerName: 'Code ID', field: 'codeId', editable: false,  width: 200 },
         { headerName: 'Code Name', field: 'codeName', editable: true, width: 200 },
         { headerName: 'Code Description', field: 'description', editable: true, width: 200 },
         {
@@ -334,20 +321,29 @@ function CommonCodeMangement() {
       ]
 
     const checkedColumn = [
-        { headerName: 'Code ID', field: 'codeId',editable: false },
-        { headerName: 'Code Name', field: 'codeName',editable: true },
-        { headerName: 'Code Description', field: 'description',editable: true },
-        {
-          headerName: 'Use Y/N',
-          field: 'useYn',
-          cellRendererFramework: SelectBoxRenderer,
-          cellRendererParams: {
-            column: {
-              options: [{label : 'Y', value:'Y'}, {label:'N', value:'N'}],
-            },
-            handleChange: handleLowerUse,
+      { headerName: 'Code ID', field: 'codeId', editable: false,  width: 200 },
+      { headerName: 'Code Name', field: 'codeName', editable: true, width: 200 },
+      { headerName: 'Code Description', field: 'description', editable: true, width: 200 },
+      {
+        headerName: 'Use Y/N',
+        field: 'useYn',
+        cellRendererFramework: SelectBoxRenderer,
+        cellRendererParams: {
+          column: {
+            options: [{ label: 'Y', value: 'Y' }, { label: 'N', value: 'N' }],
           },
-        }, 
+          handleChange: handleChangeUse,
+        },
+        valueGetter: function(params) {
+          return params.data.name; // 셀의 값을 가져옴
+        },
+        valueSetter: function(params) {
+          params.data.name = params.newValue; // 셀의 값을 설정함
+          // 여기서 params.data.defaultValue를 사용하여 셀의 초기값을 설정할 수 있음
+          return true;
+        },
+        width: 200,
+      },
       ];
 
     useEffect(()=>{
@@ -453,7 +449,7 @@ function CommonCodeMangement() {
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
                 {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true} multiple={false}/></div>}
                 {/* {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>} */}
-                <div><AgGrid column={checkedColumn} data={subList} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setSublist} isModify={true} multiple={false}/></div>
+                <div><AgGrid column={checkedColumn} data={subList} paging={false} checkedItems={setDetailCheckedList} changeValue={setSublist} isModify={true} multiple={false}/></div>
             </div>
             <Zendesk />
            {
