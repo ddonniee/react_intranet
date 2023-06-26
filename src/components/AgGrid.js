@@ -20,8 +20,6 @@ import 'ag-grid-community';
 */
 const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isModify, multiple}) => {
 
-    console.log('multipe',multiple)
-    
     const gridRef = useRef(); // Optional - for accessing Grid's API
     const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
     const [columnDefs, setColumnDefs] = useState(column);
@@ -84,14 +82,14 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     // }, []);
 
     const cellClickedListener =  e => {
-        
         let selectedData=e.data;
         checkedItems && checkedItems(selectedData);
-        changeValue(data)
+        
+        console.log(changeValue)
         if(data[0].parentCodeSeq===null) {
-            console.log('cellClickedListener',e)
+            changeValue(data)
         }else {
-            console.log('cellClickedListener',e)
+            // console.log('cellClickedListener',e)
         }
         // const selectedNodes = e.api.getSelectedNodes();
         // const selectedData = selectedNodes.map((node) => node.data);
@@ -165,8 +163,9 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
                     suppressClickEdit={false}
                     onGridReady={onGridReady}
                     onSelectionChanged={handleSelectBox}
+                    onChange={e=>console.log(e)}
                     // onCellEditingStopped={handleCellValueChanged}
-                    onCellValueChanged={handleCellValueChanged}
+                    // onCellValueChanged={handleCellValueChanged}
                     // editType="fullRow"
                     // singleClickEdit={true}
                     

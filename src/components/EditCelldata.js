@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, } from "react";
+import $ from "jquery";
 
 const EditCelldata = (props) => {
 
@@ -11,14 +12,16 @@ const EditCelldata = (props) => {
   const previousInputRef = useRef(null);
 
   const handleCellRef = () => {
+    console.log('input onclick 이벤트')
+    console.log(previousInputRef, refInput)
     if (previousInputRef.current) {
       previousInputRef.current.blur(); // 이전 셀의 input 요소에서 포커스 해제
+      
     }
     previousInputRef.current = refInput.current; // 현재 셀의 input 요소를 이전 셀로 설정
   };
 
   useEffect(() => {
-    // focus on the input
     refInput.current.focus();
     setEditRow(props.data.codeSeq);
     setEditId(props.data.codeId);
@@ -32,7 +35,7 @@ const EditCelldata = (props) => {
   };
 
   const handleInputBlur = () => {
-    console.log('---')
+    console.log('-222222222222222222222--')
     if(props.handleLeftCell) {
       props.handleLeftCell(fieldName, editRow,editId, value);
     }else if(props.handleCellValueChanged) {
@@ -64,7 +67,9 @@ const EditCelldata = (props) => {
   };
 
   const handleCellClick = e => {
-    console.log('handleCellClick')
+    console.log('handle cell click')
+    previousInputRef.current = refInput.current;
+    handleCellRef()
   }
   useEffect(() => {
     setValue(props.value); // Update the component's value when props.value changes
@@ -78,8 +83,9 @@ const EditCelldata = (props) => {
       onChange={handleInputChange}
       onBlur={handleInputBlur}
       onKeyDown={handleKeyDown}
-      onClick={handleCellRef}
+      onClick={handleCellClick}
       style={{ width: "80%", height: "80%" }}
+      className="cell-input"
     />
   );
 };

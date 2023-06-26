@@ -16,8 +16,6 @@ import Alert from "../../components/Alert"
 function CommonCodeMangement() {
 
 
-    const inputElement = document.querySelector('div[col-id="codeId"]');
-    console.log(inputElement)
     // inputElement. = true;
     
     /** TEST DATA START  */
@@ -169,7 +167,6 @@ function CommonCodeMangement() {
 
     const handleChangeUse = (id,value) => {
 
-      console.log(id,value)
         setCodeList((prev) => {
             return prev.map((item) => {
               if (item.codeId === id) {
@@ -183,7 +180,6 @@ function CommonCodeMangement() {
     
     const handleLowerUse = (id,value) => {
 
-      console.log(id,value)
         setSublist((prev) => {
             return prev.map((item) => {
               if (item.codeId === id) {
@@ -296,9 +292,9 @@ function CommonCodeMangement() {
 
       const codeColumn =[
         // { headerName: '', field: '', checkboxSelection: true, headerCheckboxSelection: true, width: 100 },
-        { headerName: 'ID', field: 'codeId', editable: false, cellEditorFramework: EditCelldata, singleClickEdit: false, cellEditorParams: { handleLeftCell }, width: 200 },
-        { headerName: 'Code Name', field: 'codeName', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
-        { headerName: 'Code Description', field: 'description', editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: { handleLeftCell }, width: 200 },
+        { headerName: 'ID', field: 'codeId', editable: false,  width: 200 },
+        { headerName: 'Code Name', field: 'codeName', editable: true, width: 200 },
+        { headerName: 'Code Description', field: 'description', editable: true, width: 200 },
         {
           headerName: 'Use Y/N',
           field: 'useYn',
@@ -322,9 +318,9 @@ function CommonCodeMangement() {
       ]
 
     const checkedColumn = [
-        { headerName: 'Code ID', field: 'codeId',editable: false, cellEditorFramework: EditCelldata, singleClickEdit: false, cellEditorParams: {handleCellValueChanged} },
-        { headerName: 'Code Name', field: 'codeName',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
-        { headerName: 'Code Description', field: 'description',editable: true, cellEditorFramework: EditCelldata, singleClickEdit: true, cellEditorParams: {handleCellValueChanged} },
+        { headerName: 'Code ID', field: 'codeId',editable: false },
+        { headerName: 'Code Name', field: 'codeName',editable: true },
+        { headerName: 'Code Description', field: 'description',editable: true },
         {
           headerName: 'Use Y/N',
           field: 'useYn',
