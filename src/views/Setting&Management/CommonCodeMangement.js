@@ -98,6 +98,24 @@ function CommonCodeMangement() {
         });
     }
     
+    const [test, setTest] = useState([
+      {
+        codeId : '1',
+        codeName : '난 테스트코드',
+        codeSeq : 'd',
+        description : '테스트용이야',
+        useYn : 'N',
+        parentCodeSeq : null,
+      },
+      {
+        codeId : '2',
+        codeName : '난 테스트코드 친구',
+        codeSeq : '1221',
+        description : '테스트용이야22',
+        useYn : 'N',
+        parentCodeSeq : null,
+      }
+    ])
     const handleLeftCell = (field, seq, id, value) => {
         if (field === 'codeId') {
             let codeIdExists = false;
@@ -421,7 +439,7 @@ function CommonCodeMangement() {
 
             {/** List Area */}
             <div className="code-lists-wrapper custom-flex-item custom-justify-between">
-                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setCodeList} isModify={true} multiple={false}/></div>}
+                {codeList.length !== 0 && <div><AgGrid column={codeColumn} data={codeList} paging={false}  checkedItems={setCodeCheckedList}  changeValue={setTest} isModify={true} multiple={false}/></div>}
                 {/* {codeCheckedList.length !== 0 && <div><AgGrid column={checkedColumn} data={testData} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData}/></div>} */}
                 <div><AgGrid column={checkedColumn} data={subList} paging={false} checkbox checkedItems={setDetailCheckedList} changeValue={setRowData} isModify={true} multiple={false}/></div>
             </div>

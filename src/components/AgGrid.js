@@ -88,6 +88,7 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
         let selectedData=e.data;
         console.log('========================',selectedData)
         // checkedItems(selectedData);
+        console.log('data',data)
         changeValue(data)
         if(data[0].parentCodeSeq===null) {
             console.log('cellClickedListener',e)
