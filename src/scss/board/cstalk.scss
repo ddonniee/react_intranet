@@ -10,6 +10,11 @@
         width: 17px;
     }
 }
+.cstalk-container {
+    .faq-right-top {
+        padding: 20px 20px;
+    }
+}
 .cstalk-custom-board {
     text-align: center;  height: 93%;
 }
@@ -41,9 +46,7 @@
 .cstalk-subject span {
     text-align: initial;
 }
-.selected-info {
-    flex-direction: column;
-}
+
 .setting-viewer {
     padding: 10px 20px; justify-content: end;
 }
@@ -54,19 +57,31 @@
        
 } 
 
-.faq-right {
-    border: 1px solid $border-color-gery; border-radius: 14px; height: 760px;
+.catalk-right {
+    border: 1px solid $border-color-gery; border-radius: 14px; height: 760px; width: 48px;
 }
-.faq-right .ck-sticky-panel {
+.cstalk-right .ck-sticky-panel {
     display: none !important;
 }
-.faq-right-top {
+.cstalk-right-top {
     position: relative;
+    
+    .cstalk-like span:nth-child(2) {
+        padding : 0 10px
+    }
 }
-.faq-right-top > span {
-    padding: 4px; align-self: center;
+.cstalk-right-top > p {
+    padding: 20px 0;
 }
-.faq-attach{
+.cstalk-right-top span {
+    padding: 4px; font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0.14px;
+}
+.cstalk-right-top span:first-child {
+    padding-right: 5px;
+}
+.cstalk-attach{
     border: 1px solid $border-color-gery; border-radius: 5px; font-weight: 600;
     font-size: 13px;
 }
@@ -79,31 +94,31 @@
     padding-right: 2px;
 }
 
-.faq-attach-down img {
+.cstalk-attach-down img {
     padding: 0 5px;
 }
-.faq-comment-wrapper {
+.cstalk-comment-wrapper {
     background-color: #F2F2F2;min-height: 103px;
     padding: 16px; height: fit-content;
 }
-.faq-comment-wrapper > span:first-child {
+.cstalk-comment-wrapper > span:first-child {
     font-weight: 600;
     font-size: 15px;
     line-height: 18px;
 }
-.faq-comment-wrapper > div {
+.cstalk-comment-wrapper > div {
     padding: 5px 0;
     display: flex;
 }
-.faq-comment-wrapper textarea {
+.cstalk-comment-wrapper textarea {
     flex-grow: 2;
     border: none;
     padding: 10px;
 }
-.faq-comment-wrapper textarea:focus {
+.cstalk-comment-wrapper textarea:focus {
     outline: none;
 }
-.faq-comment-wrapper button {
+.cstalk-comment-wrapper button {
     width: 69px;
     // height: 44px;
     background: #323232;
@@ -112,7 +127,329 @@
     color: white;
     border: none;
 }
-.faq-comment-list {
+.cstalk-comment-list {
     padding : 10px 20px; background-color: $board-color-grey;
 
+}
+
+.cstalk-lists li {
+     border: 1px solid $border-color-gery; padding :20px 25px; border-radius: 10px;
+}
+.cstalk-lists li:not(:last-child) {
+    margin-right: 10px; 
+}
+.cstalk-lists .cstalk-top {
+    display: flex; margin-bottom: 14px;
+}
+.cstalk-lists .cstalk-top p {
+    font-weight: 600;  font-size: 20px; line-height: 23px; letter-spacing: 0.01em;
+}
+.cstalk-lists .cstalk-top p:first-child {
+    color: $primary-color-red;
+}
+.cstalk-lists .cstalk-summary {
+    font-weight: 400; font-size: 17px; line-height: 23px; color: $txt-color-content;
+}
+.cstalk-category {
+    padding: 20px 25px;
+}
+.cstalk-category-lists {
+    display: flex; justify-content: space-between; position: relative;
+}
+.cstalk-category-lists li {
+    align-self: center; position: relative;
+}
+.cstalk-category-lists li div {
+    text-align: center;     padding-bottom: 10px;
+}
+.cstalk-category-lists .icon-modal {
+    position: absolute; width: 146px; left: -10px; z-index: 999;
+}
+.cstalk-category-lists .icon-modal img {
+    position: relative;
+    top: 5px;
+}
+.cstalk-category-lists .icon-modal ul {
+    border: 2px solid $primary-color-red; border-radius: 15px; padding: 10px; background-color: white;
+}
+.cstalk-category-lists .icon-modal li {
+    padding: 5px; font-weight: 400;
+    font-size: 18px;
+    line-height: 30px;
+}
+.cstalk-contents {
+    display: flex; justify-content: space-between; 
+}
+.cstalk-right, .cstalk-left, .editor-wrapper {
+    width: 48%;
+}
+.cstalk-category-lists p {
+    margin: 0; font-weight: 600;
+}
+.cstalk-left {
+    position: relative;
+}
+.cstalk-left .ag-theme-alpine {
+    height: 500px;
+}
+.cstalk-left .ag-header {
+    display: none;
+}
+.cstalk-left .ag-center-cols-container {
+    height: 100% !important;
+}
+.cstalk-left .ag-center-cols-container > div {
+    height: 10% !important; border-bottom: 1px solid $border-color-gery !important;
+}
+
+.cstalk-custom-board {
+    li {
+    height: 10%;     display: flex; flex-direction: column;
+     border-bottom: 2px solid $board-color-grey; align-items: start; justify-content: center;
+    .etc {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 24px;
+        color: #5F5F5F; width: 100%;
+    }
+    }
+    
+}
+.cstalk-custom-board li:first-child {
+    border-top: 1px solid $board-color-grey;
+}
+.cstalk-custom-board li:hover {
+    background-color: $hover-color-pink; color: $primary-color-red;
+}
+.cstalk-custom-board li span {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px; display: flex;
+    img {
+        margin-left: 10px;
+    }
+}
+.cstalk-right {
+    border: 1px solid $border-color-gery; border-radius: 14px; height: 800px; overflow: auto; width: 48%;
+}
+.cstalk-right .ck-sticky-panel {
+    display: none !important;
+}
+.cstalk-right-top {
+    position: relative; z-index: 100;  border-bottom: 1px solid $border-color-gery;
+}
+.cstalk-view-none {
+    width: 48%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; height: 800px;
+}
+.cstalk-attach{
+    border: 1px solid $border-color-gery; border-radius: 5px; font-weight: 600;
+    font-size: 13px;
+}
+.user-action {
+    position: absolute; top: 0px; right: 0px; padding: 10px; font-weight: 600;
+    font-size: 13px;
+    line-height: 15px;
+}
+.user-action span img {
+    padding-right: 2px;
+}
+
+.cstalk-attach-down img {
+    padding: 0 5px;
+}
+.cstalk-comment-wrapper {
+    background-color: #F2F2F2;min-height: 103px;
+    padding: 16px; height: fit-content;
+    & > span:first-child {
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 18px;
+    }
+    textarea {
+        flex-grow: 2;
+        border: none;
+        padding: 10px;
+    }
+    & > div {
+        padding: 5px 0;
+        display: flex;
+    }
+    span p:first-child {
+        padding: 0 6px;
+    }
+
+}
+.cstalk-comment-wrapper textarea:focus {
+    outline: none;
+}
+.cstalk-comment-wrapper button {
+    width: 69px;
+    // height: 44px;
+    background: #323232;
+    border-radius: 5px;
+    padding-left: 1px;
+    color: white;
+    border: none;
+}
+.cstalk-comment-list {
+    padding : 10px 20px; background-color: $board-color-grey;
+
+}
+.comment-input {
+    display: flex;
+    flex-direction: column;
+    width: 620px;
+}
+.comment-input span {
+    height: 24px;
+    background: white;
+    border-bottom: 1px solid $border-color-gery; font-weight: 600;
+    font-size: 12px;
+    line-height: 24px; padding-left: 10px;
+} 
+.comment-cnt-title {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px; padding-left: 10px;
+}
+.cstalk-comment-list > ul > li {
+    padding: 10px 0;
+}
+.cstalk-comment-list > ul > li:not(:last-child) {
+    border-bottom: 1px solid $line-color-grey;
+}
+.cstalk-comment-list > ul > li span:first-child {
+    font-weight: 600;
+    font-size: 14px;
+}
+.comment-top div span:first-child {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px; letter-spacing: 0.01em; padding-right: 10px;
+}
+.comment-top div span:last-child{
+    font-weight: 400;
+font-size: 12px;
+line-height: 24px; letter-spacing: 0.01em;
+}
+.comment-bottom span {
+    font-weight: 600;
+font-size: 12px;
+line-height: 24px; padding: 0 3px;
+}
+.cstalk-comment-list > ul > li .comment-top span p {
+    font-weight: 400;
+    font-size: 13px;
+    color: $txt-color-edit;
+}
+.cstalk-comment-list > ul > li span:last-child  p:nth-child(2) {
+    padding: 0 10px;
+}
+/* AG grid custom css*/
+.ag-root-wrapper {
+    border: none !important;
+}
+
+  
+  /* 스크롤바 스타일링 */
+  .cstalk-right::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .cstalk-right::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  
+  .cstalk-right::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }  
+.cstalk-contents .pagination li{
+    margin: 0 5px;
+}
+.cstalk-contents .pagination li a,
+.cstalk-contents .pagination  .disabled {
+    color: $chart-color-grey;
+}
+.cstalk-contents .pagination .active {
+    background-color: white !important; border: 2px solid $primary-color-red; border-radius: 6px;
+}
+.cstalk-contents .pagination .active a {
+    color: $primary-color-red; font-weight: 600;
+}
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+    border: none;
+   
+    border-bottom: 1px solid $border-color-gery; padding: 20px;
+}
+.ck.ck-editor {
+    z-index: -1px;
+}
+/* 노트북 & PC (해상도 1024px)*/ 
+@media all and (min-width:1024px) {
+    .cstalk-lists li {
+        padding :20px 25px;
+   }
+   .cstalk-left .ag-cell:first-child {
+        width: 100px !important; 
+   }
+   .cstalk-left .ag-cell:last-child {
+    position: absolute !important;
+    left: 80px !important; width: /*fit-content*/ 90% !important; text-align: left !important;
+    }
+    .cstalk-right-top {
+        min-height: 100px; padding: 15px 30px; position: sticky; top: 0;
+        // z-index: 300;
+        background: white;
+    }
+    .cstalk-right-top > p {
+        font-weight: 700; font-size: 24px; line-height: 30px;
+    }
+   
+} 
+
+/* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 
+@media all and (min-width:768px) and (max-width:1023px) {
+    .cstalk-lists li {
+        padding :20px 25px;
+   }
+   .cstalk-left .ag-cell:first-child {
+        width: 100px !important;
+   }
+   .cstalk-left .ag-cell:last-child {
+    position: absolute !important;
+    left: 80px !important; width: /*fit-content*/ 90% !important; text-align: left !important;
+    }
+    .cstalk-right-top {
+        height: 100px; padding: 15px 30px;
+    }
+    .cstalk-right-top > p {
+        font-weight: 700; font-size: 24px; line-height: 30px;
+    }
+} 
+
+/* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/ 
+@media all and (max-width:767px) {
+    .cstalk-lists li {
+        padding :20px 25px;
+   }
+   .cstalk-left .ag-cell:first-child {
+        width: 100px !important;
+   }
+   .cstalk-left .ag-cell:last-child {
+    position: absolute !important;
+    left: 80px !important; width: /*fit-content*/ 90% !important; text-align: left !important;
+    }
+    .cstalk-right-top {
+        height: 100px; padding: 15px 30px;
+    }
+    .cstalk-right-top > p {
+        font-weight: 700; font-size: 24px; line-height: 30px;
+    }
 }

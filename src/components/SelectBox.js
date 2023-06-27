@@ -5,6 +5,7 @@ const SelectBox = (props) => {
     
     const {options, handleChange} = props;
 
+    console.log('options',options)
     const customStyles = {
         control: (provided, state) => ({
             ...provided,

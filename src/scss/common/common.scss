@@ -52,7 +52,7 @@ html, body, #root{
 .cell-select-box > *:hover {
     background-color: $hover-color-pink;
     border: none;
-    color: $primary-color-red;
+    
   }
 
 .inner-container {
@@ -224,7 +224,7 @@ ul.pagination li a.active {
     color: $hover-color-pink;
 }
 body .modal {
-    overflow: hidden;
+    overflow: hidden;z-index: 1000 ;
 }
 /* 공통 CSS */
 .custom-stress-txt {
@@ -254,7 +254,9 @@ body .modal {
 .custom-justify-between {
     justify-content: space-between;
 }
-
+.custom-justify-center {
+    justify-content: center;
+}
 .custom-txt-align {
     text-align: center;
 }
@@ -265,6 +267,16 @@ body .modal {
 
 .primary-red-btn {
     background-color: $primary-color-red; color: white;
+}
+/* Fav tab */
+.tab-container {
+    position: absolute;
+    left: 0;
+    width: 100px;
+    background: $primary-color-red; color: white;
+    top: 50%; width: 32px; 
+    height: 120px;font-size: 14px; letter-spacing: 0.14px;
+    writing-mode: vertical-lr; box-shadow: 1px 1px 10px 0px rgba(187, 8, 65, 0.36); border-radius: 0px 4px 4px 0px;
 }
 
 /* 에디터 */
@@ -309,16 +321,21 @@ input:focus {
     }
 }
 
-.editor-middle > div:first-child {
-    padding: 20px;
-}
-
 .editor-middle {
+    & > div:first-child {
+        padding: 20px;
+    }
     .label-txt {
         font-weight: 600;
         font-size: 16px;
         line-height: 17px; letter-spacing: 0.025em;
-        width: 120px;
+        min-width: 120px;
+    }
+    .editor-attchment {
+        width: 188px; height: 40px; border: 1px solid $border-color-gery; border-radius: 5px; margin-right: 10px;
+    }
+    & > div:nth-child(2) label:not(:first-child) {
+        background-color: #E8E8E8; width: 72px; height: 40px; border-radius: 100px;
     }
 }
 

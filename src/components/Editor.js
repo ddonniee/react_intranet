@@ -65,9 +65,9 @@ function Editor() {
                         } }
                     />
                     </div>
-                    <div>
+                    <div className="custom-flex-item custom-align-item">
                         <label className="label-txt">· Attachment</label>
-                        <div></div>
+                        <div className="editor-attchment"></div>
                         <label htmlFor="file-btn">Select</label>
                         <input type="file" style={{display:'none'}} id="file-btn"></input>
                     </div>

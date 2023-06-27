@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect, useLayoutEffect } from "react"
 import { styled } from "styled-components"
 
+import moment from "moment"
 import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
@@ -32,6 +33,7 @@ import Editor from "../../components/Editor"
 import Favorite from "../../components/Favorite"
 
 import {UserContext} from '../../hooks/UserContext'
+import Tab from "../../components/Tab"
 
 function CStalk() {
 
@@ -101,7 +103,8 @@ function CStalk() {
     const [isWrite, setIsWrite] = useState(false); // 글 작성시 에디터 on, viewer off
     
     const handleSelectSubsidiary = e => {
-        console.log('handleSelectSubsidiary')
+        let value = e.value;
+        console.log(e)
     }
     const setPage = (e) => {
         setActivePage(e);
@@ -151,10 +154,11 @@ function CStalk() {
         dislike : 7,
     })
 
-    const [content, setContent] = useState('<h1>How can I invest in LG Electronifaq? On which exchange is LG Electronifaq listed and what ard te ticker symbols ?</h1><p>LG Electronifaq Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p>');
+    const [content, setContent] = useState('<h1>How can I invest in LG Electronicstalk? On which exchange is LG Electronicstalk listed and what ard te ticker symbols ?</h1><p>LG Electronicstalk Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p>');
 
     const [selectedList, setSelctedList] = useState({
         attachments : '',
+        subject: '',
         branch : '',
         center : '',
         commentCount : 0,
@@ -165,7 +169,6 @@ function CStalk() {
         isPublic :  false,
         likeCount : 0, 
         parentCsId : '',
-        subject : '', 
         subsidiary : '',
         writerID : '',
         writerName : '',
@@ -296,7 +299,7 @@ function CStalk() {
         console.log(selectedList,'//////////////////////////////')
     },[selectedList])
     return (
-        <div className="notice-container faq-container">
+        <div className="notice-container cstalk-container">
         <Header />
         <div className="inner-container">
             {/** auth 권한체크로 수정 필요 */}
@@ -327,9 +330,9 @@ function CStalk() {
             </div>
 
             {/** Content Area */}
-            <div className="faq-contents">
-                <div className="faq-left">
-                <div className="faq-count">
+            <div className="cstalk-contents">
+                <div className="cstalk-left">
+                <div className="cstalk-count">
                         Total <span className="custom-stress-txt">{boardLength}</span>
                     </div>
 
@@ -337,13 +340,14 @@ function CStalk() {
                         {
                             boardData?.map((item,idx)=>{
                                 return(
-                                    <li className="custom-justify-between" key={generateRandomString(idx)} id={`list-item-${item.num}`} onClick={(e)=>handleClickRow(e,item.csTalkId)}>
+                                    <li  key={generateRandomString(idx)} id={`list-item-${item.num}`} onClick={(e)=>handleClickRow(e,item.csTalkId)}>
                                         <div className="cstalk-subject custom-flex-item custom-txt-align">
-                                            <span>{item.level===2 && `[RE]  `}{item.subject}</span>
-                                            <span>Paul_Smith</span>
+                                            <span className="custom-flex-item">{item.level===2 && `[RE]  `}{item.subject}<span className="custom-stress-txt">{item.commentCount!==0 && `( ${item.commentCount} )`}</span><img src={item.createdAt!=='' ? New : null} /></span>
                                             {/* <span>{item.writerName}</span> */}
                                         </div>
-                                        <span>23.11.12</span >
+                                        <div className="etc">
+                                                <p>{item.writerID}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
+                                            </div>
                                         {/* <span>{item.createdAt}</span > */}
                                     </li>
                                 )
@@ -372,27 +376,27 @@ function CStalk() {
                     :
                     !isWrite && selectedList.csTalkId!==''
                     ?
-                    <div className="catalk-right" >
-                    <div className="catalk-right-top">
+                    <div className="cstalk-right" >
+                    <div className="cstalk-right-top">
                         <p>{selectedList.subject}</p>
                         <div className="custom-flex-item selected-info">
                             <span>Writer : {selectedList.writerName}</span>
-                            <span>Date : {selectedList.createdAt}</span>
+                            <span>Date : {moment(selectedList.createdAt).format('YYYY-M-DD')}</span>
                         </div>
                         <div className="custom-flex-item">
                             <img src={Attachment} alt="attachment"/> 
-                            <span>Attachment</span>
-                            <span className="custom-flex-item faq-attach-down">
-                                <span>{selectedList.attachments!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="faq-attach custom-flex-item"><p>{detail.attachment}</p><img src={Download} alt='download_attachment'/></span>
+                            <span className="custom-self-align">Attachment</span>
+                            <span className="custom-flex-item cstalk-attach-down">
+                                <span>{selectedList.attachments!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{detail.attachment}</p><img src={Download} alt='download_attachment'/></span>
                             </span>
                         </div>   
                         <div className="user-action custom-flex-item ">
-                            <span className="faq-like custom-flex-item " onClick={handleClickAction}><img src={Like} alt="btn_like"/><p>{detail.dislike}</p></span>   
+                            <span className="cstalk-like custom-flex-item " onClick={handleClickAction}><img src={Like} alt="btn_like"/><p>{detail.dislike}</p></span>   
                             <span >|</span>
-                            <span className="faq-dislike custom-flex-item " onClick={handleClickAction}><img src={Dislike} alt='btn_dislike'/><p>{detail.dislike}</p></span> 
+                            <span className="cstalk-dislike custom-flex-item " onClick={handleClickAction}><img src={Dislike} alt='btn_dislike'/><p>{detail.dislike}</p></span> 
                         </div> 
                     </div>
-                    <div className="faq-right-middle">
+                    <div className="cstalk-right-middle">
                         <Viewer content={selectedList.content}/>
                         <div className="setting-viewer custom-flex-item">
                             <div><button className="custom-flex-item custom-align-item">Allow Views</button></div>
@@ -400,15 +404,18 @@ function CStalk() {
                             <div><button className="custom-flex-item custom-align-item">Answer</button></div>
                         </div>
                     </div>
-                    <div className="faq-right-bottom">
-                        <div className="faq-comment-wrapper">
-                            <span>Comments</span>
-                            <div>
-                                <textarea/>
+                    <div className="cstalk-right-bottom">
+                        <div className="cstalk-comment-wrapper">
+                        <span>Comments</span><span className="comment-cnt-title">total <p className="custom-stress-txt comment-cnt">{detail.comments.length}</p></span>
+                            <div className="custom-justify-between">
+                                <div className="comment-input">
+                                    <span>Writer : {user.name}</span>
+                                    <textarea/>
+                                </div>
                                 <button>Write</button>
                             </div>
                         </div>
-                        <div className="faq-comment-list">
+                        <div className="cstalk-comment-list">
                             <ul>
                                 {
                                     detail.comments?.map((comment,idx)=>{
@@ -428,7 +435,7 @@ function CStalk() {
                                                     {comment.comments?.map((c,idx)=>{
                                                         return (
                                                             <>
-                                                            <img src={Comment} alt="under-comment" />
+                                                       z     <img src={Comment} alt="under-comment" />
                                                             <span>Comment</span>
                                                             <span className="custom-stress-txt">{comment.comments.length}</span>
                                                             <img src={More_comment} alt="under-comment" />
@@ -445,7 +452,8 @@ function CStalk() {
                     </div>
                 </div>
                 :
-                <div className="faq-right" >
+                <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
+                    <p>If you select a list, you can see the contents</p>
                 </div>
                 }
                  {/* <button style={{position:'absolute'}} onClick={()=>setFavoriteModal(true)}>test btn</button> */}
@@ -455,13 +463,10 @@ function CStalk() {
 
             {/* test */}
            
-            {
-                favoriteModal 
-                &&
-                <Favorite onClose={()=>setFavoriteModal(false)}/>
-            }
+            
             </div>
         </div>
+        <Tab />
         </div>
     )
 }
