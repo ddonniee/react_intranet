@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect, useLayoutEffect } from "react"
 import { styled } from "styled-components"
 import { axiosInstance, axiosJsonInstance, axiosInstance2 } from '../../utils/CommonFunction';
+import moment from "moment/moment";
 
 import Header from "../../components/Header"
 import Top from "../../components/Top"
@@ -11,6 +12,7 @@ import Pagination from "react-js-pagination"
 import Paging from "../../components/Paging";
 
 import { generateRandomString } from "../../utils/CommonFunction"
+import { UserContext } from "../../hooks/UserContext";
 
 import '../../scss/style.scss';
 import { ReactComponent as SearchIcon } from '../../assets/svgs/icon_seeking.svg';
@@ -18,8 +20,6 @@ import { ReactComponent as SpeakerIcon } from '../../assets/svgs/icon_speaker.sv
 import { ReactComponent as NewIcon } from '../../assets/svgs/icon_new.svg';
 import { ReactComponent as AttachmentIcon } from '../../assets/svgs/icon_attachment.svg';
 import { ReactComponent as DownloadIcon } from '../../assets/svgs/icon_download.svg';
-import moment from "moment/moment";
-import { UserContext } from "../../hooks/UserContext";
 
 function Notice() {
 
@@ -260,7 +260,10 @@ function Notice() {
                                     return(
                                         <li className="notice-list" key={generateRandomString(idx)} id={`list-item-${item.noticeId}`} onClick={(e)=>handleClickRow(e, item)}>
                                             <div className="title">
-                                                {item.top ? <SpeakerIcon /> : null} {item.title} {item.top ? <NewIcon /> : null}
+                                                {/** 게시기간 종료일이 현재 날짜 이전이면 확성기 아이콘 출력 */}
+                                                {item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null} 
+                                                {item.title.length > 90 ? (item.title).substr(0,90) + '...' : item.title} 
+                                                {item.new ? <NewIcon /> : null}
                                             </div>
                                             <div className="etc">
                                                 <p>{item.writerID}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
@@ -270,7 +273,7 @@ function Notice() {
                                 })
                             )
                             :
-                            <div className="notice-view-none">
+                            <div className="notice-view-none notice-list-none">
                                 <p>no data</p>
                             </div>
                         }
@@ -278,15 +281,6 @@ function Notice() {
                     {
                         boardData &&
                         <Paging pageInfo={pageInfo} setPageInfo={setPageInfo} searchData={searchData} setSearchData={setSearchData} />
-                        // <Pagination 
-                        //     activePage={pageInfo?.activePage} // 현재 페이지
-                        //     itemsCountPerPage={pageInfo?.itemsPerPage} // 한 페이지 당 보여줄 아이템 수
-                        //     totalItemsCount={pageInfo?.totalCount} // 총 아이템 수
-                        //     pageRangeDisplayed={5} // paginator의 페이지 범위
-                        //     prevPageText={"‹"} // "이전"을 나타낼 텍스트
-                        //     nextPageText={"›"} // "다음"을 나타낼 텍스트
-                        //     onChange={setPage} // 페이지 변경을 핸들링하는 함수
-                        // />
                     }
                 </div>
                 <div className="notice-right">

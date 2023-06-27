@@ -246,6 +246,10 @@
                 align-items: center;
             }
 
+            .notice-view-none.notice-list-none {
+                border: 1px solid black;
+            }
+
             /* 작성페이지 */
             .notice-write-row {
                 display: flex;
