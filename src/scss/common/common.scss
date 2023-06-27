@@ -470,13 +470,16 @@ input:focus {
 
 /* 데이트피커 */
 .custom-cal {
+    width: 179px;
     border: 1px solid #CCCCCC;
     border-radius: 5px;
-    padding: 0 10px;
+    padding: 0 13px;
+    cursor: pointer;
 
     .custom-picker {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         border: none;
         background-color: var(--ag-selected-row-background-color);
         box-sizing: border-box;
@@ -486,13 +489,9 @@ input:focus {
         font-size: 16px;
         line-height: 19px;
        
-        // border: 1px solid #CCCCCC;
-        // border-radius: 5px;
-        // padding: 10px;
-
-        // &:focus {
-        //     border: 2px solid $primary-color-red;
-        // }
+        svg {
+            margin-top: -2px;
+        }
     }
 
     svg {

@@ -5,6 +5,7 @@ import { ko } from 'date-fns/esm/locale';
 
 import '../scss/style.scss';
 import { ReactComponent as CalendarIcon } from '../assets/svgs/icon_calendar.svg';
+import { forwardRef } from 'react';
 
 /**
  * 
@@ -55,41 +56,43 @@ function CustomDatePicker (props) {
         }
     }, [])
 
+    const CustomPicker = forwardRef(({ value, onClick }, ref) => (
+        <div className="custom-cal" onClick={onClick} ref={ref}>
+          <span className='custom-picker'> {value} <CalendarIcon /> </span>
+        </div>
+    ));
+
     return (
         <div className='custom-flex-item custom-align-item'>
-            <label className='custom-cal'>
-                <DatePicker
-                    name={props.startName || 'startDate'}
-                    locale={ko} 
-                    dateFormat="yyyy-MM-dd"
-                    selected={firstDate}
-                    onChange={(date) => { setFirstDate(date) }}
-                    // popperPlacement="top-start" 
-                    shouldCloseOnSelect={true}
-                    className='custom-picker'
-                    readOnly = {props.readOnly ? true : false}
-                />
-                <CalendarIcon />
-            </label>
+            <DatePicker
+                name={props.startName || 'startDate'}
+                locale={ko} 
+                dateFormat="yyyy-MM-dd"
+                selected={firstDate}
+                onChange={(date) => { setFirstDate(date) }}
+                // popperPlacement="top-start" 
+                shouldCloseOnSelect={true}
+                className='custom-picker'
+                readOnly = {props.readOnly ? true : false}
+                customInput={<CustomPicker />}
+            />
             {
                 isDuration
                 ?
                 <>
-                    <div style={{ padding: '0 10px' }}>-</div>
-                    <label className='custom-cal'>
-                        <DatePicker
-                            name={props.endName || 'endDate'}
-                            locale={ko} 
-                            dateFormat="yyyy-MM-dd"
-                            selected={secondDate}
-                            onChange={(date) => { setSecondDate(date) }}
-                            // popperPlacement="top-start" 
-                            shouldCloseOnSelect={true}
-                            className='custom-picker'
-                            readOnly = {props.readOnly ? true : false}
-                        />
-                        <CalendarIcon />
-                    </label>
+                    <div style={{ padding: '0 13px' }}>~</div>
+                    <DatePicker
+                        name={props.endName || 'endDate'}
+                        locale={ko} 
+                        dateFormat="yyyy-MM-dd"
+                        selected={secondDate}
+                        onChange={(date) => { setSecondDate(date) }}
+                        // popperPlacement="top-start" 
+                        shouldCloseOnSelect={true}
+                        className='custom-picker'
+                        readOnly = {props.readOnly ? true : false}
+                        customInput={<CustomPicker />}
+                    />
                 </>
                 :
                 null
