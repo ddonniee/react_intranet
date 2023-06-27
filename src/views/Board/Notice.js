@@ -1,16 +1,17 @@
 import { useContext, useState, useEffect, useLayoutEffect } from "react"
 import { styled } from "styled-components"
 import { axiosInstance, axiosJsonInstance, axiosInstance2 } from '../../utils/CommonFunction';
+import moment from "moment/moment";
 
 import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
 import SelectBox from '../../components/SelectBox'
 import Viewer from "../../components/Viewer"
-import Pagination from "react-js-pagination"
 import Paging from "../../components/Paging";
 
 import { generateRandomString } from "../../utils/CommonFunction"
+import { UserContext } from "../../hooks/UserContext";
 
 import '../../scss/style.scss';
 import { ReactComponent as SearchIcon } from '../../assets/svgs/icon_seeking.svg';
@@ -18,13 +19,11 @@ import { ReactComponent as SpeakerIcon } from '../../assets/svgs/icon_speaker.sv
 import { ReactComponent as NewIcon } from '../../assets/svgs/icon_new.svg';
 import { ReactComponent as AttachmentIcon } from '../../assets/svgs/icon_attachment.svg';
 import { ReactComponent as DownloadIcon } from '../../assets/svgs/icon_download.svg';
-import moment from "moment/moment";
-import { UserContext } from "../../hooks/UserContext";
 
 function Notice() {
 
     /**
-     * Notice 권한
+     * 화면 권한
      * 
      * 본사 Staff : 전체 내용 표시
      * 법인 관리자 : 소속 법인 내용만 표시
@@ -40,19 +39,19 @@ function Notice() {
         isWriter : false,
     })
 
-    useEffect(()=>{
+    useEffect(() => {
       console.log('login user', user)
       let role = user.role;
 
       if(role === 'LK') {
-        setAuth({ ...auth, isViewer : true })
-      } else if (role === 'SA') {
+        setAuth({ ...auth, isViewer : true, isWriter : true })
+      } else if (role === 'SS') {
         setAuth({ ...auth, isViewer : true, isWriter : true })
       } else {
         alert('No right to Access')
         document.location.href='/login';
       }
-    },[])
+    }, [])
 
     const USER_CORP_CODE = 'LGEAI' // 로그인유저 법인코드
     const USER_CENTER_TYPE = 'ASC' // 로그인유저 센터타입
@@ -69,14 +68,14 @@ function Notice() {
     const [pageInfo, setPageInfo] = useState({
         activePage: 1,     // 현재 페이지
         itemsPerPage: 10,  // 페이지 당 아이템 갯수
-        totalCount: 0      // 전체 목록 수
+        totalCount: 0,     // 전체 목록 수
     });
 
     /* 검색 영역 ****************************************************************/
-    const [searchData, setSearchData] = useState({
+    const [searchData, setSearchData] = useState({ // 검색데이터
         page: 1,
         type: 'N',
-    }); // 검색데이터
+    });
 
     const [subOptions, setSubOptions] = useState([]); // 법인 selectbox 데이터
     const centerOptions = [ // view 조건 selectbox 데이터
@@ -101,18 +100,15 @@ function Notice() {
     const [boardData, setBoardData] = useState([]); // notice 목록
     const [selectedList, setSelctedList] = useState(); // 목록에서 선택한 항목
     const [detail, setDetail] = useState(); // notice 상세
-    const [isWithin7Days, setIsWithin7Days] = useState(false); // 글 작성일 7일 이내 여부(new)
 
-    // const handleSelectBox = (event,params) => {
-    //     const { data } = params.node;
-    //     const { checked } = event.target;
+    const isWithin7Days = (date) => { // 새 게시글(등록일 기준 7일 이내) 확인
+        const baseDate = new Date(moment(date).format('YYYY-MM-DD'));
+        const currentDate = new Date();
+        const timeDifference = currentDate.getTime() - baseDate.getTime();
+        const dayDifference = timeDifference / (1000 * 3600 * 24);
 
-    //     if (checked) {
-    //         setBoardData([...boardData, data]);
-    //       } else {
-    //         setBoardData(boardData.filter(item => item !== data));
-    //       }
-    // }
+        return dayDifference < 7 ? true : false;
+    }
 
     const getList = () => {
         let sdata = new FormData();
@@ -125,19 +121,17 @@ function Notice() {
         axiosInstance2.post('/notice/list', sdata, config).then(res => {
             const data = res?.data.result;
             console.log('공지사항 목록 ---->', data)
-
-            // if(data.createdAt) {
-            //     setDetail({ ...data,  });
-            // } else {
-            //     setDetail(data);
-            // }
-
-            setBoardData(data);
+            
+            const newArray = data.map((obj, index) => ({
+                ...obj,
+                new: isWithin7Days(data.createdAt),
+            }));
+            setBoardData(newArray);
 
             if (searchData.page == 1) {  // 검색 결과 1페이지 첫번째 항목의 rn 저장 (total)
-                setPageInfo({ ...pageInfo, totalCount: data[0]?.rn });
+                setPageInfo({ ...pageInfo, totalCount: data.length > 0 ? data[0]?.rn : 0 });
             }
-            console.log('total ---->', data[0]?.rn)
+            // console.log('total ---->', data[0]?.rn)
             
         }).catch(error => {
             console.error(error);
@@ -253,33 +247,27 @@ function Notice() {
                                     return(
                                         <li className="notice-list" key={generateRandomString(idx)} id={`list-item-${item.noticeId}`} onClick={(e)=>handleClickRow(e, item)}>
                                             <div className="title">
-                                                {item.top ? <SpeakerIcon /> : null} {item.title} {item.top ? <NewIcon /> : null}
+                                                {/** 게시기간 종료일이 현재 날짜 이전이면 확성기 아이콘 출력 */}
+                                                {item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null} 
+                                                {item.title.length > 90 ? (item.title).substr(0,90) + '...' : item.title} 
+                                                {item.new ? <NewIcon /> : null}
                                             </div>
                                             <div className="etc">
-                                                <p>{item.writerID}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
+                                                <p>{item.writerName}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
                                             </div>
                                         </li>
                                     )
                                 })
                             )
                             :
-                            <div className="notice-view-none">
+                            <div className="notice-view-none notice-list-none" >
                                 <p>no data</p>
                             </div>
                         }
                     </ul>
                     {
-                        boardData &&
+                        boardData.length > 0 &&
                         <Paging pageInfo={pageInfo} setPageInfo={setPageInfo} searchData={searchData} setSearchData={setSearchData} />
-                        // <Pagination 
-                        //     activePage={pageInfo?.activePage} // 현재 페이지
-                        //     itemsCountPerPage={pageInfo?.itemsPerPage} // 한 페이지 당 보여줄 아이템 수
-                        //     totalItemsCount={pageInfo?.totalCount} // 총 아이템 수
-                        //     pageRangeDisplayed={5} // paginator의 페이지 범위
-                        //     prevPageText={"‹"} // "이전"을 나타낼 텍스트
-                        //     nextPageText={"›"} // "다음"을 나타낼 텍스트
-                        //     onChange={setPage} // 페이지 변경을 핸들링하는 함수
-                        // />
                     }
                 </div>
                 <div className="notice-right">

@@ -34,6 +34,7 @@ import Favorite from "../../components/Favorite"
 
 import {UserContext} from '../../hooks/UserContext'
 import Tab from "../../components/Tab"
+import { event } from "jquery"
 
 function CStalk() {
 
@@ -232,8 +233,32 @@ function CStalk() {
         })
 
     }
-    const handleClickAction = e => {
-        console.log('handleClickAction')
+    const handleClickAction = (event,id) => {
+        const formData = new FormData();
+        formData.append('csTalkId', id);
+
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/csTalk/reaction', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                let data = resData.result
+                console.log(data,'!!!')
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+        
     }
 
     const [reqData, setReqData] = useState(
@@ -292,11 +317,27 @@ function CStalk() {
             max = item.rn;
         }
         setBoardLength(max)
+        
     })
     },[boardData])
 
     useEffect(()=>{
-        console.log(selectedList,'//////////////////////////////')
+        const jsonString = JSON.stringify(selectedList.attachments);
+        const obj = Object.entries(jsonString)
+        let type = (typeof(obj))
+        console.log(obj,'obj')
+        if(type!=='object') {
+          
+            setSelctedList({
+                ...selectedList,
+                attachments: obj
+            });
+        }
+      
+        else {
+            console.log(selectedList)
+            console.log(selectedList.attachments.fileName)
+        }
     },[selectedList])
     return (
         <div className="notice-container cstalk-container">
@@ -387,13 +428,12 @@ function CStalk() {
                             <img src={Attachment} alt="attachment"/> 
                             <span className="custom-self-align">Attachment</span>
                             <span className="custom-flex-item cstalk-attach-down">
-                                <span>{selectedList.attachments!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{detail.attachment}</p><img src={Download} alt='download_attachment'/></span>
+                                <span>{selectedList.attachments!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{selectedList.attachments.fileName}</p><img src={Download} alt='download_attachment'/></span>
                             </span>
                         </div>   
                         <div className="user-action custom-flex-item ">
-                            <span className="cstalk-like custom-flex-item " onClick={handleClickAction}><img src={Like} alt="btn_like"/><p>{detail.dislike}</p></span>   
-                            <span >|</span>
-                            <span className="cstalk-dislike custom-flex-item " onClick={handleClickAction}><img src={Dislike} alt='btn_dislike'/><p>{detail.dislike}</p></span> 
+                            <span className="cstalk-like custom-flex-item " onClick={(e)=>handleClickAction(e,selectedList.csTalkId)}><img src={Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
+                            
                         </div> 
                     </div>
                     <div className="cstalk-right-middle">

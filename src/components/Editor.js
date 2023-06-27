@@ -1,8 +1,17 @@
-import React, { useState,useEffect } from "react";
+import React, { useContext,useState,useEffect } from "react";
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'; 
+import CustomDatePicker from "./DatePicker";
 // import FileUpload from "../hooks/FileUpload";
+
+import '../scss/style.scss';
+import MoreIcon from '../assets/svgs/icon_more.svg';
+import { styled } from "styled-components";
+
+import {UserContext} from '../hooks/UserContext'
+import moment from "moment";
+
 /**
  * 작성자 : 이은정
  * 작성일 : 2023.05.22
@@ -10,8 +19,9 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
  * @returns 
  */
-function Editor() {
+function Editor({ period, data, setData }) {
 
+    const user = useContext(UserContext);
     const [txt, setTxt] = useState('');
     // const [dbtxt, setDbtxt] = useEffect
     
@@ -22,33 +32,61 @@ function Editor() {
         //     'mediaEmbed','fontFamily','fontSize','underline','alignment','undo','redo'
         // ],
         // 에디터 설정 커스터마이징시 활성화
-      };
+    };
+
     return (
-        <div className="editor-wrapper">
-            <form>
-                <div className="editor-top">
-                    <div>
-                        <label className="label-txt">· Writer</label>
-                        <input disabled ></input>
-                    </div>
-                    <div>
-                        <label className="label-txt">· Date</label>
-                        <input></input>
-                    </div>
-                    <div>
-                        <label className="label-txt">· Subject</label>
-                        <input></input>
+        <Style>
+        <div className="editor-container">
+            <div className="write-row">
+                <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
+                <div className="right"> <input type="text" className="write-input" name="writer" readOnly value={user.name}></input> </div>
+            </div>
+            <div className="write-row">
+                <div className="left custom-flex-item custom-align-item"> <p>· Date</p> </div>
+                <div className="right"> <input type="text" className="write-input" name="date" readOnly value={moment().format('YYYY-MM-DD')}></input> </div>
+            </div>
+            <div className="write-row">
+                <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>
+                <div className="right radio-row custom-flex-item"> 
+                    <label id="custom-label">
+                        <input className="hiddenRadio" type="radio" name="release" value="ALL" />
+                        <div className="showRadio"></div>
+                        <span>All</span>
+                    </label>
+                    <label id="custom-label">
+                        <input className="hiddenRadio" type="radio" name="release" value="LGC" />
+                        <div className="showRadio"></div>
+                        <span>LGC</span>
+                    </label>
+                    <label id="custom-label">
+                        <input className="hiddenRadio" type="radio" name="release" value="ASC" />
+                        <div className="showRadio"></div>
+                        <span>ASC</span>
+                    </label>
+                </div>
+            </div>
+            {
+                period &&
+                <div className="write-row">
+                    <div className="left custom-flex-item custom-align-item"> <p>· Period</p> </div>
+                    <div className="right">
+                        <CustomDatePicker isDuration={true} startName={'startName'} endName={'endName'} />
                     </div>
                 </div>
-                <div className="editor-middle">
-                    <div className="custom-flex-item custom-justify-between">
-                        <label className="label-txt">· Detail</label>
-                        <CKEditor
+            }
+            <div className="write-row">
+                <div className="left custom-flex-item custom-align-item"> <p>· Subject</p> </div>
+                <div className="right"> <input type="text" className="write-input" name="subject"></input> </div>
+            </div>
+            <div className="write-row">
+                <div className="left custom-flex-item custom-align-item"> <p>· Detail</p> </div>
+                <div className="right"> 
+                    {/* <input type="text" className="write-input"></input>  */}
+                    <CKEditor
                         editor={ ClassicEditor }
-                        data="<p>Hello from CKEditor 5!</p>"
+                        data=""
                         // config={editorConfig}
                         onReady={ editor => {
-                            // You can store the "editor" and use when it is needed.
                             console.log( 'Editor is ready to use!', editor );
                         } }
                         onChange={ ( event, editor ) => {
@@ -64,20 +102,34 @@ function Editor() {
                             console.log( 'Focus.', editor );
                         } }
                     />
-                    </div>
-                    <div className="custom-flex-item custom-align-item">
-                        <label className="label-txt">· Attachment</label>
-                        <div className="editor-attchment"></div>
-                        <label htmlFor="file-btn">Select</label>
-                        <input type="file" style={{display:'none'}} id="file-btn"></input>
-                    </div>
                 </div>
-                <div className="editor-bottom">
-                    <button onClick={(e)=>console.log(e)}>Cancel</button>
-                    <button className="primary-red-btn" onClick={(e)=>console.log(e)}>Save</button>
+            </div>
+            <div className="write-row">
+                <div className="left custom-flex-item custom-align-item"> <p className="custom-flex-item custom-justify-center custom-align-item">· Attachments</p> 
+                <label htmlFor="file-upload">
+                    <img src={MoreIcon} />              
+                </label>
+                <input type="file" name="attachments" style={{display: "none"}} id="file-upload"/>
                 </div>
-            </form>
+                
+                <div className="right"> 
+                    <input type="text" className="write-input attach-input" name="filename"></input> 
+                    <button className="file-delete-btn">Delete</button>
+                    <p className="attach-desc">Attached files can only be in PDF, HWP, Docx, xls, and PPT formats (Support up to 100MB)</p>
+                </div>
+            </div>
+            <div className="btn-row">
+                <button className="btn-white">Delete</button>
+                <div>
+                    <button className="btn-black">Cancel</button>
+                    <button type="submit" className="btn-red">Save</button>
+                </div>
+            </div>
         </div>
+        </Style>
     )
 }
 export default Editor
+
+const Style = styled.div `
+`

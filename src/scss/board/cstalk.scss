@@ -74,7 +74,7 @@
     padding: 20px 0;
 }
 .cstalk-right-top span {
-    padding: 4px; font-size: 14px;
+     font-size: 14px;
     line-height: 24px;
     letter-spacing: 0.14px;
 }
@@ -180,7 +180,8 @@
 .cstalk-contents {
     display: flex; justify-content: space-between; 
 }
-.cstalk-right, .cstalk-left, .editor-wrapper {
+.cstalk-right, .cstalk-left, 
+.cstalk-contents > div:nth-child(2) {
     width: 48%;
 }
 .cstalk-category-lists p {
@@ -204,7 +205,7 @@
 
 .cstalk-custom-board {
     li {
-    height: 10%;     display: flex; flex-direction: column;
+    height: 73px;     display: flex; flex-direction: column;
      border-bottom: 2px solid $board-color-grey; align-items: start; justify-content: center;
     .etc {
         display: flex;

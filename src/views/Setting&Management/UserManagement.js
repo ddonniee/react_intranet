@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, useContext } from 'react';
 import { axiosInstance, axiosJsonInstance } from '../../utils/CommonFunction';
 
 import Header from '../../components/Header';
@@ -8,6 +8,7 @@ import AgGrid from "../../components/AgGrid";
 import EditCelldata from '../../components/EditCelldata';
 
 import SelectBox from '../../components/SelectBox';
+import { UserContext } from "../../hooks/UserContext";
 
 import '../../scss/style.scss';
 import { ReactComponent as IntersectIcon } from '../../assets/svgs/icon_intersect2.svg';
@@ -22,7 +23,26 @@ function UserManagement() {
      */
 
     // 로그인유저 정보
-    // const USER_INFO = sessionStorage.getItem('UserInfo');
+    const user = useContext(UserContext);
+    const [token, setToken] = useState('');
+    const [auth, setAuth] = useState({
+        isViewer : false,
+        isWriter : false,
+    })
+
+    useEffect(()=>{
+      console.log('login user', user)
+      let role = user.role;
+
+      if(role === 'LK') {
+        setAuth({ ...auth, isViewer : true })
+      } else if (role === 'SA') {
+        setAuth({ ...auth, isViewer : true, isWriter : true })
+      } else {
+        alert('No right to Access')
+        document.location.href='/login';
+      }
+    }, [])
 
     const USER_CORP_CODE = 'LGEAI' // 로그인유저 법인코드
     const USER_CENTER_TYPE = 'ASC' // 로그인유저 센터타입
