@@ -101,7 +101,6 @@ function Notice() {
     const [boardData, setBoardData] = useState([]); // notice 목록
     const [selectedList, setSelctedList] = useState(); // 목록에서 선택한 항목
     const [detail, setDetail] = useState(); // notice 상세
-    const [isWithin7Days, setIsWithin7Days] = useState(false); // 글 작성일 7일 이내 여부(new)
 
     // const handleSelectBox = (event,params) => {
     //     const { data } = params.node;
@@ -114,6 +113,16 @@ function Notice() {
     //       }
     // }
 
+    const isWithin7Days = (date) => { // 새 게시글(등록일 기준 7일 이내) 확인
+        const baseDate = new Date(moment(date).format('YYYY-MM-DD'));
+        const currentDate = new Date();
+        const timeDifference = currentDate.getTime() - baseDate.getTime();
+        const dayDifference = timeDifference / (1000 * 3600 * 24);
+        // console.log('new??????????', baseDate, '/', currentDate, '/', timeDifference, '/', dayDifference, '/', dayDifference < 7 ? true : false)
+
+        return dayDifference < 7 ? true : false;
+    }
+
     const getList = () => {
         let sdata = new FormData();
         for(const key in searchData) {
@@ -125,14 +134,12 @@ function Notice() {
         axiosInstance2.post('/notice/list', sdata, config).then(res => {
             const data = res?.data.result;
             console.log('공지사항 목록 ---->', data)
-
-            // if(data.createdAt) {
-            //     setDetail({ ...data,  });
-            // } else {
-            //     setDetail(data);
-            // }
-
-            setBoardData(data);
+            
+            const newArray = data.map((obj, index) => ({
+                ...obj,
+                new: isWithin7Days(data.createdAt),
+            }));
+            setBoardData(newArray);
 
             if (searchData.page == 1) {  // 검색 결과 1페이지 첫번째 항목의 rn 저장 (total)
                 setPageInfo({ ...pageInfo, totalCount: data[0]?.rn });
