@@ -8,7 +8,6 @@ import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
 import SelectBox from '../../components/SelectBox'
 import Viewer from "../../components/Viewer"
-import Pagination from "react-js-pagination"
 import Paging from "../../components/Paging";
 
 import { generateRandomString } from "../../utils/CommonFunction"
@@ -24,7 +23,7 @@ import { ReactComponent as DownloadIcon } from '../../assets/svgs/icon_download.
 function Notice() {
 
     /**
-     * Notice 권한
+     * 화면 권한
      * 
      * 본사 Staff : 전체 내용 표시
      * 법인 관리자 : 소속 법인 내용만 표시
@@ -40,19 +39,19 @@ function Notice() {
         isWriter : false,
     })
 
-    useEffect(()=>{
+    useEffect(() => {
       console.log('login user', user)
       let role = user.role;
 
       if(role === 'LK') {
-        setAuth({ ...auth, isViewer : true })
-      } else if (role === 'SA') {
+        setAuth({ ...auth, isViewer : true, isWriter : true })
+      } else if (role === 'SS') {
         setAuth({ ...auth, isViewer : true, isWriter : true })
       } else {
         alert('No right to Access')
         document.location.href='/login';
       }
-    },[])
+    }, [])
 
     const USER_CORP_CODE = 'LGEAI' // 로그인유저 법인코드
     const USER_CENTER_TYPE = 'ASC' // 로그인유저 센터타입
@@ -69,14 +68,14 @@ function Notice() {
     const [pageInfo, setPageInfo] = useState({
         activePage: 1,     // 현재 페이지
         itemsPerPage: 10,  // 페이지 당 아이템 갯수
-        totalCount: 0      // 전체 목록 수
+        totalCount: 0,     // 전체 목록 수
     });
 
     /* 검색 영역 ****************************************************************/
-    const [searchData, setSearchData] = useState({
+    const [searchData, setSearchData] = useState({ // 검색데이터
         page: 1,
         type: 'N',
-    }); // 검색데이터
+    });
 
     const [subOptions, setSubOptions] = useState([]); // 법인 selectbox 데이터
     const centerOptions = [ // view 조건 selectbox 데이터
@@ -102,23 +101,11 @@ function Notice() {
     const [selectedList, setSelctedList] = useState(); // 목록에서 선택한 항목
     const [detail, setDetail] = useState(); // notice 상세
 
-    // const handleSelectBox = (event,params) => {
-    //     const { data } = params.node;
-    //     const { checked } = event.target;
-
-    //     if (checked) {
-    //         setBoardData([...boardData, data]);
-    //       } else {
-    //         setBoardData(boardData.filter(item => item !== data));
-    //       }
-    // }
-
     const isWithin7Days = (date) => { // 새 게시글(등록일 기준 7일 이내) 확인
         const baseDate = new Date(moment(date).format('YYYY-MM-DD'));
         const currentDate = new Date();
         const timeDifference = currentDate.getTime() - baseDate.getTime();
         const dayDifference = timeDifference / (1000 * 3600 * 24);
-        // console.log('new??????????', baseDate, '/', currentDate, '/', timeDifference, '/', dayDifference, '/', dayDifference < 7 ? true : false)
 
         return dayDifference < 7 ? true : false;
     }
@@ -142,9 +129,9 @@ function Notice() {
             setBoardData(newArray);
 
             if (searchData.page == 1) {  // 검색 결과 1페이지 첫번째 항목의 rn 저장 (total)
-                setPageInfo({ ...pageInfo, totalCount: data[0]?.rn });
+                setPageInfo({ ...pageInfo, totalCount: data.length > 0 ? data[0]?.rn : 0 });
             }
-            console.log('total ---->', data[0]?.rn)
+            // console.log('total ---->', data[0]?.rn)
             
         }).catch(error => {
             console.error(error);
@@ -266,20 +253,20 @@ function Notice() {
                                                 {item.new ? <NewIcon /> : null}
                                             </div>
                                             <div className="etc">
-                                                <p>{item.writerID}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
+                                                <p>{item.writerName}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
                                             </div>
                                         </li>
                                     )
                                 })
                             )
                             :
-                            <div className="notice-view-none notice-list-none">
+                            <div className="notice-view-none notice-list-none" >
                                 <p>no data</p>
                             </div>
                         }
                     </ul>
                     {
-                        boardData &&
+                        boardData.length > 0 &&
                         <Paging pageInfo={pageInfo} setPageInfo={setPageInfo} searchData={searchData} setSearchData={setSearchData} />
                     }
                 </div>
