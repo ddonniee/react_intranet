@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react"
+import { useContext, useState, useEffect, useLayoutEffect } from "react"
 import { styled } from "styled-components"
 
 import Header from "../../components/Header"
@@ -8,7 +8,7 @@ import SelectBox from '../../components/SelectBox'
 import Viewer from "../../components/Viewer"
 import Pagination from "react-js-pagination"
 
-import { generateRandomString } from "../../utils/CommonFunction"
+import { axiosInstance2, generateRandomString } from "../../utils/CommonFunction"
 
 // Icons 
 import Search from '../../assets/svgs/icon_seeking.svg'
@@ -109,69 +109,7 @@ function CStalk() {
     };
     /** 페이징 관련 ▲ ============================================================= */
 
-    const [boardData, setBoardData] = useState([
-        {
-            num : '001',
-            title : `R007 - Used Parts Q'ty larger than avaliable`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-            top : true,
-        },
-        {
-            num : '002',
-            title : `What is LG Electronifaq' credit rating?`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '003',
-            title : `How do I sign up to receive regular Investor Relations (IR) email updates?`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '004',
-            title : `Which reporting convetion does LGE use when posting its finantial information?`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '005',
-            title : `I would like to knoe more about LG Elctronifaq: e.g. corporate information, press...`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '006',
-            title : `I would like to knoe more about LG Elctronifaq: e.g. corporate information, press...`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '007',
-            title : `R007 - Used Parts Q'ty larger than avaliable`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '008',
-            title : `How do I sign up to receive regular Investor Relations (IR) email updates?`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '009',
-            title : `I would like to knoe more about LG Elctronifaq: e.g. corporate information, press...`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-        {
-            num : '010',
-            title : `I would like to knoe more about LG Elctronifaq: e.g. corporate information, press...e`,
-            writer : `Paul_Chapin`,
-            date : `23.1.29`,
-        },
-    ]);
+    const [boardData, setBoardData] = useState([]);
 
     const [detail, setDetail] = useState({
         title : 'Invest In LG Electronics',
@@ -215,7 +153,23 @@ function CStalk() {
 
     const [content, setContent] = useState('<h1>How can I invest in LG Electronifaq? On which exchange is LG Electronifaq listed and what ard te ticker symbols ?</h1><p>LG Electronifaq Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p>');
 
-    const [selectedList, setSelctedList] = useState({ num: null, title: '' });
+    const [selectedList, setSelctedList] = useState({
+        attachments : '',
+        branch : '',
+        center : '',
+        commentCount : 0,
+        content : '',
+        createdAt : '',
+        csTalkId : '',
+        hits : 0,
+        isPublic :  false,
+        likeCount : 0, 
+        parentCsId : '',
+        subject : '', 
+        subsidiary : '',
+        writerID : '',
+        writerName : '',
+    });
 
 
     const subOptions = [
@@ -246,16 +200,101 @@ function CStalk() {
     }
 
     const handleClickRow = (e, item) => {
-        if(selectedList.num === null || selectedList.num !== item.num) {
-            setSelctedList(item)
-        }else {
-            setSelctedList({ num: null, title: '' })
-        }
+        console.log(item,'id')
+
+        const formData = new FormData();
+        formData.append('csTalkId', item);
+
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/csTalk/detail', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                let data = resData.result
+                setSelctedList(data)
+                console.log(data,'[[[[[')
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+
     }
     const handleClickAction = e => {
         console.log('handleClickAction')
     }
 
+    const [reqData, setReqData] = useState(
+        {
+            page : 1,
+            subsidiary:"",
+            view: 1,
+            search: "",
+        }
+    )
+    const [boardLength, setBoardLength] = useState(0)
+    const getList = () =>{ 
+        const formData = new FormData();
+        
+        for (let key in reqData) {
+            if (reqData.hasOwnProperty(key)) {
+              formData.append(key, reqData[key]);
+            }
+        }
+
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/csTalk/list', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                let data = resData.result
+                setBoardData(data)
+               
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+    }
+    useLayoutEffect(()=>{
+        getList();   
+    },[])
+
+    useEffect(()=>{
+       if(boardData.length!==0) {
+        console.log('== list ==',boardData)
+       }
+       let max = boardLength;
+       boardData.map((item) =>{
+        if(item.rn>max) {
+            console.log(item.rn)
+            max = item.rn;
+        }
+        setBoardLength(max)
+    })
+    },[boardData])
+
+    useEffect(()=>{
+        console.log(selectedList,'//////////////////////////////')
+    },[selectedList])
     return (
         <div className="notice-container faq-container">
         <Header />
@@ -264,7 +303,7 @@ function CStalk() {
             <Top auth={1} searchArea={false}/>
             {/** Search Nav */}
             <div>
-            <div className="notice-nav custom-flex-item">
+            <div className="notice-nav custom-flex-item" style={user.role!=='LK' ? {justifyContent :'flex-start'} : null}>
                  {/* Subsidiary는 본사 staff만 */}
                  {
                     user.role === 'LK'
@@ -291,14 +330,22 @@ function CStalk() {
             <div className="faq-contents">
                 <div className="faq-left">
                 <div className="faq-count">
-                        Total <span className="custom-stress-txt">{boardData.length}</span>
+                        Total <span className="custom-stress-txt">{boardLength}</span>
                     </div>
 
-                    <ul className="cstalk-custom-board">
+                    <ul className="cstalk-custom-board ">
                         {
                             boardData?.map((item,idx)=>{
                                 return(
-                                    <li className="custom-justify-between" key={generateRandomString(idx)} id={`list-item-${item.num}`} onClick={(e)=>handleClickRow(e,item)}><span>{item.title}</span><span>{item.date}</span></li>
+                                    <li className="custom-justify-between" key={generateRandomString(idx)} id={`list-item-${item.num}`} onClick={(e)=>handleClickRow(e,item.csTalkId)}>
+                                        <div className="cstalk-subject custom-flex-item custom-txt-align">
+                                            <span>{item.level===2 && `[RE]  `}{item.subject}</span>
+                                            <span>Paul_Smith</span>
+                                            {/* <span>{item.writerName}</span> */}
+                                        </div>
+                                        <span>23.11.12</span >
+                                        {/* <span>{item.createdAt}</span > */}
+                                    </li>
                                 )
                             })
                         }
@@ -323,14 +370,20 @@ function CStalk() {
                     ?
                     <Editor />
                     :
-                    <div className="faq-right" >
-                    <div className="faq-right-top">
-                        <p>{detail.title}</p>
+                    !isWrite && selectedList.csTalkId!==''
+                    ?
+                    <div className="catalk-right" >
+                    <div className="catalk-right-top">
+                        <p>{selectedList.subject}</p>
+                        <div className="custom-flex-item selected-info">
+                            <span>Writer : {selectedList.writerName}</span>
+                            <span>Date : {selectedList.createdAt}</span>
+                        </div>
                         <div className="custom-flex-item">
                             <img src={Attachment} alt="attachment"/> 
                             <span>Attachment</span>
                             <span className="custom-flex-item faq-attach-down">
-                                <span>{detail.attachment!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="faq-attach custom-flex-item"><p>{detail.attachment}</p><img src={Download} alt='download_attachment'/></span>
+                                <span>{selectedList.attachments!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="faq-attach custom-flex-item"><p>{detail.attachment}</p><img src={Download} alt='download_attachment'/></span>
                             </span>
                         </div>   
                         <div className="user-action custom-flex-item ">
@@ -340,7 +393,7 @@ function CStalk() {
                         </div> 
                     </div>
                     <div className="faq-right-middle">
-                        <Viewer content={content}/>
+                        <Viewer content={selectedList.content}/>
                         <div className="setting-viewer custom-flex-item">
                             <div><button className="custom-flex-item custom-align-item">Allow Views</button></div>
                             <div><button className="custom-flex-item custom-align-item">Modify</button></div>
@@ -360,7 +413,7 @@ function CStalk() {
                                 {
                                     detail.comments?.map((comment,idx)=>{
                                         return(
-                                            <li>
+                                            <li key={generateRandomString(idx)}>
                                                 <div className="comment-top custom-flex-item custom-justify-between">
                                                     <div>
                                                         <span>{comment.writer}</span>
@@ -390,6 +443,9 @@ function CStalk() {
                             </ul>
                         </div>
                     </div>
+                </div>
+                :
+                <div className="faq-right" >
                 </div>
                 }
                  {/* <button style={{position:'absolute'}} onClick={()=>setFavoriteModal(true)}>test btn</button> */}

@@ -56,7 +56,7 @@ function CommonCodeMangement() {
         document.location.href='/login';
       }
     },[])
-    
+
     // if(loginCheck===0) {
     //     document.location.href='/login';
     // }
@@ -303,7 +303,9 @@ function CommonCodeMangement() {
             var config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                // headers: { },
+                headers: {
+                  'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+                 },
                 data : data
                 };
         
