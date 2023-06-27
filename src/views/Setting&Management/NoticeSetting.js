@@ -11,6 +11,7 @@ import Zendesk from "../../components/Zendesk"
 import SelectBox from '../../components/SelectBox'
 import CustomDatePicker from "../../components/DatePicker"
 import Paging from "../../components/Paging";
+import Editor from "../../components/Editor";
 
 import { generateRandomString } from "../../utils/CommonFunction"
 import { UserContext } from "../../hooks/UserContext";
@@ -278,114 +279,94 @@ function NoticeSetting() {
                 <div className="notice-right">
                     {
                         isWrite ?
-                        <>
-                        <div className="notice-write-row">
-                            <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
-                            <div className="right"> <input type="text" className="notice-write-input"></input> </div>
-                        </div>
-                        <div className="notice-write-row">
-                            <div className="left custom-flex-item custom-align-item"> <p>· Date</p> </div>
-                            <div className="right"> <input type="text" className="notice-write-input"></input> </div>
-                        </div>
-                        <div className="notice-write-row">
-                            <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>
-                            <div className="right radio-row custom-flex-item"> 
-                                <label id="custom-label">
-                                    <input className="hiddenRadio" type="radio" name="release" value="1" />
-                                    <div className="showRadio"></div>
-                                    <span>All</span>
-                                </label>
-                                <label id="custom-label">
-                                    <input className="hiddenRadio" type="radio" name="release" value="2" />
-                                    <div className="showRadio"></div>
-                                    <span>LGC</span>
-                                </label>
-                                <label id="custom-label">
-                                    <input className="hiddenRadio" type="radio" name="release" value="3" />
-                                    <div className="showRadio"></div>
-                                    <span>ASC</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div className="notice-write-row">
-                            <div className="left custom-flex-item custom-align-item"> <p>· Period</p> </div>
-                            <div className="right">
-                                <CustomDatePicker isDuration={true} />
-                            </div>
-                        </div>
-                        <div className="notice-write-row">
-                            <div className="left custom-flex-item custom-align-item"> <p>· Subject</p> </div>
-                            <div className="right"> <input type="text" className="notice-write-input"></input> </div>
-                        </div>
-                        <div className="notice-write-row">
-                            <div className="left custom-flex-item custom-align-item"> <p>· Detail</p> </div>
-                            <div className="right"> 
-                                {/* <input type="text" className="notice-write-input"></input>  */}
-                                <CKEditor
-                                    editor={ ClassicEditor }
-                                    data="<p>Hello from CKEditor 5!</p>"
-                                    // config={editorConfig}
-                                    onReady={ editor => {
-                                        console.log( 'Editor is ready to use!', editor );
-                                    } }
-                                    onChange={ ( event, editor ) => {
-                                        const data = editor.getData();
-                                        const dbTxt = encodeURIComponent(data)
-                                        setTxt(dbTxt)
-                                        console.log( { txt, data } );
-                                    } }
-                                    onBlur={ ( event, editor ) => {
-                                        console.log( 'Blur.', editor );
-                                    } }
-                                    onFocus={ ( event, editor ) => {
-                                        console.log( 'Focus.', editor );
-                                    } }
-                                />
-                            </div>
-                        </div>
-                        <div className="notice-write-row">
-                            <div className="left custom-flex-item custom-align-item"> <p>· Attachments</p> <MoreIcon /> </div>
-                            <div className="right"> 
-                                <input type="text" className="notice-write-input notice-attach-input"></input> 
-                                <button className="file-delete-btn">Delete</button>
-                                <p className="attach-desc">Attached files can only be in PDF, HWP, Docx, xls, and PPT formats (Support up to 100MB)</p>
-                            </div>
-                        </div>
-                        <div className="notice-btn-row">
-                            <button className="notice-btn-white">Delete</button>
-                            <div>
-                                <button className="notice-btn-black">Cancel</button>
-                                <button className="notice-btn-red">Save</button>
-                            </div>
-                        </div>
-                        </>
+                        <Editor period={true} />
+                        // <>
+                        // <div className="notice-write-row">
+                        //     <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
+                        //     <div className="right"> <input type="text" className="notice-write-input"></input> </div>
+                        // </div>
+                        // <div className="notice-write-row">
+                        //     <div className="left custom-flex-item custom-align-item"> <p>· Date</p> </div>
+                        //     <div className="right"> <input type="text" className="notice-write-input"></input> </div>
+                        // </div>
+                        // <div className="notice-write-row">
+                        //     <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>
+                        //     <div className="right radio-row custom-flex-item"> 
+                        //         <label id="custom-label">
+                        //             <input className="hiddenRadio" type="radio" name="release" value="1" />
+                        //             <div className="showRadio"></div>
+                        //             <span>All</span>
+                        //         </label>
+                        //         <label id="custom-label">
+                        //             <input className="hiddenRadio" type="radio" name="release" value="2" />
+                        //             <div className="showRadio"></div>
+                        //             <span>LGC</span>
+                        //         </label>
+                        //         <label id="custom-label">
+                        //             <input className="hiddenRadio" type="radio" name="release" value="3" />
+                        //             <div className="showRadio"></div>
+                        //             <span>ASC</span>
+                        //         </label>
+                        //     </div>
+                        // </div>
+                        // <div className="notice-write-row">
+                        //     <div className="left custom-flex-item custom-align-item"> <p>· Period</p> </div>
+                        //     <div className="right">
+                        //         <CustomDatePicker isDuration={true} />
+                        //     </div>
+                        // </div>
+                        // <div className="notice-write-row">
+                        //     <div className="left custom-flex-item custom-align-item"> <p>· Subject</p> </div>
+                        //     <div className="right"> <input type="text" className="notice-write-input"></input> </div>
+                        // </div>
+                        // <div className="notice-write-row">
+                        //     <div className="left custom-flex-item custom-align-item"> <p>· Detail</p> </div>
+                        //     <div className="right"> 
+                        //         {/* <input type="text" className="notice-write-input"></input>  */}
+                        //         <CKEditor
+                        //             editor={ ClassicEditor }
+                        //             data="<p>Hello from CKEditor 5!</p>"
+                        //             // config={editorConfig}
+                        //             onReady={ editor => {
+                        //                 console.log( 'Editor is ready to use!', editor );
+                        //             } }
+                        //             onChange={ ( event, editor ) => {
+                        //                 const data = editor.getData();
+                        //                 const dbTxt = encodeURIComponent(data)
+                        //                 setTxt(dbTxt)
+                        //                 console.log( { txt, data } );
+                        //             } }
+                        //             onBlur={ ( event, editor ) => {
+                        //                 console.log( 'Blur.', editor );
+                        //             } }
+                        //             onFocus={ ( event, editor ) => {
+                        //                 console.log( 'Focus.', editor );
+                        //             } }
+                        //         />
+                        //     </div>
+                        // </div>
+                        // <div className="notice-write-row">
+                        //     <div className="left custom-flex-item custom-align-item"> <p>· Attachments</p> <MoreIcon /> </div>
+                        //     <div className="right"> 
+                        //         <input type="text" className="notice-write-input notice-attach-input"></input> 
+                        //         <button className="file-delete-btn">Delete</button>
+                        //         <p className="attach-desc">Attached files can only be in PDF, HWP, Docx, xls, and PPT formats (Support up to 100MB)</p>
+                        //     </div>
+                        // </div>
+                        // <div className="notice-btn-row">
+                        //     <button className="notice-btn-white">Delete</button>
+                        //     <div>
+                        //         <button className="notice-btn-black">Cancel</button>
+                        //         <button className="notice-btn-red">Save</button>
+                        //     </div>
+                        // </div>
+                        // </>
                         :
                         <div className="notice-view-none">
                             <p>If you select a list, you can see the contents</p>
                         </div>
                     }
                 </div>
-                {/* <CKEditor
-                    editor={ ClassicEditor }
-                    data="<p>Hello from CKEditor 5!</p>"
-                    // config={editorConfig}
-                    onReady={ editor => {
-                        // You can store the "editor" and use when it is needed.
-                        console.log( 'Editor is ready to use!', editor );
-                    } }
-                    onChange={ ( event, editor ) => {
-                        const data = editor.getData();
-                        const dbTxt = encodeURIComponent(data)
-                        setTxt(dbTxt)
-                        console.log( { txt, data } );
-                    } }
-                    onBlur={ ( event, editor ) => {
-                        console.log( 'Blur.', editor );
-                    } }
-                    onFocus={ ( event, editor ) => {
-                        console.log( 'Focus.', editor );
-                    } }
-                /> */}
             </div>
             </Style>
 
