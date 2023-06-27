@@ -51,7 +51,7 @@ html, body, #root{
 .cell-select-box > *:hover {
     background-color: $hover-color-pink;
     border: none;
-    color: $primary-color-red;
+    
   }
 
 .inner-container {
@@ -227,8 +227,10 @@ ul.pagination li a.active {
     height: 30px;
     color: $hover-color-pink;
 }
-
-/* 커스텀 공통 CSS */
+body .modal {
+    overflow: hidden;
+}
+/* 공통 CSS */
 .custom-stress-txt {
     color: $primary-color-red;
 }
@@ -256,7 +258,9 @@ ul.pagination li a.active {
 .custom-justify-between {
     justify-content: space-between;
 }
-
+.custom-justify-center {
+    justify-content: center;
+}
 .custom-txt-align {
     text-align: center;
 }
@@ -267,6 +271,16 @@ ul.pagination li a.active {
 
 .primary-red-btn {
     background-color: $primary-color-red; color: white;
+}
+/* Fav tab */
+.tab-container {
+    position: absolute;
+    left: 0;
+    width: 100px;
+    background: $primary-color-red; color: white;
+    top: 50%; width: 32px; 
+    height: 120px;font-size: 14px; letter-spacing: 0.14px;
+    writing-mode: vertical-lr; box-shadow: 1px 1px 10px 0px rgba(187, 8, 65, 0.36); border-radius: 0px 4px 4px 0px;
 }
 
 body .modal {
@@ -281,7 +295,9 @@ body .modal {
     border-bottom: 1px solid $border-color-gery;
     min-height: 430px; padding: 20px; 
 }
-
+.ck-editor__main{
+    border: 1px solid $border-color-gery;
+}
 select:focus,
 input:focus {
     outline: none;
@@ -311,21 +327,38 @@ input:focus {
     }
 }
 
-.editor-middle > div:first-child {
-    padding: 20px;
-}
-
 .editor-middle {
+    & > div:first-child {
+        padding: 20px;
+    }
     .label-txt {
         font-weight: 600;
         font-size: 16px;
         line-height: 17px; letter-spacing: 0.025em;
-        width: 120px;
+        min-width: 120px;
+    }
+    .editor-attchment {
+        width: 188px; height: 40px; border: 1px solid $border-color-gery; border-radius: 5px; margin-right: 10px;
+    }
+    .file-upload-btn {
+        background-color: #E8E8E8; width: 72px; height: 40px; border-radius: 100px;
     }
 }
-
+.editor-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .editor-container::-webkit-scrollbar-thumb {
+    background-color: $border-color-gery;
+    border-radius: 4px;
+  }
+  
+  .editor-container::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }  
 .editor-container { // Editor.js
-
+     border: 1px solid $border-color-gery; border-radius: 14px;
+    height: 800px; overflow: auto; 
     .write-row {
         display: flex;
 

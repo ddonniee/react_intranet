@@ -107,7 +107,7 @@ const Favorite = props => {
                 },
                 {
                     label : 'CS Talk',
-                    value : 'cs talk',
+                    value : 'cstalk',
                     path : '/board/cstalk',
                     isFavorie : false,
                 },
