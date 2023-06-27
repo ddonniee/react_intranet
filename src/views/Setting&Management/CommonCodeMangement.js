@@ -18,28 +18,24 @@ function CommonCodeMangement() {
 
 
     /** 
-     * 메뉴 접근 권한
-     * 본사 staff - 조회
-     * 법인 admin - 조회 및 작성
-     * 법인관리자, LGC 관리자, LGC 엔지니어, ASC 관리자, ASC 엔지니어 접근 권한 X
+     * 화면 접근 권한
+     * 본사 staff    (LK)  : 조회
+     * 법인관리자    (SS)  : none
+     * 법인 admin    (SA)  : 조회 및 작성
+     * LGC 관리자    (LD)  : none
+     * LGC Engineer  (LE)  : none 
+     * ASC 관리자    (AD)  : none
+     * ASC Engineer  (AE)  : none
      */
     
     /** TEST DATA START  */
+
+    const user = useContext(UserContext);
+
     const [auth, setAuth] = useState({
       isViewer : false,
       isWriter : false,
     })
-
-    // if(loginCheck===0) {
-    //     document.location.href='/login';
-    // }
-
-    /** Check User region */
-    let browserLanguage = getBrowserLanguage();
-
-    // 로그인 정보 받을 때 처리하기
-    const user = useContext(UserContext);
-    const [token, setToken] = useState('');
 
     useEffect(()=>{
       console.log(user)
@@ -60,6 +56,19 @@ function CommonCodeMangement() {
         document.location.href='/login';
       }
     },[])
+    
+    // if(loginCheck===0) {
+    //     document.location.href='/login';
+    // }
+
+    /** Check User region */
+    let browserLanguage = getBrowserLanguage();
+
+    // 로그인 정보 받을 때 처리하기
+    
+    const [token, setToken] = useState('');
+
+
 
     const [rowData, setRowData] = useState([]);
     /** TEST DATA END */

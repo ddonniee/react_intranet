@@ -31,7 +31,47 @@ import More_comment from '../../assets/svgs/icon_co_more.svg'
 import Editor from "../../components/Editor"
 import Favorite from "../../components/Favorite"
 
+import {UserContext} from '../../hooks/UserContext'
+
 function CStalk() {
+
+    /**
+     * 화면 접근 권한
+     * 본사 staff    (LK)  : 전체내용표시
+     * 법인관리자    (SS)  : 소속 법인 내용만 표시
+     * 법인 admin    (SA)  : none
+     * LGC 관리자    (LD)  : 소속 센터 내용만 표시
+     * LGC Engineer  (LE)  : 본인 내용만 표시 
+     * ASC 관리자    (AD)  : 소속 센터 내용만 표시
+     * ASC Engineer  (AE)  : 본인 내용만 표시
+     */
+
+    const user = useContext(UserContext);
+
+    const [auth, setAuth] = useState({
+      isViewer : false,
+      isWriter : false,
+    })
+
+    useEffect(()=>{
+      console.log(user)
+      let role = user.role;
+      if(role==='LK') {
+        setAuth({
+          ...auth,
+          isViewer : true
+        })
+      }else if(role==='SA') {
+        setAuth({
+          ...auth,
+          isViewer : true,
+          isWriter : true
+        })
+      }else {
+        alert('No right to Access')
+        document.location.href='/login';
+      }
+    },[])
 
     /** 페이징 관련 ▼ ============================================================= */
     const [activePage, setActivePage] = useState(1); // 현재 페이지
@@ -184,8 +224,9 @@ function CStalk() {
     ]
 
     const centerOptions = [
-        { value: 'ASC', label: 'ASC' },
-        { value: 'ASC2', label: 'ASC2' },
+        { value: '0', label: 'Me' },
+        { value: '1', label: 'All' },
+        { value: '2', label: 'Center' },
     ]
 
     const branchOptions = [
@@ -224,11 +265,16 @@ function CStalk() {
             {/** Search Nav */}
             <div>
             <div className="notice-nav custom-flex-item">
-                {/* <div className="nav-left"> */}
-                <div className="notice-nav-box custom-flex-item custom-align-item">
-                    <p>· Subsidiary</p>
-                    <SelectBox options={subsidiary} handleChange={handleSelectSubsidiary} />
-                </div>
+                 {/* Subsidiary는 본사 staff만 */}
+                 {
+                    user.role === 'LK'
+                    &&
+                    <div className="notice-nav-box custom-flex-item custom-align-item">
+                        <p>· Subsidiary</p>
+                        <SelectBox options={subsidiary} handleChange={handleSelectSubsidiary} />
+                    </div>
+                }
+                
                 <div className="custom-flex-item custom-align-item">
                     <p>· View</p>
                     <SelectBox options={centerOptions} handleChange={handleSelectBox} />
@@ -245,14 +291,14 @@ function CStalk() {
             <div className="faq-contents">
                 <div className="faq-left">
                 <div className="faq-count">
-                        Total <span>{boardData.length}</span>
+                        Total <span className="custom-stress-txt">{boardData.length}</span>
                     </div>
 
-                    <ul className="faq-custom-board">
+                    <ul className="cstalk-custom-board">
                         {
                             boardData?.map((item,idx)=>{
                                 return(
-                                    <li key={generateRandomString(idx)} id={`list-item-${item.num}`} onClick={(e)=>handleClickRow(e,item)}><span>{item.num}</span><span>{item.title}</span></li>
+                                    <li className="custom-justify-between" key={generateRandomString(idx)} id={`list-item-${item.num}`} onClick={(e)=>handleClickRow(e,item)}><span>{item.title}</span><span>{item.date}</span></li>
                                 )
                             })
                         }
@@ -293,7 +339,14 @@ function CStalk() {
                             <span className="faq-dislike custom-flex-item " onClick={handleClickAction}><img src={Dislike} alt='btn_dislike'/><p>{detail.dislike}</p></span> 
                         </div> 
                     </div>
-                    <div className="faq-right-middle"><Viewer content={content}/></div>
+                    <div className="faq-right-middle">
+                        <Viewer content={content}/>
+                        <div className="setting-viewer custom-flex-item">
+                            <div><button className="custom-flex-item custom-align-item">Allow Views</button></div>
+                            <div><button className="custom-flex-item custom-align-item">Modify</button></div>
+                            <div><button className="custom-flex-item custom-align-item">Answer</button></div>
+                        </div>
+                    </div>
                     <div className="faq-right-bottom">
                         <div className="faq-comment-wrapper">
                             <span>Comments</span>
@@ -339,7 +392,7 @@ function CStalk() {
                     </div>
                 </div>
                 }
-                 <button style={{position:'absolute'}} onClick={()=>setFavoriteModal(true)}>test btn</button>
+                 {/* <button style={{position:'absolute'}} onClick={()=>setFavoriteModal(true)}>test btn</button> */}
             </div>
 
             <Zendesk />

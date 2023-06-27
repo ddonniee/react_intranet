@@ -10,3 +10,33 @@
         width: 17px;
     }
 }
+.cstalk-custom-board {
+    text-align: center;  height: 93%;
+}
+.cstalk-custom-board li
+{    height: 10%;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #F6F6F6;
+}
+.cstalk-custom-board li:first-child {
+    border-top: 1px solid $board-color-grey;
+}
+.cstalk-custom-board li:hover {
+    background-color: $hover-color-pink;
+}
+
+.cstalk-custom-board span:first-child{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+}
+.setting-viewer {
+    padding: 10px 20px; justify-content: end;
+}
+.setting-viewer button  {
+       background-color: white; padding: 10px;  width: 86px;
+       height: 30px ; border-radius: 100px ;
+       border: 1px solid $border-color-gery;  justify-content: center; margin-left: 10px;
+       
+} 

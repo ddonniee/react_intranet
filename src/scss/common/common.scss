@@ -62,7 +62,7 @@ html, body, #root{
 
 .write-btn {
     position: absolute;
-    bottom: 0;
+    bottom: -41px;
     right: 0;
     width: 61px;
     height: 61px;
@@ -167,7 +167,7 @@ html, body, #root{
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 15px;
+    margin-top: 47px;
 }
 
 ul {
