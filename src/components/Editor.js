@@ -11,6 +11,7 @@ import { styled } from "styled-components";
 
 import {UserContext} from '../hooks/UserContext'
 import moment from "moment";
+import Alert from "./Alert";
 
 /**
  * 작성자 : 이은정
@@ -19,10 +20,17 @@ import moment from "moment";
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
  * @returns 
  */
-function Editor({ period, data, setData }) {
+function Editor({ period, data, setData, range }) {
 
     const user = useContext(UserContext);
-    const [txt, setTxt] = useState('');
+    const [content, setContent] = useState({
+        subject : '',
+        text : '',
+        htmlTxt : '',
+        viewer : null,
+    });
+    const [alertModal, setAlertModal] = useState(false)
+    const [alertTxt, setAlertTxt] = useState('')
     // const [dbtxt, setDbtxt] = useEffect
     
     const editorConfig = {
@@ -34,6 +42,42 @@ function Editor({ period, data, setData }) {
         // 에디터 설정 커스터마이징시 활성화
     };
 
+    const handleClickRadio = (e,num) =>{
+        console.log(num)
+        setContent({
+            ...content,
+            viewer : num
+        })
+    }
+    const onSaveEditor = () =>{
+        console.log('??')
+        console.log(content)
+        if (content.subject==='' || content.text==='' || content.htmlTxt==='' || content.viewer===null) {
+            setAlertTxt('Please fill out all the information.')
+            console.log('if')
+            return false;
+        }else {
+            console.log('else')
+            setData(content)
+            setContent({
+                subject : '',
+                text : '',
+                htmlTxt : '',
+                viewer : '',
+            })
+        }
+    }
+
+    useEffect(()=>{
+        if(!alertModal) {
+            setAlertTxt('')
+        }
+    },[alertModal])
+    useEffect(()=>{
+        if(alertTxt!==''){
+            setAlertModal(true)
+        }
+    },[alertTxt])
     return (
         <Style>
         <div className="editor-container">
@@ -47,22 +91,22 @@ function Editor({ period, data, setData }) {
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>
-                <div className="right radio-row custom-flex-item"> 
-                    <label id="custom-label">
-                        <input className="hiddenRadio" type="radio" name="release" value="ALL" />
-                        <div className="showRadio"></div>
-                        <span>All</span>
-                    </label>
-                    <label id="custom-label">
-                        <input className="hiddenRadio" type="radio" name="release" value="LGC" />
-                        <div className="showRadio"></div>
-                        <span>LGC</span>
-                    </label>
-                    <label id="custom-label">
-                        <input className="hiddenRadio" type="radio" name="release" value="ASC" />
-                        <div className="showRadio"></div>
-                        <span>ASC</span>
-                    </label>
+                <div className="right radio-row custom-flex-item">
+                <label id="custom-label" onClick={(e)=>handleClickRadio(e,1)}>
+                    <input className="hiddenRadio" type="radio" name="release" value="ALL" />
+                    <div className="showRadio"></div>
+                    <span>All</span>
+                </label>
+                <label id="custom-label" onClick={(e)=>handleClickRadio(e,0)}>
+                    <input className="hiddenRadio" type="radio" name="release" value="LGC" />
+                    <div className="showRadio"></div>
+                    <span>{range ? 'Me' : 'LGC'}</span>
+                </label>
+                <label id="custom-label" onClick={(e)=>handleClickRadio(e,2)}>
+                    <input className="hiddenRadio" type="radio" name="release" value="ASC" />
+                    <div className="showRadio"></div>
+                    <span>{range ? 'Center' : 'ASC'}</span>
+                </label>
                 </div>
             </div>
             {
@@ -76,7 +120,20 @@ function Editor({ period, data, setData }) {
             }
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Subject</p> </div>
-                <div className="right"> <input type="text" className="write-input" name="subject"></input> </div>
+                <div className="right"> 
+                    <input 
+                    type="text" 
+                    className="write-input" n
+                    ame="subject" 
+                    onChange={(e)=>{
+                        let value = e.target.value;
+                        setContent({
+                            ...content,
+                            subject : value
+                        })
+                    }}>
+                    </input> 
+                </div>
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Detail</p> </div>
@@ -90,10 +147,14 @@ function Editor({ period, data, setData }) {
                             console.log( 'Editor is ready to use!', editor );
                         } }
                         onChange={ ( event, editor ) => {
-                            const data = editor.getData();
-                            const dbTxt = encodeURIComponent(data)
-                            setTxt(dbTxt)
-                            console.log( { txt, data } );
+                            const inputData = editor.getData();
+                            const dbTxt = encodeURIComponent(inputData)
+                            // setTxt(dbTxt)
+                            setContent({
+                                ...content,
+                                text : dbTxt,
+                                htmlTxt :inputData,
+                            })
                         } }
                         onBlur={ ( event, editor ) => {
                             console.log( 'Blur.', editor );
@@ -122,9 +183,14 @@ function Editor({ period, data, setData }) {
                 <button className="btn-white">Delete</button>
                 <div>
                     <button className="btn-black">Cancel</button>
-                    <button type="submit" className="btn-red">Save</button>
+                    <button type="submit" className="btn-red" onClick={onSaveEditor}>Save</button>
                 </div>
             </div>
+            {
+                alertModal
+                &&
+                <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} btnTxt='Close' />
+            }
         </div>
         </Style>
     )

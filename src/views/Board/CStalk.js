@@ -56,6 +56,7 @@ function CStalk() {
       isWriter : false,
     })
 
+
     useEffect(()=>{
       console.log(user)
       let role = user.role;
@@ -155,7 +156,12 @@ function CStalk() {
         dislike : 7,
     })
 
-    const [content, setContent] = useState('<h1>How can I invest in LG Electronicstalk? On which exchange is LG Electronicstalk listed and what ard te ticker symbols ?</h1><p>LG Electronicstalk Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p>');
+    const [content, setContent] = useState({
+        subject : '',
+        text : '',
+        htmlTxt : '',
+        viewer : '',
+    });
 
     const [selectedList, setSelctedList] = useState({
         attachments : '',
@@ -339,6 +345,9 @@ function CStalk() {
             console.log(selectedList.attachments.fileName)
         }
     },[selectedList])
+    useEffect(()=>{
+        console.log('content',content)
+    },[content])
     return (
         <div className="notice-container cstalk-container">
         <Header />
@@ -413,7 +422,7 @@ function CStalk() {
                 {
                     isWrite
                     ?
-                    <Editor />
+                    <Editor data={content} setData={setContent} range/>
                     :
                     !isWrite && selectedList.csTalkId!==''
                     ?
