@@ -293,7 +293,8 @@ body .modal {
     border: none;
     border-top: 1px solid $border-color-gery;
     border-bottom: 1px solid $border-color-gery;
-    min-height: 430px; padding: 20px; 
+    min-height: 430px; 
+    padding: 20px; 
 }
 .ck-editor__main{
     border: 1px solid $border-color-gery;
@@ -348,17 +349,26 @@ input:focus {
     width: 8px;
   }
   
-  .editor-container::-webkit-scrollbar-thumb {
+.editor-container::-webkit-scrollbar-thumb {
     background-color: $border-color-gery;
     border-radius: 4px;
-  }
-  
-  .editor-container::-webkit-scrollbar-track {
+}
+
+.editor-container::-webkit-scrollbar-track {
     background-color: #f1f1f1;
-  }  
+}  
+
 .editor-container { // Editor.js
-     border: 1px solid $border-color-gery; border-radius: 14px;
-    height: 800px; overflow: auto; 
+    border: 1px solid $border-color-gery; 
+    border-radius: 14px;
+    height: 800px; 
+    overflow: auto; 
+
+    .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused),
+    .ck.ck-editor__main>.ck-editor__editable:not(.ck-blurred) {
+        border: 1px solid #D5D5D5;
+    }
+
     .write-row {
         display: flex;
 

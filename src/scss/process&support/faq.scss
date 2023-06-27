@@ -247,12 +247,12 @@ line-height: 24px; padding: 0 3px;
 .faq-contents .pagination .active a {
     color: $primary-color-red; font-weight: 600;
 }
-.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+.faq-contents .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
     border: none;
     border-top: 1px solid $border-color-gery;
     border-bottom: 1px solid $border-color-gery; padding: 20px;
 }
-.ck.ck-editor {
+.faq-contents .ck.ck-editor {
     z-index: -1px;
 }
 /* 노트북 & PC (해상도 1024px)*/ 
