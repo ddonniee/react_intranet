@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Header from '../../components/Header';
 import Top from '../../components/Top';
 import Zendesk from '../../components/Zendesk';
@@ -20,184 +20,44 @@ import { ReactComponent as ListIcon } from '../../assets/svgs/icon_list.svg';
 import { ReactComponent as PrevIcon } from '../../assets/svgs/icon_mainprev.svg';
 import { ReactComponent as NextIcon } from '../../assets/svgs/icon_mainnext.svg';
 import { ReactComponent as IntersectIcon } from '../../assets/svgs/icon_Intersect.svg';
+import Banner_1 from '../../assets/svgs/banner_1.svg';
+import Banner_2 from '../../assets/svgs/banner_2.svg';
 
 function Main() {
 
-    const [column, setColumn] = useState([ // 컬럼 값 설정
-        { 
-            field: 'KPI',
-            resizable: false,
-            spanHeaderHeight: true,
-            pinned: 'left',
-            width: 256,
-            // suppressAutoSize: true
-        },
-        {
-            headerName: '2022',
-            children: [
-                {
-                    field : '2022',
-                    resizable: false,
-                    headerClass: '2022',
-                    width: 100
-                },
-                {
-                    field : '01-02',
-                    resizable: false,
-                    headerClass: '2022',
-                    width: 100
-                }
-            ]
-        },
-        {
-            headerName: '2023',
-            children: [
-                {
-                    field : 'Target',
-                    resizable: false,
-                    headerClass: '2023',
-                    width: 100
-                },
-                {
-                    field : '01-02',
-                    resizable: false,
-                    headerClass: '2023',
-                    width: 100
-                },
-                {
-                    field : 'Ach(%)',
-                    resizable: false,
-                    headerClass: '2023',
-                    width: 100
-                }
-            ]
-        },
-        {
-            field: `YOY (year)`,
-            resizable: false,
-            spanHeaderHeight: true,
-            wrapHeaderText: true,
-            width: 100
-        },
-        {
-            field: `YOY (Acc Mon)`,
-            resizable: false,
-            spanHeaderHeight: true,
-            wrapHeaderText: true,
-            width: 100
-        },
-        {
-            headerName: 'Last 3 Months',
-            children: [
-                {
-                    field : '202212',
-                    resizable: false,
-                    headerClass: 'Last 3 Months',
-                    width: 100
-                },
-                {
-                    field : '202301',
-                    resizable: false,
-                    headerClass: 'Last 3 Months',
-                    width: 100
-                },
-                {
-                    field : '202302',
-                    resizable: false,
-                    headerClass: 'Last 3 Months',
-                    width: 100
-                }
-            ]
-        },
-        {
-            headerName: 'Last 3 Weeks',
-            children: [
-                {
-                    field : 'W04',
-                    resizable: false,
-                    headerClass: 'Last 3 Weeks',
-                    width: 100
-                },
-                {
-                    field : 'W05',
-                    resizable: false,
-                    headerClass: 'Last 3 Weeks',
-                    width: 100
-                },
-                {
-                    field : 'W06',
-                    resizable: false,
-                    headerClass: 'Last 3 Weeks',
-                    width: 100
-                }
-            ]
-        },
-    ]);
+    // const [bannerList, setBannerList] = useState([
+    //     <img src={Banner_1} alt="banner"/>,
+    //     <img src={Banner_2} alt="banner"/> 
+    // ]);
+    // const sliderRef = useRef(null);
 
-    const [rowData, setRowData] = useState([ // 테이블 데이터 설정
-        {
-            KPI: 'Volume(C)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            Target: '100.1',
-            'Ach(%)': '100.1',
-            'YOY (year)': '100.1',
-            'YOY (Acc Mon)': '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            W04: '100.1',
-            W05: '100.1',
-            W06: '100.1',
-        },
-        {
-            KPI: 'Reclaim (%)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            Target: '100.1',
-            'Ach(%)': '100.1',
-            'YOY (year)': '100.1',
-            'YOY (Acc Mon)': '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            W04: '100.1',
-            W05: '100.1',
-            W06: '100.1',
-        },
-        {
-            KPI: 'RTAT (D)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            Target: '100.1',
-            'Ach(%)': '100.1',
-            'YOY (year)': '100.1',
-            'YOY (Acc Mon)': '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            W04: '100.1',
-            W05: '100.1',
-            W06: '100.1',
-        },
-        {
-            KPI: 'Repair NPS (P)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            Target: '100.1',
-            'Ach(%)': '100.1',
-            'YOY (year)': '100.1',
-            'YOY (Acc Mon)': '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            W04: '100.1',
-            W05: '100.1',
-            W06: '100.1',
-        },
-    ]);
+    // const prev = () => {
+    //     sliderRef.current.slickPrev();
+    // }
 
-    const Prev = (props) => {
+    // const next = () => {
+    //     sliderRef.current.slickNext();
+    // }
+
+    // const play = () => {
+    //     sliderRef.current.slickPlay();
+    // }
+
+    // const pause = () => {
+    //     sliderRef.current.slickPause();
+    // }
+
+    // const bannerSettings = {
+    //     dots: false,
+    //     arrow: false,
+    //     infinite: true,
+    //     speed: 500,
+    //     slidesToShow: 1,
+    //     slidesToScroll: 1,
+    //     autoplay: true,
+    // };   
+
+    const PrevIcon = (props) => {
         const { className, style, onClick } = props;
         return (
             <div style={{ position: 'absolute', top: 110, right: 310 }}>
@@ -206,7 +66,7 @@ function Main() {
         )
     }
 
-    const Next = (props) => {
+    const NextIcon = (props) => {
         const { className, style, onClick } = props;
         return (
             <div style={{ position: 'absolute', top: 110, right: -40 }}>
@@ -223,9 +83,9 @@ function Main() {
         slidesToShow: 1,
         slidesToScroll: 1,
         autoplay: true,
-        prevArrow: <Prev/>,
-        nextArrow: <Next/>,
-    };   
+        prevArrow: <PrevIcon />,
+        nextArrow: <NextIcon />,
+    };
 
     return (
         <div className="main-container">
@@ -233,21 +93,32 @@ function Main() {
             <div className="inner-container">
                 {/** auth 권한체크로 수정 필요 */}
                 <Top auth={1} searchArea={false}/>
-                {/** Chart, Grid */}
-                <div className="value">
-                    <div className="chart"> 
-                        <LineChart />
-                    </div>
-                    <div className="table"> 
-                        <div className='title'>
-                            <p className='sub-title'><KpiIcon /> KPI Performance</p>
-                            <MoreIcon />
-                        </div>
-                        <div className='grid'>
-                            <AgGrid data={rowData} column={column} paging={false} />
-                        </div>
-                    </div>
+                {/** Banner */}
+                <div className="banner">
+                    {/* <Slider {...bannerSettings} ref={sliderRef}>
+                        {
+                            bannerList.map((list, i) => (
+                                <div key={i}> {list} </div>
+                            ))
+                        }
+                    </Slider> */}
+                    <div>banner</div>
                 </div>
+                {/* <div style={{ textAlign: "center" }}>
+                    <button className="button" onClick={prev}>
+                        Previous
+                    </button>
+                    <button className="button" onClick={play}>
+                        Play
+                    </button>
+                    <button className="button" onClick={pause}>
+                        Pause
+                    </button>
+                    <button className="button" onClick={next}>
+                        Next
+                    </button>
+                </div> */}
+
                 {/** Notice, FAQ, CS Talk */}
                 <div className="card">
                     {/** Notice */}
