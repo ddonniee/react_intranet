@@ -23,7 +23,7 @@ import { ReactComponent as CalendarIcon } from '../../assets/svgs/icon_calendar.
 function NoticeSetting() {
 
     /**
-     * Notice Setting 권한
+     * 화면 권한
      * 
      * 본사 Staff : 조회만 가능
      * 법인 Admin : 조회 & 작성

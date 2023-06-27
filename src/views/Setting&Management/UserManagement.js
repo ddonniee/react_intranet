@@ -14,11 +14,26 @@ import { ReactComponent as IntersectIcon } from '../../assets/svgs/icon_intersec
 
 function UserManagement() {
 
+    /**
+     * 화면 권한
+     * 
+     * 본사 Staff : 조회만 가능
+     * 법인 Admin : 조회 & 작성
+     */
+
     // 로그인유저 정보
     // const USER_INFO = sessionStorage.getItem('UserInfo');
 
     const USER_CORP_CODE = 'LGEAI' // 로그인유저 법인코드
     const USER_CENTER_TYPE = 'ASC' // 로그인유저 센터타입
+
+    const config = { // axios header
+        maxBodyLength: Infinity,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+        }
+    }
 
     /* 검색 영역 ****************************************************************/
     const [searchData, setSearchData] = useState(); // 검색데이터
@@ -201,7 +216,7 @@ function UserManagement() {
     
     const getList = (search) => {
         // 사용자목록 조회 API
-        axiosInstance.post('/userManagement/list', search).then(res => {
+        axiosInstance.post('/userManagement/list', search, config).then(res => {
             const array = res?.data.result;
             console.log('사용자 목록 ---->', array)
 

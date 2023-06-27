@@ -5,8 +5,10 @@ import axios from 'axios';
 /** axios instance */
 export const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL, // 서버 나오면 수정
+    maxBodyLength: Infinity,
     headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
     }
 });
 
@@ -20,6 +22,7 @@ export const axiosInstance2 = axios.create({ // 희정님 로컬서버 (notice, 
 
 export const axiosJsonInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
+    maxBodyLength: Infinity,
     headers: {
         'Content-Type': 'application/json; charset=utf-8'
     }

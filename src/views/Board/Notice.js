@@ -8,6 +8,7 @@ import Zendesk from "../../components/Zendesk"
 import SelectBox from '../../components/SelectBox'
 import Viewer from "../../components/Viewer"
 import Pagination from "react-js-pagination"
+import Paging from "../../components/Paging";
 
 import { generateRandomString } from "../../utils/CommonFunction"
 
@@ -18,6 +19,7 @@ import { ReactComponent as NewIcon } from '../../assets/svgs/icon_new.svg';
 import { ReactComponent as AttachmentIcon } from '../../assets/svgs/icon_attachment.svg';
 import { ReactComponent as DownloadIcon } from '../../assets/svgs/icon_download.svg';
 import moment from "moment/moment";
+import { UserContext } from "../../hooks/UserContext";
 
 function Notice() {
 
@@ -30,24 +32,45 @@ function Notice() {
      * ASC 관리자/엔지니어 : ASC 고정
      */
 
+    // 로그인 유저 정보
+    const user = useContext(UserContext);
+    const [token, setToken] = useState('');
+    const [auth, setAuth] = useState({
+        isViewer : false,
+        isWriter : false,
+    })
+
+    useEffect(()=>{
+      console.log('login user', user)
+      let role = user.role;
+
+      if(role === 'LK') {
+        setAuth({ ...auth, isViewer : true })
+      } else if (role === 'SA') {
+        setAuth({ ...auth, isViewer : true, isWriter : true })
+      } else {
+        alert('No right to Access')
+        document.location.href='/login';
+      }
+    },[])
+
     const USER_CORP_CODE = 'LGEAI' // 로그인유저 법인코드
     const USER_CENTER_TYPE = 'ASC' // 로그인유저 센터타입
 
-    /** 페이징 관련 ▼ ============================================================= */
-    const [activePage, setActivePage] = useState(1); // 현재 페이지
+    const config = { // axios header
+        maxBodyLength: Infinity,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+        }
+    }
+
+    /* 페이징 영역 ****************************************************************/
     const [pageInfo, setPageInfo] = useState({
         activePage: 1,     // 현재 페이지
         itemsPerPage: 10,  // 페이지 당 아이템 갯수
         totalCount: 0      // 전체 목록 수
     });
-
-    const setPage = (e) => {
-        // setActivePage(e);
-        setPageInfo({ ...pageInfo, activePage: e })
-        setSearchData({ ...searchData, page: e })
-        console.log('page ---->', e);
-    };
-    /** 페이징 관련 ▲ ============================================================= */
 
     /* 검색 영역 ****************************************************************/
     const [searchData, setSearchData] = useState({
@@ -74,9 +97,11 @@ function Notice() {
         }
     }
 
+    /* 컨텐츠 영역 ****************************************************************/
     const [boardData, setBoardData] = useState([]); // notice 목록
     const [selectedList, setSelctedList] = useState(); // 목록에서 선택한 항목
     const [detail, setDetail] = useState(); // notice 상세
+    const [isWithin7Days, setIsWithin7Days] = useState(false); // 글 작성일 7일 이내 여부(new)
 
     // const handleSelectBox = (event,params) => {
     //     const { data } = params.node;
@@ -97,9 +122,15 @@ function Notice() {
         console.log('search result >>>>>>', Object.fromEntries(sdata))
 
         // 공지사항 목록 조회 API
-        axiosInstance2.post('/notice/list', sdata).then(res => {
+        axiosInstance2.post('/notice/list', sdata, config).then(res => {
             const data = res?.data.result;
             console.log('공지사항 목록 ---->', data)
+
+            // if(data.createdAt) {
+            //     setDetail({ ...data,  });
+            // } else {
+            //     setDetail(data);
+            // }
 
             setBoardData(data);
 
@@ -141,7 +172,7 @@ function Notice() {
         console.log('search result >>>>>>', Object.fromEntries(sdata))
 
         // 공지사항 상세 조회 API
-        axiosInstance2.post('/notice/detail', sdata).then(res => {
+        axiosInstance2.post('/notice/detail', sdata, config).then(res => {
             const data = res?.data.result;
             console.log('공지사항 상세 ---->', data)
 
@@ -217,31 +248,38 @@ function Notice() {
                     </div>
                     <ul className="notice-custom-board">
                         {
-                            boardData?.map((item, idx) => {
-                                return(
-                                    <li className="notice-list" key={generateRandomString(idx)} id={`list-item-${item.noticeId}`} onClick={(e)=>handleClickRow(e, item)}>
-                                        <div className="title">
-                                            {item.top ? <SpeakerIcon /> : null} {item.title} {item.top ? <NewIcon /> : null}
-                                        </div>
-                                        <div className="etc">
-                                            <p>{item.writerID}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
-                                        </div>
-                                    </li>
-                                )
-                            })
+                            boardData.length > 0 ? (
+                                boardData?.map((item, idx) => {
+                                    return(
+                                        <li className="notice-list" key={generateRandomString(idx)} id={`list-item-${item.noticeId}`} onClick={(e)=>handleClickRow(e, item)}>
+                                            <div className="title">
+                                                {item.top ? <SpeakerIcon /> : null} {item.title} {item.top ? <NewIcon /> : null}
+                                            </div>
+                                            <div className="etc">
+                                                <p>{item.writerID}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
+                                            </div>
+                                        </li>
+                                    )
+                                })
+                            )
+                            :
+                            <div className="notice-view-none">
+                                <p>no data</p>
+                            </div>
                         }
                     </ul>
                     {
                         boardData &&
-                        <Pagination 
-                            activePage={pageInfo?.activePage} // 현재 페이지
-                            itemsCountPerPage={pageInfo?.itemsPerPage} // 한 페이지 당 보여줄 아이템 수
-                            totalItemsCount={pageInfo?.totalCount} // 총 아이템 수
-                            pageRangeDisplayed={5} // paginator의 페이지 범위
-                            prevPageText={"‹"} // "이전"을 나타낼 텍스트
-                            nextPageText={"›"} // "다음"을 나타낼 텍스트
-                            onChange={setPage} // 페이지 변경을 핸들링하는 함수
-                        />
+                        <Paging pageInfo={pageInfo} setPageInfo={setPageInfo} searchData={searchData} setSearchData={setSearchData} />
+                        // <Pagination 
+                        //     activePage={pageInfo?.activePage} // 현재 페이지
+                        //     itemsCountPerPage={pageInfo?.itemsPerPage} // 한 페이지 당 보여줄 아이템 수
+                        //     totalItemsCount={pageInfo?.totalCount} // 총 아이템 수
+                        //     pageRangeDisplayed={5} // paginator의 페이지 범위
+                        //     prevPageText={"‹"} // "이전"을 나타낼 텍스트
+                        //     nextPageText={"›"} // "다음"을 나타낼 텍스트
+                        //     onChange={setPage} // 페이지 변경을 핸들링하는 함수
+                        // />
                     }
                 </div>
                 <div className="notice-right">
