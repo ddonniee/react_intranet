@@ -171,7 +171,7 @@ function CStalk() {
         createdAt : '',
         csTalkId : '',
         hits : 0,
-        isPublic :  false,
+        isPublic :  '',
         likeCount : 0, 
         parentCsId : '',
         subsidiary : '',
@@ -248,18 +248,24 @@ function CStalk() {
 
     }
 
-    const onConfirmHandler = () =>{
-        console.log(selectedList)
-        setIsWrite(false)
-        setIsModify(false)
-        setAlertModal(false)
-        setContent({
-            title : '',
-            content : '',
-            isPublic : '',
-            attachments : '',
-            csTalkId : ''
-        })
+    const onConfirmHandler = (num) =>{
+
+        if(num===1) {
+            setIsWrite(false)
+            setIsModify(false)
+            setAlertModal(false)
+            setContent({
+                title : '',
+                content : '',
+                isPublic : '',
+                attachments : '',
+                csTalkId : ''
+            })
+        }
+        else if(num===2) {
+            onChangePublic()
+        }
+       
     }
 
 
@@ -348,6 +354,42 @@ function CStalk() {
             console.log('error',error)
         })
     }
+    const setPages = (e) => {
+        setCommentPage(e);
+        console.log('page ---->', e);
+    };
+
+    const [commentPage, setCommentPage] = useState(1)
+    const [commentList, setCommentList] = useState([])
+    const getComment = () =>{
+        const formData = new FormData();
+        
+        formData.append('page', commentPage);
+        formData.append('csTalkId', selectedList.csTalkId);
+
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/csTalk/commentList', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                let data = resData.result
+                setCommentList(data)
+                console.log('comment',data)
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+    }
     const clearState =()=>{
         getList();
         setSelctedList({
@@ -369,6 +411,7 @@ function CStalk() {
             writerName : '',
         })
     }
+    
     const onSaveContent = () =>{
 
         if (content.title==='' || content.content==='' || content.isPublic==='') {
@@ -401,6 +444,7 @@ function CStalk() {
                        setAlertTxt("You've inserted new post.")
                        setIsWrite(false)
                        setContent({})
+                       getList();
                     }else {
                         console.log(response,'else')
                     }
@@ -471,6 +515,13 @@ function CStalk() {
         }
     }
 
+    const onAddAnswer = () =>{
+        setContent({
+            ...content,
+            csTalkId : selectedList.csTalkId
+        })
+        setIsWrite(true)
+    }
     const onDeletePost = () => {
         const formData = new FormData();
         
@@ -489,6 +540,7 @@ function CStalk() {
             let resData = response.data;
             if(resData.code===200) {
                 setAlertTxt('Deleted post')
+                setBoardLength(boardLength-1)
                 clearState();
             }else {
                 console.log(resData)
@@ -499,11 +551,41 @@ function CStalk() {
         })
     }
     
+    const onChangePublic = () =>{
+        const formData = new FormData();
+        
+        let id = selectedList.csTalkId
+        formData.append('csTalkId',id)
+
+        console.log(id,'osososo')
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_STAFF,
+            },
+            data : formData
+            };
+        axiosInstance2('/csTalk/public', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                setAlertTxt("You've changed open status for this post to all.")
+                getDetail(id)
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+    }
     useLayoutEffect(()=>{
         getList();   
     },[reqData])
 
     useEffect(()=>{
+        console.log('boardData.length')
        if(boardData.length!==0) {
         console.log('== list ==',boardData)
        }
@@ -534,6 +616,9 @@ function CStalk() {
         //     console.log(selectedList)
         //     // console.log(selectedList.attachments.fileName)
         // }
+
+        getComment();
+
     },[selectedList])
 
     
@@ -612,7 +697,7 @@ function CStalk() {
                     isWrite
                     ?
                     <div className="editor-wrapper">
-                    <Editor data={content} setData={setContent} onSave={onSaveContent} range />
+                    <EditorModify data={content} setData={setContent} onSave={onSaveContent} range />
                     </div>
                     :
                     !isWrite && selectedList.csTalkId!=='' && !isModify
@@ -646,14 +731,24 @@ function CStalk() {
                                 &&
                                 <div style={{marginRight:'auto'}}><button onClick={onDeletePost} className="custom-flex-item custom-align-item">Delete</button></div>
                             }
-                            <div><button className="custom-flex-item custom-align-item">Allow Views</button></div>
-                            <div><button className="custom-flex-item custom-align-item" onClick={onEditMode}>Modify</button></div>
-                            <div><button className="custom-flex-item custom-align-item">Answer</button></div>
+                            {
+                               ( selectedList.isPublic !== 1 && selectedList.writerID==='ID_LK') &&
+                                <div><button className="custom-flex-item custom-align-item" onClick={()=>setAlertTxt('Are you sure to open this post to all?')}>Allow Views</button></div>
+                            }
+                            {
+                                selectedList.writerID==='ID_LK' 
+                                &&
+                                <div><button className="custom-flex-item custom-align-item" onClick={onEditMode}>Modify</button></div>
+                            }
+                           {
+                            selectedList.writerID!=='ID_LK' &&
+                            <div><button className="custom-flex-item custom-align-item" onClick={onAddAnswer}>Answer</button></div>
+                           }
                         </div>
                     </div>
                     <div className="cstalk-right-bottom">
                         <div className="cstalk-comment-wrapper">
-                        <span>Comments</span><span className="comment-cnt-title">total <p className="custom-stress-txt comment-cnt">{detail.comments.length}</p></span>
+                        <span>Comments</span><span className="comment-cnt-title">total <p className="custom-stress-txt comment-cnt">{commentList?.length}</p></span>
                             <div className="custom-justify-between">
                                 <div className="comment-input">
                                     <span>Writer : {user.name}</span>
@@ -665,26 +760,26 @@ function CStalk() {
                         <div className="cstalk-comment-list">
                             <ul>
                                 {
-                                    detail.comments?.map((comment,idx)=>{
+                                    commentList?.map((comment,idx)=>{
                                         return(
                                             <li key={generateRandomString(idx)}>
                                                 <div className="comment-top custom-flex-item custom-justify-between">
                                                     <div>
                                                         <span>{comment.writer}</span>
-                                                        <span>{comment.time}</span>
+                                                        <span>{moment(comment.createdAt).format('YYYY-MM-DD')}</span>
                                                     </div>
                                                     <span className="custom-flex-item">
                                                         <p>Delete</p><p>Answer</p>
                                                     </span>
                                                 </div>
-                                                <div className="comment-middle">{comment.detail.slice(0,250)}{comment.detail.length>250 && <span className="custom-stress-txt">...More</span>}</div>
+                                                <div className="comment-middle">{comment.content.slice(0,250)}{comment.content.length>250 && <span className="custom-stress-txt">...More</span>}</div>
                                                 <div className="comment-bottom custom-flex-item custom-align-self">
                                                     {comment.comments?.map((c,idx)=>{
                                                         return (
                                                             <>
                                                             <img src={Comment} alt="under-comment" />
                                                             <span>Comment</span>
-                                                            <span className="custom-stress-txt">{comment.comments.length}</span>
+                                                            <span className="custom-stress-txt">{comment.content.length}</span>
                                                             <img src={More_comment} alt="under-comment" />
                                                             </>
                                                         )
@@ -695,6 +790,18 @@ function CStalk() {
                                     })
                                 }
                             </ul>
+                            {
+                                commentList &&
+                                <Pagination 
+                                activePage={commentPage} // 현재 페이지
+                                itemsCountPerPage={itemsPerPage} // 한 페이지 당 보여줄 아이템 수
+                                totalItemsCount={commentList? commentList.length: 0} // 총 아이템 수
+                                pageRangeDisplayed={5} // paginator의 페이지 범위
+                                prevPageText={"‹"} // "이전"을 나타낼 텍스트
+                                nextPageText={"›"} // "다음"을 나타낼 텍스트
+                                onChange={setPages} // 페이지 변경을 핸들링하는 함수
+                            />
+                            }
                         </div>
                     </div>
                 </div>
@@ -716,7 +823,7 @@ function CStalk() {
             {
                 alertModal
                 &&
-                <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} onConfirm={()=>alertTxt.indexOf('leave')>-1 ? onConfirmHandler():setAlertModal(false)} twoBtn={alertTxt.indexOf('leave')>-1 ? true:false} btnTxt={alertTxt.indexOf('leave')>-1 ?'Confirm':'Close'}/>
+                <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} onConfirm={()=>(alertTxt.indexOf('leave')>-1 || alertTxt.indexOf('sure')>-1) ? (alertTxt.indexOf('leave')>-1 ? onConfirmHandler(1) : onConfirmHandler(2)):setAlertModal(false)} twoBtn={(alertTxt.indexOf('leave')>-1 || alertTxt.indexOf('sure')>-1)? true:false} btnTxt={(alertTxt.indexOf('leave')>-1 || alertTxt.indexOf('sure')>-1) ?'Confirm':'Close'}/>
             }
             </div>
         </div>
