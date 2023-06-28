@@ -294,8 +294,8 @@ function CStalk() {
                 let data = resData.result
                 setSelctedList({
                     ...selectedList,
-                    reactionState : "LIKE",
-                    likeCount : selectedList.likeCount+1
+                    reactionState : selectedList.reactionState==="LIKE"?"NONE":"LIKE",
+                    likeCount : selectedList.reactionState==="LIKE" ? selectedList.likeCount-1 : selectedList.likeCount+1
                 })
             }else {
                 console.log(resData)
