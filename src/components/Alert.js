@@ -16,7 +16,7 @@ const Alert = props => {
                         {
                             !twoBtn
                             ?
-                            <button onClick={onClose}>{btnTxt}</button>
+                            <button onClick={onConfirm}>{btnTxt}</button>
                             :
                             <>
                             <button onClick={onClose} className="cancel-btn">Cancel</button>

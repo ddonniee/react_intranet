@@ -20,15 +20,11 @@ import Alert from "./Alert";
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
  * @returns 
  */
-function Editor({ period, data, setData, range }) {
+function Editor({ period, data, setData, range, onSave }) {
 
+    console.log(data,'editedit')
     const user = useContext(UserContext);
-    const [content, setContent] = useState({
-        subject : '',
-        text : '',
-        htmlTxt : '',
-        viewer : null,
-    });
+    const [content, setContent] = useState(data);
     const [alertModal, setAlertModal] = useState(false)
     const [alertTxt, setAlertTxt] = useState('')
     // const [dbtxt, setDbtxt] = useEffect
@@ -46,28 +42,13 @@ function Editor({ period, data, setData, range }) {
         console.log(num)
         setContent({
             ...content,
-            viewer : num
+            isPublic : num
         })
     }
-    const onSaveEditor = () =>{
-        console.log('??')
-        console.log(content)
-        if (content.subject==='' || content.text==='' || content.htmlTxt==='' || content.viewer===null) {
-            setAlertTxt('Please fill out all the information.')
-            console.log('if')
-            return false;
-        }else {
-            console.log('else')
-            setData(content)
-            setContent({
-                subject : '',
-                text : '',
-                htmlTxt : '',
-                viewer : '',
-            })
-        }
+    const onStopInput = () => {
+        console.log('else')
+        setData(content)
     }
-
     useEffect(()=>{
         if(!alertModal) {
             setAlertTxt('')
@@ -93,17 +74,17 @@ function Editor({ period, data, setData, range }) {
                 <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>
                 <div className="right radio-row custom-flex-item">
                 <label id="custom-label" onClick={(e)=>handleClickRadio(e,1)}>
-                    <input className="hiddenRadio" type="radio" name="release" value="ALL" />
+                    <input className="hiddenRadio" type="radio" name="release" value={range ? 1 : "ALL"} checked={content.isPublic === 1 ? true : false}/>
                     <div className="showRadio"></div>
                     <span>All</span>
                 </label>
                 <label id="custom-label" onClick={(e)=>handleClickRadio(e,0)}>
-                    <input className="hiddenRadio" type="radio" name="release" value="LGC" />
+                    <input className="hiddenRadio" type="radio" name="release" value={range ? 0 : "LGC"} checked={content.isPublic === 0 ? true : false}/>
                     <div className="showRadio"></div>
                     <span>{range ? 'Me' : 'LGC'}</span>
                 </label>
                 <label id="custom-label" onClick={(e)=>handleClickRadio(e,2)}>
-                    <input className="hiddenRadio" type="radio" name="release" value="ASC" />
+                    <input className="hiddenRadio" type="radio" name="release" value={range ? 2 : "ASC"} checked={content.isPublic === 2 ? true : false}/>
                     <div className="showRadio"></div>
                     <span>{range ? 'Center' : 'ASC'}</span>
                 </label>
@@ -125,11 +106,12 @@ function Editor({ period, data, setData, range }) {
                     type="text" 
                     className="write-input" n
                     ame="subject" 
+                    value={content.title}
                     onChange={(e)=>{
                         let value = e.target.value;
                         setContent({
                             ...content,
-                            subject : value
+                            title : value
                         })
                     }}>
                     </input> 
@@ -141,7 +123,7 @@ function Editor({ period, data, setData, range }) {
                     {/* <input type="text" className="write-input"></input>  */}
                     <CKEditor
                         editor={ ClassicEditor }
-                        data=""
+                        data={content.content}
                         // config={editorConfig}
                         onReady={ editor => {
                             console.log( 'Editor is ready to use!', editor );
@@ -152,14 +134,14 @@ function Editor({ period, data, setData, range }) {
                             // setTxt(dbTxt)
                             setContent({
                                 ...content,
-                                text : dbTxt,
-                                htmlTxt :inputData,
+                                content : inputData,
                             })
                         } }
                         onBlur={ ( event, editor ) => {
-                            console.log( 'Blur.', editor );
+                            onStopInput();
                         } }
-                        onFocus={ ( event, editor ) => {
+                        onFocus={ ( event, editor ) => 
+                            {
                             console.log( 'Focus.', editor );
                         } }
                     />
@@ -183,7 +165,7 @@ function Editor({ period, data, setData, range }) {
                 <button className="btn-white">Delete</button>
                 <div>
                     <button className="btn-black">Cancel</button>
-                    <button type="submit" className="btn-red" onClick={onSaveEditor}>Save</button>
+                    <button type="submit" className="btn-red" onClick={onSave}>Save</button>
                 </div>
             </div>
             {

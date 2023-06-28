@@ -26,7 +26,7 @@ import New from '../../assets/svgs/icon_new.svg'
 import Attachment from '../../assets/svgs/icon_attachment.svg';
 import Download from '../../assets/svgs/icon_download.svg'
 import Like from '../../assets/svgs/icon_like.svg'
-import Dislike from '../../assets/svgs/icon_dislike.svg'
+import Liked from '../../assets/svgs/icon_liked.svg'
 import Comment from '../../assets/svgs/icon_co_comment.svg'
 import More_comment from '../../assets/svgs/icon_co_more.svg'
 import Editor from "../../components/Editor"
@@ -34,7 +34,7 @@ import Favorite from "../../components/Favorite"
 
 import {UserContext} from '../../hooks/UserContext'
 import Tab from "../../components/Tab"
-import { event } from "jquery"
+import Alert from "../../components/Alert"
 
 function CStalk() {
 
@@ -57,25 +57,25 @@ function CStalk() {
     })
 
 
-    useEffect(()=>{
-      console.log(user)
-      let role = user.role;
-      if(role==='LK') {
-        setAuth({
-          ...auth,
-          isViewer : true
-        })
-      }else if(role==='SA') {
-        setAuth({
-          ...auth,
-          isViewer : true,
-          isWriter : true
-        })
-      }else {
-        alert('No right to Access')
-        document.location.href='/login';
-      }
-    },[])
+    // useEffect(()=>{
+    //   console.log(user)
+    //   let role = user.role;
+    //   if(role==='LK') {
+    //     setAuth({
+    //       ...auth,
+    //       isViewer : true
+    //     })
+    //   }else if(role==='SA') {
+    //     setAuth({
+    //       ...auth,
+    //       isViewer : true,
+    //       isWriter : true
+    //     })
+    //   }else {
+    //     alert('No right to Access')
+    //     document.location.href='/login';
+    //   }
+    // },[])
 
     /** 페이징 관련 ▼ ============================================================= */
     const [activePage, setActivePage] = useState(1); // 현재 페이지
@@ -92,15 +92,6 @@ function CStalk() {
         {value:'8',label:'Indonesia'}
     ])
 
-    const [favoriteModal, setFavoriteModal] = useState(false);
-    /** 모달 외부영역 스크롤 방지 */
-    useEffect(() => {
-        if (favoriteModal) {
-          document.body.style.overflow = 'hidden'; // 스크롤 방지 설정
-        } else {
-          document.body.style.overflow = ''; // 스크롤 방지 해제
-        }
-      }, [favoriteModal]);
 
     const [isWrite, setIsWrite] = useState(false); // 글 작성시 에디터 on, viewer off
     
@@ -112,6 +103,12 @@ function CStalk() {
         setActivePage(e);
         console.log('page ---->', e);
     };
+    useEffect(()=>{
+        setReqData({
+            ...reqData,
+            page: activePage
+        })
+    },[activePage])
     /** 페이징 관련 ▲ ============================================================= */
 
     const [boardData, setBoardData] = useState([]);
@@ -157,10 +154,11 @@ function CStalk() {
     })
 
     const [content, setContent] = useState({
-        subject : '',
-        text : '',
-        htmlTxt : '',
-        viewer : '',
+        title : '',
+        content : '',
+        isPublic : '',
+        attachments : '',
+        csTalkId : ''
     });
 
     const [selectedList, setSelctedList] = useState({
@@ -178,6 +176,7 @@ function CStalk() {
         parentCsId : '',
         subsidiary : '',
         writerID : '',
+        reactionState : '',
         writerName : '',
     });
 
@@ -209,8 +208,15 @@ function CStalk() {
           }
     }
 
+    const [alertModal, setAlertModal] = useState(false)
+    const [alertTxt, setAlertTxt] = useState('')
+    
     const handleClickRow = (e, item) => {
-        console.log(item,'id')
+        console.log(item)
+        if(isWrite || isModify) {
+                setAlertTxt("Click confirm to leave write mode")
+                return false
+        }
 
         const formData = new FormData();
         formData.append('csTalkId', item);
@@ -229,7 +235,7 @@ function CStalk() {
             if(resData.code===200) {
                 let data = resData.result
                 setSelctedList(data)
-                console.log(data,'[[[[[')
+                console.log(data,'detail')
             }else {
                 console.log(resData)
             }
@@ -239,7 +245,35 @@ function CStalk() {
         })
 
     }
-    const handleClickAction = (event,id) => {
+
+    const onConfirmHandler = () =>{
+        console.log(selectedList)
+        setIsWrite(false)
+        setIsModify(false)
+        setAlertModal(false)
+        setContent({
+            title : '',
+            content : '',
+            isPublic : '',
+            attachments : '',
+            csTalkId : ''
+        })
+    }
+
+
+
+    useEffect(()=>{
+        if(!alertModal) {
+            setAlertTxt('')
+        }
+    },[alertModal])
+    useEffect(()=>{
+        if(alertTxt!==''){
+            setAlertModal(true)
+        }
+    },[alertTxt])
+
+    const onClickAction = (event,id) => {
         const formData = new FormData();
         formData.append('csTalkId', id);
 
@@ -256,7 +290,11 @@ function CStalk() {
             let resData = response.data;
             if(resData.code===200) {
                 let data = resData.result
-                console.log(data,'!!!')
+                setSelctedList({
+                    ...selectedList,
+                    reactionState : "LIKE",
+                    likeCount : selectedList.likeCount+1
+                })
             }else {
                 console.log(resData)
             }
@@ -271,7 +309,7 @@ function CStalk() {
         {
             page : 1,
             subsidiary:"",
-            view: 1,
+            view: '',
             search: "",
         }
     )
@@ -308,9 +346,158 @@ function CStalk() {
             console.log('error',error)
         })
     }
+    const clearState =()=>{
+        getList();
+        setSelctedList({
+            attachments : '',
+            subject: '',
+            branch : '',
+            center : '',
+            commentCount : 0,
+            content : '',
+            createdAt : '',
+            csTalkId : '',
+            hits : 0,
+            isPublic :  false,
+            likeCount : 0, 
+            parentCsId : '',
+            subsidiary : '',
+            writerID : '',
+            reactionState : '',
+            writerName : '',
+        })
+    }
+    const onSaveContent = () =>{
+
+        if (content.title==='' || content.content==='' || content.isPublic==='') {
+            setAlertTxt('Please fill out all the information.')
+            console.log('if')
+            return false;
+        }
+        else {
+            if(isWrite) {
+                const formData = new FormData();
+                for (let key in content) {
+                    if (content.hasOwnProperty(key)) {
+                      formData.append(key, content[key]);
+                    }
+                }
+        
+                var config = {
+                    method: 'post',
+                    maxBodyLength: Infinity,
+                    headers: { 
+                       'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+                    },
+                    data : formData
+                    };
+                axiosInstance2('/csTalk/insert', config)
+                .then(function (response){
+                    let resData = response.data;
+                    if(resData.code===200) {
+                        console.log(resData,'res')
+                       setAlertTxt("You've inserted new post.")
+                       setIsWrite(false)
+                       setContent({})
+                    }else {
+                        console.log(response,'else')
+                    }
+                })
+                .catch(function(error) {
+                    console.log('error',error)
+                })  
+            }
+        }
+    }
+    const [isModify, setIsModify] = useState(false)
+
+    const onEditMode = () =>{
+        console.log('edit content')
+        setContent({
+            ...content,
+            title : selectedList.subject,
+            content : selectedList.content,
+            isPublic : selectedList.isPublic,
+            attachments : selectedList.attachments,
+            csTalkId : selectedList.csTalkId,
+        })
+        setIsModify(true)
+    }
+
+    const onEditContent = () =>{
+        console.log('============================== ', content)
+        if (content.title==='' || content.content==='' || content.isPublic==='') {
+            setAlertTxt('Please fill out all the information.')
+            console.log('if')
+            return false;
+        }
+        else {
+            if(isWrite) {
+                const formData = new FormData();
+                for (let key in content) {
+                    if (content.hasOwnProperty(key)) {
+                      formData.append(key, content[key]);
+                    }
+                }
+        
+                var config = {
+                    method: 'post',
+                    maxBodyLength: Infinity,
+                    headers: { 
+                       'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+                    },
+                    data : formData
+                    };
+                axiosInstance2('/csTalk/update', config)
+                .then(function (response){
+                    let resData = response.data;
+                    if(resData.code===200) {
+                        console.log(resData,'res')
+                       setAlertTxt("You've modified your post.")
+                       setIsModify(false)
+                       setContent({})
+                    }else {
+                        console.log(response,'else')
+                    }
+                })
+                .catch(function(error) {
+                    console.log('error',error)
+                })  
+            }
+        }
+    }
+
+    const onDeletePost = () => {
+        const formData = new FormData();
+        
+        formData.append('csTalkId',selectedList.csTalkId)
+
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/csTalk/delete', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                setAlertTxt('Deleted post')
+                clearState();
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+    }
+    
     useLayoutEffect(()=>{
         getList();   
-    },[])
+    },[reqData])
 
     useEffect(()=>{
        if(boardData.length!==0) {
@@ -323,31 +510,29 @@ function CStalk() {
             max = item.rn;
         }
         setBoardLength(max)
-        
     })
     },[boardData])
 
     useEffect(()=>{
-        const jsonString = JSON.stringify(selectedList.attachments);
-        const obj = Object.entries(jsonString)
-        let type = (typeof(obj))
-        console.log(obj,'obj')
-        if(type!=='object') {
+        // const jsonString = JSON.stringify(selectedList.attachments);
+        // const obj = Object.entries(jsonString)
+        // let type = (typeof(obj))
+        // console.log(obj,'obj')
+        // if(type!=='object') {
           
-            setSelctedList({
-                ...selectedList,
-                attachments: obj
-            });
-        }
+        //     setSelctedList({
+        //         ...selectedList,
+        //         attachments: obj
+        //     });
+        // }
       
-        else {
-            console.log(selectedList)
-            console.log(selectedList.attachments.fileName)
-        }
+        // else {
+        //     console.log(selectedList)
+        //     // console.log(selectedList.attachments.fileName)
+        // }
     },[selectedList])
-    useEffect(()=>{
-        console.log('content',content)
-    },[content])
+
+    
     return (
         <div className="notice-container cstalk-container">
         <Header />
@@ -409,7 +594,7 @@ function CStalk() {
                         <Pagination 
                             activePage={activePage} // 현재 페이지
                             itemsCountPerPage={itemsPerPage} // 한 페이지 당 보여줄 아이템 수
-                            totalItemsCount={boardData?.length} // 총 아이템 수
+                            totalItemsCount={boardLength} // 총 아이템 수
                             pageRangeDisplayed={5} // paginator의 페이지 범위
                             prevPageText={"‹"} // "이전"을 나타낼 텍스트
                             nextPageText={"›"} // "다음"을 나타낼 텍스트
@@ -422,11 +607,14 @@ function CStalk() {
                 {
                     isWrite
                     ?
-                    <Editor data={content} setData={setContent} range/>
+                    <div className="editor-wrapper">
+                    <Editor data={content} setData={setContent} onSave={onSaveContent} range />
+                    </div>
                     :
-                    !isWrite && selectedList.csTalkId!==''
+                    !isWrite && selectedList.csTalkId!=='' && !isModify
                     ?
-                    <div className="cstalk-right" >
+                    <div className="editor-wrapper">
+                        <div className="cstalk-right" >
                     <div className="cstalk-right-top">
                         <p>{selectedList.subject}</p>
                         <div className="custom-flex-item selected-info">
@@ -437,19 +625,25 @@ function CStalk() {
                             <img src={Attachment} alt="attachment"/> 
                             <span className="custom-self-align">Attachment</span>
                             <span className="custom-flex-item cstalk-attach-down">
-                                <span>{selectedList.attachments!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{selectedList.attachments.fileName}</p><img src={Download} alt='download_attachment'/></span>
+                                <span>{selectedList.attachments!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{selectedList.attachments}</p><img src={Download} alt='download_attachment'/></span>
                             </span>
                         </div>   
                         <div className="user-action custom-flex-item ">
-                            <span className="cstalk-like custom-flex-item " onClick={(e)=>handleClickAction(e,selectedList.csTalkId)}><img src={Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
+                            <span className="cstalk-like custom-flex-item " onClick={(e)=>onClickAction(e,selectedList.csTalkId)}><img src={selectedList.reactionState!=='NONE'?Liked : Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
                             
                         </div> 
                     </div>
                     <div className="cstalk-right-middle">
-                        <Viewer content={selectedList.content}/>
+                       <div> <Viewer content={selectedList.content}/></div>
                         <div className="setting-viewer custom-flex-item">
+                            {/** todo 추후에 사용자 아이디로 비교 */}
+                            { 
+                                selectedList.writerID==='ID_LK' 
+                                &&
+                                <div style={{marginRight:'auto'}}><button onClick={onDeletePost} className="custom-flex-item custom-align-item">Delete</button></div>
+                            }
                             <div><button className="custom-flex-item custom-align-item">Allow Views</button></div>
-                            <div><button className="custom-flex-item custom-align-item">Modify</button></div>
+                            <div><button className="custom-flex-item custom-align-item" onClick={onEditMode}>Modify</button></div>
                             <div><button className="custom-flex-item custom-align-item">Answer</button></div>
                         </div>
                     </div>
@@ -484,7 +678,7 @@ function CStalk() {
                                                     {comment.comments?.map((c,idx)=>{
                                                         return (
                                                             <>
-                                                       z     <img src={Comment} alt="under-comment" />
+                                                            <img src={Comment} alt="under-comment" />
                                                             <span>Comment</span>
                                                             <span className="custom-stress-txt">{comment.comments.length}</span>
                                                             <img src={More_comment} alt="under-comment" />
@@ -500,19 +694,26 @@ function CStalk() {
                         </div>
                     </div>
                 </div>
-                :
-                <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
-                    <p>If you select a list, you can see the contents</p>
-                </div>
+                    </div>
+                    :
+                    isModify
+                    ?
+                    <Editor data={content} setData={setContent} range onSave={onEditContent}/>
+                    :
+                    <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
+                        <p>If you select a list, you can see the contents</p>
+                    </div>
                 }
                  {/* <button style={{position:'absolute'}} onClick={()=>setFavoriteModal(true)}>test btn</button> */}
             </div>
 
             <Zendesk />
 
-            {/* test */}
-           
-            
+            {
+                alertModal
+                &&
+                <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} onConfirm={()=>alertTxt.indexOf('leave')>-1 ? onConfirmHandler():setAlertModal(false)} twoBtn={alertTxt.indexOf('leave')>-1 ? true:false} btnTxt={alertTxt.indexOf('leave')>-1 ?'Confirm':'Close'}/>
+            }
             </div>
         </div>
         <Tab />

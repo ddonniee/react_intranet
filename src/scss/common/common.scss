@@ -230,6 +230,9 @@ ul.pagination li a.active {
 body .modal {
     overflow: hidden;
 }
+.modal {
+    z-index: 1000;
+}
 /* 공통 CSS */
 .custom-stress-txt {
     color: $primary-color-red;
@@ -273,19 +276,7 @@ body .modal {
     background-color: $primary-color-red; color: white;
 }
 /* Fav tab */
-.tab-container {
-    position: absolute;
-    left: 0;
-    width: 100px;
-    background: $primary-color-red; color: white;
-    top: 50%; width: 32px; 
-    height: 120px;font-size: 14px; letter-spacing: 0.14px;
-    writing-mode: vertical-lr; box-shadow: 1px 1px 10px 0px rgba(187, 8, 65, 0.36); border-radius: 0px 4px 4px 0px;
-}
 
-body .modal {
-    overflow: hidden;
-}
 
 /* 에디터 */
 .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused),
@@ -295,9 +286,6 @@ body .modal {
     border-bottom: 1px solid $border-color-gery;
     min-height: 430px; 
     padding: 20px; 
-}
-.ck-editor__main{
-    border: 1px solid $border-color-gery;
 }
 select:focus,
 input:focus {
@@ -310,7 +298,14 @@ input:focus {
     line-height: 17px;
     letter-spacing: 0.025em;
 }
-
+.editor-wrapper {
+    border: 1px solid $border-color-gery; 
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 800px; width: 48%;
+}
 .editor-top > div {
     display: flex;
     padding: 20px;
@@ -359,7 +354,6 @@ input:focus {
 }  
 
 .editor-container { // Editor.js
-    border: 1px solid $border-color-gery; 
     border-radius: 14px;
     height: 800px; 
     overflow: auto;

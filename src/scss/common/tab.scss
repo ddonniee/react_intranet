@@ -1,0 +1,43 @@
+@import '../variables.scss';
+.tab-container {
+    
+    position: absolute;
+    left: 257px;
+    width: 257px;
+     color: white;
+    top: 50%; width: 32px; 
+    height: 120px;font-size: 14px; letter-spacing: 0.14px;
+    writing-mode: vertical-lr;  border-radius: 0px 4px 4px 0px;
+}
+.navigation-container {
+    width: 257px; display : flex; flex-direction : column;
+    height: 100vh; 
+    position: fixed;
+    top: 0;
+    left: -200px;
+    transition: left 0.3s ease; background : white; padding: 25px 30px;
+    h1 {
+        font-size: 20px; font-weight: 700; letter-spacing: 0.2px;
+    }
+  }
+  .tab-container .open {
+    left: 400px; 
+  }
+  .navigation-container.open {
+    left: 0; 
+  }
+  
+  .navigation-container.closed {
+    left: -257px;
+  }
+  .nav-bottom {
+    margin-top: auto; background-color: #F0F0F0;
+    width: 84px; height: 28px; border-radius: 100px;
+
+    img {
+        margin-right: 5px;
+    }
+    p {
+        font-size: 12px; font-weight: 600; line-height: 14px; letter-spacing: 0.01em;
+    }
+  }
