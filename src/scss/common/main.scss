@@ -9,13 +9,46 @@
         height: 364px;
         margin-bottom: 38px;
         overflow: hidden;
+        position: relative;
 
         img {
             width:100%;
             height:100%;
             object-fit:cover;
         }
+
+        .banner-btn {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            top: 84%;
+            left: 1.5%;
+
+            img {
+                width: 38px;
+                height: 38px;
+            }
+    
+            :not(:nth-last-child(1)) {
+                margin-right: 12px;
+            }
+    
+            .banner-index {
+                color: #ADADAD;
+                font-size: 15px;
+                font-weight: 600;
+                line-height: 38px;
+    
+                span {
+                    color: #333333;
+                    font-size: 18px;
+                    font-weight: 600;
+                    line-height: 38px;
+                }
+            }
+        }
     }
+
 
     .title {
         border-bottom: 1px solid $primary-color-red;
@@ -58,17 +91,19 @@
         }
         .card-notice {
             width: 50%;
+
+            .list {
+                display: flex;
+            }
         }
         .card-faq, .card-cstalk {
             width: 22.5%;
         }
 
-        .card-notice .list {
-            display: flex;
-        }
-
-        .card-cstalk .circle {
-            margin-bottom: 20px;
+        .card-cstalk {
+            .circle {
+                margin-bottom: 20px;
+            }
         }
         
         .list {
@@ -140,7 +175,7 @@
 
                     
                     .qst-no {
-                        width: 55px;
+                        min-width: 55px;
                         font-weight: 600;
                         font-size: 16px;
                         line-height: 17px;
@@ -148,7 +183,7 @@
                     }
                     p {
                         font-weight: 600;
-                        font-size: 15px;
+                        font-size: 16px;
                         line-height: 19px;
                     }
                     svg { 
@@ -159,17 +194,156 @@
 
 
             }
-        }  
-    }
+        }
 
-    /* 노트북 & PC (해상도 1024px)*/ 
-    @media all and (min-width:1024px) {
-        //스타일 입력
-    } 
+        .card-faq {
+            .sublist {
+                li {
+                    justify-content: flex-start;
+                    padding: 10px 0;
+                }
+            }
+        }
+    }
 
     /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 
     @media all and (min-width:768px) and (max-width:1023px) {
-        //스타일 입력
+        .inner-container {
+            max-width: 880px;
+        }
+
+        /* 배너 슬라이드 */
+        .banner {
+            height: 206px;
+
+            .banner-btn {
+                top: 78%;
+                left: 2%;
+
+                img {
+                    width: 28px;
+                    height: 28px;
+                }
+        
+                :not(:nth-last-child(1)) {
+                    margin-right: 10px;
+                }
+            }
+        }
+
+        /* Notice, FAQ, CS Talk 카드 */
+        .card {
+            flex-wrap: wrap;
+
+            div[class^=card-] {
+                height: 370px;
+            }
+            .card-notice {
+                width: 100%;
+                margin-bottom: 30px;
+
+                .list {
+                    justify-content: space-between;
+
+                    .right {
+                        width: 87%;
+                    }
+                }
+            }
+            .card-faq {
+                width: 55%;
+            }
+            .card-cstalk {
+                width: 40%;
+            }
+            
+            .card-cstalk .circle {
+                margin-bottom: 20px;
+            }
+            
+            .list {
+                padding: 22px;
+
+                .left {
+                    margin-right: 19px;
+                }
+
+                .circle {
+                    width: 72px;
+                    height: 72px;
+                    border-radius: 50%;
+                    background: $primary-color-red;
+                    color: #FFFFFF;
+                    text-align: center;
+        
+                    .day {
+                        font-weight: 700;
+                        font-size: 25px;
+                        line-height: 21px;
+                        padding-top: 15px;
+                    }
+
+                    .month {
+                        font-weight: 600;
+                        font-size: 12px;
+                        line-height: 21px;
+                    }
+                }
+
+                .newicon {
+                    width: 15px;
+                    margin-left: 3px;
+                    padding-top: 3px;
+                }
+                
+                .mainlist {
+                    flex-grow: 1;
+                    word-break: keep-all;
+                    margin-bottom: 20px;
+
+                    .bold {
+                        font-weight: 600;
+                        font-size: 16px;
+                        line-height: 21px;
+                        color: #333333;
+
+                        svg {
+                            margin-bottom: -3px;
+                        }
+                    }
+                        
+                    .normal {
+                        margin-top: 4px;
+                        font-size: 15px;
+                        line-height: 21px;
+                        color: #4E4E4E;
+                    }
+                }
+
+                .sublist {
+                    li {
+                        padding: 12px 0;
+
+                        .qst-no {
+                            width: 55px;
+                            font-weight: 600;
+                            font-size: 16px;
+                            line-height: 17px;
+                            color: #BF0C3F;
+                        }
+                        p {
+                            font-weight: 600;
+                            font-size: 15px;
+                            line-height: 19px;
+                        }
+                        svg { 
+                            margin-right: 5px;
+                            margin-bottom: -3px;
+                        }
+                    }
+                }
+            }
+        }
     } 
 
     /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/ 

@@ -3,74 +3,101 @@ import Header from '../../components/Header';
 import Top from '../../components/Top';
 import Zendesk from '../../components/Zendesk';
 
-import LineChart from "../../components/Chart";
-import AgGrid from "../../components/AgGrid";
-import Slider from "react-slick";
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import Carousel from '../../components/Carousel';
 
 import '../../scss/style.scss';
-import { ReactComponent as KpiIcon } from '../../assets/svgs/icon_kpi.svg';
 import { ReactComponent as NoticeIcon } from '../../assets/svgs/icon_notice.svg';
 import { ReactComponent as FaqIcon } from '../../assets/svgs/icon_faq.svg';
 import { ReactComponent as CsIcon } from '../../assets/svgs/icon_cstalk.svg';
 import { ReactComponent as NewIcon } from '../../assets/svgs/icon_new.svg';
 import { ReactComponent as MoreIcon } from '../../assets/svgs/icon_more.svg';
 import { ReactComponent as ListIcon } from '../../assets/svgs/icon_list.svg';
-import { ReactComponent as PrevIcon } from '../../assets/svgs/icon_mainprev.svg';
-import { ReactComponent as NextIcon } from '../../assets/svgs/icon_mainnext.svg';
 import { ReactComponent as IntersectIcon } from '../../assets/svgs/icon_Intersect.svg';
 import Banner_1 from '../../assets/svgs/banner_1.svg';
 import Banner_2 from '../../assets/svgs/banner_2.svg';
+import Prev from '../../assets/svgs/icon_mainprev.svg';
+import Next from '../../assets/svgs/icon_mainnext.svg';
+import Pause from '../../assets/svgs/icon_bannerpause.svg';
+import Play from '../../assets/svgs/icon_bannerplay.svg';
+import B_Prev from '../../assets/svgs/icon_bannerprev.svg';
+import B_Next from '../../assets/svgs/icon_bannernext.svg';
 
 function Main() {
 
-    // const [bannerList, setBannerList] = useState([
-    //     <img src={Banner_1} alt="banner"/>,
-    //     <img src={Banner_2} alt="banner"/> 
-    // ]);
-    // const sliderRef = useRef(null);
+    /* 상단 배너 Slider 리스트 */
+    const [bannerList, setBannerList] = useState([
+        <img src={Banner_1} alt="banner"/>,
+        <img src={Banner_2} alt="banner"/> 
+    ]);
 
-    // const prev = () => {
-    //     sliderRef.current.slickPrev();
-    // }
+    const [ref, setRef] = useState();
+    const [isPlay, setIsPlay] = useState(true);
 
-    // const next = () => {
-    //     sliderRef.current.slickNext();
-    // }
+    const prev = () => {
+        ref.slickPrev();
+    }
+    const next = () => {
+        ref.slickNext();
+    }
+    const play = () => {
+        ref.slickPlay();
+        setIsPlay(true)
+    }
+    const pause = () => {
+        ref.slickPause();
+        setIsPlay(false)
+    }
+    const page = () => {
+        ref.currentSlide();
+    }
 
-    // const play = () => {
-    //     sliderRef.current.slickPlay();
-    // }
+    const [currentSlide, setCurrentSlide] = useState(1);
 
-    // const pause = () => {
-    //     sliderRef.current.slickPause();
-    // }
+    const bannerSettings = {
+        dots: true,
+        arrow: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+    };   
 
-    // const bannerSettings = {
-    //     dots: false,
-    //     arrow: false,
-    //     infinite: true,
-    //     speed: 500,
-    //     slidesToShow: 1,
-    //     slidesToScroll: 1,
-    //     autoplay: true,
-    // };   
+    /* 하단 CS Talk Slider 리스트 */
+    const csList = [17, 18, 19].map((list, i) => (
+        <div key={i}>
+        <div className='circle'>
+            <p className='day'>{list}</p>
+            <p className='month'>2023.05</p>
+            <IntersectIcon/>
+        </div>
+        <div className='content'>
+            <div className='mainlist'>
+                <p className='bold'>Weekly Report of AC AS Back Order a September HE – OK55 Main Defect</p>
+                <p className='normal'>
+                    GSFS Information – LED Arra Rank Collection time of GSFS Information – LED
+                    GSFS Information – LED Arra Rank Collection time of GSFS Information – LED
+                    GSFS Information – LED Arra Rank Collection time of GSFS Information – LED
+                </p>
+            </div>
+        </div>
+        </div>
+    ));
 
     const PrevIcon = (props) => {
         const { className, style, onClick } = props;
         return (
-            <div style={{ position: 'absolute', top: 110, right: 310 }}>
-                <PrevIcon style={{width: "38px", height: "38px"}} onClick={onClick}/>
-            </div>
+            <span className='slider-btn-prev' style={{ position: 'absolute', top: 110, right: 310 }}>
+                <img src={Prev} alt="prev" style={{width: "38px", height: "38px"}} onClick={onClick}/> 
+            </span>
         )
     }
 
     const NextIcon = (props) => {
         const { className, style, onClick } = props;
         return (
-            <div style={{ position: 'absolute', top: 110, right: -40 }}>
-                <NextIcon style={{width: "38px", height: "38px"}} onClick={onClick}/>
+            <div className='slider-btn-next' style={{ position: 'absolute', top: 110, right: -40 }}>
+                <img src={Next} alt="next" style={{width: "38px", height: "38px"}} onClick={onClick}/> 
             </div>
         )
     }
@@ -95,29 +122,19 @@ function Main() {
                 <Top auth={1} searchArea={false}/>
                 {/** Banner */}
                 <div className="banner">
-                    {/* <Slider {...bannerSettings} ref={sliderRef}>
+                    <Carousel images={bannerList} setting={bannerSettings} setRef={setRef} setIdx={setCurrentSlide} />
+                    <div className='banner-btn'>
+                        <p className='banner-index'><span>{`0${currentSlide}`}</span>{` / 0${bannerList.length}`}</p>
+                        <img src={B_Prev} alt="prev" onClick={prev}/> 
                         {
-                            bannerList.map((list, i) => (
-                                <div key={i}> {list} </div>
-                            ))
+                            isPlay ? 
+                            <img src={Pause} alt="pause" onClick={pause}/> 
+                            :
+                            <img src={Play} alt="play" onClick={play}/> 
                         }
-                    </Slider> */}
-                    <div>banner</div>
+                        <img src={B_Next} alt="next" onClick={next}/> 
+                    </div>
                 </div>
-                {/* <div style={{ textAlign: "center" }}>
-                    <button className="button" onClick={prev}>
-                        Previous
-                    </button>
-                    <button className="button" onClick={play}>
-                        Play
-                    </button>
-                    <button className="button" onClick={pause}>
-                        Pause
-                    </button>
-                    <button className="button" onClick={next}>
-                        Next
-                    </button>
-                </div> */}
 
                 {/** Notice, FAQ, CS Talk */}
                 <div className="card">
@@ -138,7 +155,7 @@ function Main() {
                             <div className='right'>
                                 <div className='mainlist'>
                                     <p className='bold'>Weekly Report of AC AS Back Order a September HE – OK55 Main Defect <NewIcon className='newicon'/></p>
-                                    <p className='normal'>GSFS Information – LED Arra Rank Collection time of GSFS Information – LED Arra Rank Collection time of</p>
+                                    <p className='normal'>GSFS Information – LED Arra Rank Collection time of GSFS Information – LED Arra Rank Collection time of LED Arra Rank Collection time of GSFS Information</p>
                                 </div>
                                 <ul className='sublist'>
                                     {
@@ -171,9 +188,9 @@ function Main() {
                                     'Back Order a September Weekly Report of AC',
                                     'HE - OK55 Main Defect Back Order a September',
                                     'GSFS Information - LED Arra'].map((row, i) => (
-                                        <li key={i} style={{padding: "11px 0"}}>
+                                        <li key={i}>
                                             <span className='qst-no'> Q 0{i+1} </span>
-                                            <p style={{minWidth: "260px"}}> {row} </p> 
+                                            <p> {row} </p> 
                                         </li>
                                     ))
                                 }
@@ -187,29 +204,7 @@ function Main() {
                             <MoreIcon />
                         </div>
                         <div className='list'>
-                            {/* <Slider {...settings}>
-                                {
-                                    [17, 18, 19].map((list, i) => (
-                                        <div key={i}>
-                                        <div className='circle'>
-                                            <p className='day'>{list}</p>
-                                            <p className='month'>2023.05</p>
-                                            <IntersectIcon/>
-                                        </div>
-                                        <div className='content'>
-                                            <div className='mainlist'>
-                                                <p className='bold'>Weekly Report of AC AS Back Order a September HE – OK55 Main Defect</p>
-                                                <p className='normal'>
-                                                    GSFS Information – LED Arra Rank Collection time of GSFS Information – LED
-                                                    GSFS Information – LED Arra Rank Collection time of GSFS Information – LED
-                                                    GSFS Information – LED Arra Rank Collection time of GSFS Information – LED
-                                                </p>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    ))
-                                }
-                            </Slider> */}
+                            <Carousel images={csList} setting={settings} />
                         </div>
                     </div>
                 </div>
