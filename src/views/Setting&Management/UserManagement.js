@@ -100,9 +100,9 @@ function UserManagement() {
             prevCol.map((col, i) => {
                 if(col.field === 'jobType') {
                     if(isModify) {
-                        return { ...col, cellRendererFramework: SelectBoxRendererEdit };
+                        return { ...col, cellRenderer: SelectBoxRendererEdit };
                     } else {
-                        return { ...col, cellRendererFramework: SelectBoxRenderer };
+                        return { ...col, cellRenderer: SelectBoxRenderer };
                     }
                 }
                 return { ...col };
@@ -124,7 +124,7 @@ function UserManagement() {
         };
 
         return (
-          <select className='row-select' value={props.value} onChange={handleChange} disabled={!isModify}>
+          <select className='row-select' value={props.value} onChange={handleChange} disabled>
             {
                 jobType.map((job, i) => (
                     <option key={i} value={job}> {job} </option>
@@ -207,8 +207,7 @@ function UserManagement() {
             headerName: 'Job Type',
             field: 'jobType',
             resizable: false,
-            cellRendererFramework: SelectBoxRenderer,
-            // cellEditorFramework: SelectBoxRendererEdit,
+            cellRenderer: SelectBoxRenderer,
             singleClickEdit: true, 
             cellEditorParams: {handleLeftCell}
         },
@@ -308,6 +307,7 @@ function UserManagement() {
       
         originalArray.forEach((item, index) => {
           const modifiedItem = modifiedArray[index];
+          
           if ((JSON.stringify(item.userId) === JSON.stringify(modifiedItem.userId)) &&
             (JSON.stringify(item.jobType) !== JSON.stringify(modifiedItem.jobType))) {
             changedPart.push({ userId: modifiedItem.userId, jobType: modifiedItem.jobType });
