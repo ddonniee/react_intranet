@@ -30,7 +30,7 @@ import Liked from '../../assets/svgs/icon_liked.svg'
 import Comment from '../../assets/svgs/icon_co_comment.svg'
 import More_comment from '../../assets/svgs/icon_co_more.svg'
 import Editor from "../../components/Editor"
-import Favorite from "../../components/Favorite"
+import EditorModify from "../../components/EditorModify"
 
 import {UserContext} from '../../hooks/UserContext'
 import Tab from "../../components/Tab"
@@ -211,15 +211,9 @@ function CStalk() {
     const [alertModal, setAlertModal] = useState(false)
     const [alertTxt, setAlertTxt] = useState('')
     
-    const handleClickRow = (e, item) => {
-        console.log(item)
-        if(isWrite || isModify) {
-                setAlertTxt("Click confirm to leave write mode")
-                return false
-        }
-
+    const getDetail = (id) =>{
         const formData = new FormData();
-        formData.append('csTalkId', item);
+        formData.append('csTalkId', id);
 
         var config = {
             method: 'post',
@@ -243,6 +237,14 @@ function CStalk() {
         .catch(function(error) {
             console.log('error',error)
         })
+    }
+    const handleClickRow = (e, item) => {
+        console.log(item)
+        if(isWrite || isModify) {
+                setAlertTxt("Click confirm to leave write mode")
+                return false
+        }
+        getDetail(item)
 
     }
 
@@ -432,7 +434,7 @@ function CStalk() {
             return false;
         }
         else {
-            if(isWrite) {
+            if(isModify) {
                 const formData = new FormData();
                 for (let key in content) {
                     if (content.hasOwnProperty(key)) {
@@ -456,6 +458,8 @@ function CStalk() {
                        setAlertTxt("You've modified your post.")
                        setIsModify(false)
                        setContent({})
+                       getList();
+                       getDetail(content.csTalkId);
                     }else {
                         console.log(response,'else')
                     }
@@ -698,7 +702,7 @@ function CStalk() {
                     :
                     isModify
                     ?
-                    <Editor data={content} setData={setContent} range onSave={onEditContent}/>
+                    <EditorModify data={content} setData={setContent} range onSave={onEditContent} />
                     :
                     <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
                         <p>If you select a list, you can see the contents</p>
