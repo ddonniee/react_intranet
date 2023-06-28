@@ -12,6 +12,7 @@ import SelectBox from '../../components/SelectBox'
 import CustomDatePicker from "../../components/DatePicker"
 import Paging from "../../components/Paging";
 import Editor from "../../components/Editor";
+import Alert from "../../components/Alert"
 
 import { generateRandomString } from "../../utils/CommonFunction"
 import { UserContext } from "../../hooks/UserContext";
@@ -38,6 +39,7 @@ function NoticeSetting() {
     const [auth, setAuth] = useState({
         isViewer : false,
         isWriter : false,
+        isStaff : false,
     })
 
     useEffect(() => {
@@ -45,7 +47,7 @@ function NoticeSetting() {
       let role = user.role;
 
       if(role === 'LK') {
-        setAuth({ ...auth, isViewer : true })
+        setAuth({ ...auth, isViewer : true, isStaff : true })
       } else if (role === 'SA') {
         setAuth({ ...auth, isViewer : true, isWriter : true })
       } else {
@@ -177,6 +179,7 @@ function NoticeSetting() {
             } else {
                 setDetail(data);
             }
+            setIsWrite(true);
             
         }).catch(error => {
             console.error(error);
@@ -208,8 +211,53 @@ function NoticeSetting() {
 
     useEffect(() => {
         selectedList && getDetail();
-        // console.log('select list ---->', selectedList)
+        console.log('select list ---->', selectedList)
     }, [selectedList])
+
+    const [alertModal, setAlertModal] = useState(false)
+    const [alertTxt, setAlertTxt] = useState('')
+
+    const onSaveContent = () =>{
+        if (detail.title === '' || detail.content==='' || detail.view==='') {
+            setAlertTxt('Please fill out all the information.')
+            console.log('if')
+            return false;
+        }
+        else {
+            if(isWrite) {
+                const formData = new FormData();
+                for (let key in detail) {
+                    if (detail.hasOwnProperty(key)) {
+                      formData.append(key, detail[key]);
+                    }
+                }
+        
+                var config = {
+                    method: 'post',
+                    maxBodyLength: Infinity,
+                    headers: { 
+                       'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+                    },
+                    data : formData
+                    };
+                axiosInstance2('/csTalk/insert', config)
+                .then(function (response){
+                    let resData = response.data;
+                    if(resData.code===200) {
+                        console.log(resData,'res')
+                       setAlertTxt("You've inserted new post.")
+                       setIsWrite(false)
+                       setDetail()
+                    }else {
+                        console.log(response,'else')
+                    }
+                })
+                .catch(function(error) {
+                    console.log('error',error)
+                })  
+            }
+        }
+    }
 
     return (
         <div className="notice-container">
@@ -220,10 +268,13 @@ function NoticeSetting() {
             {/** Search Nav */}
             <div className="notice-nav">
                 {/* <div className="nav-left"> */}
-                <div className="notice-nav-box custom-flex-item custom-align-item">
-                    <p>· Subsidiary</p>
-                    <SelectBox options={subOptions} handleChange={handleSelectBox} />
-                </div>
+                {
+                    !auth.isStaff &&
+                    <div className="notice-nav-box custom-flex-item custom-align-item">
+                        <p>· Subsidiary</p>
+                        <SelectBox options={subOptions} handleChange={handleSelectBox} />
+                    </div>
+                }
                 <div className="custom-flex-item custom-align-item">
                     <p>· View</p>
                     <SelectBox options={centerOptions} handleChange={handleSelectBox} />
@@ -279,88 +330,7 @@ function NoticeSetting() {
                 <div className="notice-right">
                     {
                         isWrite ?
-                        <Editor period={true} />
-                        // <>
-                        // <div className="notice-write-row">
-                        //     <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
-                        //     <div className="right"> <input type="text" className="notice-write-input"></input> </div>
-                        // </div>
-                        // <div className="notice-write-row">
-                        //     <div className="left custom-flex-item custom-align-item"> <p>· Date</p> </div>
-                        //     <div className="right"> <input type="text" className="notice-write-input"></input> </div>
-                        // </div>
-                        // <div className="notice-write-row">
-                        //     <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>
-                        //     <div className="right radio-row custom-flex-item"> 
-                        //         <label id="custom-label">
-                        //             <input className="hiddenRadio" type="radio" name="release" value="1" />
-                        //             <div className="showRadio"></div>
-                        //             <span>All</span>
-                        //         </label>
-                        //         <label id="custom-label">
-                        //             <input className="hiddenRadio" type="radio" name="release" value="2" />
-                        //             <div className="showRadio"></div>
-                        //             <span>LGC</span>
-                        //         </label>
-                        //         <label id="custom-label">
-                        //             <input className="hiddenRadio" type="radio" name="release" value="3" />
-                        //             <div className="showRadio"></div>
-                        //             <span>ASC</span>
-                        //         </label>
-                        //     </div>
-                        // </div>
-                        // <div className="notice-write-row">
-                        //     <div className="left custom-flex-item custom-align-item"> <p>· Period</p> </div>
-                        //     <div className="right">
-                        //         <CustomDatePicker isDuration={true} />
-                        //     </div>
-                        // </div>
-                        // <div className="notice-write-row">
-                        //     <div className="left custom-flex-item custom-align-item"> <p>· Subject</p> </div>
-                        //     <div className="right"> <input type="text" className="notice-write-input"></input> </div>
-                        // </div>
-                        // <div className="notice-write-row">
-                        //     <div className="left custom-flex-item custom-align-item"> <p>· Detail</p> </div>
-                        //     <div className="right"> 
-                        //         {/* <input type="text" className="notice-write-input"></input>  */}
-                        //         <CKEditor
-                        //             editor={ ClassicEditor }
-                        //             data="<p>Hello from CKEditor 5!</p>"
-                        //             // config={editorConfig}
-                        //             onReady={ editor => {
-                        //                 console.log( 'Editor is ready to use!', editor );
-                        //             } }
-                        //             onChange={ ( event, editor ) => {
-                        //                 const data = editor.getData();
-                        //                 const dbTxt = encodeURIComponent(data)
-                        //                 setTxt(dbTxt)
-                        //                 console.log( { txt, data } );
-                        //             } }
-                        //             onBlur={ ( event, editor ) => {
-                        //                 console.log( 'Blur.', editor );
-                        //             } }
-                        //             onFocus={ ( event, editor ) => {
-                        //                 console.log( 'Focus.', editor );
-                        //             } }
-                        //         />
-                        //     </div>
-                        // </div>
-                        // <div className="notice-write-row">
-                        //     <div className="left custom-flex-item custom-align-item"> <p>· Attachments</p> <MoreIcon /> </div>
-                        //     <div className="right"> 
-                        //         <input type="text" className="notice-write-input notice-attach-input"></input> 
-                        //         <button className="file-delete-btn">Delete</button>
-                        //         <p className="attach-desc">Attached files can only be in PDF, HWP, Docx, xls, and PPT formats (Support up to 100MB)</p>
-                        //     </div>
-                        // </div>
-                        // <div className="notice-btn-row">
-                        //     <button className="notice-btn-white">Delete</button>
-                        //     <div>
-                        //         <button className="notice-btn-black">Cancel</button>
-                        //         <button className="notice-btn-red">Save</button>
-                        //     </div>
-                        // </div>
-                        // </>
+                        <Editor onClose={setIsWrite} period={true} data={detail} setData={setDetail} onSave={onSaveContent} />
                         :
                         <div className="notice-view-none">
                             <p>If you select a list, you can see the contents</p>
@@ -368,6 +338,11 @@ function NoticeSetting() {
                     }
                 </div>
             </div>
+            {
+                alertModal
+                &&
+                <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} btnTxt='Close' />
+            }
             </Style>
 
             <Zendesk />
