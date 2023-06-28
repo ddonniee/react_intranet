@@ -187,7 +187,7 @@ function Main() {
                             <MoreIcon />
                         </div>
                         <div className='list'>
-                            <Slider {...settings}>
+                            {/* <Slider {...settings}>
                                 {
                                     [17, 18, 19].map((list, i) => (
                                         <div key={i}>
@@ -209,7 +209,7 @@ function Main() {
                                         </div>
                                     ))
                                 }
-                            </Slider>
+                            </Slider> */}
                         </div>
                     </div>
                 </div>

@@ -147,10 +147,14 @@
         .notice-right {
             border: 1px solid $border-color-gery; 
             border-radius: 14px;
-            overflow: auto;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             height: 800px;
+
+            .editor-container {
+                border: none !important;
+            }
 
             /* 상세페이지 */
             .notice-view-top {
