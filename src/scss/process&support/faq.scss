@@ -54,8 +54,8 @@
 .faq-contents {
     display: flex; justify-content: space-between; 
 }
-.faq-right, .faq-left, .editor-wrapper {
-    width: 48%;
+.faq-right, .faq-left {
+    width: 48%; height: 800px;
 }
 .faq-category-lists p {
     margin: 0; font-weight: 600;
@@ -101,7 +101,12 @@
     line-height: 24px;
 }
 .faq-right {
-    border: 1px solid $border-color-gery; border-radius: 14px; height: 760px;
+    border-radius: 14px; height: 760px;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 800px;
 }
 .faq-right .ck-sticky-panel {
     display: none !important;
@@ -218,7 +223,7 @@ line-height: 24px; padding: 0 3px;
 }
 
 .faq-right {
-    overflow: auto; 
+    overflow: auto; width: 100%;
   }
   
   /* 스크롤바 스타일링 */

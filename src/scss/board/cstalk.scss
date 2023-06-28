@@ -180,9 +180,9 @@
 .cstalk-contents {
     display: flex; justify-content: space-between; 
 }
-.cstalk-right, .cstalk-left, 
+.cstalk-left, 
 .cstalk-contents > div:nth-child(2) {
-    width: 48%;
+    width: 48%; height: 800px;
 }
 .cstalk-category-lists p {
     margin: 0; font-weight: 600;
@@ -233,7 +233,7 @@
     }
 }
 .cstalk-right {
-    border: 1px solid $border-color-gery; border-radius: 14px; height: 800px; overflow: auto; width: 48%;
+    border-radius: 14px; height: 800px; overflow: auto; width: 100%;
 }
 .cstalk-right .ck-sticky-panel {
     display: none !important;

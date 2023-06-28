@@ -375,6 +375,14 @@ function Faq() {
         }
       }; 
         
+
+      useEffect(() => {
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => {
+          document.removeEventListener("mousedown", handleOutsideClick);
+        };
+      }, []);
+
     return (
         <>
         
@@ -446,6 +454,7 @@ function Faq() {
                     }
                     {/* <AgGrid data={boardData} column={column} paging={true} /> */}
                 </div>
+                <div className="editor-wrapper">
                 <div className="faq-right" >
                     <div className="faq-right-top">
                         <p>{detail.title}</p>
@@ -510,6 +519,7 @@ function Faq() {
                         </div>
                     </div>
                     <Zendesk />
+                </div>
                 </div>
             </div>
 

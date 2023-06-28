@@ -123,7 +123,7 @@ const Favorite = props => {
         console.log(path)
         // window.location.assign(process.env.REACT_APP_FRONT_URL+path)
     }
-    
+
     return (
         <>
             <div className="modal">
