@@ -342,7 +342,7 @@ input:focus {
 }
 .editor-container::-webkit-scrollbar {
     width: 8px;
-  }
+}
   
 .editor-container::-webkit-scrollbar-thumb {
     background-color: $border-color-gery;
@@ -356,7 +356,7 @@ input:focus {
 .editor-container { // Editor.js
     border-radius: 14px;
     height: 800px; 
-    overflow: auto; 
+    overflow: auto;
 
     .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused),
     .ck.ck-editor__main>.ck-editor__editable:not(.ck-blurred) {
