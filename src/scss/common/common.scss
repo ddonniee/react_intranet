@@ -242,6 +242,10 @@ body .modal {
     display: contents;
 }
 
+.custom-hidden {
+    visibility: hidden;
+}
+
 .custom-flex-item {
     display: flex;
 }
@@ -387,6 +391,10 @@ input:focus {
             }
 
             svg {
+                margin-left: 5px;
+            }
+
+            .file-more-btn {
                 margin-left: 5px;
             }
         }

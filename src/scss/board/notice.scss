@@ -81,7 +81,6 @@
                 .title {
                     display: flex;
                     align-items: center;
-                    justify-content: space-between;
                     font-weight: 600;
                     font-size: 16px;
                     line-height: 24px;
@@ -98,6 +97,7 @@
 
                 .title.title-del {
                     color: #ADADAD;
+                    justify-content: space-between;
                 }
 
                 .etc {
