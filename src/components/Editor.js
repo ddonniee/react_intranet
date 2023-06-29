@@ -20,7 +20,7 @@ import Alert from "./Alert";
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
  * @returns 
  */
-function Editor({ period, data, setData, range, onSave, onClose }) {
+function Editor({ period, data, setData, range, restore, onSave, onClose }) {
 
     const user = useContext(UserContext);
     const [content, setContent] = useState(data);
@@ -36,6 +36,17 @@ function Editor({ period, data, setData, range, onSave, onClose }) {
         // ],
         // 에디터 설정 커스터마이징시 활성화
     };
+
+    useEffect(() => {
+        let content = data;
+        setTimeout(() => {
+            setContent(content);
+        }, 10);
+
+        return () => {
+            setContent(null);
+        }
+    }, [data])
 
     const handleClickRadio = (e, num) => {
         console.log(num)
@@ -70,6 +81,7 @@ function Editor({ period, data, setData, range, onSave, onClose }) {
 
     return (
         <Style>
+        { content &&
         <div className="editor-container">
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
@@ -83,17 +95,17 @@ function Editor({ period, data, setData, range, onSave, onClose }) {
                 <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>
                 <div className="right radio-row custom-flex-item">
                 <label id="custom-label" onClick={(e)=>handleClickRadio(e,1)}>
-                    <input className="hiddenRadio" type="radio" name="release" value={range ? 1 : "ALL"} checked={data && range ? content.isPublic === 1 && true : data ? content.view === 'ALL' && true : false} />
+                    <input className="hiddenRadio" type="radio" name="release" value={range ? 1 : "ALL"} checked={data && range ? content?.isPublic === 1 && true : data ? content?.view === 'ALL' && true : false} />
                     <div className="showRadio"></div>
                     <span>All</span>
                 </label>
                 <label id="custom-label" onClick={(e)=>handleClickRadio(e,0)}>
-                    <input className="hiddenRadio" type="radio" name="release" value={range ? 0 : "LGC"} checked={data && range ? content.isPublic === 0 && true : data ? content.view === 'LGC' && true : false} />
+                    <input className="hiddenRadio" type="radio" name="release" value={range ? 0 : "LGC"} checked={data && range ? content?.isPublic === 0 && true : data ? content?.view === 'LGC' && true : false} />
                     <div className="showRadio"></div>
                     <span>{range ? 'Me' : 'LGC'}</span>
                 </label>
                 <label id="custom-label" onClick={(e)=>handleClickRadio(e,2)}>
-                    <input className="hiddenRadio" type="radio" name="release" value={range ? 2 : "ASC"} checked={data && range ? content.isPublic === 2 && true : data ? content.view === 'ASC' && true : false} />
+                    <input className="hiddenRadio" type="radio" name="release" value={range ? 2 : "ASC"} checked={data && range ? content?.isPublic === 2 && true : data ? content?.view === 'ASC' && true : false} />
                     <div className="showRadio"></div>
                     <span>{range ? 'Center' : 'ASC'}</span>
                 </label>
@@ -104,7 +116,7 @@ function Editor({ period, data, setData, range, onSave, onClose }) {
                 <div className="write-row">
                     <div className="left custom-flex-item custom-align-item"> <p>· Period</p> </div>
                     <div className="right">
-                        <CustomDatePicker isDuration={true} startName={'startName'} endName={'endName'} />
+                        <CustomDatePicker isDuration={true} startDate={content?.postStartDate} endDate={content?.postEndDate} startName='postStartDate' endName='postEndDate' />
                     </div>
                 </div>
             }
@@ -115,7 +127,7 @@ function Editor({ period, data, setData, range, onSave, onClose }) {
                     type="text" 
                     className="write-input" 
                     name="subject" 
-                    value={data && content.title}
+                    value={data && content?.title}
                     onChange={(e)=>{
                         let value = e.target.value;
                         setContent({
@@ -132,7 +144,7 @@ function Editor({ period, data, setData, range, onSave, onClose }) {
                     {/* <input type="text" className="write-input"></input>  */}
                     <CKEditor
                         editor={ ClassicEditor }
-                        data={data && content.content}
+                        data={data && content?.content}
                         // config={editorConfig}
                         onReady={ editor => {
                             console.log( 'Editor is ready to use!', editor );
@@ -171,10 +183,15 @@ function Editor({ period, data, setData, range, onSave, onClose }) {
             </div>
             <div className="btn-row">
                 <button className="btn-white">Delete</button>
-                <div>
-                    <button className="btn-black" onClick={() => onClose(false)}>Cancel</button>
-                    <button type="submit" className="btn-red" onClick={onSaveEditor}>Save</button>
-                </div>
+                {
+                    restore ?
+                    <button type="submit" className="btn-red" style={{width: "122px"}}>Restoration</button>
+                    :
+                    <div>
+                        <button className="btn-black" onClick={() => onClose(false)}>Cancel</button>
+                        <button type="submit" className="btn-red" onClick={onSaveEditor}>Save</button>
+                    </div>
+                }
             </div>
             {
                 alertModal
@@ -182,6 +199,7 @@ function Editor({ period, data, setData, range, onSave, onClose }) {
                 <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} btnTxt='Close' />
             }
         </div>
+        }
         </Style>
     )
 }

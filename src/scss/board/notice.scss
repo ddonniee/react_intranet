@@ -45,6 +45,10 @@
         }
     }
 
+    .notice-nav.notice-nav-lk {
+        width: 35%;
+    }
+
     /* 하단 리스트, 상세페이지(board), 작성페이지(setting) */
     .notice-content {
         display: flex; 
@@ -77,6 +81,7 @@
                 .title {
                     display: flex;
                     align-items: center;
+                    justify-content: space-between;
                     font-weight: 600;
                     font-size: 16px;
                     line-height: 24px;
@@ -91,6 +96,10 @@
                     }
                 }
 
+                .title.title-del {
+                    color: #ADADAD;
+                }
+
                 .etc {
                     display: flex;
                     justify-content: space-between;
@@ -99,6 +108,10 @@
                     line-height: 24px;
                     color: #5F5F5F;
                 }
+
+                .etc.etc-del {
+                    color: #ADADAD;
+                }
             }
 
             .notice-list:first-child {
@@ -106,7 +119,11 @@
             }
 
             .notice-list:hover {
-                background-color: $hover-color-pink;
+                background-color: $hover-color-pink; 
+            }
+
+            .notice-list.notice-del-list:hover {
+                background-color: #F0F0F0;
             }
         }
 

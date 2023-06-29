@@ -27,30 +27,31 @@ import { ReactComponent as CalendarIcon } from '../../assets/svgs/icon_calendar.
 function NoticeSetting() {
 
     /**
-     * 화면 권한
+     * 화면 접근 권한
      * 
-     * 본사 Staff : 조회만 가능
-     * 법인 Admin : 조회 & 작성
+     * 본사 staff    (LK)  : 조회만 가능
+     * 법인관리자    (SS)  : N/A
+     * 법인 admin    (SA)  : 조회 & 작성
+     * LGC 관리자    (LD)  : N/A
+     * LGC Engineer  (LE)  : N/A
+     * ASC 관리자    (AD)  : N/A
+     * ASC Engineer  (AE)  : N/A
      */
 
     // 로그인 유저 정보
     const user = useContext(UserContext);
     const [token, setToken] = useState('LGEKR');
     const [auth, setAuth] = useState({
-        isViewer : false,
-        isWriter : false,
-        isStaff : false,
+        isViewer : user.role === 'LK' || user.role === 'SA' ? true : false,
+        isWriter : user.role === 'SA' ? true : false,
+        isStaff : user.role === 'LK' ? true : false,
     })
 
     useEffect(() => {
       console.log('login user', user)
       let role = user.role;
 
-      if(role === 'LK') {
-        setAuth({ ...auth, isViewer : true, isStaff : true })
-      } else if (role === 'SA') {
-        setAuth({ ...auth, isViewer : true, isWriter : true })
-      } else {
+      if(!(role === 'LK' || role === 'SA')) { // !isViewer
         alert('No right to Access')
         document.location.href='/login';
       }
@@ -266,10 +267,8 @@ function NoticeSetting() {
             {/** auth 권한체크로 수정 필요 */}
             <Top auth={1} searchArea={false}/>
             {/** Search Nav */}
-            <div className="notice-nav">
-                {/* <div className="nav-left"> */}
-                {
-                    !auth.isStaff &&
+            <div className={`notice-nav ${auth.isStaff && 'notice-nav-lk'}`}>
+                { !auth.isStaff &&
                     <div className="notice-nav-box custom-flex-item custom-align-item">
                         <p>· Subsidiary</p>
                         <SelectBox options={subOptions} handleChange={handleSelectBox} />
@@ -284,7 +283,6 @@ function NoticeSetting() {
                     <input type="text" className="notice-nav-input" id="notice-nav-input"></input>
                     <button className="notice-nav-btn custom-flex-item custom-align-item" onClick={submitInput}> <SearchIcon /> </button>
                 </div>
-                {/* </div> */}
             </div>
 
             {/** Content Area */}
@@ -299,14 +297,18 @@ function NoticeSetting() {
                             boardData.length > 0 ? (
                                 boardData?.map((item, idx) => {
                                     return(
-                                        <li className="notice-list" key={generateRandomString(idx)} id={`list-item-${item.noticeId}`} onClick={(e)=>handleClickRow(e, item)}>
-                                            <div className="title">
+                                        <li className={`notice-list ${item.deleteAt && 'notice-del-list'}`} key={generateRandomString(idx)} 
+                                            id={`list${item.deleteAt && '-del'}-item-${item.noticeId}`} onClick={(e)=>handleClickRow(e, item)}>
+                                            <div className={`title ${item.deleteAt && 'title-del'}`}>
+                                                <span className="custom-flex-item custom-align-item">
                                                 {/** 게시기간 종료일이 현재 날짜 이전이면 확성기 아이콘 출력 */}
-                                                {item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null} 
-                                                {item.title.length > 90 ? (item.title).substr(0,90) + '...' : item.title} 
-                                                {item.new ? <NewIcon /> : null}
+                                                { item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null } 
+                                                { item.title.length > 90 ? (item.title).substr(0,90) + '...' : item.title } 
+                                                { item.new ? <NewIcon /> : null }
+                                                </span>
+                                                { item.deleteAt && <span>{moment(item.deleteAt).format('YY.M.DD')}(D)</span> }
                                             </div>
-                                            <div className="etc">
+                                            <div className={`etc ${item.deleteAt && 'etc-del'}`}>
                                                 <p>{item.writerName}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
                                             </div>
                                         </li>
@@ -359,5 +361,14 @@ const Style = styled.div`
     }
     #list-item-${props => props.selectId} .title {
         color : #BB0841;
+    }
+    #list-del-item-${props => props.selectId} {
+        background : #F0F0F0;
+    }
+    #list-del-item-${props => props.selectId} .title-del {
+        color : #777;
+    }
+    #list-del-item-${props => props.selectId} .etc-del {
+        color : #777777;
     }
 `
