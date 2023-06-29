@@ -20,13 +20,15 @@ import Alert from "./Alert";
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
  * @returns 
  */
-function Editor({ period, data, setData, range, restore, onSave, onClose }) {
+function Editor({ period, data, setData, range, restore, onSave, onClose, onDelete, onRestore, isWriter }) {
 
     const user = useContext(UserContext);
     const [content, setContent] = useState(data);
     const [alertModal, setAlertModal] = useState(false)
     const [alertTxt, setAlertTxt] = useState('')
     // const [dbtxt, setDbtxt] = useEffect
+    const [startDate, setStartDate] = useState();
+    const [endDate, setEndDate] = useState();
     
     const editorConfig = {
         // plugins: [UploadAdapter], 
@@ -37,32 +39,15 @@ function Editor({ period, data, setData, range, restore, onSave, onClose }) {
         // 에디터 설정 커스터마이징시 활성화
     };
 
-    // useEffect(() => {
-    //     let content = data;
-    //     setTimeout(() => {
-    //         setContent(content);
-    //     }, 10);
-
-    //     return () => {
-    //         setContent();
-    //     }
-    // }, [data])
-
     const handleClickRadio = (e) => {
-        console.log(e.target.value)
         let value = e.target.value;
+        if(!isWriter) return false;
         
-        if(data) {
-            setContent({ ...content, view : value })
-        }
-        // if(range) {
-        //     setContent({ ...content, isPublic : value })
-        // } else {
-        // }
+        setContent({ ...content, view : value })
     }
 
     const onSaveEditor = () => {
-        console.log('save data >>>>>>', content)
+        console.log('save data(editor) >>>>>>', content)
 
         if (!content.title || !content.content || (range ? !content.isPublic : !content.view)) {
             setAlertTxt('Please fill out all the information.')
@@ -71,9 +56,21 @@ function Editor({ period, data, setData, range, restore, onSave, onClose }) {
         } else {
             console.log('else')
             setData(content)
-            setContent()
+            // setContent()
         }
     }
+
+    useEffect(() => {
+        let start = moment(startDate).format('YYYY-MM-DD');
+        console.log('startDate', start)
+        setContent({ ...content, postStartDate : start })
+    }, [startDate])
+
+    useEffect(() => {
+        let end = moment(endDate).format('YYYY-MM-DD');
+        console.log('endDate', end)
+        setContent({ ...content, postEndDate : end })
+    }, [endDate])
 
     useEffect(()=>{
         if(!alertModal) {
@@ -102,17 +99,20 @@ function Editor({ period, data, setData, range, restore, onSave, onClose }) {
                 <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>
                 <div className="right radio-row custom-flex-item">
                 <label id="custom-label" onClick={handleClickRadio}>
-                    <input className="hiddenRadio" type="radio" name={range ? 'isPublic' : 'view'} value={range ? 1 : "ALL"} defaultChecked={data && range ? content?.isPublic === 1 && true : data ? content?.view === 'ALL' && true : false} />
+                    <input className="hiddenRadio" type="radio" name={range ? 'isPublic' : 'view'} value={range ? 1 : "ALL"} 
+                        defaultChecked={data && range ? content?.isPublic === 1 && true : data ? content?.view === 'ALL' && true : false} />
                     <div className="showRadio"></div>
                     <span>All</span>
                 </label>
                 <label id="custom-label" onClick={handleClickRadio}>
-                    <input className="hiddenRadio" type="radio" name={range ? 'isPublic' : 'view'} value={range ? 0 : "LGC"} defaultChecked={data && range ? content?.isPublic === 0 && true : data ? content?.view === 'LGC' && true : false} />
+                    <input className="hiddenRadio" type="radio" name={range ? 'isPublic' : 'view'} value={range ? 0 : "LGC"} 
+                        defaultChecked={data && range ? content?.isPublic === 0 && true : data ? content?.view === 'LGC' && true : false} />
                     <div className="showRadio"></div>
                     <span>{range ? 'Me' : 'LGC'}</span>
                 </label>
                 <label id="custom-label" onClick={handleClickRadio}>
-                    <input className="hiddenRadio" type="radio" name={range ? 'isPublic' : 'view'} value={range ? 2 : "ASC"} defaultChecked={data && range ? content?.isPublic === 2 && true : data ? content?.view === 'ASC' && true : false} />
+                    <input className="hiddenRadio" type="radio" name={range ? 'isPublic' : 'view'} value={range ? 2 : "ASC"} 
+                        defaultChecked={data && range ? content?.isPublic === 2 && true : data ? content?.view === 'ASC' && true : false} />
                     <div className="showRadio"></div>
                     <span>{range ? 'Center' : 'ASC'}</span>
                 </label>
@@ -123,7 +123,8 @@ function Editor({ period, data, setData, range, restore, onSave, onClose }) {
                 <div className="write-row">
                     <div className="left custom-flex-item custom-align-item"> <p>· Period</p> </div>
                     <div className="right">
-                        <CustomDatePicker isDuration={true} startDate={content?.postStartDate} endDate={content?.postEndDate} startName='postStartDate' endName='postEndDate' />
+                        <CustomDatePicker isDuration={true} startDate={content?.postStartDate} endDate={content?.postEndDate} startName='postStartDate' endName='postEndDate'
+                            setStartDate={setStartDate} setEndDate={setEndDate} />
                     </div>
                 </div>
             }
@@ -134,6 +135,7 @@ function Editor({ period, data, setData, range, restore, onSave, onClose }) {
                     type="text" 
                     className="write-input" 
                     // name="title" 
+                    readOnly={!isWriter}
                     defaultValue={data && content?.title}
                     onChange={(e)=>{
                         let value = e.target.value;
@@ -152,6 +154,7 @@ function Editor({ period, data, setData, range, restore, onSave, onClose }) {
                     <CKEditor
                         editor={ ClassicEditor }
                         // name="content"
+                        readOnly={!isWriter}
                         data={data && content?.content}
                         // config={editorConfig}
                         onReady={ editor => {
@@ -190,16 +193,16 @@ function Editor({ period, data, setData, range, restore, onSave, onClose }) {
                 </div>
             </div>
             <div className="btn-row">
-                <button className={`btn-white ${!data && 'custom-hidden'}`} >Delete</button>
-                {
-                    restore ?
-                    <button type="submit" className="btn-red" style={{width: "122px"}}>Restoration</button>
-                    :
-                    <div>
-                        <button className="btn-black" onClick={() => onClose(false)}>Cancel</button>
-                        <button type="submit" className="btn-red" onClick={onSaveEditor}>Save</button>
-                    </div>
-                }
+                <button className={`btn-white ${(!data || !isWriter || content?.deleteAt) && 'custom-hidden'}`} onClick={onDelete}>Delete</button>
+                <div>
+                    <button className="btn-black" onClick={() => onClose(false)}>Cancel</button>
+                    { (isWriter && !content?.deleteAt) ? 
+                        <button type="submit" className="btn-red" onClick={onSaveEditor}>Save</button> 
+                        : (isWriter && content?.deleteAt) ? 
+                        <button type="submit" className="btn-red" style={{width: "122px"}} onClick={onRestore}>Restoration</button>
+                        : null 
+                    }
+                </div>
             </div>
             {
                 alertModal
