@@ -42,6 +42,7 @@ function CStalk() {
      */
 
     const user = useContext(UserContext);
+    let now = moment().subtract(24,'hours').format('YYYY-MM-DD HH:mm:ss');
 
     const [auth, setAuth] = useState({
       isViewer : false,
@@ -139,14 +140,12 @@ function CStalk() {
 
     const handleSelectBox = (event,params) => {
         console.log('handleSelectBox',event,params)
-        // const { data } = params.node;
-        const { checked } = event;
+        const viewer = event.value;
 
-        if (checked) {
-            setBoardData([...boardData, checked]);
-          } else {
-            setBoardData(boardData.filter(item => item !== checked));
-          }
+        setReqData({
+            ...reqData,
+            view : viewer
+        })
     }
 
     const [alertModal, setAlertModal] = useState(false)
@@ -180,11 +179,9 @@ function CStalk() {
         })
     }
     const handleClickRow = (e, item) => {
-        console.log(item)
         if(isWrite || isModify) {
             onConfirmHandler(1)
-                setAlertTxt("")
-                return false
+            return false
         }
         getDetail(item)
 
@@ -265,6 +262,16 @@ function CStalk() {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: 'Any content input',
+                onConfirm :  ()=>setAlertModal(false),
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+            })
+        }
+        // success alert 
+        else if(num===6) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Success',
                 onConfirm :  ()=>setAlertModal(false),
                 isDoubleBtn : false,
                 btnTxt : 'Close',
@@ -393,9 +400,10 @@ function CStalk() {
             
             if(resData.code===200) {
                 let data = resData.result
-                data.map(d=>
-                    d.openSubComment = false,
-                
+                data.map(d=>{
+                    d.openSubComment = false
+                    d.isInput = false
+                }
                 )
                 setCommentList(data)
                 console.log('comment',data)
@@ -407,6 +415,9 @@ function CStalk() {
             console.log('error',error)
         })
     }
+    useEffect(()=>{
+        console.log('comment lenght',commentList)
+    },[commentList])
     const clearState =()=>{
         getList();
         setSelctedList({
@@ -427,6 +438,12 @@ function CStalk() {
             reactionState : '',
             writerName : '',
         })
+    }
+    const openCommentInput = (idx) =>{
+        console.log('openCommentInput')
+        let copylist = [...commentList];
+        copylist[idx].isInput = !copylist[idx].isInput
+        setCommentList(copylist)
     }
     const openSubcomment = (e,idx,id) =>{
         let copyList = [...commentList]
@@ -545,22 +562,30 @@ function CStalk() {
     }
 
     const [comment, setComment] = useState('') 
+    const [subComment, setSubComment] = useState('')  
 
     const onAddComment =(num, id) => {
         // num = 1 댓글, num = 2 대댓글
 
-        if(comment==='') {
+        console.log(num,id,'comment ')
+        if(num===1 && comment==='') {
+            onConfirmHandler(5)
+            return false
+        }else if(num===2 &&subComment==='') {
             onConfirmHandler(5)
             return false
         }
+
         const formData = new FormData();
 
         formData.append('csTalkId', selectedList.csTalkId);
-        formData.append('content', comment);
+        if(num===1) {
+            formData.append('content', comment);
+        }
         if(num===2) {
             formData.append('commentId', id);
+            formData.append('content', subComment);
         }
-        console.log(Object.fromEntries(formData),';;;')
             var config = {
                 method: 'post',
                 maxBodyLength: Infinity,
@@ -571,11 +596,13 @@ function CStalk() {
                 };
             axiosInstance2('/csTalk/commentInsert', config)
             .then(function (response){
+                
                 let resData = response.data;
+                console.log('comment',resData)
                 if(resData.code===200) {
                     console.log(resData,'res')
-                    setAlertTxt("You've added comment.")
-                    setComment('')
+                    onConfirmHandler(6)
+                    num === 1 ? setComment('') : setSubComment('')
                     getDetail(id);
                     getComment()
                 }else {
@@ -618,10 +645,12 @@ function CStalk() {
         })                  
     }
     const onDeletePost = () => {
+
+       
         const formData = new FormData();
         
         formData.append('csTalkId',selectedList.csTalkId)
-
+        console.log(Object.fromEntries(formData),'on delete post')
         var config = {
             method: 'post',
             maxBodyLength: Infinity,
@@ -657,7 +686,7 @@ function CStalk() {
             method: 'post',
             maxBodyLength: Infinity,
             headers: { 
-               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_STAFF,
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
             },
             data : formData
             };
@@ -677,46 +706,45 @@ function CStalk() {
     }
     useLayoutEffect(()=>{
         getList();   
-    },[reqData])
+    },[reqData.page])
 
+   
     useEffect(()=>{
         console.log('boardData.length')
        if(boardData.length!==0) {
         console.log('== list ==',boardData)
        }
        let max = boardLength;
-       boardData.map((item) =>{
-        if(item.rn>max) {
-            console.log(item.rn)
-            max = item.rn;
-        }
-        setBoardLength(max)
-    })
+       if(reqData.page===1) {
+        max = 0
+        boardData.map((item) =>{
+            if(item.rn>max) {
+                console.log(item.rn)
+                max = item.rn;
+            }
+            setBoardLength(max)
+         })
+       }
+       
     },[boardData])
 
+    const [fileStore, setFileStore] = useState({})
     useEffect(()=>{
-        // const jsonString = JSON.stringify(selectedList.attachments);
-        // const obj = Object.entries(jsonString)
-        // let type = (typeof(obj))
-        // console.log(obj,'obj')
-        // if(type!=='object') {
-          
-        //     setSelctedList({
-        //         ...selectedList,
-        //         attachments: obj
-        //     });
-        // }
-      
-        // else {
-        //     console.log(selectedList)
-        //     // console.log(selectedList.attachments.fileName)
-        // }
 
+        // if(selectedList.attachments!==null && type==='string') {
+        //     const jsonString = JSON.parse(selectedList.attachments);
+        //     console.log(typeof(jsonString),'obj')
+        //     setFileStore({...jsonString})
+        // }
         getComment();
         setComment('');
+        setCommentPage(1)
     },[selectedList])
 
 
+    useEffect(()=>{
+        getComment()
+    },[commentPage])
     
     return (
         <div className="notice-container cstalk-container">
@@ -739,12 +767,12 @@ function CStalk() {
                 
                 <div className="custom-flex-item custom-align-item">
                     <p>· View</p>
-                    <SelectBox options={centerOptions} handleChange={handleSelectBox} />
+                    <SelectBox options={centerOptions} handleChange={handleSelectBox} defaultValue={centerOptions[1]}/>
                 </div>
                 <div className="custom-flex-item custom-align-item">
                     <p>· Search</p>
-                    <input type="text" className="notice-nav-input"></input>
-                    <div className="search-wrapper"><img src={Search} alt='search-btn'/></div>
+                    <input type="text" className="notice-nav-input" onChange={(e)=>setReqData({...reqData, search:e.target.value})}></input>
+                    <div className="search-wrapper" onClick={getList}><img src={Search} alt='search-btn'/></div>
                 </div>
                 {/* </div> */}
             </div>
@@ -762,7 +790,7 @@ function CStalk() {
                                 return(
                                     <li  key={generateRandomString(idx)} id={`list-item-${item.num}`} onClick={(e)=>handleClickRow(e,item.csTalkId)}>
                                         <div className="cstalk-subject custom-flex-item custom-txt-align">
-                                            <span className="custom-flex-item">{item.level===2 && `[RE]  `}{item.subject}<span className="custom-stress-txt">{item.commentCount!==0 && `( ${item.commentCount} )`}</span><img src={item.createdAt!=='' ? New : null} /></span>
+                                            <span className="custom-flex-item">{item.level===2 && `[RE]  `}{item.subject}<span className="custom-stress-txt">{item.commentCount!==0 && `( ${item.commentCount} )`}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /></span>
                                             {/* <span>{item.writerName}</span> */}
                                         </div>
                                         <div className="etc">
@@ -787,7 +815,7 @@ function CStalk() {
                         />
                     }
                     {/* <AgGrid data={boardData} column={column} paging={true} /> */}
-                    <div className="write-btn" onClick={()=>setIsWrite(!isWrite)}><span>Write</span></div>
+                    <div className="write-btn" onClick={()=>isWrite ? onConfirmHandler(1) : setIsWrite(!isWrite)}><span>Write</span></div>
                 </div>
                 {
                     isWrite
@@ -864,13 +892,28 @@ function CStalk() {
                                                         <span>{moment(comment.createdAt).format('YYYY-MM-DD')}</span>
                                                     </div>
                                                     <span className="custom-flex-item">
-                                                        <p onClick={()=>onConfirmHandler(4,comment.commentId)}>Delete</p><p>Answer</p>
+                                                        {
+                                                            comment.writerID===user.id &&
+                                                            <p onClick={()=>onConfirmHandler(4,comment.commentId)}>Delete</p>
+                                                        }
+                                                         <p onClick={()=>openCommentInput(idx)}>Answer</p>
                                                     </span>
                                                 </div>
                                                 <div className="comment-middle">{comment.content?.slice(0,250)}{comment.content?.length>250 && <span className="custom-stress-txt">...More</span>}</div>
-                                                <div className={comment.openSubComment ? "comment-bottom" : "comment-bottom custom-flex-item custom-align-self"}>
-                                                    {/* {comment.subComment?.map((c,idx)=>{ */}
-                                                        {/* return ( */}
+                                                <div className={comment.openSubComment ? "comment-bottom" : "comment-bottom "}>
+                                                        {
+                                                        comment.isInput &&
+                                                        <div className="cstalk-comment-wrapper sub-comment-wrapper">
+                                                        <div className="custom-justify-between">
+                                                            <div className="comment-input">
+                                                                <span>Writer : {user.name}</span>
+                                                                <textarea value={subComment} onChange={(e)=>setSubComment(e.target.value)}/>
+                                                            </div>
+                                                            <button onClick={()=>onAddComment(2, comment.commentId)}>Write</button>
+                                                        </div>
+                                                        </div>
+                                                         }
+
                                                             {
                                                                 comment.subComment.length!==0 &&
                                                                 <div className="custom-flex-item" onClick={(e)=>openSubcomment(e,idx,comment.csTalkId)}>
@@ -920,8 +963,8 @@ function CStalk() {
                                 commentList.length!==0 &&
                                 <Pagination 
                                 activePage={commentPage} // 현재 페이지
-                                itemsCountPerPage={itemsPerPage} // 한 페이지 당 보여줄 아이템 수
-                                totalItemsCount={commentList? commentList.length: 0} // 총 아이템 수
+                                itemsCountPerPage={5} // 한 페이지 당 보여줄 아이템 수
+                                totalItemsCount={selectedList ? selectedList.commentCount : 0} // 총 아이템 수
                                 pageRangeDisplayed={5} // paginator의 페이지 범위
                                 prevPageText={"‹"} // "이전"을 나타낼 텍스트
                                 nextPageText={"›"} // "다음"을 나타낼 텍스트

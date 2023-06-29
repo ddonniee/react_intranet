@@ -3,7 +3,7 @@ import Select from 'react-select';
 
 const SelectBox = (props) => {
     
-    const {options, handleChange} = props;
+    const {options, handleChange, defaultValue} = props;
 
     console.log('options',options)
     const customStyles = {
@@ -25,7 +25,7 @@ const SelectBox = (props) => {
             options={options}
             onChange={handleChange}
             styles={customStyles}
-            // defaultValue={options[0]}
+            defaultValue={ defaultValue ? defaultValue : options[0]}
         />
     )
 }

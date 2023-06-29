@@ -30,6 +30,23 @@
   .navigation-container.closed {
     left: -257px;
   }
+  .nav-middle {
+     padding-top: 20px;
+    .bookmark-list{
+     
+      & > li {
+        width: 201px;  padding: 20px 15px; border-radius: 4px; border: 1px solid #CCC;
+       background: #FBFBFB; margin-bottom: 10px;
+      }
+      & > li > div {
+        font-size: 16px; font-weight: 600; letter-spacing: 0.4px;
+      }
+      & > li ul li {
+        font-size: 12px; font-weight: 400; letter-spacing: 0.12px;  padding: 10px 0 0 8px;
+      }
+    }
+    
+  }
   .nav-bottom {
     margin-top: auto; background-color: #F0F0F0;
     width: 84px; height: 28px; border-radius: 100px;

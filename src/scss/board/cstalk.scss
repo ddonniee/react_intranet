@@ -103,32 +103,37 @@
 .cstalk-comment-wrapper {
     background-color: #F2F2F2;min-height: 103px;
     padding: 16px; height: fit-content;
+    & > span:first-child {
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 18px;
+    }
+    & > div {
+        padding: 5px 0;
+        display: flex;
+    }
+    textarea {
+        flex-grow: 2;
+        border: none;
+        padding: 10px;
+    }
+    textarea:focus {
+        outline: none;
+    }button {
+        width: 69px;
+        // height: 44px;
+        background: #323232;
+        border-radius: 5px;
+        padding-left: 1px;
+        color: white;
+        border: none;
+    }
 }
-.cstalk-comment-wrapper > span:first-child {
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 18px;
-}
-.cstalk-comment-wrapper > div {
-    padding: 5px 0;
-    display: flex;
-}
-.cstalk-comment-wrapper textarea {
-    flex-grow: 2;
-    border: none;
-    padding: 10px;
-}
-.cstalk-comment-wrapper textarea:focus {
-    outline: none;
-}
-.cstalk-comment-wrapper button {
-    width: 69px;
-    // height: 44px;
-    background: #323232;
-    border-radius: 5px;
-    padding-left: 1px;
-    color: white;
-    border: none;
+.sub-comment-wrapper {
+    background-color: transparent; padding: 10px 0;margin-top: 5px; display: block;
+    button {
+        background-color: white; color: #323232;
+    }
 }
 .cstalk-comment-list {
     padding : 10px 20px; background-color: $board-color-grey;
@@ -267,34 +272,39 @@
 .cstalk-attach-down img {
     padding: 0 5px;
 }
-.cstalk-comment-wrapper {
-    background-color: #F2F2F2;min-height: 103px;
-    padding: 16px; height: fit-content;
-    & > span:first-child {
-        font-weight: 600;
-        font-size: 15px;
-        line-height: 18px;
-    }
-    textarea {
-        flex-grow: 2;
-        border: none;
-        padding: 10px;
-    }
-    & > div {
-        padding: 5px 0;
-        display: flex;
-    }
-    span p:first-child {
-        padding: 0 6px;
-    }
-    textarea:focus {
-        outline: none;
-    }
-    .cstalk-comment-list {
-        padding : 10px 20px; background-color: $board-color-grey;
+// .cstalk-comment-wrapper {
+//     background-color: #F2F2F2;min-height: 103px;
+//     padding: 16px; height: fit-content;
+//     & > span:first-child {
+//         font-weight: 600;
+//         font-size: 15px;
+//         line-height: 18px;
+//     }
+//     textarea {
+//         flex-grow: 2;
+//         border: none;
+//         padding: 10px;
+//     }
+//     & > div {
+//         padding: 5px 0;
+//         display: flex;
+//     }
+//     span p:first-child {
+//         padding: 0 6px;
+//     }
+//     textarea:focus {
+//         outline: none;
+//     }
+//     .cstalk-comment-list {
+//         padding : 10px 20px; background-color: $board-color-grey;
     
-    }
+//     }
     
+    
+// }
+.comment-middle {
+    color: #626262; text-overflow: ellipsis; font-size: 14px;  font-weight: 400;
+   line-height: normal;
 }
 .toggle-sub-btn {
     padding: 0 3px;
@@ -315,7 +325,7 @@
     li {
         padding: 10px; margin-bottom: 10px;  background-color: white;
     }
-
+  
 }
 .comment-input {
     display: flex;
@@ -335,11 +345,9 @@
     line-height: 16px; padding-left: 10px;
 }
 .cstalk-comment-list > ul > li {
-    padding: 10px 0;
+    padding: 10px 0; border-bottom: 1px solid $line-color-grey;
 }
-.cstalk-comment-list > ul > li:not(:last-child) {
-    border-bottom: 1px solid $line-color-grey;
-}
+
 .cstalk-comment-list > ul > li span:first-child {
     font-weight: 600;
     font-size: 14px;
@@ -386,13 +394,20 @@ line-height: 24px; padding: 0 3px;
   .cstalk-right::-webkit-scrollbar-track {
     background-color: #f1f1f1;
   }  
-.cstalk-contents .pagination li{
-    margin: 0 5px;
-}
-.cstalk-contents .pagination li a,
-.cstalk-contents .pagination  .disabled {
+.cstalk-contents {
+    .pagination li{
+        margin: 0 5px;
+    }
+    .pagination li a,
+    .pagination  .disabled {
     color: $chart-color-grey;
 }
+
+    .cstalk-subject span {
+        padding-left: 5px;
+    }
+}
+
 .cstalk-contents .pagination .active {
     background-color: white !important; border: 2px solid $primary-color-red; border-radius: 6px;
 }
