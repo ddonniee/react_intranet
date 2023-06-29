@@ -48,13 +48,12 @@ function NoticeSetting() {
     })
 
     useEffect(() => {
-      console.log('login user', user)
-      let role = user.role;
+        console.log('login user', user)
 
-      if(!(role === 'LK' || role === 'SA')) { // !isViewer
-        alert('No right to Access')
-        document.location.href='/login';
-      }
+        if(!auth.isViewer) {
+            alert('No right to Access')
+            document.location.href='/login';
+        }
     }, [])
 
     const USER_CORP_CODE = 'LGEAI' // 로그인유저 법인코드
@@ -64,7 +63,8 @@ function NoticeSetting() {
         maxBodyLength: Infinity,
         headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            // 'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
         }
     }
 
@@ -106,7 +106,9 @@ function NoticeSetting() {
     const [detail, setDetail] = useState(); // notice 상세
     const [isWrite, setIsWrite] = useState(false); // 새 글 여부
     const [writeData, setWriteData] = useState(); // 새 글 항목
-    const [isModify, setIsModify] = useState(); // 수정 여부
+    const [isModify, setIsModify] = useState(false); // 수정 여부
+
+    console.log('isWrite', isWrite, ' / isModify', isModify)
 
     const isWithin7Days = (date) => { // 새 게시글(등록일 기준 7일 이내) 확인
         const baseDate = new Date(moment(date).format('YYYY-MM-DD'));
@@ -148,14 +150,13 @@ function NoticeSetting() {
         // 법인목록 조회 API
         axiosInstance.post('/corporation/list').then(res => {
             const data = res?.data.result;
-            // console.log('법인 기존 목록 ---->', data)
 
             const newArray = data.map((obj, index) => ({
                 value: obj.corporationCode,
                 label: obj.corporationCode,
                 group: 'corporationCode'
             }));
-            console.log('법인 목록 ---->', newArray)
+            // console.log('법인 목록 ---->', newArray)
 
             setSubOptions(newArray);
             
@@ -249,25 +250,108 @@ function NoticeSetting() {
                       formData.append(key, writeData[key]);
                     }
                 }
-
                 console.log('save data >>>>>>', Object.fromEntries(formData))
         
                 // CS 공지사항 등록 API
-                // axiosJsonInstance.post('/notice/csInsert', formData, config).then(res => {
-                //     let resData = res.data;
+                axiosInstance2.post('/notice/csInsert', formData, config).then(res => {
+                    let resData = res.data;
 
-                //     if(resData.code == 200) {
-                //         console.log('res', resData)
-                //         setAlertTxt("You've inserted new post.")
-                //         setIsWrite(false)
-                //         setDetail()
-                //     } else {
-                //         console.log('res', resData.msg);
-                //     }
-                // }).catch(error => {
-                //     console.log('error', error)
-                // })  
+                    if(resData.code == 200) {
+                        console.log('res', resData)
+                        setAlertTxt("You've inserted new post.")
+                        setIsWrite(false)
+                        setIsModify(false)
+                        setDetail()
+                        getList()
+                    } else {
+                        console.log('res', resData.msg);
+                    }
+                }).catch(error => {
+                    console.log('error', error)
+                })  
+            } else if(isModify) {
+                const formData = new FormData();
+                const keysToSave = ['noticeId', 'view', 'title', 'content', 'postStartDate', 'postEndDate'];
+                
+                keysToSave.forEach((key) => {
+                    if (writeData.hasOwnProperty(key)) {
+                      formData.append(key, writeData[key]);
+                    }
+                });
+                console.log('modify data >>>>>>', Object.fromEntries(formData))
+        
+                // CS 공지사항 수정 API
+                axiosInstance2.post('/notice/csUpdate', formData, config).then(res => {
+                    let resData = res.data;
+
+                    if(resData.code == 200) {
+                        console.log('res', resData)
+                        setAlertTxt("You've inserted modified post.")
+                        setIsWrite(false)
+                        setIsModify(false)
+                        setDetail()
+                        getList()
+                    } else {
+                        console.log('res', resData);
+                    }
+                }).catch(error => {
+                    console.log('error', error)
+                })
             }
+        }
+    }
+
+    const onDeleteContent = () => {
+        let confirm = window.confirm('Are you sure you want to delete it?');
+
+        if(confirm) {
+            const formData = new FormData();
+            formData.append('noticeId', detail?.noticeId);
+
+            // CS 공지사항 삭제 API
+            axiosInstance2.post('/notice/csDelete', formData, config).then(res => {
+                let resData = res.data;
+
+                if(resData.code == 200) {
+                    console.log('res', resData)
+                    setAlertTxt("The post has been deleted.")
+                    setIsWrite(false)
+                    setIsModify(false)
+                    setDetail()
+                    getList()
+                } else {
+                    console.log('res', resData.msg);
+                }
+            }).catch(error => {
+                console.log('error', error)
+            })
+        }
+    }
+
+    const onRestoreContent = () => {
+        let confirm = window.confirm('Are you sure you want to restore it?');
+
+        if(confirm) {
+            const formData = new FormData();
+            formData.append('noticeId', detail?.noticeId);
+
+            // CS 공지사항 복구 API
+            axiosInstance2.post('/notice/csRestore', formData, config).then(res => {
+                let resData = res.data;
+
+                if(resData.code == 200) {
+                    console.log('res', resData)
+                    setAlertTxt("The post has been restored.")
+                    setIsWrite(false)
+                    setIsModify(false)
+                    setDetail()
+                    getList()
+                } else {
+                    console.log('res', resData.msg);
+                }
+            }).catch(error => {
+                console.log('error', error)
+            })
         }
     }
 
@@ -324,18 +408,18 @@ function NoticeSetting() {
                             boardData.length > 0 ? (
                                 boardData?.map((item, idx) => {
                                     return(
-                                        <li className={`notice-list ${item.deleteAt && 'notice-del-list'}`} key={generateRandomString(idx)} 
-                                            id={`list${item.deleteAt && '-del'}-item-${item.noticeId}`} onClick={(e) => handleClickRow(e, item)}>
-                                            <div className={`title ${item.deleteAt && 'title-del'}`}>
+                                        <li className={`notice-list ${item.deleteAt ? 'notice-del-list' : ''}`} key={generateRandomString(idx)} 
+                                            id={`list${item.deleteAt ? '-del' : ''}-item${isModify ? `-${item.noticeId}` : ''}`} onClick={(e) => handleClickRow(e, item)}>
+                                            <div className={`title ${item.deleteAt ? 'title-del' : ''}`}>
                                                 <span className="custom-flex-item custom-align-item">
                                                 {/** 게시기간 종료일이 현재 날짜 이전이면 확성기 아이콘 출력 */}
-                                                { item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null } 
+                                                { (!item.deleteAt && item.postEndDate) && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null } 
                                                 { item.title.length > 90 ? (item.title).substr(0,90) + '...' : item.title } 
-                                                { item.new ? <NewIcon /> : null }
+                                                { (!item.deleteAt && item.new) ? <NewIcon /> : null }
                                                 </span>
                                                 { item.deleteAt && <span>{moment(item.deleteAt).format('YY.M.DD')}(D)</span> }
                                             </div>
-                                            <div className={`etc ${item.deleteAt && 'etc-del'}`}>
+                                            <div className={`etc ${item.deleteAt ? 'etc-del' : ''}`}>
                                                 <p>{item.writerName}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
                                             </div>
                                         </li>
@@ -352,14 +436,18 @@ function NoticeSetting() {
                         boardData &&
                         <Paging pageInfo={pageInfo} setPageInfo={setPageInfo} searchData={searchData} setSearchData={setSearchData} />
                     }
-                    <div className="notice-bottom">
-                        <button className="notice-btn-circle" onClick={() => handleClickWrite()}>Write</button>
-                    </div>
+                    {
+                        auth.isWriter &&
+                        <div className="notice-bottom">
+                            <button className="notice-btn-circle" onClick={() => handleClickWrite()}>Write</button>
+                        </div>
+                    }
                 </div>
                 <div className="notice-right">
                     {
                         isWrite || isModify ?
-                        <Editor onClose={isWrite ? setIsWrite : setIsModify} period={true} data={detail} setData={isWrite ? setWriteData : setDetail} />
+                        <Editor onClose={isWrite ? setIsWrite : setIsModify} period={true} data={detail} setData={setWriteData} isWriter={auth.isWriter}
+                            onDelete={onDeleteContent} onRestore={onRestoreContent} />
                         :
                         <div className="notice-view-none">
                             <p>If you select a list, you can see the contents</p>

@@ -12,12 +12,15 @@ function App({isMobile}) {
 
   const [user, setUser] = useState({
     id: 'ID_LK',
-    name : 'LGEKR 본사스태프(한국고객가치혁실ㄴ)',
+    name : 'LGEKR 본사스태프(한국고객가치혁신)',
     role : 'LK',
     branch :  "LGEAI_BRANCH_7650T",
     center :  "LGEAI009062C",
-    subsidiary : "LGEKR"
+    subsidiary : "LGEKR",
     // token : sessionStorage.getItem('UserInfo'); // 직급에 따라 토큰 값 받아오기
+    // id: 'ID_SA',
+    // name : '법인 Admin',
+    // role : 'SA',
   })
 
   let loginCheck = 1;

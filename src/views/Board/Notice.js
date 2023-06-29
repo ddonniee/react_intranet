@@ -23,34 +23,31 @@ import { ReactComponent as DownloadIcon } from '../../assets/svgs/icon_download.
 function Notice() {
 
     /**
-     * 화면 권한
+     * 화면 접근 권한
      * 
-     * 본사 Staff : 전체 내용 표시
-     * 법인 관리자 : 소속 법인 내용만 표시
-     * LGC 관리자/엔지니어 : LGC 고정
-     * ASC 관리자/엔지니어 : ASC 고정
+     * 본사 staff    (LK)  : 전체 내용 표시
+     * 법인관리자    (SS)  : 소속 법인 내용만 표시
+     * 법인 admin    (SA)  : N/A
+     * LGC 관리자    (LD)  : LGC 고정
+     * LGC Engineer  (LE)  : LGC 고정
+     * ASC 관리자    (AD)  : ASC 고정
+     * ASC Engineer  (AE)  : ASC 고정
      */
 
     // 로그인 유저 정보
     const user = useContext(UserContext);
     const [token, setToken] = useState('');
     const [auth, setAuth] = useState({
-        isViewer : false,
-        isWriter : false,
+        isViewer : user.role === 'SA' ? false : true,
     })
 
     useEffect(() => {
-      console.log('login user', user)
-      let role = user.role;
+        console.log('login user', user)
 
-      if(role === 'LK') {
-        setAuth({ ...auth, isViewer : true, isWriter : true })
-      } else if (role === 'SS') {
-        setAuth({ ...auth, isViewer : true, isWriter : true })
-      } else {
-        alert('No right to Access')
-        document.location.href='/login';
-      }
+        if(!auth.isViewer) {
+            alert('No right to Access')
+            document.location.href='/login';
+        }
     }, [])
 
     const USER_CORP_CODE = 'LGEAI' // 로그인유저 법인코드

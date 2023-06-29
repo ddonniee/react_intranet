@@ -14,6 +14,8 @@ import { forwardRef } from 'react';
  * endDate : 종료일
  * startName : 시작일 form name
  * endName : 종료일 form name
+ * setStartDate : 시작일 반환
+ * setEndDate : 종료일 반환
  * isDuration : true 기간(시작-종료) 선택, false 날짜 선택
  * readOnly : 선택 가능여부
  * } props 
@@ -41,6 +43,7 @@ function CustomDatePicker (props) {
             setFirstDate(new Date());
             setSecondDate(new Date());
         }
+        props.setStartDate && props.setStartDate(firstDate);
     }, [firstDate])
 
     useEffect(() => {
@@ -48,6 +51,7 @@ function CustomDatePicker (props) {
             alert('시작일과 종료일을 확인해주세요.')
             setSecondDate(new Date());
         }
+        props.setEndDate && props.setEndDate(secondDate);
     }, [secondDate])
 
     useEffect(() => {
@@ -69,7 +73,7 @@ function CustomDatePicker (props) {
                 locale={ko} 
                 dateFormat="yyyy-MM-dd"
                 selected={firstDate}
-                onChange={(date) => { setFirstDate(date) }}
+                onChange={(date) => { setFirstDate(date); }}
                 // popperPlacement="top-start" 
                 shouldCloseOnSelect={true}
                 className='custom-picker'
@@ -86,7 +90,7 @@ function CustomDatePicker (props) {
                         locale={ko} 
                         dateFormat="yyyy-MM-dd"
                         selected={secondDate}
-                        onChange={(date) => { setSecondDate(date) }}
+                        onChange={(date) => { setSecondDate(date); }}
                         // popperPlacement="top-start" 
                         shouldCloseOnSelect={true}
                         className='custom-picker'
