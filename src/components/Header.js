@@ -139,7 +139,6 @@ function Header() {
                 {name : 'KPI performance', id:'kpi-performance', path : '/dashboard/kpiperformance'},
                 {name : 'Asc Holding Status', id:'asc-holding-status', path : '/dashboard/ascholdingstatus'},
                 {name : 'Evaluation/Incentive', id:'evaluation-incentive', path : '/dashboard/evaluation'},
-                {name : 'Individual Training', id:'individual-training', path : '/dashboard/individualtraining'},
                 {name : 'Parts Delivery Time', id:'part-delivery-time', path : '/dashboard/partsdeliverytime'},
                 {name : 'Training Status', id:'training-status', path : '/dashboard/trainingstatus'},
                 {name : 'Work In Process', id:'work-in-process', path : '/dashboard/wip'},

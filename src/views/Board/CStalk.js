@@ -13,15 +13,6 @@ import { axiosInstance2, generateRandomString } from "../../utils/CommonFunction
 
 // Icons 
 import Search from '../../assets/svgs/icon_seeking.svg'
-import Order from '../../assets/svgs/icon_truck.svg'
-import Man from '../../assets/svgs/icon_man.svg'
-import Lupa from '../../assets/svgs/icon_tools.svg'
-import Hands from '../../assets/svgs/icon_hands.svg'
-import Codes from '../../assets/svgs/icon_codes.svg'
-import Timer from '../../assets/svgs/icon_timer.svg'
-import Video from '../../assets/svgs/icon_video.svg'
-import Talk from '../../assets/svgs/icon_cstalk.svg'
-import Polygon from '../../assets/svgs/icon_polygon.svg'
 import New from '../../assets/svgs/icon_new.svg'
 import Attachment from '../../assets/svgs/icon_attachment.svg';
 import Download from '../../assets/svgs/icon_download.svg'

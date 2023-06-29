@@ -1,0 +1,28 @@
+@import '../variables';
+
+.faq-setting {
+    border: 1px solid #D8D8D8; border-radius: 10px; 
+     padding: 10px 0;
+     ul {
+        width: 85%; overflow-x: auto;
+     }
+     ul + div {
+        width: 1px; background-color: #D8D8D8; 
+     }
+    .buttons {
+        width: 87px; height: 44px; border: 1px solid #D8D8D8; display: flex; border-radius: 5px;
+        align-self: center;
+        button {
+            border: none; background-color: #FBFBFB;   width: 50%;
+        } 
+        button:first-child {
+            border-radius: 5px 0px 0px 5px; 
+            img {
+                vertical-align: middle; width: 10px;
+            }
+        }
+        button:last-child {
+            border-radius:  0px 5px 5px 0px; border-left: 1px solid #D8D8D8;
+        }
+    }
+}

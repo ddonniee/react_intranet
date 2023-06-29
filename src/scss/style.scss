@@ -1,8 +1,9 @@
 // 공통 css
 @import './common/common.scss';
+
+// view 별 css
 @import './common/selecbox.scss';
 @import './common/favorite.scss';
-// view 별 css
 @import './common/main.scss';
 @import './common/header';
 @import './common/top.scss';
@@ -17,5 +18,6 @@
 
 @import './setting&management/usermanagement.scss';
 @import './setting&management/commoncodemanagement.scss';
+@import './setting&management/faqsetting.scss';
 
 @import './login/login.scss';
