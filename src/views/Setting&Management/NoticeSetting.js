@@ -105,7 +105,8 @@ function NoticeSetting() {
     const [selectedList, setSelctedList] = useState(); // 목록에서 선택한 항목
     const [detail, setDetail] = useState(); // notice 상세
     const [isWrite, setIsWrite] = useState(false); // 새 글 여부
-    const [txt, setTxt] = useState('');
+    const [writeData, setWriteData] = useState(); // 새 글 항목
+    const [isModify, setIsModify] = useState(); // 수정 여부
 
     const isWithin7Days = (date) => { // 새 게시글(등록일 기준 7일 이내) 확인
         const baseDate = new Date(moment(date).format('YYYY-MM-DD'));
@@ -180,7 +181,7 @@ function NoticeSetting() {
             } else {
                 setDetail(data);
             }
-            setIsWrite(true);
+            setIsModify(true);
             
         }).catch(error => {
             console.error(error);
@@ -203,10 +204,24 @@ function NoticeSetting() {
     }, [searchData]);
 
     const handleClickRow = (e, item) => {
-        if(selectedList?.noticeId === null || selectedList?.noticeId !== item.noticeId) {
-            setSelctedList({ noticeId: item.noticeId, tableName: item.tableName })
-        } else {
+        console.log('e', e.target.value)
+        console.log('item', item)
+
+        if(isWrite || isModify) {
+            setAlertTxt("Click confirm to leave write mode.")
             setSelctedList()
+            return false;
+        }
+        setSelctedList({ noticeId: item.noticeId, tableName: item.tableName })
+    }
+
+    const handleClickWrite = () => {
+        if(isModify) {
+            setAlertTxt('Click confirm to leave write mode.')
+            return false;
+        } else {
+            setIsWrite(true); 
+            setDetail();
         }
     }
 
@@ -218,47 +233,59 @@ function NoticeSetting() {
     const [alertModal, setAlertModal] = useState(false)
     const [alertTxt, setAlertTxt] = useState('')
 
-    const onSaveContent = () =>{
-        if (detail.title === '' || detail.content==='' || detail.view==='') {
+    const onSaveContent = () => {
+        console.log('editor data >>>>>>', writeData)
+
+        if (!writeData?.title || !writeData?.content || !writeData?.view) {
             setAlertTxt('Please fill out all the information.')
             console.log('if')
             return false;
-        }
-        else {
+
+        } else {
             if(isWrite) {
                 const formData = new FormData();
-                for (let key in detail) {
-                    if (detail.hasOwnProperty(key)) {
-                      formData.append(key, detail[key]);
+                for (let key in writeData) {
+                    if (writeData.hasOwnProperty(key)) {
+                      formData.append(key, writeData[key]);
                     }
                 }
+
+                console.log('save data >>>>>>', Object.fromEntries(formData))
         
-                var config = {
-                    method: 'post',
-                    maxBodyLength: Infinity,
-                    headers: { 
-                       'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-                    },
-                    data : formData
-                    };
-                axiosInstance2('/csTalk/insert', config)
-                .then(function (response){
-                    let resData = response.data;
-                    if(resData.code===200) {
-                        console.log(resData,'res')
-                       setAlertTxt("You've inserted new post.")
-                       setIsWrite(false)
-                       setDetail()
-                    }else {
-                        console.log(response,'else')
-                    }
-                })
-                .catch(function(error) {
-                    console.log('error',error)
-                })  
+                // CS 공지사항 등록 API
+                // axiosJsonInstance.post('/notice/csInsert', formData, config).then(res => {
+                //     let resData = res.data;
+
+                //     if(resData.code == 200) {
+                //         console.log('res', resData)
+                //         setAlertTxt("You've inserted new post.")
+                //         setIsWrite(false)
+                //         setDetail()
+                //     } else {
+                //         console.log('res', resData.msg);
+                //     }
+                // }).catch(error => {
+                //     console.log('error', error)
+                // })  
             }
         }
     }
+
+    useEffect(() => {
+        onSaveContent();
+    }, [writeData])
+
+    useEffect(()=>{
+        if(!alertModal) {
+            setAlertTxt('')
+        }
+    }, [alertModal])
+
+    useEffect(()=>{
+        if(alertTxt!==''){
+            setAlertModal(true)
+        }
+    }, [alertTxt])
 
     return (
         <div className="notice-container">
@@ -267,8 +294,8 @@ function NoticeSetting() {
             {/** auth 권한체크로 수정 필요 */}
             <Top auth={1} searchArea={false}/>
             {/** Search Nav */}
-            <div className={`notice-nav ${auth.isStaff && 'notice-nav-lk'}`}>
-                { !auth.isStaff &&
+            <div className={`notice-nav ${!auth.isStaff && 'notice-nav-lk'}`}>
+                { auth.isStaff && // 본사 스태프만 반영
                     <div className="notice-nav-box custom-flex-item custom-align-item">
                         <p>· Subsidiary</p>
                         <SelectBox options={subOptions} handleChange={handleSelectBox} />
@@ -298,7 +325,7 @@ function NoticeSetting() {
                                 boardData?.map((item, idx) => {
                                     return(
                                         <li className={`notice-list ${item.deleteAt && 'notice-del-list'}`} key={generateRandomString(idx)} 
-                                            id={`list${item.deleteAt && '-del'}-item-${item.noticeId}`} onClick={(e)=>handleClickRow(e, item)}>
+                                            id={`list${item.deleteAt && '-del'}-item-${item.noticeId}`} onClick={(e) => handleClickRow(e, item)}>
                                             <div className={`title ${item.deleteAt && 'title-del'}`}>
                                                 <span className="custom-flex-item custom-align-item">
                                                 {/** 게시기간 종료일이 현재 날짜 이전이면 확성기 아이콘 출력 */}
@@ -326,13 +353,13 @@ function NoticeSetting() {
                         <Paging pageInfo={pageInfo} setPageInfo={setPageInfo} searchData={searchData} setSearchData={setSearchData} />
                     }
                     <div className="notice-bottom">
-                        <button className="notice-btn-circle" onClick={() => setIsWrite(true)}>Write</button>
+                        <button className="notice-btn-circle" onClick={() => handleClickWrite()}>Write</button>
                     </div>
                 </div>
                 <div className="notice-right">
                     {
-                        isWrite ?
-                        <Editor onClose={setIsWrite} period={true} data={detail} setData={setDetail} onSave={onSaveContent} />
+                        isWrite || isModify ?
+                        <Editor onClose={isWrite ? setIsWrite : setIsModify} period={true} data={detail} setData={isWrite ? setWriteData : setDetail} />
                         :
                         <div className="notice-view-none">
                             <p>If you select a list, you can see the contents</p>
@@ -343,7 +370,7 @@ function NoticeSetting() {
             {
                 alertModal
                 &&
-                <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} btnTxt='Close' />
+                <Alert alertTxt={alertTxt} onClose={() => setAlertModal(false)} onConfirm={() => setAlertModal(false)} btnTxt='Close' />
             }
             </Style>
 
