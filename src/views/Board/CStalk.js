@@ -29,6 +29,7 @@ import Like from '../../assets/svgs/icon_like.svg'
 import Liked from '../../assets/svgs/icon_liked.svg'
 import Comment from '../../assets/svgs/icon_co_comment.svg'
 import More_comment from '../../assets/svgs/icon_co_more.svg'
+import Close_comment from '../../assets/svgs/icon_co_close.svg'
 import Editor from "../../components/Editor"
 import EditorModify from "../../components/EditorModify"
 
@@ -55,7 +56,6 @@ function CStalk() {
       isViewer : false,
       isWriter : false,
     })
-
 
     // useEffect(()=>{
     //   console.log(user)
@@ -113,46 +113,6 @@ function CStalk() {
 
     const [boardData, setBoardData] = useState([]);
 
-    const [detail, setDetail] = useState({
-        title : 'Invest In LG Electronics',
-        attachment : 'Guide for CB03.pptx (531kKB)',
-        content : 'How',
-        comments : [
-           { 
-            writer : 'writer',
-            time : '23.1.29 16:08',
-            detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-            ,comments : [
-                {writer : 'writer',
-                time : '23.1.30 16:00',
-                detail :' lemememlfkmsdlkf dfjkdsn fjksdn gkjdfng kjdsfnpasf dkmldksfj sdlfad sfaslddfj sdf'}
-            ]
-            },
-             { 
-            writer : 'writer',
-            time : '23.1.29 16:08',
-            detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-            ,comments : [
-                {writer : 'writer',
-                time : '23.1.30 16:00',
-                detail :' lemememlfkmsdlkf dfjkdsn fjksdn gkjdfng kjdsfnpasf dkmldksfj sdlfad sfaslddfj sdf'}
-            ]
-            },
-             { 
-            writer : 'writer',
-            time : '23.1.29 16:08',
-            detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-            ,comments : [
-            {writer : 'writer',
-            time : '23.1.30 16:00',
-            detail :' lemememlfkmsdlkf dfjkdsn fjksdn gkjdfng kjdsfnpasf dkmldksfj sdlfad sfaslddfj sdf'}
-           ]
-            }
-        ],
-        like : 11,
-        dislike : 7,
-    })
-
     const [content, setContent] = useState({
         title : '',
         content : '',
@@ -180,31 +140,21 @@ function CStalk() {
         writerName : '',
     });
 
-
-    const subOptions = [
-        { value: 'LGEAI', label: 'LGEAI' },
-        { value: 'LGEAI2', label: 'LGEAI2' },
-    ]
-
     const centerOptions = [
         { value: '0', label: 'Me' },
         { value: '1', label: 'All' },
         { value: '2', label: 'Center' },
     ]
 
-    const branchOptions = [
-        { value: 'NW', label: 'NW' },
-        { value: 'NW2', label: 'NW2' },
-    ]
-
     const handleSelectBox = (event,params) => {
-        const { data } = params.node;
-        const { checked } = event.target;
+        console.log('handleSelectBox',event,params)
+        // const { data } = params.node;
+        const { checked } = event;
 
         if (checked) {
-            setBoardData([...boardData, data]);
+            setBoardData([...boardData, checked]);
           } else {
-            setBoardData(boardData.filter(item => item !== data));
+            setBoardData(boardData.filter(item => item !== checked));
           }
     }
 
@@ -241,45 +191,114 @@ function CStalk() {
     const handleClickRow = (e, item) => {
         console.log(item)
         if(isWrite || isModify) {
-                setAlertTxt("Click confirm to leave write mode")
+            onConfirmHandler(1)
+                setAlertTxt("")
                 return false
         }
         getDetail(item)
 
     }
 
-    const onConfirmHandler = (num) =>{
+    const [alertSetting, setAlertSetting] = useState({
+        alertTxt : '',
+        onConfirm : function() {},
+        isDoubleBtn : false,
+        btnTxt : 'Close',
+        confirmTxt : ''
+    })
+    const onConfirmHandler = (num,id) =>{
 
+        // leave editor 
         if(num===1) {
-            setIsWrite(false)
-            setIsModify(false)
-            setAlertModal(false)
-            setContent({
-                title : '',
-                content : '',
-                isPublic : '',
-                attachments : '',
-                csTalkId : ''
+
+           
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: ' Click confirm to leave write mode.',
+                onConfirm : ()=>{ 
+                    setIsWrite(false)
+                    setIsModify(false)
+                    setAlertModal(false)
+                    setContent({
+                        title : '',
+                        content : '',
+                        isPublic : '',
+                        attachments : '',
+                        csTalkId : ''
+                    })
+                },
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : ""
+            })
+          
+            
+        }
+        // open post to public
+        else if(num===2) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Are you sure to oepn this post to public?',
+                onConfirm : ()=>{ onChangePublic(); setAlertModal(false) },
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : "You've allowed all to show this post."
             })
         }
-        else if(num===2) {
-            onChangePublic()
+        // delete post
+        else if(num===3) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Are you sure to delete post?',
+                onConfirm :  ()=>{onDeletePost(); setAlertModal(false)},
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : "Deleted post."
+            })
+           
         }
-       
+        // delete comment
+        else if(num===4) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Are you sure to delete comment?',
+                onConfirm :  ()=>{onDeleteComment(id); setAlertModal(false)},
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : "Deleted comment."
+            })
+           
+        }
+        // no input data when clicked submit
+        else if(num===5) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Any content input',
+                onConfirm :  ()=>setAlertModal(false),
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+            })
+        }
     }
-
-
 
     useEffect(()=>{
         if(!alertModal) {
-            setAlertTxt('')
+           setAlertSetting({
+            alertTxt : '',
+            onConfirm : function() {},
+            isDoubleBtn : false,
+            btnTxt : 'Close',
+            confirmTxt : ''
+           })
         }
     },[alertModal])
     useEffect(()=>{
-        if(alertTxt!==''){
+        if(alertSetting.alertTxt!==''){
             setAlertModal(true)
+        }else {
+            setAlertModal(false)
         }
-    },[alertTxt])
+    },[alertSetting])
 
     const onClickAction = (event,id) => {
         const formData = new FormData();
@@ -322,6 +341,7 @@ function CStalk() {
         }
     )
     const [boardLength, setBoardLength] = useState(0)
+
     const getList = () =>{ 
         const formData = new FormData();
         
@@ -361,6 +381,7 @@ function CStalk() {
 
     const [commentPage, setCommentPage] = useState(1)
     const [commentList, setCommentList] = useState([])
+
     const getComment = () =>{
         const formData = new FormData();
         
@@ -378,8 +399,13 @@ function CStalk() {
         axiosInstance2('/csTalk/commentList', config)
         .then(function (response){
             let resData = response.data;
+            
             if(resData.code===200) {
                 let data = resData.result
+                data.map(d=>
+                    d.openSubComment = false,
+                
+                )
                 setCommentList(data)
                 console.log('comment',data)
             }else {
@@ -411,7 +437,11 @@ function CStalk() {
             writerName : '',
         })
     }
-    
+    const openSubcomment = (e,idx,id) =>{
+        let copyList = [...commentList]
+        copyList[idx].openSubComment = !copyList[idx].openSubComment
+        setCommentList(copyList)
+    }
     const onSaveContent = () =>{
 
         if (content.title==='' || content.content==='' || content.isPublic==='') {
@@ -522,6 +552,80 @@ function CStalk() {
         })
         setIsWrite(true)
     }
+
+    const [comment, setComment] = useState('') 
+
+    const onAddComment =(num, id) => {
+        // num = 1 댓글, num = 2 대댓글
+
+        if(comment==='') {
+            onConfirmHandler(5)
+            return false
+        }
+        const formData = new FormData();
+
+        formData.append('csTalkId', selectedList.csTalkId);
+        formData.append('content', comment);
+        if(num===2) {
+            formData.append('commentId', id);
+        }
+        console.log(Object.fromEntries(formData),';;;')
+            var config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                headers: { 
+                    'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+                },
+                data : formData
+                };
+            axiosInstance2('/csTalk/commentInsert', config)
+            .then(function (response){
+                let resData = response.data;
+                if(resData.code===200) {
+                    console.log(resData,'res')
+                    setAlertTxt("You've added comment.")
+                    setComment('')
+                    getDetail(id);
+                    getComment()
+                }else {
+                    console.log(response,'else')
+                }
+            })
+            .catch(function(error) {
+                console.log('error',error)
+            })  
+    }
+
+    const onDeleteComment = (id) =>{
+        // num = 1 댓글, num = 2 대댓글
+        const formData = new FormData();
+
+        formData.append('commentId', id);
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/csTalk/commentDelete', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                console.log(resData,'res')
+                setAlertTxt("You've deleted comment.")
+                getDetail(id);
+                getComment()
+                getList()
+            }else {
+                console.log(resData,'else')
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })                  
+    }
     const onDeletePost = () => {
         const formData = new FormData();
         
@@ -618,8 +722,9 @@ function CStalk() {
         // }
 
         getComment();
-
+        setComment('');
     },[selectedList])
+
 
     
     return (
@@ -725,18 +830,17 @@ function CStalk() {
                     <div className="cstalk-right-middle">
                        <div> <Viewer content={selectedList.content}/></div>
                         <div className="setting-viewer custom-flex-item">
-                            {/** todo 추후에 사용자 아이디로 비교 */}
                             { 
-                                selectedList.writerID==='ID_LK' 
+                                selectedList.writerID===user.id
                                 &&
-                                <div style={{marginRight:'auto'}}><button onClick={onDeletePost} className="custom-flex-item custom-align-item">Delete</button></div>
+                                <div style={{marginRight:'auto'}}><button onClick={()=>onConfirmHandler(3)} className="custom-flex-item custom-align-item">Delete</button></div>
                             }
                             {
-                               ( selectedList.isPublic !== 1 && selectedList.writerID==='ID_LK') &&
-                                <div><button className="custom-flex-item custom-align-item" onClick={()=>setAlertTxt('Are you sure to open this post to all?')}>Allow Views</button></div>
+                               ( selectedList.isPublic !== 1 && selectedList.writerID===user.id) &&
+                                <div><button className="custom-flex-item custom-align-item" onClick={()=>onConfirmHandler(2)}>Allow Views</button></div>
                             }
                             {
-                                selectedList.writerID==='ID_LK' 
+                                selectedList.writerID===user.id
                                 &&
                                 <div><button className="custom-flex-item custom-align-item" onClick={onEditMode}>Modify</button></div>
                             }
@@ -752,9 +856,9 @@ function CStalk() {
                             <div className="custom-justify-between">
                                 <div className="comment-input">
                                     <span>Writer : {user.name}</span>
-                                    <textarea/>
+                                    <textarea value={comment} onChange={(e)=>setComment(e.target.value)}/>
                                 </div>
-                                <button>Write</button>
+                                <button onClick={()=>onAddComment(1)}>Write</button>
                             </div>
                         </div>
                         <div className="cstalk-comment-list">
@@ -765,25 +869,56 @@ function CStalk() {
                                             <li key={generateRandomString(idx)}>
                                                 <div className="comment-top custom-flex-item custom-justify-between">
                                                     <div>
-                                                        <span>{comment.writer}</span>
+                                                        <span>{comment.writerName}</span>
                                                         <span>{moment(comment.createdAt).format('YYYY-MM-DD')}</span>
                                                     </div>
                                                     <span className="custom-flex-item">
-                                                        <p>Delete</p><p>Answer</p>
+                                                        <p onClick={()=>onConfirmHandler(4,comment.commentId)}>Delete</p><p>Answer</p>
                                                     </span>
                                                 </div>
-                                                <div className="comment-middle">{comment.content.slice(0,250)}{comment.content.length>250 && <span className="custom-stress-txt">...More</span>}</div>
-                                                <div className="comment-bottom custom-flex-item custom-align-self">
-                                                    {comment.comments?.map((c,idx)=>{
-                                                        return (
-                                                            <>
-                                                            <img src={Comment} alt="under-comment" />
-                                                            <span>Comment</span>
-                                                            <span className="custom-stress-txt">{comment.content.length}</span>
-                                                            <img src={More_comment} alt="under-comment" />
-                                                            </>
-                                                        )
-                                                    })}
+                                                <div className="comment-middle">{comment.content?.slice(0,250)}{comment.content?.length>250 && <span className="custom-stress-txt">...More</span>}</div>
+                                                <div className={comment.openSubComment ? "comment-bottom" : "comment-bottom custom-flex-item custom-align-self"}>
+                                                    {/* {comment.subComment?.map((c,idx)=>{ */}
+                                                        {/* return ( */}
+                                                            {
+                                                                comment.subComment.length!==0 &&
+                                                                <div className="custom-flex-item" onClick={(e)=>openSubcomment(e,idx,comment.csTalkId)}>
+                                                                <img src={Comment} alt="under-comment" />
+                                                                <span>Comment</span>
+                                                                <span className="custom-stress-txt">( {comment.subComment.length} ) </span>
+                                                                <img src={comment.openSubComment ? Close_comment : More_comment} alt="under-comment" className="toggle-sub-btn"/>
+                                                                </div>
+                                                            }
+                                                            {
+                                                                comment.openSubComment 
+                                                                ?
+                                                                <div >
+                                                                    <ul className="submment-wrapper">
+                                                                       {
+                                                                         comment.subComment.map((sub,idx)=>{
+                                                                            return(
+                                                                                <li>
+                                                                                    <div className="comment-top custom-flex-item custom-justify-between">
+                                                                                        <div>
+                                                                                            <span>{sub.writerName}</span>
+                                                                                            <span>{moment(sub.createdAt).format('YYYY-MM-DD')}</span>
+                                                                                        </div>
+                                                                                        <span className="custom-flex-item">
+                                                                                            {sub.writerID===user.id && <p onClick={()=>onConfirmHandler(4,sub.commentId)}>Delete</p>}<p>Answer</p>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div className="comment-middle">{sub.content?.slice(0,250)}{sub.content?.length>250 && <span className="custom-stress-txt">...More</span>}</div>
+                                                                                </li>
+                                                                            )
+                                                                         })
+                                                                       }
+                                                                    </ul>
+                                                                </div>
+                                                                :
+                                                                null
+                                                            }
+                                                        {/* ) */}
+                                                    {/* })} */}
                                                 </div>
                                             </li>
                                         )
@@ -791,7 +926,7 @@ function CStalk() {
                                 }
                             </ul>
                             {
-                                commentList &&
+                                commentList.length!==0 &&
                                 <Pagination 
                                 activePage={commentPage} // 현재 페이지
                                 itemsCountPerPage={itemsPerPage} // 한 페이지 당 보여줄 아이템 수
@@ -823,7 +958,7 @@ function CStalk() {
             {
                 alertModal
                 &&
-                <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} onConfirm={()=>(alertTxt.indexOf('leave')>-1 || alertTxt.indexOf('sure')>-1) ? (alertTxt.indexOf('leave')>-1 ? onConfirmHandler(1) : onConfirmHandler(2)):setAlertModal(false)} twoBtn={(alertTxt.indexOf('leave')>-1 || alertTxt.indexOf('sure')>-1)? true:false} btnTxt={(alertTxt.indexOf('leave')>-1 || alertTxt.indexOf('sure')>-1) ?'Confirm':'Close'}/>
+                <Alert alertTxt={alertSetting.alertTxt} onClose={()=>setAlertModal(false)} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt}/>
             }
             </div>
         </div>
@@ -842,3 +977,4 @@ const Style = styled.div`
         color : #BB0841;
     }
 `
+

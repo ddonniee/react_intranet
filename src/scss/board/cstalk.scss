@@ -53,9 +53,12 @@
 .setting-viewer button  {
        background-color: white; padding: 10px;  width: 86px;
        height: 30px ; border-radius: 100px ; color: $txt-color-edit;
-       border: 1px solid $border-color-gery;  justify-content: center; margin-left: 10px;
-       
+       border: 1px solid $border-color-gery;  justify-content: center; 
+    //    margin-left: 10px;    
 } 
+.setting-viewer button:not(:first-child) {
+    margin-left: 10px;  
+}
 
 .catalk-right {
     border: 1px solid $border-color-gery; border-radius: 14px; height: 760px; width: 48px;
@@ -284,11 +287,19 @@
     span p:first-child {
         padding: 0 6px;
     }
-
+    textarea:focus {
+        outline: none;
+    }
+    .cstalk-comment-list {
+        padding : 10px 20px; background-color: $board-color-grey;
+    
+    }
+    
 }
-.cstalk-comment-wrapper textarea:focus {
-    outline: none;
+.toggle-sub-btn {
+    padding: 0 3px;
 }
+.cstalk-comment-wrapper 
 .cstalk-comment-wrapper button {
     width: 69px;
     // height: 44px;
@@ -298,8 +309,12 @@
     color: white;
     border: none;
 }
-.cstalk-comment-list {
-    padding : 10px 20px; background-color: $board-color-grey;
+
+.submment-wrapper {
+   
+    li {
+        padding: 10px; margin-bottom: 10px;  background-color: white;
+    }
 
 }
 .comment-input {

@@ -11,9 +11,12 @@ import { UserContext } from "./hooks/UserContext";
 function App({isMobile}) {
 
   const [user, setUser] = useState({
-    email: 'donnie.lee@pospot.kr',
-    name : 'donnie',
+    id: 'ID_LK',
+    name : 'LGEKR 본사스태프(한국고객가치혁실ㄴ)',
     role : 'LK',
+    branch :  "LGEAI_BRANCH_7650T",
+    center :  "LGEAI009062C",
+    subsidiary : "LGEKR"
     // token : sessionStorage.getItem('UserInfo'); // 직급에 따라 토큰 값 받아오기
   })
 
@@ -28,7 +31,7 @@ function App({isMobile}) {
 
     return () => {
       // 컴포넌트가 언마운트될 때 CSS 파일 제거
-      const linkElements = document.querySelectorAll('link[rel="stylesheet"]');
+      const linkElements = document.querySelectorAll('link[rel="styleshe et"]');
       linkElements.forEach((element) => {
         if (element.href.includes('mobile.css') || element.href.includes('pc.css')) {
           element.remove();
