@@ -12,6 +12,7 @@ import { styled } from "styled-components";
 import {UserContext} from '../hooks/UserContext'
 import moment from "moment";
 import Alert from "./Alert";
+import { generateRandomString } from "../utils/CommonFunction";
 
 /**
  * 작성자 : 이은정
@@ -26,10 +27,19 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete 
     const user = useContext(UserContext);
     const [content, setContent] = useState(data);
     const [alertModal, setAlertModal] = useState(false)
-    const [alertTxt, setAlertTxt] = useState('')
-    // const [dbtxt, setDbtxt] = useEffect
-    
-    console.log(content.csTalkId==='','[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]')
+    const [alertSetting, setAlertSetting] = useState({
+        alertTxt : '',
+        onConfirm : function() {},
+        isDoubleBtn : false,
+        btnTxt : 'Close',
+        confirmTxt : ''
+    })
+    const [attachments, setAttachments] = useState([
+       {
+        fileName: '',
+        filePath : '',
+       }
+    ])
     const editorConfig = {
         // plugins: [UploadAdapter],
         // toolbar: [
@@ -50,16 +60,41 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete 
         console.log('onStopInput')
         setData(content)
     }
+    const addRow = () =>{
+
+        if(attachments.length < 5) {
+            const newObj = {
+                fileName: '',
+                filePath : '',
+            }
+            const arr = [...attachments,newObj]
+            setAttachments(arr)
+        }else {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Up to 5 file attachments are allowed.'
+            })
+        }
+      
+    }
     useEffect(()=>{
         if(!alertModal) {
-            setAlertTxt('')
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt : '',
+                onConfirm : function() {},
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+                confirmTxt : ''
+            })
         }
     },[alertModal])
+
     useEffect(()=>{
-        if(alertTxt!==''){
+        if(alertSetting.alertTxt!==''){
             setAlertModal(true)
         }
-    },[alertTxt])
+    },[alertSetting])
 
     useEffect(()=>{
         console.log('---------------------------------------------------------------------!!')
@@ -158,16 +193,40 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete 
                 </div>
             </div>
             <div className="write-row">
-                <div className="left custom-flex-item custom-align-item"> <p className="custom-flex-item custom-justify-center custom-align-item">· Attachments</p> 
-                <label htmlFor="file-upload">
+                <div className="left custom-flex-item custom-align-item custom-justify-between"> <p className="custom-flex-item custom-justify-center custom-align-item">· Attachments</p> 
+                <label htmlFor="add-row">
                     <img src={MoreIcon} />              
                 </label>
-                <input type="file" name="attachments" style={{display: "none"}} id="file-upload"/>
+                <button onClick={()=>addRow()} name="attachments" style={{display: "none"}} id="add-row"/>
                 </div>
                 
-                <div className="right"> 
-                    <input type="text" className="write-input attach-input" name="filename"></input> 
-                    <button className="file-delete-btn">Delete</button>
+                <div className="right file-upload"> 
+                   {
+                    attachments?.map((item,idx)=>{
+                        return (
+                            <div className="custom-flex-item custom-align-item" key={generateRandomString(idx)}>
+                            <input type="text" className="write-input attach-input" name="filename" readOnly></input> 
+                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn">{item.fileName===''?'Select':'Delete'}</label>
+                            <input 
+                                type="file" 
+                                className="file-delete-btn" 
+                                style={{display: "none"}} 
+                                id='file-delete-btn'
+                                onChange={(e)=>{
+                                    console.log(e.target?.files)
+                                    if(e.target?.files[0]) {
+                                        let formData = new FormData();
+                                        formData.append('fileName',e.target?.files[0])
+                                        // api 연동..
+                                    }
+                                    
+                            }}
+                            />       
+                        </div>
+                        )
+                    })
+                   }
+                    
                     <p className="attach-desc">Attached files can only be in PDF, HWP, Docx, xls, and PPT formats (Support up to 100MB)</p>
                 </div>
             </div>
@@ -184,7 +243,7 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete 
             {
                 alertModal
                 &&
-                <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} btnTxt='Close' />
+                <Alert alertTxt={alertSetting.alertTxt} onClose={()=>setAlertModal(false)} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt}/>
             }
         </div>
         </Style>

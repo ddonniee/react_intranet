@@ -1,0 +1,12 @@
+@import '../variables.scss';
+
+.file-upload {
+    div {
+        margin-bottom: 10px;
+    }
+    div label {
+        width: 72px; height: 40px; flex-shrink: 0; border-radius: 100px;
+        background: #E8E8E8; margin-left: 11px; font-size: 14px;  font-weight: 600;
+        line-height: 22px; letter-spacing: 0.14px;
+    }
+}
