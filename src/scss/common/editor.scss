@@ -16,3 +16,11 @@
         line-height: 22px; letter-spacing: 0.14px;
     }
 }
+.ck-viewer {
+    & div:first-child > div:first-child > p {
+        overflow-wrap: break-word;
+    }
+}
+.cstalk-right-top > p:first-child{
+    overflow-wrap: break-word;
+}

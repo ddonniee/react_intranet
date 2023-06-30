@@ -935,7 +935,7 @@ function CStalk() {
                         </div> 
                     </div>
                     <div className="cstalk-right-middle">
-                       <div> <Viewer content={selectedList.content}/></div>
+                       <div className="ck-viewer"> <Viewer content={selectedList.content}/></div>
                         <div className="setting-viewer custom-flex-item">
                             { 
                                 selectedList.writerID===user.id
@@ -943,7 +943,7 @@ function CStalk() {
                                 <div style={{marginRight:'auto'}}><button onClick={()=>onConfirmHandler(3)} className="custom-flex-item custom-align-item">Delete</button></div>
                             }
                             {
-                               ( selectedList.isPublic !== 1 && selectedList.writerID===user.id) &&
+                               ( selectedList.isPublic !== 1 && user.subsidiary==='LGEKR' ) &&
                                 <div><button className="custom-flex-item custom-align-item" onClick={()=>onConfirmHandler(2)}>Allow Views</button></div>
                             }
                             {
