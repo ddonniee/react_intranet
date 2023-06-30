@@ -413,7 +413,7 @@ function NoticeSetting() {
                                             <div className={`title ${item.deleteAt ? 'title-del' : ''}`}>
                                                 <span className="custom-flex-item custom-align-item">
                                                 {/** 게시기간 종료일이 현재 날짜 이전이면 확성기 아이콘 출력 */}
-                                                { (!item.deleteAt && item.postEndDate) && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null } 
+                                                { (!item.deleteAt && item.postEndDate) && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) >= new Date() ? <SpeakerIcon /> : null } 
                                                 { item.title.length > 90 ? (item.title).substr(0,90) + '...' : item.title } 
                                                 { (!item.deleteAt && item.new) ? <NewIcon /> : null }
                                                 </span>

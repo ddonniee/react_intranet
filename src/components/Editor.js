@@ -26,9 +26,10 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
     const [content, setContent] = useState(data);
     const [alertModal, setAlertModal] = useState(false)
     const [alertTxt, setAlertTxt] = useState('')
-    // const [dbtxt, setDbtxt] = useEffect
+    
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();
+    const [editDate, setEditDate] = useState(false);
     
     const editorConfig = {
         // plugins: [UploadAdapter], 
@@ -53,24 +54,34 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
             setAlertTxt('Please fill out all the information.')
             console.log('if')
             return false;
+        } else if((!content.postStartDate && content.postEndDate) || (content.postStartDate && !content.postEndDate)) {
+            setAlertTxt('Please check out all the date.')
+            console.log('else if')
+            return false;
         } else {
-            console.log('else')
-            setData(content)
-            // setContent()
+            if(editDate) {
+                let start = moment(startDate).format('YYYY-MM-DD');
+                let end = moment(endDate).format('YYYY-MM-DD');
+                console.log('startDate', start, '/ endDate', end)
+                setData({ ...content, postStartDate : start, postEndDate : end })
+            } else {
+                console.log('save success')
+                setData(content)
+            }
         }
     }
 
     useEffect(() => {
-        let start = moment(startDate).format('YYYY-MM-DD');
-        console.log('startDate', start)
-        setContent({ ...content, postStartDate : start })
-    }, [startDate])
+        console.log('content >>>>>>>>>>>>>>>>>>>', content)
+    }, [content])
 
-    useEffect(() => {
-        let end = moment(endDate).format('YYYY-MM-DD');
-        console.log('endDate', end)
-        setContent({ ...content, postEndDate : end })
-    }, [endDate])
+    // useEffect(() => {
+    //     let start = moment(startDate).format('YYYY-MM-DD');
+    //     let end = moment(endDate).format('YYYY-MM-DD');
+    //     console.log('startDate', start, '/ endDate', end)
+
+    //     setContent({ ...content, postStartDate : start, postEndDate : end })
+    // }, [startDate, endDate])
 
     useEffect(()=>{
         if(!alertModal) {
@@ -93,7 +104,7 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Date</p> </div>
-                <div className="right"> <input type="text" className="write-input" name="date" readOnly value={moment().format('YYYY-MM-DD')}></input> </div>
+                <div className="right"> <input type="text" className="write-input" name="date" readOnly value={data ? moment(content?.createdAt).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')}></input> </div>
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>
@@ -122,7 +133,7 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
                 period &&
                 <div className="write-row">
                     <div className="left custom-flex-item custom-align-item"> <p>· Period</p> </div>
-                    <div className="right">
+                    <div className="right" onClick={() => setEditDate(true)}>
                         <CustomDatePicker isDuration={true} startDate={content?.postStartDate} endDate={content?.postEndDate} startName='postStartDate' endName='postEndDate'
                             setStartDate={setStartDate} setEndDate={setEndDate} />
                     </div>

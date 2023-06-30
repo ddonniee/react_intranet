@@ -16,7 +16,7 @@ function App({isMobile}) {
     role : 'LK',
     branch :  "LGEAI_BRANCH_7650T",
     center :  "LGEAI009062C",
-    subsidiary : "LGEKR"
+    subsidiary : "LGEKR",
     // token : sessionStorage.getItem('UserInfo'); // 직급에 따라 토큰 값 받아오기
     // id: 'ID_SA',
     // name : '법인 Admin',
