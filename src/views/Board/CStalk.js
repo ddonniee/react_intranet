@@ -74,14 +74,13 @@ function CStalk() {
     const [itemsPerPage] = useState(10); // 페이지당 아이템 갯수
 
     const [subsidiary, setSubsidiary ] = useState([
-        {value:'1',label:'Canada'}, 
-        {value:'2',label:'USA'}, 
-        {value:'3',label:'Germany'}, 
-        {value:'4',label:'Austrailia'}, 
-        {value:'5',label:'Mexico'},
-        {value:'6',label:'Brazil'},
-        {value:'7',label:'Vietnam'},
-        {value:'8',label:'Indonesia'}
+        {value:'',label:'All'}, 
+        {value:'LGEAI',label:'LGEAI'}, 
+        {value:'LGECI',label:'LGECI'}, 
+        {value:'LGEES',label:'LGEES'}, 
+        {value:'LGEJP',label:'LGEJP'}, 
+        {value:'LGEKR',label:'LGEKR'},
+        {value:'LGEMC',label:'LGEMC'},
     ])
 
 
@@ -89,7 +88,11 @@ function CStalk() {
     
     const handleSelectSubsidiary = e => {
         let value = e.value;
-        console.log(e)
+        console.log('value ---->', value);
+        setReqData({
+            ...reqData,
+            subsidiary : value
+        })
     }
     const setPage = (e) => {
         setActivePage(e);
@@ -148,9 +151,7 @@ function CStalk() {
         })
     }
 
-    const [alertModal, setAlertModal] = useState(false)
-    const [alertTxt, setAlertTxt] = useState('')
-    
+
     const getDetail = (id) =>{
         const formData = new FormData();
         formData.append('csTalkId', id);
@@ -180,13 +181,13 @@ function CStalk() {
     }
     const handleClickRow = (e, item) => {
         if(isWrite || isModify) {
-            onConfirmHandler(1)
+            onConfirmHandler(1,item)
             return false
         }
         getDetail(item)
-
     }
-
+    
+    const [alertModal, setAlertModal] = useState(false)
     const [alertSetting, setAlertSetting] = useState({
         alertTxt : '',
         onConfirm : function() {},
@@ -196,10 +197,9 @@ function CStalk() {
     })
     const onConfirmHandler = (num,id) =>{
 
+        console.log(id,'"btn-row"')
         // leave editor 
-        if(num===1) {
-
-           
+        if(num===1 || num===7) {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: ' Click confirm to leave write mode.',
@@ -214,31 +214,34 @@ function CStalk() {
                         attachments : '',
                         csTalkId : ''
                     })
+                    clearState()
+                    num===7 && setIsWrite(true)
+                    num===1 && getDetail(id)
                 },
                 isDoubleBtn : true,
                 btnTxt : 'Confirm',
                 confirmTxt : ""
             })
-          
-            
+                        
         }
         // open post to public
         else if(num===2) {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: 'Are you sure to oepn this post to public?',
-                onConfirm : ()=>{ onChangePublic(); setAlertModal(false) },
+                onConfirm : ()=>{ onChangePublic(); setAlertModal(false); clearState() },
                 isDoubleBtn : true,
                 btnTxt : 'Confirm',
                 confirmTxt : "You've allowed all to show this post."
             })
+            
         }
         // delete post
         else if(num===3) {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: 'Are you sure to delete post?',
-                onConfirm :  ()=>{onDeletePost(); setAlertModal(false)},
+                onConfirm :  ()=>{onDeletePost(); setAlertModal(false); clearState(); getList()},
                 isDoubleBtn : true,
                 btnTxt : 'Confirm',
                 confirmTxt : "Deleted post."
@@ -250,7 +253,7 @@ function CStalk() {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: 'Are you sure to delete comment?',
-                onConfirm :  ()=>{onDeleteComment(id); setAlertModal(false)},
+                onConfirm :  ()=>{onDeleteComment(id); setAlertModal(false); },
                 isDoubleBtn : true,
                 btnTxt : 'Confirm',
                 confirmTxt : "Deleted comment."
@@ -272,7 +275,7 @@ function CStalk() {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: 'Success',
-                onConfirm :  ()=>setAlertModal(false),
+                onConfirm :  ()=>{setAlertModal(false); clearState()},
                 isDoubleBtn : false,
                 btnTxt : 'Close',
             })
@@ -415,9 +418,7 @@ function CStalk() {
             console.log('error',error)
         })
     }
-    useEffect(()=>{
-        console.log('comment lenght',commentList)
-    },[commentList])
+ 
     const clearState =()=>{
         getList();
         setSelctedList({
@@ -430,7 +431,7 @@ function CStalk() {
             createdAt : '',
             csTalkId : '',
             hits : 0,
-            isPublic :  false,
+            isPublic :  0,
             likeCount : 0, 
             parentCsId : '',
             subsidiary : '',
@@ -442,6 +443,9 @@ function CStalk() {
     const openCommentInput = (idx) =>{
         console.log('openCommentInput')
         let copylist = [...commentList];
+        for(let i=0; i<copylist.length; i++) {
+            copylist[i].isInput = false;
+        }
         copylist[idx].isInput = !copylist[idx].isInput
         setCommentList(copylist)
     }
@@ -450,11 +454,22 @@ function CStalk() {
         copyList[idx].openSubComment = !copyList[idx].openSubComment
         setCommentList(copyList)
     }
+
+
     const onSaveContent = () =>{
 
+        console.log(content,'111111111111111111111111111111111111')
+
         if (content.title==='' || content.content==='' || content.isPublic==='') {
-            setAlertTxt('Please fill out all the information.')
-            console.log('if')
+            
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt : 'Please fill out all the information.',
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+                confirmTxt : ''
+            })
+
             return false;
         }
         else {
@@ -478,11 +493,17 @@ function CStalk() {
                 .then(function (response){
                     let resData = response.data;
                     if(resData.code===200) {
-                        console.log(resData,'res')
-                       setAlertTxt("You've inserted new post.")
+                       setAlertSetting({
+                        ...alertSetting,
+                        alertTxt : "You've inserted new post.",
+                        isDoubleBtn : false,
+                        btnTxt : 'Close',
+                        confirmTxt : ''
+                    })
                        setIsWrite(false)
                        setContent({})
                        getList();
+                       clearState()
                     }else {
                         console.log(response,'else')
                     }
@@ -496,7 +517,6 @@ function CStalk() {
     const [isModify, setIsModify] = useState(false)
 
     const onEditMode = () =>{
-        console.log('edit content')
         setContent({
             ...content,
             title : selectedList.subject,
@@ -508,15 +528,23 @@ function CStalk() {
         setIsModify(true)
     }
 
+    useEffect(()=>{
+        console.log('radio button test', content.isPublic)
+    },[content])
     const onEditContent = () =>{
-        console.log('============================== ', content)
         if (content.title==='' || content.content==='' || content.isPublic==='') {
-            setAlertTxt('Please fill out all the information.')
-            console.log('if')
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt : "Please fill out all the information.",
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+            })
             return false;
         }
         else {
             if(isModify) {
+
+                console.log('content : ',content)
                 const formData = new FormData();
                 for (let key in content) {
                     if (content.hasOwnProperty(key)) {
@@ -536,14 +564,19 @@ function CStalk() {
                 .then(function (response){
                     let resData = response.data;
                     if(resData.code===200) {
-                        console.log(resData,'res')
-                       setAlertTxt("You've modified your post.")
+                       setAlertSetting({
+                            ...alertSetting,
+                            alertTxt : "You've modified your post.",
+                            isDoubleBtn : false,
+                            btnTxt : 'Close',
+                        })
+
                        setIsModify(false)
                        setContent({})
                        getList();
                        getDetail(content.csTalkId);
                     }else {
-                        console.log(response,'else')
+                        console.log(resData,'resData')
                     }
                 })
                 .catch(function(error) {
@@ -566,8 +599,6 @@ function CStalk() {
 
     const onAddComment =(num, id) => {
         // num = 1 댓글, num = 2 대댓글
-
-        console.log(num,id,'comment ')
         if(num===1 && comment==='') {
             onConfirmHandler(5)
             return false
@@ -596,17 +627,15 @@ function CStalk() {
                 };
             axiosInstance2('/csTalk/commentInsert', config)
             .then(function (response){
-                
+                console.log('cocococomcmcm',response)
                 let resData = response.data;
-                console.log('comment',resData)
                 if(resData.code===200) {
-                    console.log(resData,'res')
                     onConfirmHandler(6)
                     num === 1 ? setComment('') : setSubComment('')
                     getDetail(id);
                     getComment()
                 }else {
-                    console.log(response,'else')
+                    console.log(resData,'comment list')
                 }
             })
             .catch(function(error) {
@@ -631,13 +660,17 @@ function CStalk() {
         .then(function (response){
             let resData = response.data;
             if(resData.code===200) {
-                console.log(resData,'res')
-                setAlertTxt("You've deleted comment.")
+                setAlertSetting({
+                    ...alertSetting,
+                    alertTxt : "You've deleted comment.",
+                    isDoubleBtn : false,
+                    btnTxt : 'Close',
+                })
                 getDetail(id);
                 getComment()
                 getList()
             }else {
-                console.log(resData,'else')
+                console.log(resData,'resData')
             }
         })
         .catch(function(error) {
@@ -663,9 +696,14 @@ function CStalk() {
         .then(function (response){
             let resData = response.data;
             if(resData.code===200) {
-                setAlertTxt('Deleted post')
+                setAlertSetting({
+                    ...alertSetting,
+                    alertTxt : "You've Deleted post.",
+                    isDoubleBtn : false,
+                    btnTxt : 'Close',
+                })
                 setBoardLength(boardLength-1)
-                clearState();
+                getList()
             }else {
                 console.log(resData)
             }
@@ -681,7 +719,6 @@ function CStalk() {
         let id = selectedList.csTalkId
         formData.append('csTalkId',id)
 
-        console.log(id,'osososo')
         var config = {
             method: 'post',
             maxBodyLength: Infinity,
@@ -694,7 +731,13 @@ function CStalk() {
         .then(function (response){
             let resData = response.data;
             if(resData.code===200) {
-                setAlertTxt("You've changed open status for this post to all.")
+                setAlertSetting({
+                    ...alertSetting,
+                    alertTxt : "You've changed open status for this post to all.",
+                    isDoubleBtn : false,
+                    btnTxt : 'Close',
+                })
+
                 getDetail(id)
             }else {
                 console.log(resData)
@@ -710,7 +753,6 @@ function CStalk() {
 
    
     useEffect(()=>{
-        console.log('boardData.length')
        if(boardData.length!==0) {
         console.log('== list ==',boardData)
        }
@@ -727,6 +769,8 @@ function CStalk() {
        }
        
     },[boardData])
+
+ 
 
     const [fileStore, setFileStore] = useState({})
     useEffect(()=>{
@@ -746,6 +790,7 @@ function CStalk() {
         getComment()
     },[commentPage])
     
+
     return (
         <div className="notice-container cstalk-container">
         <Header />
@@ -788,7 +833,7 @@ function CStalk() {
                         {
                             boardData?.map((item,idx)=>{
                                 return(
-                                    <li  key={generateRandomString(idx)} id={`list-item-${item.num}`} onClick={(e)=>handleClickRow(e,item.csTalkId)}>
+                                    <li  key={generateRandomString(idx)} id={`list-item-${item.csTalkId}`} onClick={(e)=>handleClickRow(e,item.csTalkId)}>
                                         <div className="cstalk-subject custom-flex-item custom-txt-align">
                                             <span className="custom-flex-item">{item.level===2 && `[RE]  `}{item.subject}<span className="custom-stress-txt">{item.commentCount!==0 && `( ${item.commentCount} )`}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /></span>
                                             {/* <span>{item.writerName}</span> */}
@@ -815,13 +860,13 @@ function CStalk() {
                         />
                     }
                     {/* <AgGrid data={boardData} column={column} paging={true} /> */}
-                    <div className="write-btn" onClick={()=>isWrite ? onConfirmHandler(1) : setIsWrite(!isWrite)}><span>Write</span></div>
+                    <div className="write-btn" onClick={()=> isWrite ? onConfirmHandler(1) : isModify ? onConfirmHandler(7,selectedList.csTalkId) : setIsWrite(!isWrite)}><span>Write</span></div>
                 </div>
                 {
                     isWrite
                     ?
                     <div className="editor-wrapper">
-                    <EditorModify data={content} setData={setContent} onSave={onSaveContent} range />
+                    <EditorModify data={content} setData={setContent} onSave={onSaveContent} onClose={()=>onConfirmHandler(1)} range />
                     </div>
                     :
                     !isWrite && selectedList.csTalkId!=='' && !isModify
@@ -837,8 +882,8 @@ function CStalk() {
                         <div className="custom-flex-item">
                             <img src={Attachment} alt="attachment"/> 
                             <span className="custom-self-align">Attachment</span>
-                            <span className="custom-flex-item cstalk-attach-down">
-                                <span>{selectedList.attachments!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{selectedList.attachments}</p><img src={Download} alt='download_attachment'/></span>
+                            <span className="custom-flex-item cstalk-attach-down ">
+                                <span className="custom-self-align">{selectedList.attachments!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{selectedList.attachments}</p><img src={Download} alt='download_attachment'/></span>
                             </span>
                         </div>   
                         <div className="user-action custom-flex-item ">
@@ -871,7 +916,7 @@ function CStalk() {
                     </div>
                     <div className="cstalk-right-bottom">
                         <div className="cstalk-comment-wrapper">
-                        <span>Comments</span><span className="comment-cnt-title">total <p className="custom-stress-txt comment-cnt">{commentList?.length}</p></span>
+                        <span>Comments</span><span className="comment-cnt-title">total <p className="custom-stress-txt comment-cnt">{selectedList?.commentCount}</p></span>
                             <div className="custom-justify-between">
                                 <div className="comment-input">
                                     <span>Writer : {user.name}</span>
@@ -896,23 +941,12 @@ function CStalk() {
                                                             comment.writerID===user.id &&
                                                             <p onClick={()=>onConfirmHandler(4,comment.commentId)}>Delete</p>
                                                         }
-                                                         <p onClick={()=>openCommentInput(idx)}>Answer</p>
+                                                         <p onClick={()=>{openCommentInput(idx); setSubComment('')}}>Answer</p>
                                                     </span>
                                                 </div>
                                                 <div className="comment-middle">{comment.content?.slice(0,250)}{comment.content?.length>250 && <span className="custom-stress-txt">...More</span>}</div>
                                                 <div className={comment.openSubComment ? "comment-bottom" : "comment-bottom "}>
-                                                        {
-                                                        comment.isInput &&
-                                                        <div className="cstalk-comment-wrapper sub-comment-wrapper">
-                                                        <div className="custom-justify-between">
-                                                            <div className="comment-input">
-                                                                <span>Writer : {user.name}</span>
-                                                                <textarea value={subComment} onChange={(e)=>setSubComment(e.target.value)}/>
-                                                            </div>
-                                                            <button onClick={()=>onAddComment(2, comment.commentId)}>Write</button>
-                                                        </div>
-                                                        </div>
-                                                         }
+                                                        
 
                                                             {
                                                                 comment.subComment.length!==0 &&
@@ -938,7 +972,8 @@ function CStalk() {
                                                                                             <span>{moment(sub.createdAt).format('YYYY-MM-DD')}</span>
                                                                                         </div>
                                                                                         <span className="custom-flex-item">
-                                                                                            {sub.writerID===user.id && <p onClick={()=>onConfirmHandler(4,sub.commentId)}>Delete</p>}<p>Answer</p>
+                                                                                            {sub.writerID===user.id && <p onClick={()=>onConfirmHandler(4,sub.commentId)}>Delete</p>}
+                                                                                            {/* <p>Answer</p> */}
                                                                                         </span>
                                                                                     </div>
                                                                                     <div className="comment-middle">{sub.content?.slice(0,250)}{sub.content?.length>250 && <span className="custom-stress-txt">...More</span>}</div>
@@ -951,6 +986,19 @@ function CStalk() {
                                                                 :
                                                                 null
                                                             }
+                                                            {
+                                                                comment.isInput &&
+                                                                <div className="cstalk-comment-wrapper sub-comment-wrapper">
+                                                                <div className="custom-justify-between">
+                                                                    <div className="comment-input">
+                                                                        <span>Writer : {user.name}</span>
+                                                                        {/* <textarea value={subComment} onChange={(e)=>console.log(e.target.value)}/> */}
+                                                                        <textarea defaultValue={subComment} onBlur={(e)=>setSubComment(e.target.value)} id={`sub-${comment.commentId}-${idx}`}  />
+                                                                    </div>
+                                                                    <button onClick={()=>onAddComment(2, comment.commentId)}>Write</button>
+                                                                </div>
+                                                                </div>
+                                                         }
                                                         {/* ) */}
                                                     {/* })} */}
                                                 </div>
@@ -978,7 +1026,7 @@ function CStalk() {
                     :
                     isModify
                     ?
-                    <EditorModify data={content} setData={setContent} range onSave={onEditContent} />
+                    <EditorModify data={content} setData={setContent} range onSave={onEditContent}  onClose={()=>onConfirmHandler(1)} onDelete={()=>onConfirmHandler(3)}/>
                     :
                     <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
                         <p>If you select a list, you can see the contents</p>
@@ -1002,13 +1050,4 @@ function CStalk() {
 }
 
 export default CStalk
-
-const Style = styled.div`
-    #list-item-${props => props.selectId} {
-        background : #FAF1F4;
-    }
-    #list-item-${props => props.selectId} .title {
-        color : #BB0841;
-    }
-`
 

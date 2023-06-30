@@ -105,20 +105,48 @@ const Favorite = props => {
         setMenu(arr)
     }
 
+
+    const [alertSetting, setAlertSetting] = useState({
+        alertTxt : '',
+        onConfirm : function() {},
+        isDoubleBtn : false,
+        btnTxt : 'Close',
+        confirmTxt : ''
+    })
+
     const onConfirmSave = (num) =>{
         if(num===1) {
-            setAlertTxt('Do you want to set the selected menu as the first screen?')
+            setAlertSetting({
+                alertTxt : 'Do you want to set the selected menu as the first screen?',
+                onConfirm :()=>{onSaveFavorite(); onClose()},
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : 'Success to change your preferences.'
+            })
         }else if(num===2) {
-            setAlertTxt('Saved your preferences')
+            setAlertSetting({
+                alertTxt : 'Saved your preferences',
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+                confirmTxt : ''
+            })
         }
     }
     useEffect(()=>{
-        if(alertTxt!=='') {
+        if(alertSetting.alertTxt!=='') {
             setAlertModal(true)
         }
-    },[alertTxt])
+    },[alertSetting])
+    
     useEffect(()=>{
-        !alertModal && setAlertTxt('')
+        !alertModal && 
+        setAlertSetting({ 
+            alertTxt : '',
+            onConfirm : function() {},
+            isDoubleBtn : false,
+            btnTxt : 'Close',
+            confirmTxt : ''
+        })
     },[alertModal])
 
     const onChangeMain = (index, idx, value) => {
@@ -186,7 +214,8 @@ const Favorite = props => {
             {
                 alertModal
                 &&
-                <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} btnTxt='Confirm' twoBtn onConfirm={onSaveFavorite}/>
+                // <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} btnTxt='Confirm' twoBtn onConfirm={onSaveFavorite}/>
+                <Alert alertTxt={alertSetting.alertTxt} onClose={()=>setAlertModal(false)} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt}/>
             }
         </>
     )

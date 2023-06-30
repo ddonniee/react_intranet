@@ -20,7 +20,7 @@ import Alert from "./Alert";
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
  * @returns 
  */
-function EditorModify({ period, data, setData, range, onSave }) {
+function EditorModify({ period, data, setData, range, onSave, onClose, onDelete }) {
 
     console.log(data,'editedit')
     const user = useContext(UserContext);
@@ -29,6 +29,7 @@ function EditorModify({ period, data, setData, range, onSave }) {
     const [alertTxt, setAlertTxt] = useState('')
     // const [dbtxt, setDbtxt] = useEffect
     
+    console.log(content.csTalkId==='','[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]')
     const editorConfig = {
         // plugins: [UploadAdapter],
         // toolbar: [
@@ -46,7 +47,7 @@ function EditorModify({ period, data, setData, range, onSave }) {
         })
     }
     const onStopInput = () => {
-        console.log('else')
+        console.log('onStopInput')
         setData(content)
     }
     useEffect(()=>{
@@ -59,6 +60,15 @@ function EditorModify({ period, data, setData, range, onSave }) {
             setAlertModal(true)
         }
     },[alertTxt])
+
+    useEffect(()=>{
+        console.log('---------------------------------------------------------------------!!')
+        setData({
+            ...data,
+            isPublic : content.isPublic
+        })
+    },[content.isPublic])
+
     return (
         <Style>
         <div className="editor-container">
@@ -161,10 +171,13 @@ function EditorModify({ period, data, setData, range, onSave }) {
                     <p className="attach-desc">Attached files can only be in PDF, HWP, Docx, xls, and PPT formats (Support up to 100MB)</p>
                 </div>
             </div>
-            <div className="btn-row">
-                <button className="btn-white">Delete</button>
+            <div className="btn-row" style={content.csTalkId==='' ? {justifyContent:'flex-end'} : null}>
+                {
+                    content.csTalkId !== '' &&
+                    <button className="btn-white" onClick={onDelete}>Delete</button>
+                }
                 <div>
-                    <button className="btn-black">Cancel</button>
+                    <button className="btn-black" onClick={onClose}>Cancel</button>
                     <button type="submit" className="btn-red" onClick={onSave}>Save</button>
                 </div>
             </div>

@@ -275,7 +275,9 @@ body .modal {
 .custom-hover:hover {
     background-color: $hover-color-pink; color: $primary-color-red; font-weight: 700;
 }
-
+.custom-float-end {
+    justify-content: flex-end;
+}
 .primary-red-btn {
     background-color: $primary-color-red; color: white;
 }
