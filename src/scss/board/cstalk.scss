@@ -17,29 +17,36 @@
 }
 .cstalk-custom-board {
     text-align: center;  height: 93%;
-}
-.cstalk-custom-board li
-{    height: 10%;
-    display: flex;
-    align-items: center;
-    border-bottom: 2px solid #F6F6F6;
-}
-.cstalk-custom-board li:first-child {
-    border-top: 1px solid $board-color-grey;
-}
-.cstalk-custom-board li:hover {
-    background-color: $hover-color-pink;
+    .selected-row {
+        background-color: $hover-color-pink; color: $primary-color-red;
+    }
+    li {    
+        height: 10%;
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid #F6F6F6;
+        
+        & > div:first-child .custom-stress-txt{
+            padding-left: 5px;
+        }
+    }
+    & li:first-child {
+        border-top: 1px solid $board-color-grey;
+    }
+    li:hover {
+        background-color: $hover-color-pink;
+    }
+    div span:first-child{
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+    }
+    & > span,
+    li > span {
+        font-size: 15px; line-height: 24px; letter-spacing: 0.15px; color: $board-color-txt;
+    }
 }
 
-.cstalk-custom-board div span:first-child{
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-}
-.cstalk-custom-board > span,
-.cstalk-custom-board li > span {
-    font-size: 15px; line-height: 24px; letter-spacing: 0.15px; color: $board-color-txt;
-}
 .cstalk-subject {
     flex-direction: column; 
 }
@@ -216,10 +223,10 @@
 .cstalk-right-top {
     position: relative; z-index: 100;  border-bottom: 1px solid $border-color-gery; 
 
-    & > div:nth-child(3) {
-        padding: 5px 0;
-    }
-    & > div:nth-child(3) > img {
+    // & > div:not(:nth-child(2)) {
+    //     padding: 5px 0;
+    // }
+    & > div:not(:nth-child(2)) > img {
         padding-right: 7px;
     }
     & > div:nth-child(3) > span:last-child > span:last-child{

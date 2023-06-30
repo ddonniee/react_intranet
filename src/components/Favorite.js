@@ -214,7 +214,6 @@ const Favorite = props => {
             {
                 alertModal
                 &&
-                // <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} btnTxt='Confirm' twoBtn onConfirm={onSaveFavorite}/>
                 <Alert alertTxt={alertSetting.alertTxt} onClose={()=>setAlertModal(false)} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt}/>
             }
         </>

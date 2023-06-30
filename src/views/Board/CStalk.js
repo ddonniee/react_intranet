@@ -179,14 +179,7 @@ function CStalk() {
             console.log('error',error)
         })
     }
-    const handleClickRow = (e, item) => {
-        if(isWrite || isModify) {
-            onConfirmHandler(1,item)
-            return false
-        }
-        getDetail(item)
-    }
-    
+
     const [alertModal, setAlertModal] = useState(false)
     const [alertSetting, setAlertSetting] = useState({
         alertTxt : '',
@@ -281,6 +274,16 @@ function CStalk() {
             })
         }
     }
+
+    const handleClickRow = (e, item) => {
+        setFileStore([])
+        if(isWrite || isModify) {
+            onConfirmHandler(1,item)
+            return false
+        }
+        getDetail(item)
+    }
+    
 
     useEffect(()=>{
         if(!alertModal) {
@@ -439,6 +442,8 @@ function CStalk() {
             reactionState : '',
             writerName : '',
         })
+        setIsWrite(false)
+        setIsModify(false)
     }
     const openCommentInput = (idx) =>{
         console.log('openCommentInput')
@@ -753,42 +758,72 @@ function CStalk() {
 
    
     useEffect(()=>{
-       if(boardData.length!==0) {
-        console.log('== list ==',boardData)
+       if(boardData.length===0) {
+            setBoardLength(0)
        }
-       let max = boardLength;
-       if(reqData.page===1) {
-        max = 0
-        boardData.map((item) =>{
-            if(item.rn>max) {
-                console.log(item.rn)
-                max = item.rn;
-            }
-            setBoardLength(max)
-         })
+       else {
+        let max = boardLength;
+        if(reqData.page===1) {
+         max = 0
+         console.log('ms',max)
+         boardData.map((item) =>{
+             if(item.rn>max) {
+                 console.log(item.rn)
+                 max = item.rn;
+             }
+             setBoardLength(max)
+          })
+        }
        }
-       
     },[boardData])
 
  
 
-    const [fileStore, setFileStore] = useState({})
+    const [fileStore, setFileStore] = useState([])
     useEffect(()=>{
-
-        // if(selectedList.attachments!==null && type==='string') {
-        //     const jsonString = JSON.parse(selectedList.attachments);
-        //     console.log(typeof(jsonString),'obj')
-        //     setFileStore({...jsonString})
-        // }
+        
+        if(selectedList?.attachments!=='') {
+            const jsonString = JSON.parse(selectedList.attachments);
+            if(jsonString!==null) {
+                let copy = [...fileStore,jsonString]
+                setFileStore(copy)
+            }
+        }
         getComment();
         setComment('');
         setCommentPage(1)
     },[selectedList])
 
+    useEffect(()=>{
+        console.log('boardLength',boardLength)
+    },[boardLength])
 
     useEffect(()=>{
         getComment()
-    },[commentPage])
+    },[commentPage]) 
+
+    useEffect(()=>{
+        if(isWrite) {
+            setSelctedList({
+                attachments : '',
+                subject: '',
+                branch : '',
+                center : '',
+                commentCount : 0,
+                content : '',
+                createdAt : '',
+                csTalkId : '',
+                hits : 0,
+                isPublic :  '',
+                likeCount : 0, 
+                parentCsId : '',
+                subsidiary : '',
+                writerID : '',
+                reactionState : '',
+                writerName : '',
+            })
+        }
+    },[isWrite])
     
 
     return (
@@ -833,7 +868,7 @@ function CStalk() {
                         {
                             boardData?.map((item,idx)=>{
                                 return(
-                                    <li  key={generateRandomString(idx)} id={`list-item-${item.csTalkId}`} onClick={(e)=>handleClickRow(e,item.csTalkId)}>
+                                    <li key={generateRandomString(idx)} id={`list-item-${item.csTalkId}`} onClick={(e)=>handleClickRow(e,item.csTalkId)} className={selectedList?.csTalkId === item.csTalkId ? 'selected-row':''}>
                                         <div className="cstalk-subject custom-flex-item custom-txt-align">
                                             <span className="custom-flex-item">{item.level===2 && `[RE]  `}{item.subject}<span className="custom-stress-txt">{item.commentCount!==0 && `( ${item.commentCount} )`}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /></span>
                                             {/* <span>{item.writerName}</span> */}
@@ -879,13 +914,20 @@ function CStalk() {
                             <span>Writer : {selectedList.writerName}</span>
                             <span>Date : {moment(selectedList.createdAt).format('YYYY-M-DD')}</span>
                         </div>
-                        <div className="custom-flex-item">
-                            <img src={Attachment} alt="attachment"/> 
-                            <span className="custom-self-align">Attachment</span>
-                            <span className="custom-flex-item cstalk-attach-down ">
-                                <span className="custom-self-align">{selectedList.attachments!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{selectedList.attachments}</p><img src={Download} alt='download_attachment'/></span>
-                            </span>
-                        </div>   
+                        {
+                            fileStore.length !== 0 &&
+                            fileStore.map((file,idx)=>{
+                                return (
+                                    <div className="custom-flex-item" key={generateRandomString(idx)}>
+                                        <img src={Attachment} alt="attachment"/> 
+                                        <span className="custom-self-align">Attachment</span>
+                                        <span className="custom-flex-item cstalk-attach-down ">
+                                            <span className="custom-self-align">{` (${idx+1}) `}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{file.fileName}</p><img src={Download} alt='download_attachment'/></span>
+                                        </span>
+                                    </div> 
+                                )
+                            })
+                        }  
                         <div className="user-action custom-flex-item ">
                             <span className="cstalk-like custom-flex-item " onClick={(e)=>onClickAction(e,selectedList.csTalkId)}><img src={selectedList.reactionState!=='NONE'?Liked : Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
                             
