@@ -233,6 +233,7 @@ function NoticeSetting() {
 
     const [alertModal, setAlertModal] = useState(false)
     const [alertTxt, setAlertTxt] = useState('')
+    const [alertConfirm, setAlertConfirm] = useState(false);
 
     const onSaveContent = () => {
         console.log('editor data >>>>>>', writeData)
@@ -275,6 +276,9 @@ function NoticeSetting() {
                 
                 keysToSave.forEach((key) => {
                     if (writeData.hasOwnProperty(key)) {
+                        if(key == 'postStartDate' || key == 'postEndDate') {
+                            formData.append(key, moment(writeData[key]).format('YYYY-MM-DD'));
+                        }
                       formData.append(key, writeData[key]);
                     }
                 });
@@ -302,9 +306,9 @@ function NoticeSetting() {
     }
 
     const onDeleteContent = () => {
-        let confirm = window.confirm('Are you sure you want to delete it?');
+        // let confirm = window.confirm('Are you sure you want to delete it?');
 
-        if(confirm) {
+        if(alertConfirm) {
             const formData = new FormData();
             formData.append('noticeId', detail?.noticeId);
 
@@ -314,7 +318,9 @@ function NoticeSetting() {
 
                 if(resData.code == 200) {
                     console.log('res', resData)
-                    setAlertTxt("The post has been deleted.")
+                    // setAlertTxt("The post has been deleted.")
+                    // setAlertConfirm(false);
+                    setAlertModal(false)
                     setIsWrite(false)
                     setIsModify(false)
                     setDetail()
@@ -329,9 +335,9 @@ function NoticeSetting() {
     }
 
     const onRestoreContent = () => {
-        let confirm = window.confirm('Are you sure you want to restore it?');
+        // let confirm = window.confirm('Are you sure you want to restore it?');
 
-        if(confirm) {
+        if(alertConfirm) {
             const formData = new FormData();
             formData.append('noticeId', detail?.noticeId);
 
@@ -341,7 +347,9 @@ function NoticeSetting() {
 
                 if(resData.code == 200) {
                     console.log('res', resData)
-                    setAlertTxt("The post has been restored.")
+                    // setAlertTxt("The post has been restored.")
+                    // setAlertConfirm(false);
+                    setAlertModal(false)
                     setIsWrite(false)
                     setIsModify(false)
                     setDetail()
@@ -370,6 +378,21 @@ function NoticeSetting() {
             setAlertModal(true)
         }
     }, [alertTxt])
+
+    useEffect(() => {
+        console.log('alert', alertTxt)
+        console.log('confirm', alertConfirm)
+
+        if(alertConfirm) {
+            if(alertTxt == 'Are you sure you want to delete it?') {
+                onDeleteContent();
+                setAlertConfirm(false);
+            } else if(alertTxt == 'Are you sure you want to restore it?') {
+                onRestoreContent();
+                setAlertConfirm(false);
+            }
+        }
+    }, [alertConfirm])
 
     return (
         <div className="notice-container">
@@ -413,7 +436,7 @@ function NoticeSetting() {
                                             <div className={`title ${item.deleteAt ? 'title-del' : ''}`}>
                                                 <span className="custom-flex-item custom-align-item">
                                                 {/** 게시기간 종료일이 현재 날짜 이전이면 확성기 아이콘 출력 */}
-                                                { (!item.deleteAt && item.postEndDate) && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null } 
+                                                { (!item.deleteAt && item.postEndDate) && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) >= new Date() ? <SpeakerIcon /> : null } 
                                                 { item.title.length > 90 ? (item.title).substr(0,90) + '...' : item.title } 
                                                 { (!item.deleteAt && item.new) ? <NewIcon /> : null }
                                                 </span>
@@ -447,7 +470,8 @@ function NoticeSetting() {
                     {
                         isWrite || isModify ?
                         <Editor onClose={isWrite ? setIsWrite : setIsModify} period={true} data={detail} setData={setWriteData} isWriter={auth.isWriter}
-                            onDelete={onDeleteContent} onRestore={onRestoreContent} />
+                            onDelete={() => setAlertTxt('Are you sure you want to delete it?')} 
+                            onRestore={() => setAlertTxt('Are you sure you want to restore it?')} />
                         :
                         <div className="notice-view-none">
                             <p>If you select a list, you can see the contents</p>
@@ -458,7 +482,10 @@ function NoticeSetting() {
             {
                 alertModal
                 &&
-                <Alert alertTxt={alertTxt} onClose={() => setAlertModal(false)} onConfirm={() => setAlertModal(false)} btnTxt='Close' />
+                <Alert alertTxt={alertTxt} onClose={() => setAlertModal(false)} onConfirm={() => {alertConfirm ? setAlertModal(false) : setAlertConfirm(true)}} 
+                    btnTxt='Confirm' twoBtn />
+                // <Alert alertTxt={alertTxt} onClose={() => setAlertModal(false)} onConfirm={() => {alertConfirm ? setAlertModal(false) : setAlertConfirm(true)}} 
+                //     btnTxt={alertConfirm ? 'Cancel' : 'Confirm'} twoBtn={alertConfirm ? false : true} />
             }
             </Style>
 

@@ -44,6 +44,7 @@ function CustomDatePicker (props) {
             setSecondDate(new Date());
         }
         props.setStartDate && props.setStartDate(firstDate);
+        console.log('datepicker first render')
     }, [firstDate])
 
     useEffect(() => {
@@ -52,6 +53,7 @@ function CustomDatePicker (props) {
             setSecondDate(new Date());
         }
         props.setEndDate && props.setEndDate(secondDate);
+        console.log('datepicker second render')
     }, [secondDate])
 
     useEffect(() => {
