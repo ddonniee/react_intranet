@@ -282,12 +282,18 @@ function Notice() {
                                 <AttachmentIcon /> 
                                 <span className="notice-attach">Attachment</span>
                                 <span className="custom-flex-item">
-                                    <span className="notice-attach-count">{detail?.attachment !== '' && ` (1)`}</span>
-                                    <p className="custom-hyphen custom-self-align">-</p>
-                                    <span className="notice-attach-box"> 
-                                        <p>{detail?.fileName}</p>
-                                        <a href={process.env.REACT_APP_FRONT_URL /*+ detail?.uploadPath*/} target='_blank' download> <DownloadIcon /> </a>
-                                    </span>
+                                    <span className="notice-attach-count">{!detail?.attachments ? '' : ` (1)`}</span>
+                                    {
+                                        detail?.attachments ?
+                                        <>
+                                        <p className="custom-hyphen custom-self-align">-</p>
+                                        <span className="notice-attach-box"> 
+                                            <p>{detail?.fileName}</p>
+                                            <a href={process.env.REACT_APP_FRONT_URL /*+ detail?.uploadPath*/} target='_blank' download> <DownloadIcon /> </a>
+                                        </span>
+                                        </>
+                                        : null
+                                    }
                                 </span>
                             </div>
                         </div>
