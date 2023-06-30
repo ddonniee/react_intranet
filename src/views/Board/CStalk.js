@@ -869,7 +869,7 @@ function CStalk() {
                         {
                             boardData?.map((item,idx)=>{
                                 return(
-                                    <li key={generateRandomString(idx)} id={`list-item-${item.csTalkId}`} onClick={(e)=>handleClickRow(e,item.csTalkId)} className={selectedList?.csTalkId === item.csTalkId ? 'selected-row':''}>
+                                    <li key={generateRandomString(idx)} id={`list-item-${item.csTalkId}`} onClick={(e)=>handleClickRow(e,item.csTalkId)} className={selectedList?.csTalkId === item.csTalkId ? 'selected-row cursor-btn':'cursor-btn'}>
                                         <div className="cstalk-subject custom-flex-item custom-txt-align">
                                             <span className="custom-flex-item">{item.level===2 && `[RE]  `}{item.subject}<span className="custom-stress-txt">{item.commentCount!==0 && `( ${item.commentCount} )`}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /></span>
                                             {/* <span>{item.writerName}</span> */}
@@ -930,7 +930,7 @@ function CStalk() {
                             })
                         }  
                         <div className="user-action custom-flex-item ">
-                            <span className="cstalk-like custom-flex-item " onClick={(e)=>onClickAction(e,selectedList.csTalkId)}><img src={selectedList.reactionState!=='NONE'?Liked : Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
+                            <span className="cstalk-like custom-flex-item " onClick={(e)=>onClickAction(e,selectedList.csTalkId)}><img src={selectedList.reactionState!=='NONE'?Liked : Like} alt="btn_like" className="cursor-btn"/><p>{selectedList.likeCount}</p></span>   
                             
                         </div> 
                     </div>
@@ -940,7 +940,7 @@ function CStalk() {
                             { 
                                 selectedList.writerID===user.id
                                 &&
-                                <div style={{marginRight:'auto'}}><button onClick={()=>onConfirmHandler(3)} className="custom-flex-item custom-align-item">Delete</button></div>
+                                <div style={{marginRight:'auto'}}><button onClick={()=>onConfirmHandler(3)} className="custom-flex-item custom-align-item ">Delete</button></div>
                             }
                             {
                                ( selectedList.isPublic !== 1 && user.subsidiary==='LGEKR' ) &&
@@ -982,9 +982,9 @@ function CStalk() {
                                                     <span className="custom-flex-item">
                                                         {
                                                             comment.writerID===user.id &&
-                                                            <p onClick={()=>onConfirmHandler(4,comment.commentId)}>Delete</p>
+                                                            <p className="cursor-btn" onClick={()=>onConfirmHandler(4,comment.commentId)}>Delete</p>
                                                         }
-                                                         <p onClick={()=>{openCommentInput(idx); setSubComment('')}}>Answer</p>
+                                                         <p className="cursor-btn" onClick={()=>{openCommentInput(idx); setSubComment('')}}>Answer</p>
                                                     </span>
                                                 </div>
                                                 <div className="comment-middle">{comment.content?.slice(0,250)}{comment.content?.length>250 && <span className="custom-stress-txt">...More</span>}</div>
@@ -993,7 +993,7 @@ function CStalk() {
 
                                                             {
                                                                 comment.subComment.length!==0 &&
-                                                                <div className="custom-flex-item" onClick={(e)=>openSubcomment(e,idx,comment.csTalkId)}>
+                                                                <div className="custom-flex-item cursor-btn" onClick={(e)=>openSubcomment(e,idx,comment.csTalkId)}>
                                                                 <img src={Comment} alt="under-comment" />
                                                                 <span>Comment</span>
                                                                 <span className="custom-stress-txt">( {comment.subComment.length} ) </span>

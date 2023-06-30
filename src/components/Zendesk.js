@@ -31,7 +31,7 @@ const Zendesk = () =>{
 
     return(
         <Style>
-        <div className="zendesk-btn" onClick={handleClickLogo}><img src={Logo} alt="logo"/></div>
+        <div className="zendesk-btn cursor-btn" onClick={handleClickLogo}><img src={Logo} alt="logo"/></div>
         </Style>
     )
 

@@ -205,7 +205,7 @@ const Tab = () => {
     return (
         <>
         <Style open={openTab}>
-            <div className={ `${openTab ? 'modal' : ''}`} >
+            <div className={ `${openTab ? 'modal' : 'cursor-btn'}`} >
             <div className={`navigation-container ${openTab ? 'open' : 'closed'} `} ref={modalRef}>
                 <div className="nav-top"><h1>Bookmark</h1></div>
                 <div className="nav-middle">
@@ -223,7 +223,7 @@ const Tab = () => {
                                                     item.lowerMenu.map((i,idx)=>{
                                                         return (
                                                             <>
-                                                           { i.isFavorite &&  <li onClick={()=>{onClickLink(i.path)}}>{i.label}</li>}
+                                                           { i.isFavorite &&  <li className="cursor-btn" onClick={()=>{onClickLink(i.path)}}>{i.label}</li>}
                                                             </>
                                                         )
                                                     })
@@ -237,7 +237,7 @@ const Tab = () => {
                         }
                     </ul>
                 </div>
-                <div className="nav-bottom custom-flex-item custom-align-item custom-justify-center" onClick={()=>setFavModal(true)}><img src={Setting} alt="nav-setting"/><p className="custom-stress-txt">Setting</p></div>
+                <div className="nav-bottom custom-flex-item custom-align-item custom-justify-center cursor-btn" onClick={()=>setFavModal(true)}><img src={Setting} alt="nav-setting"/><p className="custom-stress-txt " >Setting</p></div>
             <div className={`tab-container custom-flex-item custom-justify-center custom-align-item  ${openTab ? 'open' : 'closed'}`} onClick={handleTab}>
                 {!openTab ? ' My Favorite Quick' : <img src={Close} />}
             </div>
