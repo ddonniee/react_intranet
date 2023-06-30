@@ -195,7 +195,7 @@ const Favorite = props => {
                                         <ul>
                                         {item.lowerMenu.map((lw,idx)=>{
                                             return (
-                                                <li key={generateRandomString(idx)} title={lw.path} onClick={handleClickLink}><img src={lw.isFavorite ? Fav : NonFav} onClick={()=>onChangeFav(lw.value,index,idx)} alt="fsv-btn"/><span>{lw.label}</span><img src={lw.value === data.myHome ? Main : NonMain} onClick={()=>onChangeMain(index, idx, lw.value)} alt="user-custom-main-btn"/></li>
+                                                <li key={generateRandomString(idx)} title={lw.path} onClick={handleClickLink}><img src={lw.isFavorite ? Fav : NonFav} onClick={()=>onChangeFav(lw.value,index,idx)} alt="fsv-btn" className="cursor-btn"/><span>{lw.label}</span><img src={lw.value === data.myHome ? Main : NonMain} onClick={()=>onChangeMain(index, idx, lw.value)} alt="user-custom-main-btn" className="cursor-btn"/></li>
                                             )
                                         })}
                                         </ul>
