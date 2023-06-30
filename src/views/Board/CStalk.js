@@ -136,8 +136,9 @@ function CStalk() {
     });
 
     const centerOptions = [
+        { value: '', label: 'All' },
         { value: '0', label: 'Me' },
-        { value: '1', label: 'All' },
+        { value: '1', label: 'Public' },
         { value: '2', label: 'Center' },
     ]
 
@@ -847,7 +848,7 @@ function CStalk() {
                 
                 <div className="custom-flex-item custom-align-item">
                     <p>· View</p>
-                    <SelectBox options={centerOptions} handleChange={handleSelectBox} defaultValue={centerOptions[1]}/>
+                    <SelectBox options={centerOptions} handleChange={handleSelectBox} defaultValue={centerOptions[0]}/>
                 </div>
                 <div className="custom-flex-item custom-align-item">
                     <p>· Search</p>

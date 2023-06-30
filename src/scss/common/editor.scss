@@ -1,5 +1,11 @@
 @import '../variables.scss';
 
+.editor-border {
+    border-radius: 14px;
+    height: 800px;
+    overflow: auto;
+    border: 1px solid #D5D5D5;
+}
 .file-upload {
     div {
         margin-bottom: 10px;

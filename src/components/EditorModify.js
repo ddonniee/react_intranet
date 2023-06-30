@@ -60,6 +60,21 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete 
         console.log('onStopInput')
         setData(content)
     }
+    const onCheckInput = e =>{ 
+        let value = e.target.value;
+        if (value.length <= 100) {
+            setContent({
+                ...content,
+                title : value
+            })
+        }else {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt : 'Up to 100 characters are allowed.'
+            })
+        }
+       
+    }
     const addRow = () =>{
 
         if(attachments.length < 5) {
@@ -106,7 +121,7 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete 
 
     return (
         <Style>
-        <div className="editor-container">
+        <div className="editor-container editor-border">
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
                 <div className="right"> <input type="text" className="write-input" name="writer" readOnly value={user.name}></input> </div>
@@ -149,16 +164,12 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete 
                 <div className="right"> 
                     <input 
                     type="text" 
-                    className="write-input" n
+                    className="write-input" 
                     ame="subject" 
                     value={content.title}
-                    onChange={(e)=>{
-                        let value = e.target.value;
-                        setContent({
-                            ...content,
-                            title : value
-                        })
-                    }}>
+                    onChange={(e)=>{onCheckInput(e)}}
+                    onBlur={()=>onStopInput()} 
+                    >
                     </input> 
                 </div>
             </div>
