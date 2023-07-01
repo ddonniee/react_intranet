@@ -148,7 +148,7 @@ function NoticeSetting() {
 
     const getSelectList = () => {
         // 법인목록 조회 API
-        axiosInstance.post('/corporation/list').then(res => {
+        axiosInstance2.post('/corporation/list').then(res => {
             const data = res?.data.result;
 
             const newArray = data.map((obj, index) => ({
@@ -460,7 +460,7 @@ function NoticeSetting() {
                         <Paging pageInfo={pageInfo} setPageInfo={setPageInfo} searchData={searchData} setSearchData={setSearchData} />
                     }
                     {
-                        auth.isWriter &&
+                        // auth.isWriter &&
                         <div className="notice-bottom">
                             <button className="notice-btn-circle" onClick={() => handleClickWrite()}>Write</button>
                         </div>
@@ -469,7 +469,7 @@ function NoticeSetting() {
                 <div className="notice-right">
                     {
                         isWrite || isModify ?
-                        <Editor onClose={isWrite ? setIsWrite : setIsModify} period={true} data={detail} setData={setWriteData} isWriter={auth.isWriter}
+                        <Editor onClose={isWrite ? setIsWrite : setIsModify} period={true} data={detail} setData={setWriteData} isWriter={true} //isWriter={auth.isWriter}
                             onDelete={() => setAlertTxt('Are you sure you want to delete it?')} 
                             onRestore={() => setAlertTxt('Are you sure you want to restore it?')} />
                         :
