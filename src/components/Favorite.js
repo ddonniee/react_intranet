@@ -105,20 +105,48 @@ const Favorite = props => {
         setMenu(arr)
     }
 
+
+    const [alertSetting, setAlertSetting] = useState({
+        alertTxt : '',
+        onConfirm : function() {},
+        isDoubleBtn : false,
+        btnTxt : 'Close',
+        confirmTxt : ''
+    })
+
     const onConfirmSave = (num) =>{
         if(num===1) {
-            setAlertTxt('Do you want to set the selected menu as the first screen?')
+            setAlertSetting({
+                alertTxt : 'Do you want to set the selected menu as the first screen?',
+                onConfirm :()=>{onSaveFavorite(); onClose()},
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : 'Success to change your preferences.'
+            })
         }else if(num===2) {
-            setAlertTxt('Saved your preferences')
+            setAlertSetting({
+                alertTxt : 'Saved your preferences',
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+                confirmTxt : ''
+            })
         }
     }
     useEffect(()=>{
-        if(alertTxt!=='') {
+        if(alertSetting.alertTxt!=='') {
             setAlertModal(true)
         }
-    },[alertTxt])
+    },[alertSetting])
+    
     useEffect(()=>{
-        !alertModal && setAlertTxt('')
+        !alertModal && 
+        setAlertSetting({ 
+            alertTxt : '',
+            onConfirm : function() {},
+            isDoubleBtn : false,
+            btnTxt : 'Close',
+            confirmTxt : ''
+        })
     },[alertModal])
 
     const onChangeMain = (index, idx, value) => {
@@ -167,7 +195,7 @@ const Favorite = props => {
                                         <ul>
                                         {item.lowerMenu.map((lw,idx)=>{
                                             return (
-                                                <li key={generateRandomString(idx)} title={lw.path} onClick={handleClickLink}><img src={lw.isFavorite ? Fav : NonFav} onClick={()=>onChangeFav(lw.value,index,idx)} alt="fsv-btn"/><span>{lw.label}</span><img src={lw.value === data.myHome ? Main : NonMain} onClick={()=>onChangeMain(index, idx, lw.value)} alt="user-custom-main-btn"/></li>
+                                                <li key={generateRandomString(idx)} title={lw.path} onClick={handleClickLink}><img src={lw.isFavorite ? Fav : NonFav} onClick={()=>onChangeFav(lw.value,index,idx)} alt="fsv-btn" className="cursor-btn"/><span>{lw.label}</span><img src={lw.value === data.myHome ? Main : NonMain} onClick={()=>onChangeMain(index, idx, lw.value)} alt="user-custom-main-btn" className="cursor-btn"/></li>
                                             )
                                         })}
                                         </ul>
@@ -186,7 +214,7 @@ const Favorite = props => {
             {
                 alertModal
                 &&
-                <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} btnTxt='Confirm' twoBtn onConfirm={onSaveFavorite}/>
+                <Alert alertTxt={alertSetting.alertTxt} onClose={()=>setAlertModal(false)} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt}/>
             }
         </>
     )

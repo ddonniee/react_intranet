@@ -47,7 +47,9 @@ html, body, #root{
   #root::-webkit-scrollbar-track {
     background-color: #f1f1f1;
   }  
-
+input, button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-select {
+    cursor: pointer;
+}
 .cell-select-box > *:hover {
     background-color: $hover-color-pink;
     border: none;
@@ -275,7 +277,9 @@ body .modal {
 .custom-hover:hover {
     background-color: $hover-color-pink; color: $primary-color-red; font-weight: 700;
 }
-
+.custom-float-end {
+    justify-content: flex-end;
+}
 .primary-red-btn {
     background-color: $primary-color-red; color: white;
 }

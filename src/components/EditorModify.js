@@ -12,6 +12,7 @@ import { styled } from "styled-components";
 import {UserContext} from '../hooks/UserContext'
 import moment from "moment";
 import Alert from "./Alert";
+import { generateRandomString } from "../utils/CommonFunction";
 
 /**
  * 작성자 : 이은정
@@ -20,15 +21,25 @@ import Alert from "./Alert";
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
  * @returns 
  */
-function EditorModify({ period, data, setData, range, onSave }) {
+function EditorModify({ period, data, setData, range, onSave, onClose, onDelete }) {
 
     console.log(data,'editedit')
     const user = useContext(UserContext);
     const [content, setContent] = useState(data);
     const [alertModal, setAlertModal] = useState(false)
-    const [alertTxt, setAlertTxt] = useState('')
-    // const [dbtxt, setDbtxt] = useEffect
-    
+    const [alertSetting, setAlertSetting] = useState({
+        alertTxt : '',
+        onConfirm : function() {},
+        isDoubleBtn : false,
+        btnTxt : 'Close',
+        confirmTxt : ''
+    })
+    const [attachments, setAttachments] = useState([
+       {
+        fileName: '',
+        filePath : '',
+       }
+    ])
     const editorConfig = {
         // plugins: [UploadAdapter],
         // toolbar: [
@@ -46,22 +57,71 @@ function EditorModify({ period, data, setData, range, onSave }) {
         })
     }
     const onStopInput = () => {
-        console.log('else')
+        console.log('onStopInput')
         setData(content)
+    }
+    const onCheckInput = e =>{ 
+        let value = e.target.value;
+        if (value.length <= 100) {
+            setContent({
+                ...content,
+                title : value
+            })
+        }else {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt : 'Up to 100 characters are allowed.'
+            })
+        }
+       
+    }
+    const addRow = () =>{
+
+        if(attachments.length < 5) {
+            const newObj = {
+                fileName: '',
+                filePath : '',
+            }
+            const arr = [...attachments,newObj]
+            setAttachments(arr)
+        }else {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Up to 5 file attachments are allowed.'
+            })
+        }
+      
     }
     useEffect(()=>{
         if(!alertModal) {
-            setAlertTxt('')
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt : '',
+                onConfirm : function() {},
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+                confirmTxt : ''
+            })
         }
     },[alertModal])
+
     useEffect(()=>{
-        if(alertTxt!==''){
+        if(alertSetting.alertTxt!==''){
             setAlertModal(true)
         }
-    },[alertTxt])
+    },[alertSetting])
+
+    useEffect(()=>{
+        console.log('---------------------------------------------------------------------!!')
+        setData({
+            ...data,
+            isPublic : content.isPublic
+        })
+    },[content.isPublic])
+
     return (
         <Style>
-        <div className="editor-container">
+        <div className="editor-container editor-border">
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
                 <div className="right"> <input type="text" className="write-input" name="writer" readOnly value={user.name}></input> </div>
@@ -104,16 +164,12 @@ function EditorModify({ period, data, setData, range, onSave }) {
                 <div className="right"> 
                     <input 
                     type="text" 
-                    className="write-input" n
+                    className="write-input" 
                     ame="subject" 
                     value={content.title}
-                    onChange={(e)=>{
-                        let value = e.target.value;
-                        setContent({
-                            ...content,
-                            title : value
-                        })
-                    }}>
+                    onChange={(e)=>{onCheckInput(e)}}
+                    onBlur={()=>onStopInput()} 
+                    >
                     </input> 
                 </div>
             </div>
@@ -148,30 +204,57 @@ function EditorModify({ period, data, setData, range, onSave }) {
                 </div>
             </div>
             <div className="write-row">
-                <div className="left custom-flex-item custom-align-item"> <p className="custom-flex-item custom-justify-center custom-align-item">· Attachments</p> 
-                <label htmlFor="file-upload">
+                <div className="left custom-flex-item custom-align-item custom-justify-between"> <p className="custom-flex-item custom-justify-center custom-align-item">· Attachments</p> 
+                <label htmlFor="add-row">
                     <img src={MoreIcon} />              
                 </label>
-                <input type="file" name="attachments" style={{display: "none"}} id="file-upload"/>
+                <button onClick={()=>addRow()} name="attachments" style={{display: "none"}} id="add-row"/>
                 </div>
                 
-                <div className="right"> 
-                    <input type="text" className="write-input attach-input" name="filename"></input> 
-                    <button className="file-delete-btn">Delete</button>
+                <div className="right file-upload"> 
+                   {
+                    attachments?.map((item,idx)=>{
+                        return (
+                            <div className="custom-flex-item custom-align-item" key={generateRandomString(idx)}>
+                            <input type="text" className="write-input attach-input" name="filename" readOnly></input> 
+                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn">{item.fileName===''?'Select':'Delete'}</label>
+                            <input 
+                                type="file" 
+                                className="file-delete-btn" 
+                                style={{display: "none"}} 
+                                id='file-delete-btn'
+                                onChange={(e)=>{
+                                    console.log(e.target?.files)
+                                    if(e.target?.files[0]) {
+                                        let formData = new FormData();
+                                        formData.append('fileName',e.target?.files[0])
+                                        // api 연동..
+                                    }
+                                    
+                            }}
+                            />       
+                        </div>
+                        )
+                    })
+                   }
+                    
                     <p className="attach-desc">Attached files can only be in PDF, HWP, Docx, xls, and PPT formats (Support up to 100MB)</p>
                 </div>
             </div>
-            <div className="btn-row">
-                <button className="btn-white">Delete</button>
+            <div className="btn-row" style={content.csTalkId==='' ? {justifyContent:'flex-end'} : null}>
+                {
+                    content.csTalkId !== '' &&
+                    <button className="btn-white" onClick={onDelete}>Delete</button>
+                }
                 <div>
-                    <button className="btn-black">Cancel</button>
+                    <button className="btn-black" onClick={onClose}>Cancel</button>
                     <button type="submit" className="btn-red" onClick={onSave}>Save</button>
                 </div>
             </div>
             {
                 alertModal
                 &&
-                <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} btnTxt='Close' />
+                <Alert alertTxt={alertSetting.alertTxt} onClose={()=>setAlertModal(false)} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt}/>
             }
         </div>
         </Style>

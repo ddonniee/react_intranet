@@ -17,29 +17,36 @@
 }
 .cstalk-custom-board {
     text-align: center;  height: 93%;
-}
-.cstalk-custom-board li
-{    height: 10%;
-    display: flex;
-    align-items: center;
-    border-bottom: 2px solid #F6F6F6;
-}
-.cstalk-custom-board li:first-child {
-    border-top: 1px solid $board-color-grey;
-}
-.cstalk-custom-board li:hover {
-    background-color: $hover-color-pink;
+    .selected-row {
+        background-color: $hover-color-pink; color: $primary-color-red;
+    }
+    li {    
+        height: 10%;
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid #F6F6F6;
+        
+        & > div:first-child .custom-stress-txt{
+            padding-left: 5px;
+        }
+    }
+    & li:first-child {
+        border-top: 1px solid $board-color-grey;
+    }
+    li:hover {
+        background-color: $hover-color-pink;
+    }
+    div span:first-child{
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+    }
+    & > span,
+    li > span {
+        font-size: 15px; line-height: 24px; letter-spacing: 0.15px; color: $board-color-txt;
+    }
 }
 
-.cstalk-custom-board div span:first-child{
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-}
-.cstalk-custom-board > span,
-.cstalk-custom-board li > span {
-    font-size: 15px; line-height: 24px; letter-spacing: 0.15px; color: $board-color-txt;
-}
 .cstalk-subject {
     flex-direction: column; 
 }
@@ -59,7 +66,14 @@
 .setting-viewer button:not(:first-child) {
     margin-left: 10px;  
 }
-
+.cstalk-left {
+    .cstalk-count {
+        padding: 10px 0;
+        span {
+            font-size: 14px; font-weight: 400; line-height: 19px; letter-spacing: 0.14px;
+        }
+    }
+}
 .catalk-right {
     border: 1px solid $border-color-gery; border-radius: 14px; height: 760px; width: 48px;
 }
@@ -146,45 +160,17 @@
 .cstalk-lists li:not(:last-child) {
     margin-right: 10px; 
 }
-.cstalk-lists .cstalk-top {
-    display: flex; margin-bottom: 14px;
-}
-.cstalk-lists .cstalk-top p {
-    font-weight: 600;  font-size: 20px; line-height: 23px; letter-spacing: 0.01em;
-}
-.cstalk-lists .cstalk-top p:first-child {
-    color: $primary-color-red;
-}
-.cstalk-lists .cstalk-summary {
-    font-weight: 400; font-size: 17px; line-height: 23px; color: $txt-color-content;
-}
-.cstalk-category {
-    padding: 20px 25px;
-}
-.cstalk-category-lists {
-    display: flex; justify-content: space-between; position: relative;
-}
-.cstalk-category-lists li {
-    align-self: center; position: relative;
-}
-.cstalk-category-lists li div {
-    text-align: center;     padding-bottom: 10px;
-}
-.cstalk-category-lists .icon-modal {
-    position: absolute; width: 146px; left: -10px; z-index: 999;
-}
-.cstalk-category-lists .icon-modal img {
-    position: relative;
-    top: 5px;
-}
-.cstalk-category-lists .icon-modal ul {
-    border: 2px solid $primary-color-red; border-radius: 15px; padding: 10px; background-color: white;
-}
-.cstalk-category-lists .icon-modal li {
-    padding: 5px; font-weight: 400;
-    font-size: 18px;
-    line-height: 30px;
-}
+// .cstalk-lists .cstalk-top {
+//     display: flex; margin-bottom: 14px;
+//     p {
+//         font-weight: 600;  font-size: 20px; line-height: 23px; letter-spacing: 0.01em;
+//     }
+//     p:first-child {
+//         color: $primary-color-red;
+//     }
+// }
+
+
 .cstalk-contents {
     display: flex; justify-content: space-between; 
 }
@@ -192,43 +178,31 @@
 .cstalk-contents > div:nth-child(2) {
     width: 48%; height: 800px;
 }
-.cstalk-category-lists p {
-    margin: 0; font-weight: 600;
-}
+
 .cstalk-left {
     position: relative;
-}
-.cstalk-left .ag-theme-alpine {
-    height: 500px;
-}
-.cstalk-left .ag-header {
-    display: none;
-}
-.cstalk-left .ag-center-cols-container {
-    height: 100% !important;
-}
-.cstalk-left .ag-center-cols-container > div {
-    height: 10% !important; border-bottom: 1px solid $border-color-gery !important;
 }
 
 .cstalk-custom-board {
     li {
     height: 73px;     display: flex; flex-direction: column;
      border-bottom: 2px solid $board-color-grey; align-items: start; justify-content: center;
-    .etc {
-        display: flex;
-        justify-content: space-between;
-        font-weight: 400;
-        font-size: 15px;
-        line-height: 24px;
-        color: #5F5F5F; width: 100%;
-    }
+        .etc {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 400;
+            font-size: 15px;
+            line-height: 24px;
+            color: #5F5F5F; width: 100%;
+        }
+        & > div {
+            padding-left: 10px;
+        } 
     }
     
+    
 }
-.cstalk-custom-board li:first-child {
-    border-top: 1px solid $board-color-grey;
-}
+
 .cstalk-custom-board li:hover {
     background-color: $hover-color-pink; color: $primary-color-red;
 }
@@ -247,7 +221,22 @@
     display: none !important;
 }
 .cstalk-right-top {
-    position: relative; z-index: 100;  border-bottom: 1px solid $border-color-gery;
+    position: relative; z-index: 100;  border-bottom: 1px solid $border-color-gery; 
+
+    // & > div:not(:nth-child(2)) {
+    //     padding: 5px 0;
+    // }
+    & > div:not(:nth-child(2)) > img {
+        padding-right: 7px;
+    }
+    & > div:nth-child(3) > span:last-child > span:last-child{
+        padding: 0 5px;
+    }
+}
+.cstalk-right-middle {
+    & > div:nth-child(2) > div:last-child{
+        margin-left: 10px;
+    }
 }
 .cstalk-view-none {
     width: 48%;
@@ -272,44 +261,16 @@
 .cstalk-attach-down img {
     padding: 0 5px;
 }
-// .cstalk-comment-wrapper {
-//     background-color: #F2F2F2;min-height: 103px;
-//     padding: 16px; height: fit-content;
-//     & > span:first-child {
-//         font-weight: 600;
-//         font-size: 15px;
-//         line-height: 18px;
-//     }
-//     textarea {
-//         flex-grow: 2;
-//         border: none;
-//         padding: 10px;
-//     }
-//     & > div {
-//         padding: 5px 0;
-//         display: flex;
-//     }
-//     span p:first-child {
-//         padding: 0 6px;
-//     }
-//     textarea:focus {
-//         outline: none;
-//     }
-//     .cstalk-comment-list {
-//         padding : 10px 20px; background-color: $board-color-grey;
-    
-//     }
-    
-    
-// }
+
 .comment-middle {
     color: #626262; text-overflow: ellipsis; font-size: 14px;  font-weight: 400;
    line-height: normal;
-}
-.toggle-sub-btn {
+   .toggle-sub-btn {
     padding: 0 3px;
+    }
+    
 }
-.cstalk-comment-wrapper 
+
 .cstalk-comment-wrapper button {
     width: 69px;
     // height: 44px;
@@ -403,9 +364,9 @@ line-height: 24px; padding: 0 3px;
     color: $chart-color-grey;
 }
 
-    .cstalk-subject span {
-        padding-left: 5px;
-    }
+    // .cstalk-subject span {
+    //     padding-left: 5px;
+    // }
 }
 
 .cstalk-contents .pagination .active {

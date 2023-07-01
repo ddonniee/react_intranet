@@ -1,0 +1,26 @@
+@import '../variables.scss';
+
+.editor-border {
+    border-radius: 14px;
+    height: 800px;
+    overflow: auto;
+    border: 1px solid #D5D5D5;
+}
+.file-upload {
+    div {
+        margin-bottom: 10px;
+    }
+    div label {
+        width: 72px; height: 40px; flex-shrink: 0; border-radius: 100px;
+        background: #E8E8E8; margin-left: 11px; font-size: 14px;  font-weight: 600;
+        line-height: 22px; letter-spacing: 0.14px;
+    }
+}
+.ck-viewer {
+    & div:first-child > div:first-child > p {
+        overflow-wrap: break-word;
+    }
+}
+.cstalk-right-top > p:first-child{
+    overflow-wrap: break-word;
+}
