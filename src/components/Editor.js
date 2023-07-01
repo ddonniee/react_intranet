@@ -83,6 +83,18 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
     //     setContent({ ...content, postStartDate : start, postEndDate : end })
     // }, [startDate, endDate])
 
+    const onCheckInput = e =>{ 
+        let value = e.target.value;
+        if (value.length <= 100) {
+            setContent({
+                ...content,
+                title : value
+            })
+        } else {
+            setAlertTxt('Up to 100 characters are allowed.')
+        }
+    }
+
     useEffect(()=>{
         if(!alertModal) {
             setAlertTxt('')
@@ -148,13 +160,8 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
                     // name="title" 
                     readOnly={!isWriter}
                     defaultValue={data && content?.title}
-                    onChange={(e)=>{
-                        let value = e.target.value;
-                        setContent({
-                            ...content,
-                            title : value
-                        })
-                    }}>
+                    onChange={(e)=>{onCheckInput(e)}}
+                    >
                     </input> 
                 </div>
             </div>
