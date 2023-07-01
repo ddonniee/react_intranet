@@ -16,10 +16,15 @@ import { ReactComponent as IntersectIcon } from '../../assets/svgs/icon_intersec
 function UserManagement() {
 
     /**
-     * 화면 권한
+     * 화면 접근 권한
      * 
-     * 본사 Staff : 조회만 가능
-     * 법인 Admin : 조회 & 작성
+     * 본사 staff    (LK)  : 조회만 가능
+     * 법인관리자    (SS)  : N/A
+     * 법인 admin    (SA)  : 조회 & 작성
+     * LGC 관리자    (LD)  : N/A
+     * LGC Engineer  (LE)  : N/A
+     * ASC 관리자    (AD)  : N/A
+     * ASC Engineer  (AE)  : N/A
      */
 
     // 로그인유저 정보

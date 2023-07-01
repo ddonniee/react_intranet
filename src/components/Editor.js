@@ -95,6 +95,10 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
         }
     }
 
+    const onCloseInput = () => {
+        
+    }
+
     useEffect(()=>{
         if(!alertModal) {
             setAlertTxt('')
