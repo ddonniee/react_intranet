@@ -4,7 +4,7 @@ import Zendesk from "../../components/Zendesk"
 import Top from "../../components/Top"
 
 import SelectBox from "../../components/SelectBox"
-import SelectBoxRenderer from "../../components/SelectBoxRenderer"
+// import SelectBoxRenderer from "../../components/SelectBoxRenderer"
 
 import Search from '../../assets/svgs/icon_seeking.svg'
 import AgGrid from "../../components/AgGrid";
@@ -14,6 +14,7 @@ import { axiosInstance, axiosJsonInstance, axiosTestInstance, getBrowserLanguage
 import Alert from "../../components/Alert"
 
 import {UserContext} from '../../hooks/UserContext'
+import { param } from "jquery"
 function CommonCodeMangement() {
 
 
@@ -33,29 +34,29 @@ function CommonCodeMangement() {
     const user = useContext(UserContext);
 
     const [auth, setAuth] = useState({
-      isViewer : false,
-      isWriter : false,
+      isViewer : true,
+      isWriter : true,
     })
 
-    useEffect(()=>{
-      console.log(user)
-      let role = user.role;
-      if(role==='LK') {
-        setAuth({
-          ...auth,
-          isViewer : true
-        })
-      }else if(role==='SA') {
-        setAuth({
-          ...auth,
-          isViewer : true,
-          isWriter : true
-        })
-      }else {
-        alert('No right to Access')
-        document.location.href='/login';
-      }
-    },[])
+    // useEffect(()=>{
+    //   console.log(user)
+    //   let role = user.role;
+    //   if(role==='LK') {
+    //     setAuth({
+    //       ...auth,
+    //       isViewer : true
+    //     })
+    //   }else if(role==='SA') {
+    //     setAuth({
+    //       ...auth,
+    //       isViewer : true,
+    //       isWriter : true
+    //     })
+    //   }else {
+    //     alert('No right to Access')
+    //     document.location.href='/login';
+    //   }
+    // },[])
 
     // if(loginCheck===0) {
     //     document.location.href='/login';
@@ -138,6 +139,27 @@ function CommonCodeMangement() {
     }
     
  
+    const SelectBoxRenderer = (props) => {
+      console.log(props)
+      const handleChange = (e) => {
+        
+          const selectedValue = e.target.value;
+          console.log(props.setValue,'props는 뭔데 ?')
+          props.setValue(selectedValue);
+          console.log('change use ---->', selectedValue);
+      };
+
+      return (
+        <select className='row-select' value={props.value} onChange={handleChange}>
+          {
+              useOptions.map((job, i) => (
+                  <option key={i} value={job}> {job} </option>
+              ))
+          }
+        </select>
+      );
+  };
+
     const handleLeftCell = (field, seq, id, value) => {
       console.log('field, seq, id, value',field, seq, id, value)
         if (field === 'codeId') {
@@ -196,17 +218,20 @@ function CommonCodeMangement() {
         })
     }
 
-    const handleChangeUse = (id,value) => {
+    const handleChangeUse = params => {
 
-        setCodeList((prev) => {
-            return prev.map((item) => {
-              if (item.codeId === id) {
-                return { ...item, 
-                  useYn : value };
-              }
-              return item;
-            });
-          });
+      const {data} = params;
+      console.log('==================================,', data)
+
+        // setCodeList((prev) => {
+        //     return prev.map((item) => {
+        //       if (item.codeId === id) {
+        //         return { ...item, 
+        //           useYn : value };
+        //       }
+        //       return item;
+        //     });
+        //   });
     }
     
     const handleLowerUse = (id,value) => {
@@ -317,7 +342,12 @@ function CommonCodeMangement() {
                         handleSearchCode()
                         setIsNewCode(false);
                     }else {
-                        setAlertTxt(resData.msg)
+                      console.log(resData)
+                        if(resData.msg !== null) {
+                          setAlertTxt(resData.msg)
+                        }else {
+                          setAlertTxt('Failed')
+                        }
                         //  console.log(resData)
                     }
                 })
@@ -355,7 +385,10 @@ function CommonCodeMangement() {
     //   },
     // ]
 
-    
+    const [useOptions, setUseOption] = useState([
+      'Y',
+      'N',
+    ])
     const codeColumn =[
       // { headerName: '', field: '', checkboxSelection: true, headerCheckboxSelection: true, width: 100 },
       { headerName: 'ID', field: 'codeId', editable: isNewCode ? true : false, cellEditor : 'agTextCellEditor', cellEditorParams: {
@@ -365,21 +398,16 @@ function CommonCodeMangement() {
       { headerName: 'Code Name', field: 'codeName', editable: auth.isWriter ? true : false, cellEditor : 'agTextCellEditor', cellEditorParams: {
             useFormatter: true,
             maxLength: 200
-        },idth: 200 },
+        },width: 200 },
       { headerName: 'Code Description', field: 'description', editable: auth.isWriter ? true : false, cellEditor : 'agTextCellEditor', cellEditorParams: {
             useFormatter: true,
             maxLength: 200
-        },idth: 200 },
+        },width: 200 },
       {
         headerName: 'Use Y/N',
         field: 'useYn',
-        cellRendererFramework: SelectBoxRenderer,
-        cellRendererParams: {
-          column: {
-            options: [{ label: 'Y', value: 'Y' }, { label: 'N', value: 'N' }],
-          },
-          handleChange: handleChangeUse,
-        },
+        cellRenderer: SelectBoxRenderer,
+        cellEditorParams: handleChangeUse,
         valueGetter: function(params) {
           return params.data.name; // 셀의 값을 가져옴
         },
@@ -390,6 +418,7 @@ function CommonCodeMangement() {
         },
         width: 200,
       },
+
     ]
     const checkedColumn = [
       { headerName: 'Code ID', field: 'codeId', editable: isNewCode ? true : false, cellEditor : 'agTextCellEditor', cellEditorParams : {cellEditor : 'agTextCellEditor', cellEditorParams: {}} , width: 200 },
@@ -398,13 +427,8 @@ function CommonCodeMangement() {
       {
         headerName: 'Use Y/N',
         field: 'useYn',
-        cellRendererFramework: SelectBoxRenderer,
-        cellRendererParams: {
-          column: {
-            options: [{ label: 'Y', value: 'Y' }, { label: 'N', value: 'N' }],
-          },
-          handleChange: handleLowerUse,
-        },
+        cellRenderer: SelectBoxRenderer,
+        cellEditorParams: handleLowerUse,
         valueGetter: function(params) {
           return params.data.name; // 셀의 값을 가져옴
         },
@@ -477,7 +501,7 @@ function CommonCodeMangement() {
         <Header />
         <div className="inner-container">
         {/** Top Area */}
-        <Top auth={ auth=== 1 ? true : false} searchArea={false}/>
+        <Top auth={ auth.isViewer === 1 ? true : false} searchArea={false}/>
             {/** Search Area */}
             <div className="code-contents custom-flex-item custom-justify-between">
                 <div className="code-left">
