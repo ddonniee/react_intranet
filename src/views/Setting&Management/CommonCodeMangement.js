@@ -207,6 +207,10 @@ function CommonCodeMangement() {
               type: 'update'
             }));
             console.log(rawData,'axios')
+            if(rawData.length===0) {
+              setCodeList([])
+              // setAlertTxt('No result')
+            }
             if(rawData[0].parentCodeSeq===null) {
               setCodeList(updatedData);
             }
