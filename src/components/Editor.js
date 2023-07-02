@@ -12,6 +12,7 @@ import { styled } from "styled-components";
 import {UserContext} from '../hooks/UserContext'
 import moment from "moment";
 import Alert from "./Alert";
+import { generateRandomString } from "../utils/CommonFunction";
 
 /**
  * 작성자 : 이은정
@@ -24,6 +25,12 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
 
     const user = useContext(UserContext);
     const [content, setContent] = useState(data);
+    const [attachments, setAttachments] = useState([
+        {
+            fileName: '',
+            filePath: '',
+        },
+     ])
     const [alertModal, setAlertModal] = useState(false)
     const [alertTxt, setAlertTxt] = useState('')
     
@@ -95,8 +102,17 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
         }
     }
 
-    const onCloseInput = () => {
-        
+    const addRow = () => {
+        if(attachments.length < 5) {
+            const newObj = {
+                fileName: '',
+                filePath : '',
+            }
+            const arr = [...attachments, newObj]
+            setAttachments(arr)
+        } else {
+            setAlertTxt('Up to 5 file attachments are allowed.')
+        }
     }
 
     useEffect(()=>{
@@ -172,7 +188,6 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Detail</p> </div>
                 <div className="right"> 
-                    {/* <input type="text" className="write-input"></input>  */}
                     <CKEditor
                         editor={ ClassicEditor }
                         // name="content"
@@ -201,19 +216,46 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
                 </div>
             </div>
             <div className="write-row">
-                <div className="left custom-flex-item custom-align-item"> <p className="custom-flex-item custom-justify-center custom-align-item">· Attachments</p> 
-                <label htmlFor="file-upload">
-                    <img className="file-more-btn" src={MoreIcon} />              
-                </label>
-                <input type="file" name="attachments" style={{display: "none"}} id="file-upload"/>
+                <div className="left custom-flex-item custom-align-item"> 
+                    <p className="custom-flex-item custom-justify-center custom-align-item">· Attachments</p>
+                    <label htmlFor="add-row">
+                        <img className="file-more-btn" src={MoreIcon} />              
+                    </label>
+                    <button onClick={() => addRow()} name="attachments" style={{display: "none"}} id="add-row"/>
                 </div>
                 
-                <div className="right"> 
-                    <input type="text" className="write-input attach-input" name="filename" readOnly></input> 
-                    <button className="file-delete-btn">Delete</button>
+                <div className="right file-upload"> 
+                    {/* <input type="text" className="write-input attach-input" name="filename" readOnly></input> 
+                    <button className="file-delete-btn">Delete</button> */}
+                    {
+                        attachments?.map((item, idx)=>{
+                            return (
+                                <div className="custom-flex-item custom-align-item" key={generateRandomString(idx)}>
+                                    <input type="text" className="write-input attach-input" name="filename" readOnly></input> 
+                                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn">
+                                        { item.fileName === '' ? 'Select' : 'Delete' }</label>
+                                    <input 
+                                        type="file" 
+                                        className="file-delete-btn" 
+                                        style={{display: "none"}} 
+                                        id='file-delete-btn'
+                                        onChange={(e) => {
+                                            console.log(e.target?.files)
+                                            if(e.target?.files[0]) {
+                                                let formData = new FormData();
+                                                formData.append('fileName',e.target?.files[0])
+                                                // api 연동..
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            )
+                        })
+                    }
                     <p className="attach-desc">Attached files can only be in PDF, HWP, Docx, xls, and PPT formats (Support up to 100MB)</p>
                 </div>
             </div>
+
             <div className="btn-row">
                 <button className={`btn-white ${(!data || !isWriter || content?.deleteAt) && 'custom-hidden'}`} onClick={onDelete}>Delete</button>
                 <div>

@@ -56,6 +56,7 @@ function UserManagement() {
         maxBodyLength: Infinity,
         headers: {
             'Content-Type': 'multipart/form-data',
+            // 'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
             'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
         }
     }
@@ -64,13 +65,11 @@ function UserManagement() {
     const [searchData, setSearchData] = useState(); // 검색데이터
 
     const [subOptions, setSubOptions] = useState([]); // 법인 selectbox 데이터
-    // const [centerOptions, setCenterOptions] = useState([]); // 센터타입 selectbox 데이터
-    const [branchOptions, setBranchOptions] = useState([]); // 브랜치 selectbox 데이터
-
-    const centerOptions = [
+    const [centerOptions, setCenterOptions] = useState([
         { value: 'LGC', label: 'LGC', group: 'centerType' },
         { value: 'ASC', label: 'ASC', group: 'centerType' },
-    ]
+    ]); // 센터타입 selectbox 데이터
+    const [branchOptions, setBranchOptions] = useState([]); // 브랜치 selectbox 데이터
 
     const handleSelectBox = (e) => {
         console.log('select ---->', e)
@@ -221,21 +220,25 @@ function UserManagement() {
     const getSearch = () => {
         const formData = new FormData();
 
-        if(searchData.corporationCode) {
+        if(searchData?.corporationCode) {
             formData.append('corporationCode', searchData?.corporationCode);
         } 
-        if(searchData.centerType) {
+        if(searchData?.centerType) {
             formData.append('centerType', searchData?.centerType);
         } 
-        if(searchData.branchCode) {
+        if(searchData?.branchCode) {
             formData.append('branchCode', searchData?.branchCode);
         }
         let data = undefined;
         if(searchData) data = formData;
 
-        console.log('search result >>>>>>', Object.fromEntries(data))
+        // console.log('search result >>>>>>', Object.fromEntries(data))
 
-        getList(data);
+        if(searchData) {
+            getList(data);
+        } else {
+            return false;
+        }
     }
     
     const getList = (search) => {
@@ -365,15 +368,21 @@ function UserManagement() {
                             <p>Inquiry</p>
                             <IntersectIcon />
                         </button>
-                        <div className='nav-line'></div>
                         {
-                            isModify ?
-                            <div className='btn-modify'>
-                                <button className='nav-btn-white' onClick={() => setIsModify(false)}>Cancel</button>
-                                <button className='nav-btn-red' onClick={() => {setIsModify(false); editUser();}}>Save</button>
-                            </div>
-                            :
-                            <button className='nav-btn-black' onClick={() => setIsModify(true)}>Edit</button>
+                            auth.isWriter ?
+                            <>
+                            <div className='nav-line'></div>
+                            {
+                                isModify ?
+                                <div className='btn-modify'>
+                                    <button className='nav-btn-white' onClick={() => setIsModify(false)}>Cancel</button>
+                                    <button className='nav-btn-red' onClick={() => {setIsModify(false); editUser();}}>Save</button>
+                                </div>
+                                :
+                                <button className='nav-btn-black' onClick={() => setIsModify(true)} disabled={!auth.isWriter}>Edit</button>
+                            }
+                            </>
+                            : null
                         }
                     </div>
                 </div>
