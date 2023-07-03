@@ -86,7 +86,7 @@ function Header() {
                     {
                         thirdMenuList?.map((list,idx)=>{
                             return(
-                                <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx+3)}>{list.name}</li>
+                                <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
                             )
                         })
                     }
@@ -221,7 +221,6 @@ function Header() {
                 <ul className='more-lists'>
                     {secondMenuList.map((item,idx)=>{
                         return (
-                        <>
                         <li  id={item.id} onClick={handleClickLowerTab} key={generateRandomString(idx+3)} ><p title={item.id}>{item.name}</p>
                         {
                             currentTab.lowerTab === item.id
@@ -233,7 +232,6 @@ function Header() {
                             null
                         }</li>
                         
-                        </>
                         )
                     })}
                 </ul>

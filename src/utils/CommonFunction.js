@@ -9,7 +9,6 @@ export const axiosInstance = axios.create({
     maxBodyLength: Infinity,
     headers: {
         'Content-Type': 'multipart/form-data',
-        'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
     }
 });
 
@@ -23,12 +22,11 @@ export const axiosInstance2 = axios.create({ // 희정님 로컬서버 (notice, 
 });
 
 export const axiosJsonInstance = axios.create({
-    baseURL: process.env.REACT_APP_SERVER_URL,
-    // baseURL: 'http://192.168.0.19:8090',
+    // baseURL: process.env.REACT_APP_SERVER_URL,
+    baseURL: 'http://192.168.0.19:8090',
     maxBodyLength: Infinity,
     headers: {
         'Content-Type': 'application/json; charset=utf-8',
-        'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
     }
 });
 

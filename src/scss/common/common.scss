@@ -175,8 +175,16 @@ input, button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custo
     display: flex;
     justify-content: center;
     margin-top: 47px;
+    li {
+        cursor: pointer;
+    }
 }
-
+.loadingOpacity {
+    animation: opacityView 0.5s ease-in-out 0s;
+}
+.loadingX {
+    animation: translatex 0.5s ease-in-out 0s;
+}
 ul {
     list-style: none;
     padding: 0;
@@ -557,4 +565,20 @@ input:focus {
 /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/ 
 @media all and (max-width:767px) {
     //스타일 입력
+}
+@keyframes translatex{
+    from {
+        transform: translateX(-50%);
+      }
+      to {
+        transform: translateX(0);
+      }
+}
+@keyframes opacityView{
+    from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
 }

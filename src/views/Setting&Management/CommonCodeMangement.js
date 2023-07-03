@@ -201,8 +201,11 @@ function CommonCodeMangement() {
         
         var config = {
           method: 'post',
-            maxBodyLength: Infinity,
-          data : data
+          maxBodyLength: Infinity,
+          data : data,
+          headers: {
+            'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+           },
         };
 
         axiosJsonInstance('/codeManagement/list', config).then(res=>{
@@ -343,7 +346,7 @@ function CommonCodeMangement() {
                 method: 'post',
                 maxBodyLength: Infinity,
                 headers: {
-                  'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+                  'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
                  },
                 data : data
                 };

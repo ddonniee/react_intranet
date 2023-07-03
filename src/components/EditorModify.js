@@ -229,11 +229,7 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
                                     onAttach(e,idx)
                                     console.log(target)
                                     console.log(target?.files)
-                                    if(e.target?.files[0]) {
-                                        let formData = new FormData();
-                                        formData.append('fileName',e.target?.files[0])
-                                        // api 연동..
-                                    }
+                                    
                             }}
                             />       
                         </div>

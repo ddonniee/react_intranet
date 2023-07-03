@@ -787,6 +787,12 @@ function CStalk() {
     const onAttachFiles = (e,idx) => {
         console.log('onAttachFiles')
         console.log(e.target.files)
+        let copyFile = [...fileStore]
+        if(e.target?.files[0]) {
+            let formData = new FormData();
+            formData.append('fileName',e.target?.files[0])
+            // api 연동..
+        }
     }
     useEffect(()=>{
         
@@ -801,10 +807,6 @@ function CStalk() {
         setComment('');
         setCommentPage(1)
     },[selectedList])
-
-    useEffect(()=>{
-        console.log('boardLength',boardLength)
-    },[boardLength])
 
     useEffect(()=>{
         getComment()
@@ -842,24 +844,24 @@ function CStalk() {
             <Top auth={1} searchArea={false}/>
             {/** Search Nav */}
             <div>
-            <div className="notice-nav custom-flex-item" style={user.role!=='LK' ? {justifyContent :'flex-start'} : null}>
+            <div className="cstalk-nav custom-flex-item" style={user.role!=='LK' ? {justifyContent :'flex-start'} : null}>
                  {/* Subsidiary는 본사 staff만 */}
                  {
                     user.role === 'LK'
                     &&
-                    <div className="notice-nav-box custom-flex-item custom-align-item">
+                    <div className="cstalk-nav-box custom-flex-item custom-align-item">
                         <p>· Subsidiary</p>
                         <SelectBox options={subsidiary} handleChange={handleSelectSubsidiary} />
                     </div>
                 }
-                
+{/*                 
                 <div className="custom-flex-item custom-align-item">
                     <p>· View</p>
                     <SelectBox options={centerOptions} handleChange={handleSelectBox} defaultValue={centerOptions[0]}/>
-                </div>
+                </div> */}
                 <div className="custom-flex-item custom-align-item">
                     <p>· Search</p>
-                    <input type="text" className="notice-nav-input" onChange={(e)=>setReqData({...reqData, search:e.target.value})}></input>
+                    <input type="text" className="cstalk-nav-input" onChange={(e)=>setReqData({...reqData, search:e.target.value})}></input>
                     <div className="search-wrapper" onClick={getList}><img src={Search} alt='search-btn'/></div>
                 </div>
                 {/* </div> */}

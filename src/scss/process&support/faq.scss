@@ -1,13 +1,11 @@
 @import '../variables';
 
-
-
-
 .faq-lists {
     display: flex;
 }
 .faq-lists li {
-     border: 1px solid $border-color-gery; padding :20px 25px; border-radius: 10px;
+     border: 1px solid $border-color-gery; padding :20px 25px; border-radius: 10px;     max-width: 296px; max-height: 130px;
+     overflow: hidden;
 }
 .faq-lists li:not(:last-child) {
     margin-right: 10px; 
@@ -31,7 +29,7 @@
     display: flex; justify-content: space-between; position: relative;
 }
 .faq-category-lists li {
-    align-self: center; position: relative;
+    align-self: center; position: relative; width: 115px;
 }
 .faq-category-lists li div {
     text-align: center;     padding-bottom: 10px;
@@ -78,44 +76,51 @@
 // board
 .faq-custom-board {
     height: 93%;  
-}
-.faq-custom-board li {
-    height: 10%;     display: flex;
-    align-items: center;  border-bottom: 2px solid $board-color-grey;
-}
-.faq-custom-board li:first-child {
-    border-top: 1px solid $board-color-grey;
-}
-.faq-custom-board li:hover {
-    background-color: $hover-color-pink; 
-}
-.faq-custom-board li span:hover {
-    color: $primary-color-red;
-}
-.faq-custom-board li span:first-child {
-    width: 100px; text-align: center;
-}
-.faq-custom-board li span {
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
+    li {
+        height: 10%;     display: flex;
+        align-items: center;  border-bottom: 2px solid $board-color-grey;
+        img {
+            margin-left: 10px;
+        }
+        span {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 24px;
+        }
+        span:first-child {
+            width: 100px; text-align: center; min-width: 100px; 
+        }
+    }
+    li:first-child {
+        border-top: 1px solid $board-color-grey;
+    }
+    li:hover {
+        background-color: $hover-color-pink;   color: $primary-color-red;
+    }
 }
 .faq-right {
-    border-radius: 14px; height: 760px;
+    border-radius: 14px; 
     border-radius: 14px;
     overflow: hidden;
     display: flex;
-    flex-direction: column;
-    height: 800px;
+    flex-direction: column;  transition: transform 0.3s ease;
 }
 .faq-right .ck-sticky-panel {
     display: none !important;
 }
 .faq-right-top {
-    position: relative;  border-bottom: 1px solid $border-color-gery;
-}
-.faq-right-top span {
-    padding: 4px; align-self: center;
+     border-bottom: 1px solid $border-color-gery;
+    min-height: 100px; z-index: 300;
+    padding: 15px 30px;
+    position: sticky;
+    top: 0;  display: inline-table;
+    background: white; box-sizing: content-box;
+    & > p {
+        padding: 20px 0;  overflow-wrap: break-word;
+    }
+    span {
+        padding: 4px; align-self: center;
+    }
 }
 .faq-attach{
     border: 1px solid $border-color-gery; border-radius: 5px; font-weight: 600;
@@ -136,36 +141,39 @@
 .faq-comment-wrapper {
     background-color: #F2F2F2;min-height: 103px;
     padding: 16px; height: fit-content;
-}
-.faq-comment-wrapper > span:first-child {
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 18px;
-}
-.faq-comment-wrapper > div {
-    padding: 5px 0;
-    display: flex;
-}
-.faq-comment-wrapper textarea {
-    flex-grow: 2;
-    border: none;
-    padding: 10px;
-}
-.faq-comment-wrapper textarea:focus {
-    outline: none;
-}
-.faq-comment-wrapper button {
-    width: 69px;
-    // height: 44px;
-    background: #323232;
-    border-radius: 5px;
-    padding-left: 1px;
-    color: white;
-    border: none;
+    & > span:first-child {
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 18px;
+    }
+    & > div {
+        padding: 5px 0;
+        display: flex;
+    }
+    textarea {
+        flex-grow: 2;
+        border: none;
+        padding: 10px;
+    }
+    textarea:focus {
+        outline: none;
+    }
+    button {
+        width: 69px;
+        // height: 44px;
+        background: #323232;
+        border-radius: 5px;
+        padding-left: 1px;
+        color: white;
+        border: none;
+    }
+    
 }
 .faq-comment-list {
     padding : 10px 20px; background-color: $board-color-grey;
-
+    .comment-middle {
+        overflow-wrap: break-word;
+    }
 }
 .comment-input {
     display: flex;
@@ -272,11 +280,11 @@ line-height: 24px; padding: 0 3px;
     position: absolute !important;
     left: 80px !important; width: /*fit-content*/ 90% !important; text-align: left !important;
     }
-    .faq-right-top {
-        min-height: 100px; padding: 15px 30px; position: sticky; top: 0;
-        z-index: 100;
-        background: white;
-    }
+    // .faq-right-top {
+    //     min-height: 100px; padding: 15px 30px; position: sticky; top: 0;
+    //     z-index: 100;
+    //     background: white;
+    // }
     .faq-right-top > p {
         font-weight: 700; font-size: 24px; line-height: 30px;
     }

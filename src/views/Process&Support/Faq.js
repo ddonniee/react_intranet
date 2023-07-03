@@ -3,7 +3,7 @@
 // import ExportExcel from "../../utils/ExportExcel"
 
 
-import { useContext, useEffect, useRef, useState } from "react"
+import { Fragment, useContext, useEffect, useRef, useState } from "react"
 import { styled } from "styled-components";
 
 import { UserContext } from "../../hooks/UserContext"
@@ -14,8 +14,10 @@ import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
 import AgGrid from "../../components/AgGrid"
 import Viewer from "../../components/Viewer"
+import Alert from "../../components/Alert";
+import Tab from "../../components/Tab";
 // Utils
-import { generateRandomString } from "../../utils/CommonFunction"
+import { generateRandomString,axiosInstance2 } from "../../utils/CommonFunction"
 
 // Icons 
 import Order from '../../assets/svgs/icon_truck.svg'
@@ -36,10 +38,16 @@ import Dislike from '../../assets/svgs/icon_dislike.svg'
 import Comment from '../../assets/svgs/icon_co_comment.svg'
 import More_comment from '../../assets/svgs/icon_co_more.svg'
 
+import moment from "moment";
+
 function Faq() {
 
     let auth = 1;
     const user = useContext(UserContext)
+    let now = moment().subtract(24,'hours').format('YYYY-MM-DD HH:mm:ss');
+
+   
+
     const [subsidiary, setSubsidiary ] = useState([
         {value:'1',label:'Canada'}, 
         {value:'2',label:'USA'}, 
@@ -54,51 +62,22 @@ function Faq() {
      /** 페이징 관련 ▼ ============================================================= */
      const [activePage, setActivePage] = useState(1); // 현재 페이지
      const [itemsPerPage] = useState(10); // 페이지당 아이템 갯수
- 
-     const setPage = (e) => {
-         setActivePage(e);
+     const [boardLength, setBoardLength] = useState(0)
+     const setPage = (e,num) => {
+        console.log(e,num)
+        if(num===1) {
+            setActivePage(e);
+        }else {
+            setCommentPage(e)
+        }
+         
          console.log('page ---->', e);
      };
+
      /** 페이징 관련 ▲ ============================================================= */
 
     // const testValue = useContext(TestContext)
-    const [faqLists, setFaqLists] = useState([
-        {
-            num : 0,
-            title : '[Installation]',
-            content : 'Weekly Report of AX AS Back Order a september HE-OK55',
-            link : 'www.naver.com',
-            time : '2023-04-12'
-        },
-        {
-            num : 1,
-            title : '[Installation]',
-            content : 'Weekly Report of AX AS Back Order a september HE-OK55',
-            link : 'www.naver.com',
-            time : '2023-04-12'
-        },
-        {
-            num : 2,
-            title : '[Installation]',
-            content : 'Weekly Report of AX AS Back Order a september HE-OK55',
-            link : 'www.naver.com',
-            time : '2023-06-12'
-        },
-        {
-            num : 3,
-            title : '[Installation]',
-            content : 'Weekly Report of AX AS Back Order a september HE-OK55',
-            link : 'www.naver.com',
-            time : '2023-04-12'
-        },
-        {
-            num : 4,
-            title : '[Installation]',
-            content : 'Weekly Report of AX AS Back Order a september HE-OK55',
-            link : 'www.naver.com',
-            time : '2023-04-12'
-        }
-    ])
+    
     const [categoryLists, setCategoryLists] = useState([
         {
             num : 0,
@@ -221,108 +200,307 @@ function Faq() {
             iconModal : false,
         },
     ])
-    const [boardData, setBoardData] = useState([
-
-        {
-            num : '001',
-            title : `R007 - Used Parts Q'ty larger than avaliable`,
-        },
-        {
-            num : '002',
-            title : `What is LG Electronics' credit rating?`,
-        },
-        {
-            num : '003',
-            title : `How do I sign up to receive regular Investor Relations (IR) email updates?`,
-        },
-        {
-            num : '004',
-            title : `Which reporting convetion does LGE use when posting its finantial information?`,
-        },
-        {
-            num : '005',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...`,
-        },
-        {
-            num : '006',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...`,
-        },
-        {
-            num : '007',
-            title : `R007 - Used Parts Q'ty larger than avaliable`,
-        },
-        {
-            num : '008',
-            title : `How do I sign up to receive regular Investor Relations (IR) email updates?`,
-        },
-        {
-            num : '009',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...`,
-        },
-        {
-            num : '010',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...e`,
-        },
-    ])
-
+    const [faqList, setFaqList] = useState([])
+    const [frequentList, setFrequentList] = useState([])
+    console.log(faqList,'fafafa')
     const [column, setColumn] = useState([
         { field: 'num' },
         { field: 'title' },
     ])
-    const [detail, setDetail] = useState({
-        title : 'Invest In LG Electronics',
-        attachment : 'Guide for CB03.pptx (531kKB)',
-        content : 'How',
-        comments : [
-           { 
-            writer : 'writer',
-            time : '23.1.29 16:08',
-            detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-            ,comments : [
-                {writer : 'writer',
-                time : '23.1.30 16:00',
-                detail :' lemememlfkmsdlkf dfjkdsn fjksdn gkjdfng kjdsfnpasf dkmldksfj sdlfad sfaslddfj sdf'}
-            ]
-            },
-             { 
-            writer : 'writer',
-            time : '23.1.29 16:08',
-            detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-            ,comments : [
-                {writer : 'writer',
-                time : '23.1.30 16:00',
-                detail :' lemememlfkmsdlkf dfjkdsn fjksdn gkjdfng kjdsfnpasf dkmldksfj sdlfad sfaslddfj sdf'}
-            ]
-            },
-             { 
-            writer : 'writer',
-            time : '23.1.29 16:08',
-            detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-            ,comments : [
-            {writer : 'writer',
-            time : '23.1.30 16:00',
-            detail :' lemememlfkmsdlkf dfjkdsn fjksdn gkjdfng kjdsfnpasf dkmldksfj sdlfad sfaslddfj sdf'}
-           ]
-            }
-        ],
-        like : 11,
-        dislike : 7,
-    })
-    const [content, setContent] = useState('<h1>How can I invest in LG Electronics? On which exchange is LG Electronics listed and what ard te ticker symbols ?</h1><p>LG Electronics Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p> <h1>How can I invest in LG Electronics? On which exchange is LG Electronics listed and what ard te ticker symbols ?</h1><p>LG Electronics Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p>');
 
-    const [selectedList, setSelctedList] = useState({num:null, title:''});
+    
+    const [selectedList, setSelectedList] = useState();
+
     const handleClickAction = e => {
         console.log('handleClickAction')
     }
     const handleSelectBox = e => {
         console.log(e)
     }
+
     const handleClickRow = (e,item) => {
-        if(selectedList.num===null || selectedList.num!==item.num) {
-            setSelctedList(item)
-        }else {
-            setSelctedList({num:null, title:''})
+        console.log('handleClickRow',item)
+        getDetail(item.faqId)
+        // if(selectedList.num===null || selectedList.num!==item.num) {
+        //     setSelectedList(item)
+        // }else {
+        //     setSelectedList({num:null, title:''})
+        // }
+    }
+
+    /** Alert Handler */
+    const [alertModal, setAlertModal] = useState(false)
+    const [alertSetting, setAlertSetting] = useState({
+        alertTxt : '',
+        onConfirm : function() {},
+        isDoubleBtn : false,
+        btnTxt : 'Close',
+        confirmTxt : ''
+    })
+
+    const onConfirmHandler = (num,id) =>{
+
+        console.log(id,'"btn-row"')
+        // leave editor 
+        if(num===1 || num===7) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: ' Click confirm to leave write mode.',
+                onConfirm : ()=>{ 
+                    setAlertModal(false)
+                    // setContent({
+                    //     title : '',
+                    //     content : '',
+                    //     isPublic : '',
+                    //     attachments : '',
+                    //     csTalkId : ''
+                    // })
+                    // clearState()
+                    // num===1 && getDetail(id)
+                },
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : ""
+            })
+                        
         }
+        // open post to public
+        else if(num===2) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Are you sure to oepn this post to public?',
+                // onConfirm : ()=>{ onChangePublic(); setAlertModal(false); clearState() },
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : "You've allowed all to show this post."
+            })
+            
+        }
+        // delete post
+        else if(num===3) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Are you sure to delete post?',
+                // onConfirm :  ()=>{onDeletePost(); setAlertModal(false); clearState(); getList()},
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : "Deleted post."
+            })
+           
+        }
+        // delete comment
+        else if(num===4) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Are you sure to delete comment?',
+                // onConfirm :  ()=>{onDeleteComment(id); setAlertModal(false); },
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : "Deleted comment."
+            })
+           
+        }
+        // no input data when clicked submit
+        else if(num===5) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Any content input',
+                onConfirm :  ()=>setAlertModal(false),
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+            })
+        }
+        // success alert 
+        else if(num===6) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Success',
+                onConfirm :  ()=>{setAlertModal(false);},
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+            })
+        }
+    }
+
+    useEffect(()=>{
+        if(!alertModal) {
+           setAlertSetting({
+            alertTxt : '',
+            onConfirm : function() {},
+            isDoubleBtn : false,
+            btnTxt : 'Close',
+            confirmTxt : ''
+           })
+        }
+    },[alertModal])
+    useEffect(()=>{
+        if(alertSetting.alertTxt!==''){
+            setAlertModal(true)
+        }else {
+            setAlertModal(false)
+        }
+    },[alertSetting])
+
+
+    const [reqData, setReqData] = useState({
+        categoryId: '',
+        subsidiary: '',
+        search : '',
+        type : 'F',
+    })
+    const getList = () =>{
+
+        const formData = new FormData();
+
+        for (let key in reqData) {
+            if (reqData.hasOwnProperty(key)) {
+              formData.append(key, reqData[key]);
+            }
+        }
+        formData.append('page',activePage)
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/faq/list', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                let data = resData.result
+                console.log('response',response)
+                setFaqList(data?.list)
+                setFrequentList(data?.top5list)
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+    }
+
+    const getDetail = (id) =>{
+
+        const formData = new FormData();
+
+        formData.append('faqId',id)
+
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/faq/detail', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                let data = resData.result
+                console.log('response',response)
+                setSelectedList(data)
+                console.log(data,'detail')
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+    }
+
+    /** Comment handling */
+    const [commentPage, setCommentPage] = useState(1)
+    const [commentList, setCommentList] = useState([]);
+    const [comment, setComment] = useState('')
+    const [subComment, setSubComment] = useState('');
+
+    const getComment =() =>{
+        const formData = new FormData();
+        
+        formData.append('page', commentPage);
+        formData.append('faqId', selectedList.faqId);
+
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/faq/commentList', config)
+        .then(function (response){
+            let resData = response.data;
+            
+            if(resData.code===200) {
+                let data = resData.result
+                data.map(d=>{
+                    d.openSubComment = false
+                    d.isInput = false
+                }
+                )
+                setCommentList(data)
+                console.log('comment',data)
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+           
+        })
+    }
+        const onAddComment =(num, id) => {
+        // num = 1 댓글, num = 2 대댓글
+        if(num===1 && comment==='') {
+            // onConfirmHandler(5)
+            return false
+        }
+        // else if(num===2 &&subComment==='') {
+        //     // onConfirmHandler(5)
+        //     return false
+        // }
+
+        const formData = new FormData();
+
+        formData.append('faqId', id);
+        if(num===1) {
+            formData.append('content', comment);
+            console.log('num',num,id, comment)
+        }
+        if(num===2) {
+            formData.append('commentId', id);
+            // formData.append('content', subComment);
+        }
+            var config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                headers: { 
+                    'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+                },
+                data : formData
+                };
+            axiosInstance2('/faq/commentInsert', config)
+            .then(function (response){
+                console.log('commentInsert',response)
+                let resData = response.data;
+                if(resData.code===200) {
+                    // onConfirmHandler(6)
+                    num === 1 ? setComment('') : setSubComment('')
+                    getDetail(id);
+                    // getComment()
+                }else {
+                    console.log(resData,'comment list')
+                }
+            })
+            .catch(function(error) {
+                console.log('error',error)
+            })  
     }
 
     const iconRef = useRef();
@@ -334,9 +512,9 @@ function Faq() {
                 <img src={Polygon} alt='polygon' />
                 <ul>
                     {
-                        iconList?.map((list,idx)=>{
+                        iconList?.map((item,idx)=>{
                             return(
-                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)}>{list}</li>
+                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)}>{item}</li>
                             )
                         })
                     }
@@ -359,9 +537,35 @@ function Faq() {
             return updatedLists;
           });
     }
-    useEffect(()=>{
-        console.log(selectedList)
+
+    /** loading 시 animation */
+    const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingComment, setIsLoadingComment] = useState(false)
+
+     useEffect(()=>{
+        if(selectedList) {
+            getComment();
+            setIsLoading(true)
+            setCommentPage(1)
+            const timeoutId = setTimeout(() => {
+                setIsLoading(false);
+              }, 500); // 3초 후에 isVisible 값을 false로 변경
+          
+              return () => clearTimeout(timeoutId)
+        }
     },[selectedList])
+
+    useEffect(()=>{
+        setIsLoadingComment(true)
+        const timeoutId = setTimeout(() => {
+            setIsLoadingComment(false);
+            }, 500); // 3초 후에 isVisible 값을 false로 변경
+        
+            return () => clearTimeout(timeoutId)
+    },[commentPage])
+    /** loading 시 animation */
+
+   
     
     const handleOutsideClick = (e) => {
         if (iconRef.current && !iconRef.current.contains(e.target)) {
@@ -383,25 +587,54 @@ function Faq() {
         };
       }, []);
 
+      useEffect(()=>{
+        getList()
+      },[activePage])
+
+      useEffect(()=>{
+        if(faqList.length===0) {
+            setBoardLength(0)
+       }
+       else {
+        let max = boardLength;
+        if(activePage===1) {
+         max = 0
+         console.log('ms',max)
+         faqList.map((item) =>{
+             if(item.rn>max) {
+                 console.log(item.rn)
+                 max = item.rn;
+             }
+             setBoardLength(max)
+          })
+        }
+       }
+      },[faqList])
+      useEffect(()=>{
+        if(selectedList) {
+            getComment()
+        }
+      },[commentPage])
+
     return (
         <>
         
         <Header />
-        <Style selectId={selectedList.num} >
+        <Style selectId={selectedList?.num} >
         <div className="inner-container">
             <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} />
             {/** Top Area */}
             <div className="faq-nav">
                 <div className="faq-lists-wrapper">
                     <ul className="faq-lists">
-                        {faqLists?.map((list, idx)=>{
+                        { frequentList && frequentList.length > 0 && frequentList.map((item, idx)=>{
                             return (
                                 <li key={generateRandomString(idx)}>
                                     <div className="faq-top">
-                                        <p className="faq-number" style={list.num !== 0 ? {marginRight:'10px'} : null}>{list.num!==0 && `Q.${list.num}`}</p>
-                                        <p className="faq-title">{list.title}</p>
+                                        <p className="faq-number" style={item.num !== 0 ? {marginRight:'10px'} : null}>{item.num!==0 && `Q.${String(idx+1).padStart(3, '0')}`}</p>
+                                        <p className="faq-title">{`[${item.categoryName}]`}</p>
                                     </div>
-                                    <div className="faq-summary">{list.content}</div>
+                                    <div className="faq-summary">{item.subject.slice(0,70)}</div>
                                 </li>
                             )
                         })}
@@ -410,13 +643,13 @@ function Faq() {
                 <div className="faq-category">
                     <ul className="faq-category-lists">
                         {
-                            categoryLists?.map((list,idx)=>{
+                            categoryLists?.map((item,idx)=>{
                                 return(
-                                    <li key={generateRandomString(idx+1)} onClick={(e)=>handleClickIcon(e,list)}>
-                                        <div className="faq-img-wrapper"><img src={list.icon} /></div>
-                                        <p>{list.name}</p>
+                                    <li key={generateRandomString(idx+1)} onClick={(e)=>handleClickIcon(e,item)}>
+                                        <div className="faq-img-wrapper"><img src={item.icon} /></div>
+                                        <p>{item.name}</p>
                                         {
-                                        list.iconModal
+                                        item.iconModal
                                         &&
                                         <IconModal />
                                         }
@@ -433,97 +666,128 @@ function Faq() {
                 <div className="faq-left">
                     <ul className="faq-custom-board">
                         {
-                            boardData?.map((item,idx)=>{
+                            faqList && faqList.length > 0 && faqList.map((item,idx)=>{
                                 return(
-                                    <li key={generateRandomString(idx)} id={`list-item-${item.num}`} onClick={(e)=>handleClickRow(e,item)}><span>{item.num}</span><span>{item.title}</span></li>
+                                    <li key={generateRandomString(idx)} id={`list-item-${idx+1}`} onClick={(e)=>handleClickRow(e,item)}>
+                                        <span>{String((activePage-1)*10+(idx+1)).padStart(3, '0')}</span><span>{item.subject}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
+                                    </li>
                                 )
                             })
                         }
                     </ul>
                     {
-                        boardData &&
+                        faqList &&
                         <Pagination 
                             activePage={activePage} // 현재 페이지
                             itemsCountPerPage={itemsPerPage} // 한 페이지 당 보여줄 아이템 수
-                            totalItemsCount={boardData?.length} // 총 아이템 수
+                            totalItemsCount={boardLength} // 총 아이템 수
                             pageRangeDisplayed={5} // paginator의 페이지 범위
                             prevPageText={"‹"} // "이전"을 나타낼 텍스트
                             nextPageText={"›"} // "다음"을 나타낼 텍스트
-                            onChange={setPage} // 페이지 변경을 핸들링하는 함수
+                            onChange={(e)=>setPage(e,1)} // 페이지 변경을 핸들링하는 함수
                         />
                     }
-                    {/* <AgGrid data={boardData} column={column} paging={true} /> */}
+                    {/* <AgGrid data={faqList} column={column} paging={true} /> */}
                 </div>
                 <div className="editor-wrapper">
-                <div className="faq-right" >
-                    <div className="faq-right-top">
-                        <p>{detail.title}</p>
-                        <div className="custom-flex-item">
-                            <img src={Attachment} alt="attachment"/> 
-                            <span>Attachment</span>
-                            <span className="custom-flex-item faq-attach-down">
-                                <span>{detail.attachment!=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="faq-attach custom-flex-item"><p>{detail.attachment}</p><img src={Download} alt='download_attachment'/></span>
-                            </span>
-                        </div>   
-                        <div className="user-action custom-flex-item ">
-                            <span className="faq-like custom-flex-item" onClick={handleClickAction}><img src={Like} alt="btn_like"/><p>{detail.dislike}</p></span>   
-                            <span >|</span>
-                            <span className="faq-dislike custom-flex-item" onClick={handleClickAction}><img src={Dislike} alt='btn_dislike'/><p>{detail.dislike}</p></span> 
-                        </div> 
-                    </div>
-                    <div className="faq-right-middle"><Viewer content={content}/></div>
-                    <div className="faq-right-bottom">
-                        <div className="faq-comment-wrapper">
-                            <span>Comments</span><span className="comment-cnt-title">total <p className="custom-stress-txt comment-cnt">{detail.comments.length}</p></span>
-                            <div className="custom-justify-between">
-                                <div className="comment-input">
-                                    <span>Writer : {user.name}</span>
-                                    <textarea/>
-                                </div>
-                                <button>Write</button>
+               {
+                selectedList ?
+                <div className={`faq-right ${isLoading ? 'loadingOpacity':''}`} >
+                <div className="faq-right-top">
+                    <p>{selectedList.subject}</p>
+                    <div className="custom-flex-item">
+                        <img src={Attachment} alt="attachment"/> 
+                        <span>Attachment</span>
+                        <span className="custom-flex-item faq-attach-down">
+                            <span>{selectedList.attachments !=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="faq-attach custom-flex-item"><p>{selectedList.attachment}</p><img src={Download} alt='download_attachment'/></span>
+                        </span>
+                    </div>   
+                    <div className="user-action custom-flex-item ">
+                        <span className="faq-like custom-flex-item" onClick={handleClickAction}><img src={Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
+                        <span >|</span>
+                        <span className="faq-dislike custom-flex-item" onClick={handleClickAction}><img src={Dislike} alt='btn_dislike'/><p>{selectedList.dislikeCount}</p></span> 
+                    </div> 
+                </div>
+                <div className="faq-right-middle"><Viewer content={selectedList.content}/></div>
+                <div className="faq-right-bottom">
+                    <div className="faq-comment-wrapper">
+                        <span>Comments</span><span className="comment-cnt-title">total <p className="custom-stress-txt comment-cnt">{selectedList.commentCount}</p></span>
+                        <div className="custom-justify-between">
+                            <div className="comment-input">
+                                <span>Writer : {user.name}</span>
+                                <textarea defaultValue={comment} onChange={(e)=>setComment(e.target.value)}/>
                             </div>
-                        </div>
-                        <div className="faq-comment-list">
-                            <ul>
-                                {
-                                    detail.comments?.map((comment,idx)=>{
-                                        return(
-                                            <li>
-                                                <div className="comment-top custom-flex-item custom-justify-between">
-                                                    <div>
-                                                        <span>{comment.writer}</span>
-                                                        <span>{comment.time}</span>
-                                                    </div>
-                                                    <span className="custom-flex-item">
-                                                        <p>Delete</p><p>Answer</p>
-                                                    </span>
-                                                </div>
-                                                <div className="comment-middle">{comment.detail.slice(0,250)}{comment.detail.length>250 && <span className="custom-stress-txt">...More</span>}</div>
-                                                <div className="comment-bottom custom-flex-item custom-align-self">
-                                                    {comment.comments?.map((c,idx)=>{
-                                                        return (
-                                                            <>
-                                                            <img src={Comment} alt="under-comment" />
-                                                            <span>Comment</span>
-                                                            <span className="custom-stress-txt">{comment.comments.length}</span>
-                                                            <img src={More_comment} alt="under-comment" />
-                                                            </>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </li>
-                                        )
-                                    })
-                                }
-                            </ul>
+                            <button onClick={()=>onAddComment(1,selectedList.faqId)}>Write</button>
                         </div>
                     </div>
-                    <Zendesk />
+                    <div className={`faq-comment-list ${isLoadingComment ? 'loadingOpacity':''}`}>
+                        <ul>
+                            {
+                                commentList.length !==0 &&
+                                 commentList.map((comment,idx)=>{
+                                    return(
+                                        <li key={generateRandomString(idx)}>
+                                            <div className="comment-top custom-flex-item custom-justify-between">
+                                                <div>
+                                                    <span>{comment.writerName}</span>
+                                                    <span>{moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+                                                </div>
+                                                <span className="custom-flex-item">
+                                                    {user.id===comment.writerID && <p>Delete</p>}<p>Answer</p>
+                                                </span>
+                                            </div>
+                                            <div className="comment-middle">{comment.content?.slice(0,250)}{comment.content?.length>130 && <span className="custom-stress-txt">...More</span>}</div>
+                                            <div className="comment-bottom custom-flex-item custom-align-self">
+                                                {comment.comments?.map((c,idx)=>{
+                                                    return (
+                                                        <Fragment key={generateRandomString(idx)}>
+                                                        <img src={Comment} alt="under-comment" />
+                                                        <span>Comment</span>
+                                                        <span className="custom-stress-txt">{comment.subComment.length}</span>
+                                                        <img src={More_comment} alt="under-comment" />
+                                                        </Fragment>
+                                                    )
+                                                })}
+                                            </div>
+
+                                            
+                                        </li>
+                                    )
+                                })
+                            }
+                        </ul>
+                        {
+                            commentList.length!==0 &&
+                            <Pagination 
+                            activePage={commentPage} // 현재 페이지
+                            itemsCountPerPage={5} // 한 페이지 당 보여줄 아이템 수
+                            totalItemsCount={selectedList ? selectedList.commentCount : 0} // 총 아이템 수
+                            pageRangeDisplayed={5} // paginator의 페이지 범위
+                            prevPageText={"‹"} // "이전"을 나타낼 텍스트
+                            nextPageText={"›"} // "다음"을 나타낼 텍스트
+                            onChange={(e)=>setPage(e,2)} // 페이지 변경을 핸들링하는 함수
+                            />
+                        }
+                    </div>
                 </div>
+               
+            </div>
+            :
+            <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
+                        <p>If you select a list, you can see the contents</p>
+                    </div>
+               }
                 </div>
+                {
+                alertModal
+                &&
+                <Alert alertTxt={alertSetting.alertTxt} onClose={()=>setAlertModal(false)} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt}/>
+            }
             </div>
 
-           
+            <Zendesk />
+
+            <Tab />
         </div>
         </Style>
         </>
