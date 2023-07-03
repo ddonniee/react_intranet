@@ -243,10 +243,10 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
                             return (
                                 <div className="custom-flex-item custom-align-item" key={generateRandomString(idx)}>
                                     <input type="text" className="write-input attach-input" name="filename" readOnly></input> 
-                                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-select-btn">
-                                        {/* { item.fileName === '' ? 'Select' : 'Delete' } */}Select</label>
-                                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" onClick={() => deleteRow()}>
-                                        {/* { item.fileName === '' ? 'Select' : 'Delete' } */}Delete</label>
+                                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" 
+                                        htmlFor="file-select-btn">Select</label>
+                                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" 
+                                        onClick={() => deleteRow()}>Delete</label>
                                     <input 
                                         type="file" 
                                         className="file-select-btn" 
