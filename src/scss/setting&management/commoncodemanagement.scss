@@ -130,6 +130,9 @@ line-height: 17px;
         }
     }
 }
+#react-select-28-listbox {
+    z-index: 100000; width: 100px;  background-color: #CCCCCC; opacity: 1;
+}
 .code-lists-wrapper .ag-theme-alpine {
     // height: 60vmin; 
     min-height: 700px;
