@@ -364,7 +364,7 @@ function UserManagement() {
                         <SelectBox name='branchCode' options={branchOptions} handleChange={handleSelectBox} />
                     </div>
                     <div className='nav-right'>
-                        <button className='circle' onClick={getSearch} >
+                        <button className='circle-btn' onClick={getSearch} >
                             <p>Inquiry</p>
                             <IntersectIcon />
                         </button>

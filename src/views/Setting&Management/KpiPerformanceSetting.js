@@ -2,7 +2,7 @@ import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
 
-function KpiTargetSetting() {
+function KpiPerformanceSetting() {
 
     return (
         <>
@@ -16,4 +16,4 @@ function KpiTargetSetting() {
     )
 }
 
-export default KpiTargetSetting
+export default KpiPerformanceSetting

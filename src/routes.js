@@ -19,7 +19,7 @@ const Raq =  React.lazy(()=>import('./views/Process&Support/Raq'))
 const Notice =  React.lazy(()=> import('./views/Board/Notice'))
 const CStalk = React.lazy(() => import('./views/Board/CStalk'))
 // Setting & Management
-const KpiTargetSetting =  React.lazy(()=>import('./views/Setting&Management/KpiTargetSetting'))
+const KpiPerformanceSetting =  React.lazy(()=>import('./views/Setting&Management/KpiPerformanceSetting'))
 const EvaluationSetting =  React.lazy(()=>import('./views/Setting&Management/EvaluationSetting'))
 const FaqSetting =  React.lazy(()=>import('./views/Setting&Management/FaqSetting'))
 const NoticeSetting = React.lazy(()=>import('./views/Setting&Management/NoticeSetting'))
@@ -52,7 +52,7 @@ const routes = [
     { path:'/board/notice', name:'Notice' , element: Notice},
     { path:'/board/cstalk', name:'CStalk' , element: CStalk},
     // Setting & Management
-    { path:'/setting/kpitarget', name:'KpiTargetSetting' , element: KpiTargetSetting},
+    { path:'/setting/kpiperformance', name:'KpiPerformanceSetting' , element: KpiPerformanceSetting},
     { path:'/setting/evaluation', name:'EvaluationSetting' , element: EvaluationSetting},
     { path:'/setting/faq', name:'FaqSetting' , element: FaqSetting},
     { path:'/setting/notice', name:'NoticeSetting' , element: NoticeSetting},
