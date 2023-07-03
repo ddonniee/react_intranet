@@ -14,10 +14,11 @@ export const axiosInstance = axios.create({
 
 export const axiosInstance2 = axios.create({ // 희정님 로컬서버 (notice, cstalk, qna)
     // baseURL: 'http://192.168.0.30:8090',
-    baseURL: process.env.REACT_APP_SERVER_URL,
+    baseURL: 'http://lgcsportalapi.anypot.co.kr',
+    // baseURL: process.env.REACT_APP_SERVER_URL,
     maxBodyLength: Infinity,
     headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
     }
 });
 
