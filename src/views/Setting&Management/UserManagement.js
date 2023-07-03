@@ -55,7 +55,7 @@ function UserManagement() {
     const config = { // axios header
         maxBodyLength: Infinity,
         headers: {
-            'Content-Type': 'multipart/form-data',
+            // 'Content-Type': 'multipart/form-data',
             // 'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
             'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
         }
@@ -333,7 +333,7 @@ function UserManagement() {
         console.log('editUser ---->', changedUser);
         
         // 사용자정보 수정 API
-        axiosJsonInstance.post('/userManagement/update', changedUser).then(res => {    
+        axiosJsonInstance.post('/userManagement/update', changedUser, config).then(res => {    
             let resdata = res.data;
             
             if(resdata.code == 200) {
