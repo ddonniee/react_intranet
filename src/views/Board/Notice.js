@@ -167,11 +167,19 @@ function Notice() {
             const data = res?.data.result;
             console.log('공지사항 상세 ---->', data)
 
-            if(data.attachments) {
-                setDetail({ ...data, fileName: JSON.parse(data.attachments).fileName, uploadPath: JSON.parse(data.attachments).uploadPath });
-            } else {
-                setDetail(data);
+            setDetail(data);
+            if(data.attachments) { // 첨부파일 있을 시 추가
+                JSON.parse(data.attachments).map((file, idx) => {
+                    setDetail({ ...data, fileName: file.fileName, uploadPath: file.uploadPath });
+                })
             }
+
+            // if(data.attachments) {
+            //     console.log('$#@$%#@%@%@#%#@', JSON.parse(data.attachments))
+            //     setDetail({ ...data, fileName: JSON.parse(data.attachments)[0].fileName, uploadPath: JSON.parse(data.attachments)[0].uploadPath });
+            // } else {
+            //     setDetail(data);
+            // }
             
         }).catch(error => {
             console.error(error);
@@ -218,10 +226,10 @@ function Notice() {
                     <p>· Subsidiary</p>
                     <SelectBox options={subOptions} handleChange={handleSelectBox} />
                 </div>
-                <div className="custom-flex-item custom-align-item">
+                {/* <div className="custom-flex-item custom-align-item">
                     <p>· View</p>
                     <SelectBox options={centerOptions} handleChange={handleSelectBox} />
-                </div>
+                </div> */}
                 <div className="custom-flex-item custom-align-item">
                     <p>· Search</p>
                     <input type="text" className="notice-nav-input" id="notice-nav-input"></input>

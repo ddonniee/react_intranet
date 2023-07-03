@@ -406,7 +406,7 @@ function NoticeSetting() {
             {/** auth 권한체크로 수정 필요 */}
             <Top auth={1} searchArea={false}/>
             {/** Search Nav */}
-            <div className={`notice-nav notice-nav-setting ${!auth.isStaff && 'notice-nav-lk'}`}>
+            <div className={`notice-nav ${!auth.isStaff && 'notice-nav-lk'}`}>
                 { auth.isStaff && // 본사 스태프만 반영
                     <div className="notice-nav-box custom-flex-item custom-align-item">
                         <p>· Subsidiary</p>
