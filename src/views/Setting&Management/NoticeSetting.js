@@ -406,17 +406,17 @@ function NoticeSetting() {
             {/** auth 권한체크로 수정 필요 */}
             <Top auth={1} searchArea={false}/>
             {/** Search Nav */}
-            <div className={`notice-nav ${!auth.isStaff && 'notice-nav-lk'}`}>
+            <div className={`notice-nav notice-nav-setting ${!auth.isStaff && 'notice-nav-lk'}`}>
                 { auth.isStaff && // 본사 스태프만 반영
                     <div className="notice-nav-box custom-flex-item custom-align-item">
                         <p>· Subsidiary</p>
                         <SelectBox options={subOptions} handleChange={handleSelectBox} />
                     </div>
                 }
-                <div className="custom-flex-item custom-align-item">
+                {/* <div className="custom-flex-item custom-align-item">
                     <p>· View</p>
                     <SelectBox options={centerOptions} handleChange={handleSelectBox} />
-                </div>
+                </div> */}
                 <div className="custom-flex-item custom-align-item">
                     <p>· Search</p>
                     <input type="text" className="notice-nav-input" id="notice-nav-input"></input>
@@ -441,7 +441,8 @@ function NoticeSetting() {
                                             <div className={`title ${item.deleteAt ? 'title-del' : ''}`}>
                                                 <span className="custom-flex-item custom-align-item">
                                                 {/** 게시기간 종료일이 현재 날짜 이전이면 확성기 아이콘 출력 */}
-                                                { (!item.deleteAt && item.postEndDate) && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) >= new Date() ? <SpeakerIcon /> : null } 
+                                                {/* { (!item.deleteAt && item.postEndDate) && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) >= new Date(moment().format('YYYY-MM-DD')) ? <SpeakerIcon /> : null }  */}
+                                                { (!item.deleteAt && item.postEndDate) && item.isTodayInRange === 1 ? <SpeakerIcon /> : null } 
                                                 { item.title.length > 90 ? (item.title).substr(0,90) + '...' : item.title } 
                                                 { (!item.deleteAt && item.new) ? <NewIcon /> : null }
                                                 </span>
