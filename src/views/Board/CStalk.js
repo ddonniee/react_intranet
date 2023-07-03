@@ -1060,7 +1060,7 @@ function CStalk() {
                                                                                             <span>{sub.writerName}</span>
                                                                                             <span>{moment(sub.createdAt).format('YYYY-MM-DD')}</span>
                                                                                         </div>
-                                                                                        <span className="custom-flex-item">
+                                                                                        <span className="custom-flex-item cursor-btn">
                                                                                             {sub.writerID===user.id && <p onClick={()=>onConfirmHandler(4,sub.commentId)}>Delete</p>}
                                                                                             {/* <p>Answer</p> */}
                                                                                         </span>
