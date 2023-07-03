@@ -275,9 +275,11 @@ body .modal {
 .custom-justify-between {
     justify-content: space-between;
 }
+
 .custom-justify-center {
     justify-content: center;
 }
+
 .custom-txt-align {
     text-align: center;
 }
@@ -285,11 +287,31 @@ body .modal {
 .custom-hover:hover {
     background-color: $hover-color-pink; color: $primary-color-red; font-weight: 700;
 }
+
 .custom-float-end {
     justify-content: flex-end;
 }
+
 .primary-red-btn {
     background-color: $primary-color-red; color: white;
+}
+
+.custom-circle-btn {
+    width: 88px;
+    height: 88px;
+    border: none;
+    border-radius: 50%;
+    background: $primary-color-red;
+    color: #FFFFFF;
+    text-align: center;
+    cursor: pointer;
+
+    p {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 23px;
+        padding: 30px 0 5px 0;
+    }
 }
 /* Fav tab */
 
@@ -417,6 +439,10 @@ input:focus {
                 input[type=radio] {
                     margin-right: 5px;
                 }
+            }
+
+            p {
+                height: 35px;
             }
 
             .write-input {

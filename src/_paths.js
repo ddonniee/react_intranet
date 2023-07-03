@@ -76,9 +76,9 @@ const _paths = [
     },
     {
         // component: Title,
-        name: 'KPI Training Status',
+        name: 'KPI Performance Setting',
         to: '> Support > Setting & Admin >',
-        path:'/setting/kpitarget'
+        path:'/setting/kpiperformance'
     },
     {
         // component: Title,

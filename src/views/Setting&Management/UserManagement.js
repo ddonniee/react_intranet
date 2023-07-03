@@ -55,7 +55,7 @@ function UserManagement() {
     const config = { // axios header
         maxBodyLength: Infinity,
         headers: {
-            'Content-Type': 'multipart/form-data',
+            // 'Content-Type': 'multipart/form-data',
             // 'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
             'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
         }
@@ -87,6 +87,7 @@ function UserManagement() {
 
     /* 조회 영역 ****************************************************************/
     const jobType = [
+        'LGEKR',
         'Subsidiary Staff',
         'Subsidiary Admin',
         'LGC Director',
@@ -332,7 +333,7 @@ function UserManagement() {
         console.log('editUser ---->', changedUser);
         
         // 사용자정보 수정 API
-        axiosJsonInstance.post('/userManagement/update', changedUser).then(res => {    
+        axiosJsonInstance.post('/userManagement/update', changedUser, config).then(res => {    
             let resdata = res.data;
             
             if(resdata.code == 200) {
@@ -364,7 +365,7 @@ function UserManagement() {
                         <SelectBox name='branchCode' options={branchOptions} handleChange={handleSelectBox} />
                     </div>
                     <div className='nav-right'>
-                        <button className='circle' onClick={getSearch} >
+                        <button className='circle-btn' onClick={getSearch} >
                             <p>Inquiry</p>
                             <IntersectIcon />
                         </button>
@@ -376,7 +377,7 @@ function UserManagement() {
                                 <button className='nav-btn-red' onClick={() => {setIsModify(false); editUser();}}>Save</button>
                             </div>
                             :
-                            <button className='nav-btn-black' onClick={() => setIsModify(true)} disabled={!auth.isWriter}>Edit</button>
+                            <button className='nav-btn-black' onClick={() => setIsModify(true)} /*disabled={!auth.isWriter}*/>Edit</button>
                         }
                     </div>
                 </div>

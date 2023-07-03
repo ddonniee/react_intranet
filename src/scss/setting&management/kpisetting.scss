@@ -1,9 +1,8 @@
 @import '../variables';
 
-.user-container {
-
-    /* 상단 검색 nav */
-    .user-nav {
+.kpisetting-container {
+    /* 검색 nav 영역 */
+    .kpi-nav {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -11,17 +10,25 @@
         border-radius: 14px;
         padding: 10px 20px;
 
+        .nav-header {
+            width: 18%;
+            color: #4E4E4E;
+            font-size: 21px;
+            font-weight: 600;
+            letter-spacing: 0.21px;
+        }
+
         .nav-left {
             display: flex;
             align-items: center;
-            width: 65%;
+            width: 70%;
             justify-content: space-around;
         }
 
         .nav-right {
             display: flex;
             align-items: center;
-            width: 30%;
+            width: 15%;
             justify-content: space-evenly;
         }
 
@@ -33,24 +40,6 @@
 
         .css-b62m3t-container {
             width: 179px;
-        }
-
-        .circle-btn {
-            width: 88px;
-            height: 88px;
-            border: none;
-            border-radius: 50%;
-            background: $primary-color-red;
-            color: #FFFFFF;
-            text-align: center;
-            cursor: pointer;
-
-            p {
-                font-weight: 600;
-                font-size: 20px;
-                line-height: 23px;
-                padding: 30px 0 5px 0;
-            }
         }
 
         .nav-line {
@@ -90,34 +79,6 @@
 
         .btn-modify button:first-child {
             margin-right: 11px;
-        }
-    }
-
-    /* 하단 Grid */
-    .user-content {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        margin-top: 30px;
-        border-top: 2px solid #BB0841;
-
-        .grid {
-            flex: 1;
-        }
-
-        .ag-theme-alpine {    
-            min-height: 100vh !important;
-        }
-    }
-
-    .row-select {
-        width: 100%;
-        padding: 5px;
-        border: 1px solid #CCCCCC;
-        border-radius: 5px;
-
-        :disabled {
-            color: $primary-color-grey;
         }
     }
 }

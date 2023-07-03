@@ -156,7 +156,7 @@ function Header() {
                 ])
             }else if(currentTab.lowerTab==='setting') {
                 setThirdMenuList([
-                    {name : 'KPI Target Setting', path : '/setting/kpitarget'},
+                    {name : 'KPI Performance Setting', path : '/setting/kpiperformance'},
                     {name : 'Evaluation/Incentive Setting', path : '/setting/evaluation'},
                     {name : 'FAQ Setting', path : '/setting/faq'},
                     {name : 'Notice Setting', path : '/setting/notice'},
