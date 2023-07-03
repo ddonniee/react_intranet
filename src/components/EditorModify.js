@@ -21,7 +21,7 @@ import { generateRandomString } from "../utils/CommonFunction";
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
  * @returns 
  */
-function EditorModify({ period, data, setData, range, onSave, onClose, onDelete }) {
+function EditorModify({ period, data, setData, range, onSave, onClose, onDelete, onAttach }) {
 
     console.log(data,'editedit')
     const user = useContext(UserContext);
@@ -92,6 +92,7 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete 
         }
       
     }
+
     useEffect(()=>{
         if(!alertModal) {
             setAlertSetting({
@@ -224,13 +225,15 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete 
                                 style={{display: "none"}} 
                                 id='file-delete-btn'
                                 onChange={(e)=>{
-                                    console.log(e.target?.files)
+                                    let target = e.target;
+                                    onAttach(e,idx)
+                                    console.log(target)
+                                    console.log(target?.files)
                                     if(e.target?.files[0]) {
                                         let formData = new FormData();
                                         formData.append('fileName',e.target?.files[0])
                                         // api 연동..
                                     }
-                                    
                             }}
                             />       
                         </div>

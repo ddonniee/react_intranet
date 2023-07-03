@@ -147,6 +147,11 @@ function CommonCodeMangement() {
           console.log(props.setValue,'props는 뭔데 ?')
           props.setValue(selectedValue);
           console.log('change use ---->', selectedValue);
+
+          props.api.stopEditing();
+          props.node.setDataValue(props.colDef.field, selectedValue);
+          console.log('edit job type ---->', selectedValue);
+
       };
 
       return (
@@ -238,17 +243,20 @@ function CommonCodeMangement() {
         //   });
     }
     
-    const handleLowerUse = (id,value) => {
+    const handleLowerUse = params => {
 
-        setSublist((prev) => {
-            return prev.map((item) => {
-              if (item.codeId === id) {
-                return { ...item, 
-                  useYn : value };
-              }
-              return item;
-            });
-          });
+
+      const {data} = params;
+      console.log('==================================,', data)
+        // setSublist((prev) => {
+        //     return prev.map((item) => {
+        //       if (item.codeId === id) {
+        //         return { ...item, 
+        //           useYn : value };
+        //       }
+        //       return item;
+        //     });
+        //   });
     }
     /** AG grid columns */
 
@@ -329,6 +337,8 @@ function CommonCodeMangement() {
         }
 
         if(isValid) {
+         
+
             var config = {
                 method: 'post',
                 maxBodyLength: Infinity,
@@ -337,7 +347,6 @@ function CommonCodeMangement() {
                  },
                 data : data
                 };
-        
                 axiosJsonInstance('/codeManagement/update',config)
                 .then(function (response) {
                     let resData = response.data;
@@ -411,15 +420,7 @@ function CommonCodeMangement() {
         headerName: 'Use Y/N',
         field: 'useYn',
         cellRenderer: SelectBoxRenderer,
-        cellEditorParams: handleChangeUse,
-        valueGetter: function(params) {
-          return params.data.name; // 셀의 값을 가져옴
-        },
-        valueSetter: function(params) {
-          params.data.name = params.newValue; // 셀의 값을 설정함
-          // 여기서 params.data.defaultValue를 사용하여 셀의 초기값을 설정할 수 있음
-          return true;
-        },
+        cellEditorParams: {handleChangeUse},
         width: 200,
       },
 
@@ -432,15 +433,7 @@ function CommonCodeMangement() {
         headerName: 'Use Y/N',
         field: 'useYn',
         cellRenderer: SelectBoxRenderer,
-        cellEditorParams: handleLowerUse,
-        valueGetter: function(params) {
-          return params.data.name; // 셀의 값을 가져옴
-        },
-        valueSetter: function(params) {
-          params.data.name = params.newValue; // 셀의 값을 설정함
-          // 여기서 params.data.defaultValue를 사용하여 셀의 초기값을 설정할 수 있음
-          return true;
-        },
+        cellEditorParams: {handleLowerUse},
         width: 200,
       },
       ];
