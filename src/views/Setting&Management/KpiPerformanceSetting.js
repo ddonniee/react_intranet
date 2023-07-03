@@ -114,19 +114,38 @@ function KpiPerformanceSetting() {
             <div className="inner-container">
                 {/** auth 권한체크로 수정 필요 */}
                 <Top auth={1} searchArea={false}/>
-                <div className='user-nav'>
+                <div className='kpi-nav'>
+                    <div className='nav-header'>1. KPI Target Format Download</div>
                     <div className='nav-left'>
+                        <div className='nav-line'></div>
                         <p>· Subsidiary</p>
                         <SelectBox name='corporationCode' options={subOptions} handleChange={handleSelectBox} />
                         <p>· Execution Year</p>
                         <SelectBox name='centerType' options={yearOptions} handleChange={handleSelectBox} />
                     </div>
                     <div className='nav-right'>
-                        <button className='circle-btn' onClick={getList} >
-                            <p>Inquiry</p>
+                        <div className='nav-line'></div>
+                        <button className='custom-circle-btn' onClick={getList} >
+                            <p style={{padding: "25px 0 0 0"}}>Download <br/>Total KPI</p>
                             <IntersectIcon />
                         </button>
+                    </div>
+                </div>
+                <div className='kpi-nav'>
+                    <div className='nav-header'>2. KPI format Upload</div>
+                    <div className='nav-left'>
                         <div className='nav-line'></div>
+                        <p>· Subsidiary</p>
+                        <SelectBox name='corporationCode' options={subOptions} handleChange={handleSelectBox} />
+                        <p>· Execution Year</p>
+                        <SelectBox name='centerType' options={yearOptions} handleChange={handleSelectBox} />
+                    </div>
+                    <div className='nav-right'>
+                        <div className='nav-line'></div>
+                        <button className='custom-circle-btn' onClick={getList} >
+                            <p>Upload</p>
+                            <IntersectIcon />
+                        </button>
                     </div>
                 </div>
 

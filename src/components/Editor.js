@@ -257,7 +257,8 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
             </div>
 
             <div className="btn-row">
-                <button className={`btn-white ${(!data || !isWriter || content?.deleteAt) && 'custom-hidden'}`} onClick={onDelete}>Delete</button>
+                {/* <button className={`btn-white ${(!data || !isWriter || content?.deleteAt) && 'custom-hidden'}`} onClick={onDelete}>Delete</button> */}
+                <button className="btn-white" onClick={onDelete}>Delete</button>
                 <div>
                     <button className="btn-black" onClick={() => onClose(false)}>Cancel</button>
                     { (isWriter && !content?.deleteAt) ? 
