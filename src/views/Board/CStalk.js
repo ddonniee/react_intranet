@@ -753,6 +753,8 @@ function CStalk() {
             console.log('error',error)
         })
     }
+
+    
     useLayoutEffect(()=>{
         getList();   
     },[reqData.page])
@@ -781,6 +783,11 @@ function CStalk() {
  
 
     const [fileStore, setFileStore] = useState([])
+
+    const onAttachFiles = (e,idx) => {
+        console.log('onAttachFiles')
+        console.log(e.target.files)
+    }
     useEffect(()=>{
         
         if(selectedList?.attachments!=='') {
@@ -902,7 +909,7 @@ function CStalk() {
                     isWrite
                     ?
                     <div className="editor-wrapper">
-                    <EditorModify data={content} setData={setContent} onSave={onSaveContent} onClose={()=>onConfirmHandler(1)} range />
+                    <EditorModify data={content} setData={setContent} onSave={onSaveContent} onClose={()=>onConfirmHandler(1)} onAttach={onAttachFiles} range />
                     </div>
                     :
                     !isWrite && selectedList.csTalkId!=='' && !isModify
