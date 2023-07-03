@@ -376,7 +376,7 @@ function UserManagement() {
                                 <button className='nav-btn-red' onClick={() => {setIsModify(false); editUser();}}>Save</button>
                             </div>
                             :
-                            <button className='nav-btn-black' onClick={() => setIsModify(true)} disabled={!auth.isWriter}>Edit</button>
+                            <button className='nav-btn-black' onClick={() => setIsModify(true)} /*disabled={!auth.isWriter}*/>Edit</button>
                         }
                     </div>
                 </div>

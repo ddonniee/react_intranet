@@ -73,6 +73,10 @@
             background: $primary-color-grey;
             color: #FFFFFF;
         }
+        .nav-btn-black:disabled {
+            color: #888888;
+            background: #D8D8D8;
+        }
         .nav-btn-white {
             border: 1px solid $line-color-grey;
             background: #FFFFFF;
