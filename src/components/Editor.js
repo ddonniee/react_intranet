@@ -132,11 +132,14 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
         <div className="editor-container">
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
-                <div className="right"> <input type="text" className="write-input" name="writer" readOnly value={user.name}></input> </div>
+                {/* <div className="right"> <input type="text" className="write-input" name="writer" readOnly value={user.name}></input> </div> */}
+                <div className="right"> <p className="custom-flex-item custom-align-item">{user.name}</p> </div>
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Date</p> </div>
-                <div className="right"> <input type="text" className="write-input" name="date" readOnly value={data ? moment(content?.createdAt).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')}></input> </div>
+                {/* <div className="right"> <input type="text" className="write-input" name="date" readOnly value={data ? moment(content?.createdAt).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')}></input> </div> */}
+                <div className="right"> <p className="custom-flex-item custom-align-item">{data ? moment(content?.createdAt).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')}</p> </div>
+
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>
@@ -257,8 +260,7 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
             </div>
 
             <div className="btn-row">
-                {/* <button className={`btn-white ${(!data || !isWriter || content?.deleteAt) && 'custom-hidden'}`} onClick={onDelete}>Delete</button> */}
-                <button className="btn-white" onClick={onDelete}>Delete</button>
+                <button className={`btn-white ${(!data /*|| !isWriter*/ || content?.deleteAt) && 'custom-hidden'}`} onClick={onDelete}>Delete</button>
                 <div>
                     <button className="btn-black" onClick={() => onClose(false)}>Cancel</button>
                     { (isWriter && !content?.deleteAt) ? 
