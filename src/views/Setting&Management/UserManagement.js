@@ -368,21 +368,15 @@ function UserManagement() {
                             <p>Inquiry</p>
                             <IntersectIcon />
                         </button>
+                        <div className='nav-line'></div>
                         {
-                            auth.isWriter ?
-                            <>
-                            <div className='nav-line'></div>
-                            {
-                                isModify ?
-                                <div className='btn-modify'>
-                                    <button className='nav-btn-white' onClick={() => setIsModify(false)}>Cancel</button>
-                                    <button className='nav-btn-red' onClick={() => {setIsModify(false); editUser();}}>Save</button>
-                                </div>
-                                :
-                                <button className='nav-btn-black' onClick={() => setIsModify(true)} disabled={!auth.isWriter}>Edit</button>
-                            }
-                            </>
-                            : null
+                            isModify ?
+                            <div className='btn-modify'>
+                                <button className='nav-btn-white' onClick={() => setIsModify(false)}>Cancel</button>
+                                <button className='nav-btn-red' onClick={() => {setIsModify(false); editUser();}}>Save</button>
+                            </div>
+                            :
+                            <button className='nav-btn-black' onClick={() => setIsModify(true)} disabled={!auth.isWriter}>Edit</button>
                         }
                     </div>
                 </div>
