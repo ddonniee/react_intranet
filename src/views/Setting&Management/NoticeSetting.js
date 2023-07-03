@@ -234,6 +234,106 @@ function NoticeSetting() {
     const [alertModal, setAlertModal] = useState(false)
     const [alertTxt, setAlertTxt] = useState('')
     const [alertConfirm, setAlertConfirm] = useState(false);
+    const [alertSetting, setAlertSetting] = useState({
+        alertTxt : '',
+        onConfirm : function() {},
+        isDoubleBtn : false,
+        btnTxt : 'Close',
+        // confirmTxt : ''
+    })
+
+    const onConfirmHandler = (type) => {
+        // leave editor 
+        if(type === 'leave') {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: ' Click confirm to leave write mode.',
+                onConfirm : () => { 
+                    setAlertModal(false);
+                    setIsWrite(false);
+                    setIsModify(false);
+                },
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+            })
+        }
+        // add post
+        else if(type === 'delete') {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: `You've inserted new post.`,
+                onConfirm : () => {
+                    setAlertModal(false);
+                    setIsWrite(false)
+                    setIsModify(false)
+                    setDetail()
+                    getList()
+                },
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+            })
+        }
+        // modify post
+        else if(type === 'modify') {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: `You've inserted modified post.`,
+                onConfirm : () => {
+                    setAlertModal(false);
+                    setIsWrite(false)
+                    setIsModify(false)
+                    setDetail()
+                    getList()
+                },
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+            })
+        }
+        // delete post
+        else if(type === 'delete') {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Are you sure to delete post?',
+                onConfirm : () => {
+                    setAlertModal(false)
+                    setIsWrite(false)
+                    setIsModify(false)
+                    setDetail()
+                    getList()
+                },
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+            })
+        }
+        // restore post
+        else if(type === 'restore') {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Are you sure to restore post?',
+                onConfirm : () => {
+                    setAlertModal(false)
+                    setIsWrite(false)
+                    setIsModify(false)
+                    setDetail()
+                    getList()
+                },
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+            })
+        }
+        // success alert 
+        else if(type === 'submit') {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Success',
+                onConfirm : () => {
+                    setAlertModal(false);
+                },
+                isDoubleBtn : false,
+                btnTxt : 'Cancel',
+            })
+        }
+    }
 
     const onSaveContent = () => {
         console.log('editor data >>>>>>', writeData)
@@ -252,11 +352,11 @@ function NoticeSetting() {
                     }
                 }
                 console.log('save data >>>>>>', Object.fromEntries(formData))
-        
+                
                 // CS 공지사항 등록 API
                 axiosInstance2.post('/notice/csInsert', formData, config).then(res => {
                     let resData = res.data;
-
+                    
                     if(resData.code == 200) {
                         console.log('res', resData)
                         setAlertTxt("You've inserted new post.")
@@ -395,6 +495,11 @@ function NoticeSetting() {
                 setAlertModal(false);
                 setIsWrite(false);
                 setIsModify(false);
+            } else if(alertTxt == `You've inserted new post.`) {
+                setAlertConfirm(false);
+                // setIsWrite(false)
+                // setIsModify(false)
+                // setDetail()
             }
         }
     }, [alertConfirm])

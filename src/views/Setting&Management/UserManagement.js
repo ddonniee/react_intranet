@@ -87,6 +87,7 @@ function UserManagement() {
 
     /* 조회 영역 ****************************************************************/
     const jobType = [
+        'LGEKR',
         'Subsidiary Staff',
         'Subsidiary Admin',
         'LGC Director',
