@@ -200,9 +200,9 @@ function Faq() {
             iconModal : false,
         },
     ])
-    const [faqList, setFaqList] = useState([])
+    const [boardData, setBoardData] = useState([])
     const [frequentList, setFrequentList] = useState([])
-    console.log(faqList,'fafafa')
+    console.log(boardData,'fafafa')
     const [column, setColumn] = useState([
         { field: 'num' },
         { field: 'title' },
@@ -372,7 +372,7 @@ function Faq() {
             if(resData.code===200) {
                 let data = resData.result
                 console.log('response',response)
-                setFaqList(data?.list)
+                setBoardData(data?.list)
                 setFrequentList(data?.top5list)
             }else {
                 console.log(resData)
@@ -592,7 +592,7 @@ function Faq() {
       },[activePage])
 
       useEffect(()=>{
-        if(faqList.length===0) {
+        if(boardData.length===0) {
             setBoardLength(0)
        }
        else {
@@ -600,7 +600,7 @@ function Faq() {
         if(activePage===1) {
          max = 0
          console.log('ms',max)
-         faqList.map((item) =>{
+         boardData.map((item) =>{
              if(item.rn>max) {
                  console.log(item.rn)
                  max = item.rn;
@@ -609,7 +609,7 @@ function Faq() {
           })
         }
        }
-      },[faqList])
+      },[boardData])
       useEffect(()=>{
         if(selectedList) {
             getComment()
@@ -666,17 +666,17 @@ function Faq() {
                 <div className="faq-left">
                     <ul className="faq-custom-board">
                         {
-                            faqList && faqList.length > 0 && faqList.map((item,idx)=>{
+                            boardData && boardData.length > 0 && boardData.map((item,idx)=>{
                                 return(
-                                    <li key={generateRandomString(idx)} id={`list-item-${idx+1}`} onClick={(e)=>handleClickRow(e,item)}>
-                                        <span>{String((activePage-1)*10+(idx+1)).padStart(3, '0')}</span><span>{item.subject}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
+                                    <li  key={generateRandomString(idx)} id={`list-item-${idx+1}`} onClick={(e)=>handleClickRow(e,item)}>
+                                        <span>{String((activePage-1)*10+(idx+1)).padStart(3, '0')}</span><span>{item.subject}</span><span className="custom-stress-txt">{item.hits}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /><span>{moment(item.createdAt).format('YYYY-MM-DD')}</span>
                                     </li>
                                 )
                             })
                         }
                     </ul>
                     {
-                        faqList &&
+                        boardData &&
                         <Pagination 
                             activePage={activePage} // 현재 페이지
                             itemsCountPerPage={itemsPerPage} // 한 페이지 당 보여줄 아이템 수
@@ -687,7 +687,7 @@ function Faq() {
                             onChange={(e)=>setPage(e,1)} // 페이지 변경을 핸들링하는 함수
                         />
                     }
-                    {/* <AgGrid data={faqList} column={column} paging={true} /> */}
+                    {/* <AgGrid data={boardData} column={column} paging={true} /> */}
                 </div>
                 <div className="editor-wrapper">
                {

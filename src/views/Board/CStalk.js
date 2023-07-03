@@ -278,11 +278,13 @@ function CStalk() {
 
     const handleClickRow = (e, item) => {
         setFileStore([])
-        if(isWrite || isModify) {
+        if((isWrite || isModify) && (content.title !== '' || content.content !=='')) {
             onConfirmHandler(1,item)
             return false
+        }else {
+            isWrite ? setIsWrite(false) : setIsModify(false)
+            getDetail(item)
         }
-        getDetail(item)
     }
     
 
@@ -636,7 +638,7 @@ function CStalk() {
                 console.log('cocococomcmcm',response)
                 let resData = response.data;
                 if(resData.code===200) {
-                    onConfirmHandler(6)
+                    // onConfirmHandler(6)
                     num === 1 ? setComment('') : setSubComment('')
                     getDetail(id);
                     getComment()
@@ -794,8 +796,20 @@ function CStalk() {
             // api 연동..
         }
     }
+
+    /** loading 시 animation */
+    const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingComment, setIsLoadingComment] = useState(false)
+    
     useEffect(()=>{
-        
+        if(selectedList) {
+            setIsLoading(true)
+            const timeoutId = setTimeout(() => {
+                setIsLoading(false);
+              }, 500); // 3초 후에 isVisible 값을 false로 변경
+          
+              return () => clearTimeout(timeoutId) 
+        }
         if(selectedList?.attachments!=='') {
             const jsonString = JSON.parse(selectedList.attachments);
             if(jsonString!==null) {
@@ -917,7 +931,7 @@ function CStalk() {
                     !isWrite && selectedList.csTalkId!=='' && !isModify
                     ?
                     <div className="editor-wrapper">
-                        <div className="cstalk-right" >
+                        <div className={`cstalk-right ${isLoading ? 'loadingOpacity':''}`}>
                     <div className="cstalk-right-top">
                         <p>{selectedList.subject}</p>
                         <div className="custom-flex-item selected-info">

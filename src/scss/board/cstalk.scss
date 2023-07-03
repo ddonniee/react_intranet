@@ -229,7 +229,7 @@
     }
 }
 .cstalk-right {
-    border-radius: 14px; height: 800px; overflow: auto; width: 100%;
+    border-radius: 14px; height: 800px; overflow: auto; width: 100%; transition: transform 0.3s ease;
 }
 .cstalk-right .ck-sticky-panel {
     display: none !important;
