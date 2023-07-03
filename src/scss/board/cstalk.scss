@@ -1,7 +1,7 @@
 .search-wrapper {
     background-color: #BB0841;
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -90,9 +90,6 @@
             font-size: 14px; font-weight: 400; line-height: 19px; letter-spacing: 0.14px;
         }
     }
-}
-.catalk-right {
-    border: 1px solid $border-color-gery; border-radius: 14px; height: 760px; width: 48px;
 }
 .cstalk-right .ck-sticky-panel {
     display: none !important;
@@ -229,7 +226,8 @@
     }
 }
 .cstalk-right {
-    border-radius: 14px; height: 800px; overflow: auto; width: 100%; transition: transform 0.3s ease;
+    border-radius: 14px; height: 800px; overflow: auto; width: 100%; transition: transform 0.3s ease; 
+    border: 1px solid $border-color-gery;
 }
 .cstalk-right .ck-sticky-panel {
     display: none !important;

@@ -607,6 +607,7 @@ function CStalk() {
 
     const onAddComment =(num, id) => {
         // num = 1 댓글, num = 2 대댓글
+        console.log('onAddComment',num,id)
         if(num===1 && comment==='') {
             onConfirmHandler(5)
             return false
@@ -635,13 +636,10 @@ function CStalk() {
                 };
             axiosInstance2('/csTalk/commentInsert', config)
             .then(function (response){
-                console.log('cocococomcmcm',response)
                 let resData = response.data;
                 if(resData.code===200) {
                     // onConfirmHandler(6)
                     num === 1 ? setComment('') : setSubComment('')
-                    getDetail(id);
-                    getComment()
                 }else {
                     console.log(resData,'comment list')
                 }
@@ -651,6 +649,23 @@ function CStalk() {
             })  
     }
 
+    useEffect(()=>{
+       
+        if(selectedList && comment==='') {
+            getList();
+            getDetail(selectedList.csTalkIdid);
+            setSelctedList({
+                ...selectedList,
+                commentCount : selectedList.commentCount+1
+            })
+            getComment()
+            
+        }
+    },[comment]) 
+
+    useEffect(()=>{
+        console.log('commentList',commentList)
+    },[commentList])
     const onDeleteComment = (id) =>{
         // num = 1 댓글, num = 2 대댓글
         const formData = new FormData();
@@ -802,8 +817,11 @@ function CStalk() {
     const [isLoadingComment, setIsLoadingComment] = useState(false)
     
     useEffect(()=>{
+        setComment('');
+        setCommentPage(1)
         if(selectedList) {
             setIsLoading(true)
+            getComment();
             const timeoutId = setTimeout(() => {
                 setIsLoading(false);
               }, 500); // 3초 후에 isVisible 값을 false로 변경
@@ -817,13 +835,18 @@ function CStalk() {
                 setFileStore(copy)
             }
         }
-        getComment();
-        setComment('');
-        setCommentPage(1)
-    },[selectedList])
+       
+    },[selectedList.csTalkId])
 
     useEffect(()=>{
+        
         getComment()
+        setIsLoadingComment(true)
+        const timeoutId = setTimeout(() => {
+            setIsLoadingComment(false);
+            }, 500); // 3초 후에 isVisible 값을 false로 변경
+        
+            return () => clearTimeout(timeoutId)
     },[commentPage]) 
 
     useEffect(()=>{

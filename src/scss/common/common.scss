@@ -337,12 +337,12 @@ input:focus {
     letter-spacing: 0.025em;
 }
 .editor-wrapper {
-    border: 1px solid $border-color-gery; 
-            border-radius: 14px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 800px; width: 48%;
+    // border: 1px solid $border-color-gery; 
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 800px; width: 48%;
 }
 .editor-top > div {
     display: flex;

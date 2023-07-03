@@ -720,7 +720,7 @@ function Faq() {
                             <button onClick={()=>onAddComment(1,selectedList.faqId)}>Write</button>
                         </div>
                     </div>
-                    <div className={`faq-comment-list ${isLoadingComment ? 'loadingOpacity':''}`}>
+                    <div className={`faq-comment-list ${isLoadingComment ? 'halfOpacity':''}`}>
                         <ul>
                             {
                                 commentList.length !==0 &&
