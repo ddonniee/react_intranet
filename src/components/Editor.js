@@ -115,6 +115,14 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
         }
     }
 
+    const deleteRow = () => {
+        if(attachments.length > 1) {
+            setAttachments(prevArray => prevArray.slice(0, -1))
+        } else {
+            setAlertTxt('At least one attachment is required.')
+        }
+    }
+
     useEffect(()=>{
         if(!alertModal) {
             setAlertTxt('')
@@ -235,13 +243,15 @@ function Editor({ period, data, setData, range, restore, onSave, onClose, onDele
                             return (
                                 <div className="custom-flex-item custom-align-item" key={generateRandomString(idx)}>
                                     <input type="text" className="write-input attach-input" name="filename" readOnly></input> 
-                                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn">
-                                        { item.fileName === '' ? 'Select' : 'Delete' }</label>
+                                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-select-btn">
+                                        {/* { item.fileName === '' ? 'Select' : 'Delete' } */}Select</label>
+                                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" onClick={() => deleteRow()}>
+                                        {/* { item.fileName === '' ? 'Select' : 'Delete' } */}Delete</label>
                                     <input 
                                         type="file" 
-                                        className="file-delete-btn" 
+                                        className="file-select-btn" 
                                         style={{display: "none"}} 
-                                        id='file-delete-btn'
+                                        id='file-select-btn'
                                         onChange={(e) => {
                                             console.log(e.target?.files)
                                             if(e.target?.files[0]) {
