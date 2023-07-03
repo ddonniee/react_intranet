@@ -390,6 +390,11 @@ function NoticeSetting() {
             } else if(alertTxt == 'Are you sure you want to restore it?') {
                 onRestoreContent();
                 setAlertConfirm(false);
+            } else if(alertTxt == 'Click confirm to leave write mode.') {
+                setAlertConfirm(false);
+                setAlertModal(false);
+                setIsWrite(false);
+                setIsModify(false);
             }
         }
     }, [alertConfirm])
