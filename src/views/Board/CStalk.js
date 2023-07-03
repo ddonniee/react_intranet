@@ -925,7 +925,7 @@ function CStalk() {
                     isWrite
                     ?
                     <div className="editor-wrapper">
-                    <EditorModify data={content} setData={setContent} onSave={onSaveContent} onClose={()=>onConfirmHandler(1)} onAttach={onAttachFiles} range />
+                    <EditorModify data={content} setData={setContent} onSave={onSaveContent} onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : setIsWrite(false)} onAttach={onAttachFiles} range />
                     </div>
                     :
                     !isWrite && selectedList.csTalkId!=='' && !isModify
@@ -1092,7 +1092,7 @@ function CStalk() {
                     :
                     isModify
                     ?
-                    <EditorModify data={content} setData={setContent} range onSave={onEditContent}  onClose={()=>onConfirmHandler(1)} onDelete={()=>onConfirmHandler(3)}/>
+                    <EditorModify data={content} setData={setContent} range onSave={onEditContent}  onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : setIsModify(false)} onDelete={()=>onConfirmHandler(3)}/>
                     :
                     <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
                         <p>If you select a list, you can see the contents</p>
