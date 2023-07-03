@@ -155,7 +155,7 @@ function CommonCodeMangement() {
       };
 
       return (
-        <select className='row-select' value={props.value} onChange={handleChange}>
+        <select className='row-select' value={props.value} onChange={handleChange} defaultValue='Y'>
           {
               useOptions.map((job, i) => (
                   <option key={i} value={job}> {job} </option>
