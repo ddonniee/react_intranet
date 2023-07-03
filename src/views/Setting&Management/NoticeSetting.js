@@ -148,7 +148,7 @@ function NoticeSetting() {
 
     const getSelectList = () => {
         // 법인목록 조회 API
-        axiosInstance2.post('/corporation/list').then(res => {
+        axiosInstance.post('/corporation/list').then(res => {
             const data = res?.data.result;
 
             const newArray = data.map((obj, index) => ({
@@ -156,7 +156,7 @@ function NoticeSetting() {
                 label: obj.corporationCode,
                 group: 'corporationCode'
             }));
-            // console.log('법인 목록 ---->', newArray)
+            console.log('법인 목록 ---->', newArray)
 
             setSubOptions(newArray);
             

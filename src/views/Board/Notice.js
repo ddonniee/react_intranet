@@ -137,7 +137,7 @@ function Notice() {
 
     const getSelectList = () => {
         // 법인목록 조회 API
-        axiosInstance2.post('/corporation/list').then(res => {
+        axiosInstance.post('/corporation/list').then(res => {
             const data = res?.data.result;
             // console.log('법인 기존 목록 ---->', data)
 
