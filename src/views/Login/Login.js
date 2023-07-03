@@ -19,6 +19,7 @@ import Link from '../../assets/svgs/icon_more.svg'
 import Check from '../../assets/svgs/icon_check.svg'
 // functions
 import { detectUserAgent, generateRandomString } from "../../utils/CommonFunction";
+import axios from "axios";
 
 
 
@@ -109,6 +110,37 @@ const Login = () =>{
     useEffect(()=>{
         checkUserAgent()
     },[])
+
+
+    // 캡차 테스트
+    const [captchaSrc, setCaptchaSrc] = useState("http://localhost:8090/login/getCaptcha");
+    const [answer, setAnswer] = useState();
+
+    const getCaptcha = (e) => {
+        e.preventDefault();
+        var rand = Math.random();
+        var url = "http://localhost:8090/login/getCaptcha?rand=" + rand;  // 매번 새로운 캡차를 받기 위해 랜덤 문자열을 넣어줌
+        setCaptchaSrc(url);     
+    };
+
+    const confirmCaptcha =()=> {
+        const formData = new FormData();
+        formData.append("answer", answer);
+
+        const config = {
+            withCredentials: true
+        }
+
+        axios.post('http://localhost:8090/login/confirmCaptcha', formData, config)
+        .then(res => {
+            console.log(res);
+        }).catch(error => {
+            console.log(error);
+        })
+
+    }
+
+
     return (
         <>
         <Style disable={(loginInfo.id === '' || loginInfo.pw ==='') && true} >
@@ -146,10 +178,10 @@ const Login = () =>{
                                     :
                                     <div className="login-security-txt custom-justify-between">
                                         <div>
-                                            <img src={securityUrl} className="security-num"/>
-                                            <img src={Reload} alt='reload-security-num' className="security-reload" onClick={generateSecurityCode}/>
+                                            <img src={captchaSrc} className="security-num"/>
+                                            <img src={Reload} alt='reload-security-num' className="security-reload" onClick={getCaptcha}/>
                                         </div>
-                                        <input className="secutiry-txt" type="text" />
+                                        <input className="secutiry-txt" type="text" onChange={e => setAnswer(e.target.value)} onBlur={confirmCaptcha}/>
                                     </div>
                                 }
                                 <button className="login-btn" onClick={handleCheckLogin} disabled={(loginInfo.id === '' || loginInfo.pw ==='') ? true : false} >ENTER</button>
