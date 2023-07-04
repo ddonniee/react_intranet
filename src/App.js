@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes,useLocation } from "react-router-dom";
 import routes from "./routes";
-// import './scss/style.scss';
-// import './m_scss/style.scss';
+import NotFound from "./views/Pages/NotFound";
 
 import {detectUserAgent} from '../src/utils/CommonFunction'
 // test useContext
@@ -57,6 +56,7 @@ function App({isMobile}) {
               element={<route.element />}
             />
           ))}
+           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
       </UserContext.Provider>

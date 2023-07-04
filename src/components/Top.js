@@ -14,7 +14,7 @@ import Home from '../assets/svgs/icon_home.svg'
  */
 const Top = props =>{
     
-    const {auth, options, handleChange, searchArea} = props;
+    const {auth, options, handleChange, searchArea, onChange, onClick} = props;
     const [title, setTitle] = useState('');
 
     const location = useLocation();
@@ -39,12 +39,12 @@ const Top = props =>{
             {
                 (auth && searchArea ) 
                 ?
-                <div className="search-area custom-justify-between">
+                <div className="search-area">
                 <div>· Subsidiary</div>
                 <SelectBox options={options} handleChange={handleChange} />
                 <div>· Search</div>
-                <input />
-                <div className="search-wrapper"><img src={Search} alt='search-btn'/></div>
+                <input className="top-input" onChange={onChange}/>
+                <div className="search-wrapper" onClick={onClick}><img src={Search} alt='search-btn'/></div>
                 </div>
                 : 
                 null

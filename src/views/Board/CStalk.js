@@ -820,6 +820,7 @@ function CStalk() {
         setComment('');
         setCommentPage(1)
 
+        setFileStore([])
         if(selectedList?.attachments!=='') {
           
             const jsonString = JSON.parse(selectedList.attachments);

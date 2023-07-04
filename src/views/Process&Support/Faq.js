@@ -17,18 +17,9 @@ import Viewer from "../../components/Viewer"
 import Alert from "../../components/Alert";
 import Tab from "../../components/Tab";
 // Utils
-import { generateRandomString,axiosInstance2 } from "../../utils/CommonFunction"
+import { generateRandomString,axiosInstance2, downloadAttachment } from "../../utils/CommonFunction"
 
 // Icons 
-import Order from '../../assets/svgs/icon_truck.svg'
-import Docs from '../../assets/svgs/icon_docs.svg'
-import Man from '../../assets/svgs/icon_man.svg'
-import Lupa from '../../assets/svgs/icon_tools.svg'
-import Hands from '../../assets/svgs/icon_hands.svg'
-import Codes from '../../assets/svgs/icon_codes.svg'
-import Timer from '../../assets/svgs/icon_timer.svg'
-import Video from '../../assets/svgs/icon_video.svg'
-import Talk from '../../assets/svgs/icon_cstalk.svg'
 import Polygon from '../../assets/svgs/icon_polygon.svg'
 import New from '../../assets/svgs/icon_new.svg'
 import Attachment from '../../assets/svgs/icon_attachment.svg';
@@ -39,7 +30,7 @@ import Dislike from '../../assets/svgs/icon_dislike.svg'
 import Disliked from '../../assets/svgs/icon_disliked.svg'
 import Comment from '../../assets/svgs/icon_co_comment.svg'
 import More_comment from '../../assets/svgs/icon_co_more.svg'
-
+import Close_comment from '../../assets/svgs/icon_co_close.svg'
 import moment from "moment";
 
 function Faq() {
@@ -51,14 +42,13 @@ function Faq() {
    
 
     const [subsidiary, setSubsidiary ] = useState([
-        {value:'1',label:'Canada'}, 
-        {value:'2',label:'USA'}, 
-        {value:'3',label:'Germany'}, 
-        {value:'4',label:'Austrailia'}, 
-        {value:'5',label:'Mexico'},
-        {value:'6',label:'Brazil'},
-        {value:'7',label:'Vietnam'},
-        {value:'8',label:'Indonesia'}
+        {value:'',label:'All'}, 
+        {value:'LGEAI',label:'LGEAI'}, 
+        {value:'LGECI',label:'LGECI'}, 
+        {value:'LGEES',label:'LGEES'}, 
+        {value:'LGEJP',label:'LGEJP'}, 
+        {value:'LGEKR',label:'LGEKR'},
+        {value:'LGEMC',label:'LGEMC'},
     ])
 
      /** 페이징 관련 ▼ ============================================================= */
@@ -75,137 +65,8 @@ function Faq() {
 
      /** 페이징 관련 ▲ ============================================================= */
 
-    // const testValue = useContext(TestContext)
-    
-    // const [categoryLists, setCategoryLists] = useState([
-    //     {
-    //         num : 0,
-    //         icon : Order,
-    //         name : 'displacement',
-    //         lowerMenu : [
-    //             {
-    //                 lowerName : 'Hold Codes',
-    //                 path : process.env.REACT_APP_FRONT_URL
-    //             }
-    //         ],
-    //         iconModal : false,
-    //     },
-    //     {
-    //         num : 1,
-    //         icon : Docs,
-    //         name : 'Hold',
-    //         lowerMenu : [
-    //             {
-    //                 lowerName : 'Hold Codes',
-    //                 path : process.env.REACT_APP_FRONT_URL
-    //             }
-    //         ],
-    //         iconModal : false,
-    //     },
-    //     {
-    //         num : 2,
-    //         icon : Man,
-    //         name : 'Installation',
-    //         lowerMenu : [
-    //             {
-    //                 lowerName : 'Hold Codes',
-    //                 path : process.env.REACT_APP_FRONT_URL
-    //             },
-    //             {
-    //                 lowerName : 'Service Order',
-    //                 path : process.env.REACT_APP_FRONT_URL
-    //             },
-    //             {
-    //                 lowerName : 'VIDEO-Status',
-    //                 path : process.env.REACT_APP_FRONT_URL
-    //             },
-    //             {
-    //                 lowerName : 'Support',
-    //                 path : process.env.REACT_APP_FRONT_URL
-    //             }
-    //         ],
-    //         iconModal : false,
-    //     },
-    //     {
-    //         num : 3,
-    //         icon : Lupa,
-    //         name : 'Agreement Process',
-    //         lowerMenu : [
-    //             {
-    //                 lowerName : 'Hold Codes',
-    //                 path : process.env.REACT_APP_FRONT_URL
-    //             }
-    //         ],
-    //         iconModal : false,
-    //     },
-    //     {
-    //         num : 4,
-    //         icon : Hands,
-    //         name : 'Order Status',
-    //         lowerMenu : [
-    //             {
-    //                 lowerName : 'Hold Codes',
-    //                 path : process.env.REACT_APP_FRONT_URL
-    //             }
-    //         ],
-    //         iconModal : false,
-    //     },
-    //     {
-    //         num : 5,
-    //         icon : Codes,
-    //         name : 'Hold Codes',
-    //         lowerMenu : [
-    //             {
-    //                 lowerName : 'Hold Codes',
-    //                 path : process.env.REACT_APP_FRONT_URL
-    //             }
-    //         ],
-    //         iconModal : false,
-    //     },
-    //     {
-    //         num : 6,
-    //         icon : Timer,
-    //         name : 'Service Order',
-    //         lowerMenu : [
-    //             {
-    //                 lowerName : 'Hold Codes',
-    //                 path : process.env.REACT_APP_FRONT_URL
-    //             }
-    //         ],
-    //         iconModal : false,
-    //     },
-    //     {
-    //         num : 7,
-    //         icon : Video,
-    //         name : 'VIDEO - Status',
-    //         lowerMenu : [
-    //             {
-    //                 lowerName : 'Hold Codes',
-    //                 path : process.env.REACT_APP_FRONT_URL
-    //             }
-    //         ],
-    //         iconModal : false,
-    //     },
-    //     {
-    //         num : 8,
-    //         icon : Talk,
-    //         name : 'Support',
-    //         lowerMenu : [
-    //             {
-    //                 lowerName : 'Hold Codes',
-    //                 path : process.env.REACT_APP_FRONT_URL
-    //             }
-    //         ],
-    //         iconModal : false,
-    //     },
-    // ])
     const [boardData, setBoardData] = useState([])
     const [frequentList, setFrequentList] = useState([])
-    const [column, setColumn] = useState([
-        { field: 'num' },
-        { field: 'title' },
-    ])
-
     const [selectedList, setSelectedList] = useState({
         attachments: '',
         reactionState: "",
@@ -222,7 +83,24 @@ function Faq() {
         categoryId: '',
         writerID: ''
     })
-
+    const clearState =()=> {
+        setSelectedList({
+            attachments: '',
+            reactionState: "",
+            subject: "",
+            dislikeCount: 0,
+            likeCount: 0,
+            content: '',
+            subsidiary:'',
+            writerName:'',
+            commentCount : 0,
+            hits: 16,
+            createdAt: '',
+            faqId: '',
+            categoryId: '',
+            writerID: ''
+           })
+      }
     useEffect(()=>{
         console.log('selectedList.reactionState',selectedList)
     },[selectedList])
@@ -233,7 +111,6 @@ function Faq() {
         let yourReaction = reaction==='LIKE' ? 'likeCount' : 'dislikeCount'
         let oppositeReaction = reaction === 'LIKE' ? 'dislikeCount' : 'likeCount'
 
-        console.log(id,reaction,yourReaction,oppositeReaction,'!~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         formData.append('faqId', id);
         formData.append('reaction',reaction )
 
@@ -270,7 +147,11 @@ function Faq() {
         })
     }
     const handleSelectBox = e => {
-        console.log(e)
+        let value = e.value;
+        setReqData({
+            ...reqData,
+            subsidiary : value
+        })
     }
 
     const handleClickRow = (e,item) => {
@@ -342,7 +223,7 @@ function Faq() {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: 'Are you sure to delete comment?',
-                // onConfirm :  ()=>{onDeleteComment(id); setAlertModal(false); },
+                onConfirm :  ()=>{onDeleteComment(id); setAlertModal(false); },
                 isDoubleBtn : true,
                 btnTxt : 'Confirm',
                 confirmTxt : "Deleted comment."
@@ -399,6 +280,8 @@ function Faq() {
     })
     const getList = () =>{
 
+        console.log('검색한다', reqData)
+
         const formData = new FormData();
 
         for (let key in reqData) {
@@ -418,10 +301,12 @@ function Faq() {
         axiosInstance2('/faq/list', config)
         .then(function (response){
             let resData = response.data;
+            console.log(resData,'dddd')
             if(resData.code===200) {
                 let data = resData.result
-                setBoardData(data?.list)
-                setFrequentList(data?.top5list)
+             
+                setBoardData(data.list)
+                setFrequentList(data.top5list)
             }else {
                 console.log(resData)
             }
@@ -522,6 +407,7 @@ function Faq() {
                 }
                 )
                 setCommentList(data)
+                console.log(data.subComment,'댓글목ㄹ고')
             }else {
                 console.log(resData)
             }
@@ -530,50 +416,100 @@ function Faq() {
            
         })
     }
-        const onAddComment =(num, id) => {
-        // num = 1 댓글, num = 2 대댓글
-        if(num===1 && comment==='') {
-            // onConfirmHandler(5)
-            return false
+    const openCommentInput = (idx) =>{
+        console.log('openCommentInput')
+        let copylist = [...commentList];
+        for(let i=0; i<copylist.length; i++) {
+            copylist[i].isInput = false;
         }
-        // else if(num===2 &&subComment==='') {
-        //     // onConfirmHandler(5)
-        //     return false
-        // }
+        copylist[idx].isInput = !copylist[idx].isInput
+        setCommentList(copylist)
+    }
+    const openSubcomment = (e,idx,id) =>{
+        let copyList = [...commentList]
+        copyList[idx].openSubComment = !copyList[idx].openSubComment
+        setCommentList(copyList)
+    }
+    const onAddComment =(num, id) => {
+    // num = 1 댓글, num = 2 대댓글
+    if(num===1 && comment==='') {
+        onConfirmHandler(5)
+        return false
+    }
+    else if(num===2 &&subComment==='') {
+        onConfirmHandler(5)
+        return false
+    }
 
+    const formData = new FormData();
+
+    formData.append('faqId', id);
+    if(num===1) {
+        formData.append('content', comment);
+    }
+    if(num===2) {
+        formData.append('commentId', id);
+        formData.append('content', subComment);
+    }
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/faq/commentInsert', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                // onConfirmHandler(6)
+                num === 1 ? setComment('') : setSubComment('')
+                getDetail(id);
+                getComment()
+                
+            }else {
+                console.log(resData,'comment list')
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })  
+    }
+
+    const onDeleteComment = (id) =>{
+        // num = 1 댓글, num = 2 대댓글
         const formData = new FormData();
 
-        formData.append('faqId', id);
-        if(num===1) {
-            formData.append('content', comment);
-        }
-        if(num===2) {
-            formData.append('commentId', id);
-            // formData.append('content', subComment);
-        }
-            var config = {
-                method: 'post',
-                maxBodyLength: Infinity,
-                headers: { 
-                    'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-                },
-                data : formData
-                };
-            axiosInstance2('/faq/commentInsert', config)
-            .then(function (response){
-                let resData = response.data;
-                if(resData.code===200) {
-                    // onConfirmHandler(6)
-                    num === 1 ? setComment('') : setSubComment('')
-                    getDetail(id);
-                    // getComment()
-                }else {
-                    console.log(resData,'comment list')
-                }
-            })
-            .catch(function(error) {
-                console.log('error',error)
-            })  
+        formData.append('commentId', id);
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/faq/commentDelete', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                setAlertSetting({
+                    ...alertSetting,
+                    alertTxt : "You've deleted comment.",
+                    isDoubleBtn : false,
+                    btnTxt : 'Close',
+                })
+                getDetail(selectedList.faqId);
+                getComment()
+                getList()
+            }else {
+                console.log(resData,'resData')
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })                  
     }
 
     const iconRef = useRef();
@@ -612,22 +548,38 @@ function Faq() {
     }
 
     const [categoryIcon, setCategoryIcon] = useState([])
+    
     useEffect(()=>{
-        if(categoryLists?.attachments!=='') {
-            const jsonString = JSON.parse(categoryLists.attachments);
-            if(jsonString!==null) {
-                let copy = [...categoryIcon,jsonString]
-                setCategoryIcon(copy)
-            }
+        if(categoryLists.length !== 0 ) {
+            let copy = [...categoryLists]
+            copy.map(c=>{
+                let jsonString = JSON.parse(c.categoryIcon);
+                if(jsonString!==null) {
+                    c.fileName = jsonString.fileName
+                    c.uploadPath = jsonString.uploadPath
+                }
+            })
+            setCategoryIcon(copy)
         }
     },[categoryLists])
 
     /** loading 시 animation */
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingComment, setIsLoadingComment] = useState(false)
-
     
+    const [fileStore, setFileStore] = useState([])
      useEffect(()=>{
+
+        setFileStore([])
+        if(selectedList?.attachments!=='') {
+          
+            const jsonString = JSON.parse(selectedList.attachments);
+            console.log('실행이 안돼 ?,',jsonString)
+            if(jsonString!==null) {
+                let copy = [...jsonString]
+                setFileStore(copy)
+            }
+        }
         if(selectedList) {
             getComment();
             setIsLoading(true)
@@ -696,20 +648,23 @@ function Faq() {
           })
         }
        }
+      
       },[boardData])
+      
       useEffect(()=>{
         if(selectedList) {
             getComment()
         }
       },[commentPage])
 
+  
     return (
         <>
         
         <Header />
         <Style selectId={selectedList?.num} >
         <div className="inner-container">
-            <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} />
+            <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Top Area */}
             <div className="faq-nav">
                 <div className="faq-lists-wrapper">
@@ -733,7 +688,7 @@ function Faq() {
                             categoryLists?.map((item,idx)=>{
                                 return(
                                     <li key={generateRandomString(idx+1)} onClick={(e)=>handleClickIcon(e,item)}>
-                                        <div className="faq-img-wrapper"><img src={item.icon} /></div>
+                                        <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+item.uploadPath} alt='category-icon'/></div>
                                         <p>{item.categoryNm}</p>
                                         {
                                         item.iconModal
@@ -751,12 +706,18 @@ function Faq() {
             {/** Content Area */}
             <div className="faq-contents">
                 <div className="faq-left">
+
+                <div className="faq-count">
+                        {/* Total <span>{boardData.length}</span> */}
+                        Total <span className="custom-stress-txt">{boardLength}</span>
+                    </div>
+
                     <ul className="faq-custom-board">
                         {
                             boardData && boardData.length > 0 && boardData.map((item,idx)=>{
                                 return(
                                     <li  key={generateRandomString(idx)} id={`list-item-${idx+1}`} onClick={(e)=>handleClickRow(e,item)}>
-                                        <span>{String((activePage-1)*10+(idx+1)).padStart(3, '0')}</span><span>{item.subject}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /><span>{moment(item.createdAt).format('YYYY-MM-DD')}</span>
+                                        <span>{String((activePage-1)*10+(idx+1)).padStart(3, '0')}</span><span className="board-max-length">{item.subject.slice(0,82)}{item.subject.length > 82 && '...'}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /><span>{moment(item.createdAt).format('YY.MM.DD')}</span>
                                     </li>
                                 )
                             })
@@ -782,13 +743,20 @@ function Faq() {
                 <div className={`faq-right ${isLoading ? 'loadingOpacity':''}`} >
                 <div className="faq-right-top">
                     <p>{selectedList.subject}</p>
-                    <div className="custom-flex-item">
-                        <img src={Attachment} alt="attachment"/> 
-                        <span>Attachment</span>
-                        <span className="custom-flex-item faq-attach-down">
-                            <span>{selectedList.attachments !=='' && ` (1)`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="faq-attach custom-flex-item"><p>{selectedList.attachment}</p><img src={Download} alt='download_attachment'/></span>
-                        </span>
-                    </div>   
+                    {
+                        fileStore.length!==0 &&
+                        fileStore.map((file,idx)=>{
+                            return(
+                                <div className="custom-flex-item" key={generateRandomString(idx)}>
+                                    <img src={Attachment} alt="attachment"/> 
+                                    <span>Attachment</span>
+                                    <span className="custom-flex-item faq-attach-down">
+                                        <span >{`(${idx+1})`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="faq-attach custom-flex-item" onClick={()=>downloadAttachment(file.uploadPath)}><p>{file.fileName}</p><img src={Download} alt='download_attachment'/></span>
+                                    </span>
+                                </div> 
+                            )
+                        })
+                    }  
                     <div className="user-action custom-flex-item ">
                         <span className="faq-like custom-flex-item cursor-btn" onClick={(e)=>onClickAction(e,selectedList.faqId,'LIKE')}><img src={selectedList.reactionState==='LIKE' ? Liked : Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
                         <span >|</span>
@@ -802,7 +770,7 @@ function Faq() {
                         <div className="custom-justify-between">
                             <div className="comment-input">
                                 <span>Writer : {user.name}</span>
-                                <textarea defaultValue={comment} onChange={(e)=>setComment(e.target.value)}/>
+                                <textarea value={comment} onChange={(e)=>setComment(e.target.value)}/>
                             </div>
                             <button onClick={()=>onAddComment(1,selectedList.faqId)}>Write</button>
                         </div>
@@ -820,22 +788,71 @@ function Faq() {
                                                     <span>{moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
                                                 </div>
                                                 <span className="custom-flex-item">
-                                                    {user.id===comment.writerID && <p>Delete</p>}<p>Answer</p>
+                                                {
+                                                            comment.writerID===user.id &&
+                                                            <p className="cursor-btn" onClick={()=>onConfirmHandler(4,comment.commentId)}>Delete</p>
+                                                        }
+                                                         <p className="cursor-btn" onClick={()=>{openCommentInput(idx); setSubComment('')}}>Answer</p>
                                                 </span>
                                             </div>
                                             <div className="comment-middle">{comment.content?.slice(0,250)}{comment.content?.length>130 && <span className="custom-stress-txt">...More</span>}</div>
-                                            <div className="comment-bottom custom-flex-item custom-align-self">
-                                                {comment.comments?.map((c,idx)=>{
-                                                    return (
-                                                        <Fragment key={generateRandomString(idx)}>
-                                                        <img src={Comment} alt="under-comment" />
-                                                        <span>Comment</span>
-                                                        <span className="custom-stress-txt">{comment.subComment.length}</span>
-                                                        <img src={More_comment} alt="under-comment" />
-                                                        </Fragment>
-                                                    )
-                                                })}
-                                            </div>
+                                            <div className={comment.openSubComment ? "comment-bottom" : "comment-bottom "}>
+                                                        
+
+                                                            {
+                                                                comment.subComment.length!==0 &&
+                                                                <div className="custom-flex-item cursor-btn" onClick={(e)=>openSubcomment(e,idx,comment.csTalkId)}>
+                                                                <img src={Comment} alt="under-comment" />
+                                                                <span>Comment</span>
+                                                                <span className="custom-stress-txt">( {comment.subComment.length} ) </span>
+                                                                <img src={comment.openSubComment ? Close_comment : More_comment} alt="under-comment" className="toggle-sub-btn"/>
+                                                                </div>
+                                                            }
+                                                            {
+                                                                comment.openSubComment 
+                                                                ?
+                                                                <div >
+                                                                    <ul className="submment-wrapper">
+                                                                       {
+                                                                         comment.subComment.map((sub,idx)=>{
+                                                                            return(
+                                                                                <li>
+                                                                                    <div className="comment-top custom-flex-item custom-justify-between">
+                                                                                        <div>
+                                                                                            <span>{sub.writerName}</span>
+                                                                                            <span>{moment(sub.createdAt).format('YYYY-MM-DD')}</span>
+                                                                                        </div>
+                                                                                        <span className="custom-flex-item cursor-btn">
+                                                                                            {sub.writerID===user.id && <p onClick={()=>onConfirmHandler(4,sub.commentId)}>Delete</p>}
+                                                                                            {/* <p>Answer</p> */}
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div className="comment-middle">{sub.content?.slice(0,250)}{sub.content?.length>250 && <span className="custom-stress-txt">...More</span>}</div>
+                                                                                </li>
+                                                                            )
+                                                                         })
+                                                                       }
+                                                                    </ul>
+                                                                </div>
+                                                                :
+                                                                null
+                                                            }
+                                                            {
+                                                                comment.isInput &&
+                                                                <div className="cstalk-comment-wrapper sub-comment-wrapper">
+                                                                <div className="custom-justify-between">
+                                                                    <div className="comment-input">
+                                                                        <span>Writer : {user.name}</span>
+                                                                        {/* <textarea value={subComment} onChange={(e)=>console.log(e.target.value)}/> */}
+                                                                        <textarea defaultValue={subComment} onBlur={(e)=>setSubComment(e.target.value)} id={`sub-${comment.commentId}-${idx}`}  />
+                                                                    </div>
+                                                                    <button onClick={()=>onAddComment(2, comment.commentId)}>Write</button>
+                                                                </div>
+                                                                </div>
+                                                         }
+                                                        {/* ) */}
+                                                    {/* })} */}
+                                                </div>
 
                                             
                                         </li>

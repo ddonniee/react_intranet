@@ -58,7 +58,14 @@ input, button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custo
     border: none;
     
   }
-
+.not-found {
+    display: flex;
+    margin: auto;
+    font-size: 50px;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+}
 .inner-container {
     max-width: 1560px;
     margin: 0 auto;
