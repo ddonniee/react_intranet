@@ -152,7 +152,9 @@ function NoticeSetting() {
 
     const getSelectList = () => {
         // 법인목록 조회 API
-        axiosInstance.post('/corporation/list').then(res => {
+        const corpForm = new FormData();
+
+        axiosInstance.post('/corporation/list', corpForm, config).then(res => {
             const data = res?.data.result;
 
             const newArray = data.map((obj, index) => ({
@@ -212,20 +214,18 @@ function NoticeSetting() {
         // console.log('e', e.target.value)
         // console.log('item', item)
 
-        if(isChange || isWrite) {
+        if(isChange && (isWrite || isModify)) {
             onConfirmHandler('leave')
-            // setAlertTxt("Click confirm to leave write mode.")
-            // setSelctedList()
             return false;
         }
         setSelctedList({ noticeId: item.noticeId, tableName: item.tableName })
+        setIsWrite(false)
         setIsChange(false)
     }
 
     const handleClickWrite = () => {
         if(isChange) {
             onConfirmHandler('leave')
-            // setAlertTxt('Click confirm to leave write mode.')
             return false;
         } else {
             setDetail();
@@ -241,8 +241,6 @@ function NoticeSetting() {
     }, [selectedList])
 
     const [alertModal, setAlertModal] = useState(false)
-    // const [alertTxt, setAlertTxt] = useState('')
-    // const [alertConfirm, setAlertConfirm] = useState(false);
     const [alertSetting, setAlertSetting] = useState({
         alertTxt : '',
         onClose : function() {},
@@ -253,7 +251,7 @@ function NoticeSetting() {
     })
 
     const onConfirmHandler = (type) => {
-        // leave editor (write mode)
+        // input required check
         if(type === 'check') {
             setAlertSetting({
                 ...alertSetting,
@@ -357,11 +355,23 @@ function NoticeSetting() {
         }
     }
 
+    const [fileStore, setFileStore] = useState([])
+
+    const onAttachFiles = (e, idx) => {
+        console.log('onAttachFiles --->', e.target.files)
+
+        let copyFile = [...fileStore]
+        if(e.target?.files[0]) {
+            let formData = new FormData();
+            formData.append('fileName',e.target?.files[0])
+            // api 연동..
+        }
+    }
+
     const onSaveContent = () => {
         console.log('editor data >>>>>>', writeData)
 
         if (!writeData?.title || !writeData?.content || !writeData?.view) {
-            // setAlertTxt('Please fill out all the information.')
             onConfirmHandler('check')
             console.log('if')
             return false;
@@ -383,11 +393,6 @@ function NoticeSetting() {
                     if(resData.code == 200) {
                         console.log('res', resData)
                         onConfirmHandler('save')
-                        // setAlertTxt("You've inserted new post.")
-                        // setIsWrite(false)
-                        // setIsModify(false)
-                        // setDetail()
-                        // getList()
                     } else {
                         console.log('res', resData.msg);
                     }
@@ -418,11 +423,6 @@ function NoticeSetting() {
                     if(resData.code == 200) {
                         console.log('res', resData)
                         onConfirmHandler('modify')
-                        // setAlertTxt("You've inserted modified post.")
-                        // setIsWrite(false)
-                        // setIsModify(false)
-                        // setDetail()
-                        // getList()
                     } else {
                         console.log('res', resData);
                     }
@@ -434,8 +434,6 @@ function NoticeSetting() {
     }
 
     const onDeleteContent = () => {
-        // let confirm = window.confirm('Are you sure you want to delete it?');
-
         const formData = new FormData();
         formData.append('noticeId', detail?.noticeId);
 
@@ -445,8 +443,6 @@ function NoticeSetting() {
 
             if(resData.code == 200) {
                 console.log('res', resData)
-                // setAlertTxt("The post has been deleted.")
-                // setAlertConfirm(false);
                 setAlertModal(false)
                 setIsWrite(false)
                 setIsModify(false)
@@ -463,8 +459,6 @@ function NoticeSetting() {
     }
 
     const onRestoreContent = () => {
-        // let confirm = window.confirm('Are you sure you want to restore it?');
-
         const formData = new FormData();
         formData.append('noticeId', detail?.noticeId);
 
@@ -474,8 +468,6 @@ function NoticeSetting() {
 
             if(resData.code == 200) {
                 console.log('res', resData)
-                // setAlertTxt("The post has been restored.")
-                // setAlertConfirm(false);
                 setAlertModal(false)
                 setIsWrite(false)
                 setIsModify(false)
@@ -487,25 +479,11 @@ function NoticeSetting() {
         }).catch(error => {
             console.log('error', error)
         })
-        // if(alertConfirm) {
-        // }
     }
 
     useEffect(() => {
         onSaveContent();
     }, [writeData])
-
-    // useEffect(()=>{
-    //     if(!alertModal) {
-    //         setAlertTxt('')
-    //     }
-    // }, [alertModal])
-
-    // useEffect(()=>{
-    //     if(alertTxt!==''){
-    //         setAlertModal(true)
-    //     }
-    // }, [alertTxt])
 
     useEffect(() => {
         if(!alertModal) {
@@ -527,31 +505,6 @@ function NoticeSetting() {
             setAlertModal(false)
         }
     }, [alertSetting])
-
-    // useEffect(() => {
-    //     console.log('alert', alertTxt)
-    //     console.log('confirm', alertConfirm)
-
-    //     if(alertConfirm) {
-    //         if(alertTxt == 'Are you sure you want to delete it?') {
-    //             onDeleteContent();
-    //             setAlertConfirm(false);
-    //         } else if(alertTxt == 'Are you sure you want to restore it?') {
-    //             onRestoreContent();
-    //             setAlertConfirm(false);
-    //         } else if(alertTxt == 'Click confirm to leave write mode.') {
-    //             setAlertConfirm(false);
-    //             setAlertModal(false);
-    //             setIsWrite(false);
-    //             setIsModify(false);
-    //         } else if(alertTxt == `You've inserted new post.`) {
-    //             setAlertConfirm(false);
-    //             // setIsWrite(false)
-    //             // setIsModify(false)
-    //             // setDetail()
-    //         }
-    //     }
-    // }, [alertConfirm])
 
     return (
         <div className="notice-container">
@@ -629,11 +582,11 @@ function NoticeSetting() {
                 <div className="notice-right">
                     {
                         isWrite ?
-                        <EditorWrite onClose={setIsWrite} period={true} data={detail} setData={setWriteData} isWriter={true} //isWriter={auth.isWriter}
-                            />
+                        <EditorWrite onClose={setIsWrite} period={true} data={detail} setData={setWriteData} isChange={setIsChange} isWriter={true} //isWriter={auth.isWriter}
+                            onAttach={onAttachFiles} />
                         : isModify ?
                         <Editor onClose={setIsModify} period={true} data={detail} setData={setWriteData} isChange={setIsChange} isWriter={true} //isWriter={auth.isWriter}
-                            onDelete={() => onConfirmHandler('delete')} onRestore={() => onConfirmHandler('restore')} />
+                            onAttach={onAttachFiles} onDelete={() => onConfirmHandler('delete')} onRestore={() => onConfirmHandler('restore')} />
                         :
                         <div className="notice-view-none">
                             <p>If you select a list, you can see the contents</p>

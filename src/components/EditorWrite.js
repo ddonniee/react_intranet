@@ -21,7 +21,7 @@ import { generateRandomString } from "../utils/CommonFunction";
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
  * @returns 
  */
-function EditorWrite({ period, data, setData, range, onSave, onClose, onDelete, onRestore, isWriter }) {
+function EditorWrite({ period, data, setData, range, isChange, onSave, onClose, onDelete, onRestore, isWriter }) {
 
     const user = useContext(UserContext);
     const [content, setContent] = useState(data);
@@ -80,6 +80,7 @@ function EditorWrite({ period, data, setData, range, onSave, onClose, onDelete, 
 
     useEffect(() => {
         console.log('content >>>>>>>>>>>>>>>>>>>', content)
+        if(content) { isChange(true) }
     }, [content])
 
     // useEffect(() => {
