@@ -19,9 +19,22 @@ import { generateRandomString } from "../utils/CommonFunction";
  * 작성일 : 2023.05.22
  * 구현기능 : 현재 에디터 실행과 동영상 첨부까지 확인, 버튼 만들어서 등록/수정시 첨부파일 반환 or API 연결
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
+ * @param {
+ * period : 기간 설정 여부 (bool)
+ * data : 상세 데이터
+ * setData : 변경된 데이터
+ * range : 라디오버튼 타입 (bool)
+ * isChange : 내용 변경 여부 (bool)
+ * isWriter : 작성 권한 여부 (bool)
+ * onSave : 글 저장 함수
+ * onClose : 에디터 닫기 함수
+ * onDelete : 글 삭제 함수
+ * onRestore : 글 복구 함수
+ * onAttach : 파일 첨부 함수
+ * }
  * @returns 
  */
-function Editor({ period, data, setData, range, isChange, onSave, onClose, onDelete, onRestore, isWriter }) {
+function Editor({ period, data, setData, range, isChange, isWriter, onSave, onClose, onDelete, onRestore, onAttach }) {
 
     const user = useContext(UserContext);
     const [content, setContent] = useState(data);

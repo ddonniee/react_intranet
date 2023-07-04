@@ -262,7 +262,9 @@ function UserManagement() {
 
     const getSelectList = () => {
         // 법인목록 조회 API
-        axiosInstance.post('/corporation/list').then(res => {
+        const corpForm = new FormData();
+
+        axiosInstance.post('/corporation/list', corpForm, config).then(res => {
             const data = res?.data.result;
             // console.log('법인 기존 목록 ---->', data)
 
@@ -284,7 +286,7 @@ function UserManagement() {
         branchForm.append('corporationCode', USER_CORP_CODE); // 로그인유저 법인코드
         // branchForm.append('centerType', USER_CENTER_TYPE); // 로그인유저 센터타입
 
-        axiosInstance.post('/branch/list', branchForm).then(res => {
+        axiosInstance.post('/branch/list', branchForm, config).then(res => {
             const data = res?.data.result;
             // console.log('브랜치 기존 목록 ---->', data)
 
