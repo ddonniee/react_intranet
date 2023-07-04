@@ -251,7 +251,7 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
                         attachments?.map((item, idx) => {
                             return (
                                 <div className="custom-flex-item custom-align-item" key={generateRandomString(idx)}>
-                                    <input type="text" className="write-input attach-input" name="filename" id={`filename_${idx}`} defaultValue={attachments[idx].fileName} readOnly></input> 
+                                    <input type="text" className="write-input attach-input" name="filename" id={`filename_${idx}`} defaultValue={item.fileName} readOnly></input> 
                                     <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" 
                                         htmlFor={`file-select-btn-${idx}`}>Select</label>
                                     <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" 
@@ -264,8 +264,21 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
                                         onChange={(e) => { 
                                             if (e.target?.files[0]) {
                                                 const file = e.target?.files[0];
+                                                // console.log('input file type ============', file.type)
+
                                                 if(file.size > 1024 * 1024 * 20) {
                                                     setAlertTxt('Only files of 20MB or less can be attached.')
+                                                    return false;
+                                                }
+                                                const allowedFileTypes = [
+                                                    'application/pdf', 
+                                                    'application/x-hwp', 
+                                                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                                                    'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+                                                ];
+                                                if(!allowedFileTypes.includes(file.type)) {
+                                                    setAlertTxt('Attached files can only be in PDF, HWP, Docx, xls, and PPT formats.')
                                                     return false;
                                                 }
                                     
@@ -276,12 +289,11 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
                                                 // 파일업로드 API 호출
                                                 axiosInstance.post('/fileUpload', formdata).then(res => {
                                                     let resData = res.data;
-                                                    console.log('idx ?????????????', idx)
+                                                    // console.log('idx ---->', idx)
 
                                                     if (resData.code == 500) {
                                                       alert(resData.msg)
                                                     } else {
-                                                    //   document.getElementById(`filename_${idx}`).value = resData.result[0].fileName || ''; // 첨부파일명 출력
                                                       updateFile(idx, resData.result[0]);
                                                     }
                                                 }).catch(error => {
