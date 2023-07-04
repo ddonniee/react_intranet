@@ -9,26 +9,61 @@
         border: 1px solid #D6D6D6;
         border-radius: 14px;
         padding: 10px 20px;
+        margin-bottom: 20px;
 
         .nav-header {
-            width: 18%;
+            width: 21%;
             color: #4E4E4E;
             font-size: 21px;
             font-weight: 600;
             letter-spacing: 0.21px;
+            padding-left: 5px;
         }
 
         .nav-left {
             display: flex;
             align-items: center;
             width: 70%;
-            justify-content: space-around;
+            // justify-content: space-around;
+
+            .nav-line {
+                margin-right: 60px;
+            }
+
+            .attach-input {
+                width: 605px;
+                padding: 10px 14px;
+                border-radius: 5px;
+                border: 1px solid #CCC;
+                background: #FFF;
+                color: #5F5F5F;
+                font-size: 16px;
+                margin-right: 5px;
+            }
+
+            .file-select-btn {
+                width: 72px;
+                height: 40px;
+                background: #E8E8E8;
+                border-radius: 100px;
+                border: none;
+                margin-left: 11px;
+
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 22px;
+                color: $primary-color-red;
+            }
+
+            .confirm-txt {
+                color: $primary-color-red;
+            }
         }
 
         .nav-right {
             display: flex;
             align-items: center;
-            width: 15%;
+            width: 12%;
             justify-content: space-evenly;
         }
 
@@ -45,6 +80,7 @@
         .nav-line {
             height: 84px;
             border: 1px solid #EBEBEB;
+            margin-right: 30px;
         }
 
         button[class^=nav-btn-] {

@@ -180,8 +180,6 @@ function Editor({ period, data, setData, range, isChange, isWriter, onSave, onCl
     }
 
     const updateFile = (idx, file) => {
-        console.log('########## updateFile ###########', idx, file)
-
         const copyFiles = [...attachments];
         const updateFile = copyFiles[idx];
         updateFile.fileName = file.fileName;

@@ -80,7 +80,7 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
     }
 
     useEffect(() => {
-        console.log('content >>>>>>>>>>>>>>>>>>>', content)
+        // console.log('content >>>>>>>>>>>>>>>>>>>', content)
         if(content) { isChange(true) }
     }, [content])
 
@@ -132,9 +132,9 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
         setContent({ ...content, attachments: JSON.stringify(copyFiles)})
     };
 
-    useEffect(() => {
-        console.log('editor file --->', attachments)
-    }, [attachments])
+    // useEffect(() => {
+    //     console.log('editor file --->', attachments)
+    // }, [attachments])
 
     useEffect(()=>{
         if(!alertModal) {

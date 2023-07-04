@@ -4,6 +4,7 @@ import { axiosInstance, axiosJsonInstance } from '../../utils/CommonFunction';
 import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
+import Alert from '../../components/Alert';
 
 import SelectBox from '../../components/SelectBox';
 import { UserContext } from "../../hooks/UserContext";
@@ -77,6 +78,9 @@ function KpiPerformanceSetting() {
     }
 
     /* 조회 영역 ****************************************************************/
+    const [alertModal, setAlertModal] = useState(false)
+    const [alertTxt, setAlertTxt] = useState('')
+
     const getList = (search) => {
         const formData = new FormData();
 
@@ -108,6 +112,18 @@ function KpiPerformanceSetting() {
         // });
     }
 
+    useEffect(()=>{
+        if(!alertModal) {
+            setAlertTxt('')
+        }
+    },[alertModal])
+
+    useEffect(()=>{
+        if(alertTxt!==''){
+            setAlertModal(true)
+        }
+    },[alertTxt])
+
     return (
         <div className="kpisetting-container">
             <Header />
@@ -118,10 +134,12 @@ function KpiPerformanceSetting() {
                     <div className='nav-header'>1. KPI Target Format Download</div>
                     <div className='nav-left'>
                         <div className='nav-line'></div>
+                        <div className='custom-flex-item custom-align-item'>
                         <p>· Subsidiary</p>
                         <SelectBox name='corporationCode' options={subOptions} handleChange={handleSelectBox} />
                         <p>· Execution Year</p>
-                        <SelectBox name='centerType' options={yearOptions} handleChange={handleSelectBox} />
+                        <SelectBox name='executionYear' options={yearOptions} handleChange={handleSelectBox} />
+                        </div>
                     </div>
                     <div className='nav-right'>
                         <div className='nav-line'></div>
@@ -133,6 +151,65 @@ function KpiPerformanceSetting() {
                 </div>
                 <div className='kpi-nav'>
                     <div className='nav-header'>2. KPI format Upload</div>
+                    <div className='nav-left'>
+                        <div className='nav-line'></div>
+                        <input type="text" className="write-input attach-input" name="filename" id="filename" readOnly></input> 
+                        <label className="custom-flex-item custom-justify-center custom-align-item file-select-btn" 
+                            htmlFor={`file-select-btn`}>Browse</label>
+                        <input 
+                            type="file" 
+                            className="file-select-btn" 
+                            style={{display: "none"}} 
+                            id={`file-select-btn`}
+                            onChange={(e) => { 
+                                if (e.target?.files[0]) {
+                                    const file = e.target?.files[0];
+                                    // console.log('input file type ============', file.type)
+
+                                    if(file.size > 1024 * 1024 * 20) {
+                                        setAlertTxt('Only files of 20MB or less can be attached.')
+                                        return false;
+                                    }
+                                    const allowedFileTypes = [
+                                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                                    ];
+                                    if(!allowedFileTypes.includes(file.type)) {
+                                        setAlertTxt('Only Excel files can be uploaded.')
+                                        return false;
+                                    }
+                        
+                                    let formdata = new FormData();
+                                    formdata.append("uploadFiles", file);
+                                    formdata.append("directoryType", 'notice');
+                        
+                                    // 파일업로드 API 호출
+                                    axiosInstance.post('/fileUpload', formdata).then(res => {
+                                        let resData = res.data;
+                                        // console.log('idx ---->', idx)
+
+                                        if (resData.code == 500) {
+                                            alert(resData.msg)
+                                        } else {
+                                            document.getElementById('filename').value = resData.result[0].fileName;
+                                            console.log('file res --->', resData.result[0])
+                                        }
+                                    }).catch(error => {
+                                        console.log(error);
+                                    })
+                                }
+                            }}
+                        />
+                    </div>
+                    <div className='nav-right'>
+                        <div className='nav-line'></div> 
+                        <button className='custom-circle-btn' onClick={getList} >
+                            <p>Upload</p>
+                            <IntersectIcon />
+                        </button>
+                    </div>
+                </div>
+                <div className='kpi-nav'>
+                    <div className='nav-header'>3. Pre check</div>
                     <div className='nav-left'>
                         <div className='nav-line'></div>
                         <p>· Subsidiary</p>
@@ -148,9 +225,27 @@ function KpiPerformanceSetting() {
                         </button>
                     </div>
                 </div>
+                <div className='kpi-nav'>
+                    <div className='nav-header'>4. Final Confirm</div>
+                    <div className='nav-left'>
+                        <div className='nav-line'></div>
+                        <p className='confirm-txt'>{'No data errors were found. Do you want to confirm it?'}</p>
+                    </div>
+                    <div className='nav-right'>
+                        <div className='nav-line'></div>
+                        <button className='custom-circle-btn' onClick={getList} >
+                            <p style={{padding: "0"}}>Confirm</p>
+                        </button>
+                    </div>
+                </div>
 
                 <Zendesk />
             </div>
+            {
+                alertModal
+                &&
+                <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} onConfirm={()=>setAlertModal(false)} btnTxt='Close' />
+            }
         </div>
     )
 }
