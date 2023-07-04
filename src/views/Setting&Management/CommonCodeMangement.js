@@ -158,14 +158,13 @@ function CommonCodeMangement() {
           {value : 'N',label:'N'}
       ]
       return (
-        // <select className='row-select' value={props.value} onChange={handleChange} defaultValue='Y'>
-        //   {
-        //       useOptions.map((job, i) => (
-        //           <option key={i} value={job}> {job} </option>
-        //       ))
-        //   }
-        // </select>
-        <Select options={options} onChange={handleChange} value={options[0]}/>
+        <select className='row-select' value={props.value} onChange={handleChange} defaultValue='Y'>
+          {
+              useOptions.map((job, i) => (
+                  <option key={i} value={job}> {job} </option>
+              ))
+          }
+        </select>
       );
   };
 
