@@ -69,9 +69,9 @@
 }
 .faq-left .ag-center-cols-container {
     height: 100% !important;
-}
-.faq-left .ag-center-cols-container > div {
-    height: 10% !important; border-bottom: 1px solid $border-color-gery !important;
+    & div {
+        height: 10% !important; border-bottom: 1px solid $border-color-gery !important;
+    }
 }
 // board
 .faq-custom-board {
@@ -90,6 +90,9 @@
         span:first-child {
             width: 100px; text-align: center; min-width: 100px; 
         }
+        span:last-child {
+            margin-left: auto; font-size: 15px; font-weight: 400; line-height: 24px; letter-spacing: 0.01em;
+        }
     }
     li:first-child {
         border-top: 1px solid $board-color-grey;
@@ -99,8 +102,7 @@
     }
 }
 .faq-right {
-    border-radius: 14px; 
-    border-radius: 14px;
+    border-radius: 14px; border: 1px solid $border-color-gery;
     overflow: hidden;
     display: flex;
     flex-direction: column;  transition: transform 0.3s ease;
@@ -121,18 +123,15 @@
     span {
         padding: 4px; align-self: center;
     }
+    .user-action span img {
+        padding-right: 2px;     width: 16px;
+        height: 16px;
+    }
+    
 }
 .faq-attach{
     border: 1px solid $border-color-gery; border-radius: 5px; font-weight: 600;
     font-size: 13px;
-}
-.user-action {
-    position: absolute; top: 0px; right: 0px; padding: 10px; font-weight: 600;
-    font-size: 13px;
-    line-height: 15px;
-}
-.user-action span img {
-    padding-right: 2px;
 }
 
 .faq-attach-down img {

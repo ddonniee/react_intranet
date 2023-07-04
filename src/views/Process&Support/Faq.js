@@ -34,7 +34,9 @@ import New from '../../assets/svgs/icon_new.svg'
 import Attachment from '../../assets/svgs/icon_attachment.svg';
 import Download from '../../assets/svgs/icon_download.svg'
 import Like from '../../assets/svgs/icon_like.svg'
+import Liked from '../../assets/svgs/icon_liked.svg'
 import Dislike from '../../assets/svgs/icon_dislike.svg'
+import Disliked from '../../assets/svgs/icon_disliked.svg'
 import Comment from '../../assets/svgs/icon_co_comment.svg'
 import More_comment from '../../assets/svgs/icon_co_more.svg'
 
@@ -64,168 +66,216 @@ function Faq() {
      const [itemsPerPage] = useState(10); // 페이지당 아이템 갯수
      const [boardLength, setBoardLength] = useState(0)
      const setPage = (e,num) => {
-        console.log(e,num)
         if(num===1) {
             setActivePage(e);
         }else {
             setCommentPage(e)
         }
-         
-         console.log('page ---->', e);
      };
 
      /** 페이징 관련 ▲ ============================================================= */
 
     // const testValue = useContext(TestContext)
     
-    const [categoryLists, setCategoryLists] = useState([
-        {
-            num : 0,
-            icon : Order,
-            name : 'displacement',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 1,
-            icon : Docs,
-            name : 'Hold',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 2,
-            icon : Man,
-            name : 'Installation',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                },
-                {
-                    lowerName : 'Service Order',
-                    path : process.env.REACT_APP_FRONT_URL
-                },
-                {
-                    lowerName : 'VIDEO-Status',
-                    path : process.env.REACT_APP_FRONT_URL
-                },
-                {
-                    lowerName : 'Support',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 3,
-            icon : Lupa,
-            name : 'Agreement Process',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 4,
-            icon : Hands,
-            name : 'Order Status',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 5,
-            icon : Codes,
-            name : 'Hold Codes',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 6,
-            icon : Timer,
-            name : 'Service Order',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 7,
-            icon : Video,
-            name : 'VIDEO - Status',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 8,
-            icon : Talk,
-            name : 'Support',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-    ])
+    // const [categoryLists, setCategoryLists] = useState([
+    //     {
+    //         num : 0,
+    //         icon : Order,
+    //         name : 'displacement',
+    //         lowerMenu : [
+    //             {
+    //                 lowerName : 'Hold Codes',
+    //                 path : process.env.REACT_APP_FRONT_URL
+    //             }
+    //         ],
+    //         iconModal : false,
+    //     },
+    //     {
+    //         num : 1,
+    //         icon : Docs,
+    //         name : 'Hold',
+    //         lowerMenu : [
+    //             {
+    //                 lowerName : 'Hold Codes',
+    //                 path : process.env.REACT_APP_FRONT_URL
+    //             }
+    //         ],
+    //         iconModal : false,
+    //     },
+    //     {
+    //         num : 2,
+    //         icon : Man,
+    //         name : 'Installation',
+    //         lowerMenu : [
+    //             {
+    //                 lowerName : 'Hold Codes',
+    //                 path : process.env.REACT_APP_FRONT_URL
+    //             },
+    //             {
+    //                 lowerName : 'Service Order',
+    //                 path : process.env.REACT_APP_FRONT_URL
+    //             },
+    //             {
+    //                 lowerName : 'VIDEO-Status',
+    //                 path : process.env.REACT_APP_FRONT_URL
+    //             },
+    //             {
+    //                 lowerName : 'Support',
+    //                 path : process.env.REACT_APP_FRONT_URL
+    //             }
+    //         ],
+    //         iconModal : false,
+    //     },
+    //     {
+    //         num : 3,
+    //         icon : Lupa,
+    //         name : 'Agreement Process',
+    //         lowerMenu : [
+    //             {
+    //                 lowerName : 'Hold Codes',
+    //                 path : process.env.REACT_APP_FRONT_URL
+    //             }
+    //         ],
+    //         iconModal : false,
+    //     },
+    //     {
+    //         num : 4,
+    //         icon : Hands,
+    //         name : 'Order Status',
+    //         lowerMenu : [
+    //             {
+    //                 lowerName : 'Hold Codes',
+    //                 path : process.env.REACT_APP_FRONT_URL
+    //             }
+    //         ],
+    //         iconModal : false,
+    //     },
+    //     {
+    //         num : 5,
+    //         icon : Codes,
+    //         name : 'Hold Codes',
+    //         lowerMenu : [
+    //             {
+    //                 lowerName : 'Hold Codes',
+    //                 path : process.env.REACT_APP_FRONT_URL
+    //             }
+    //         ],
+    //         iconModal : false,
+    //     },
+    //     {
+    //         num : 6,
+    //         icon : Timer,
+    //         name : 'Service Order',
+    //         lowerMenu : [
+    //             {
+    //                 lowerName : 'Hold Codes',
+    //                 path : process.env.REACT_APP_FRONT_URL
+    //             }
+    //         ],
+    //         iconModal : false,
+    //     },
+    //     {
+    //         num : 7,
+    //         icon : Video,
+    //         name : 'VIDEO - Status',
+    //         lowerMenu : [
+    //             {
+    //                 lowerName : 'Hold Codes',
+    //                 path : process.env.REACT_APP_FRONT_URL
+    //             }
+    //         ],
+    //         iconModal : false,
+    //     },
+    //     {
+    //         num : 8,
+    //         icon : Talk,
+    //         name : 'Support',
+    //         lowerMenu : [
+    //             {
+    //                 lowerName : 'Hold Codes',
+    //                 path : process.env.REACT_APP_FRONT_URL
+    //             }
+    //         ],
+    //         iconModal : false,
+    //     },
+    // ])
     const [boardData, setBoardData] = useState([])
     const [frequentList, setFrequentList] = useState([])
-    console.log(boardData,'fafafa')
     const [column, setColumn] = useState([
         { field: 'num' },
         { field: 'title' },
     ])
 
-    
-    const [selectedList, setSelectedList] = useState();
+    const [selectedList, setSelectedList] = useState({
+        attachments: '',
+        reactionState: "",
+        subject: "",
+        dislikeCount: 0,
+        likeCount: 0,
+        content: '',
+        subsidiary:'',
+        writerName:'',
+        commentCount : 0,
+        hits: 16,
+        createdAt: '',
+        faqId: '',
+        categoryId: '',
+        writerID: ''
+    })
 
-    const handleClickAction = e => {
-        console.log('handleClickAction')
+    useEffect(()=>{
+        console.log('selectedList.reactionState',selectedList)
+    },[selectedList])
+    
+    const onClickAction = (e,id,reaction) => {
+        const formData = new FormData();
+
+        let yourReaction = reaction==='LIKE' ? 'likeCount' : 'dislikeCount'
+        let oppositeReaction = reaction === 'LIKE' ? 'dislikeCount' : 'likeCount'
+
+        console.log(id,reaction,yourReaction,oppositeReaction,'!~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        formData.append('faqId', id);
+        formData.append('reaction',reaction )
+
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/faq/reaction', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                let data = resData.result
+                console.log(data)
+                setSelectedList({
+                    ...selectedList,
+                    reactionState : selectedList.reactionState === reaction ? "NONE" : reaction,
+                    [yourReaction] : selectedList.reactionState === reaction ? selectedList[yourReaction]-1
+                                   : selectedList[yourReaction]+1 ,
+                    [oppositeReaction] : (selectedList.reactionState !== 'NONE' && selectedList.reactionState !== reaction) 
+                                        ? selectedList[oppositeReaction]-1 
+                                        : selectedList[oppositeReaction]
+                                        
+                })
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
     }
     const handleSelectBox = e => {
         console.log(e)
     }
 
     const handleClickRow = (e,item) => {
-        console.log('handleClickRow',item)
         getDetail(item.faqId)
-        // if(selectedList.num===null || selectedList.num!==item.num) {
-        //     setSelectedList(item)
-        // }else {
-        //     setSelectedList({num:null, title:''})
-        // }
+      
     }
 
     /** Alert Handler */
@@ -240,7 +290,6 @@ function Faq() {
 
     const onConfirmHandler = (num,id) =>{
 
-        console.log(id,'"btn-row"')
         // leave editor 
         if(num===1 || num===7) {
             setAlertSetting({
@@ -371,7 +420,6 @@ function Faq() {
             let resData = response.data;
             if(resData.code===200) {
                 let data = resData.result
-                console.log('response',response)
                 setBoardData(data?.list)
                 setFrequentList(data?.top5list)
             }else {
@@ -402,9 +450,37 @@ function Faq() {
             let resData = response.data;
             if(resData.code===200) {
                 let data = resData.result
-                console.log('response',response)
                 setSelectedList(data)
-                console.log(data,'detail')
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+    }
+
+    const [categoryLists, setCategoryLists] = useState([])
+    const getCategory = () =>{
+
+     
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            };
+        axiosInstance2('/faqCa/list', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                let data = resData.result
+                console.log('getCategory',resData)
+                data.map(d=>{
+                    d.iconModal = false
+                })
+                setCategoryLists(data)
             }else {
                 console.log(resData)
             }
@@ -446,7 +522,6 @@ function Faq() {
                 }
                 )
                 setCommentList(data)
-                console.log('comment',data)
             }else {
                 console.log(resData)
             }
@@ -471,7 +546,6 @@ function Faq() {
         formData.append('faqId', id);
         if(num===1) {
             formData.append('content', comment);
-            console.log('num',num,id, comment)
         }
         if(num===2) {
             formData.append('commentId', id);
@@ -487,7 +561,6 @@ function Faq() {
                 };
             axiosInstance2('/faq/commentInsert', config)
             .then(function (response){
-                console.log('commentInsert',response)
                 let resData = response.data;
                 if(resData.code===200) {
                     // onConfirmHandler(6)
@@ -527,7 +600,7 @@ function Faq() {
         setCategoryLists((prevLists) => {
             
             const updatedLists = prevLists.map((list) => {
-              if (list.num === item.num) {
+              if (list.categoryId === item.categoryId) {
                 return { ...list, iconModal: item.iconModal ? false : true };
               } else {
                 return { ...list, iconModal: false };
@@ -538,10 +611,22 @@ function Faq() {
           });
     }
 
+    const [categoryIcon, setCategoryIcon] = useState([])
+    useEffect(()=>{
+        if(categoryLists?.attachments!=='') {
+            const jsonString = JSON.parse(categoryLists.attachments);
+            if(jsonString!==null) {
+                let copy = [...categoryIcon,jsonString]
+                setCategoryIcon(copy)
+            }
+        }
+    },[categoryLists])
+
     /** loading 시 animation */
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingComment, setIsLoadingComment] = useState(false)
 
+    
      useEffect(()=>{
         if(selectedList) {
             getComment();
@@ -553,7 +638,7 @@ function Faq() {
           
               return () => clearTimeout(timeoutId)
         }
-    },[selectedList])
+    },[selectedList.faqId])
 
     useEffect(()=>{
         setIsLoadingComment(true)
@@ -588,6 +673,10 @@ function Faq() {
       }, []);
 
       useEffect(()=>{
+        getCategory()
+      },[])
+
+      useEffect(()=>{
         getList()
       },[activePage])
 
@@ -599,10 +688,8 @@ function Faq() {
         let max = boardLength;
         if(activePage===1) {
          max = 0
-         console.log('ms',max)
          boardData.map((item) =>{
              if(item.rn>max) {
-                 console.log(item.rn)
                  max = item.rn;
              }
              setBoardLength(max)
@@ -647,7 +734,7 @@ function Faq() {
                                 return(
                                     <li key={generateRandomString(idx+1)} onClick={(e)=>handleClickIcon(e,item)}>
                                         <div className="faq-img-wrapper"><img src={item.icon} /></div>
-                                        <p>{item.name}</p>
+                                        <p>{item.categoryNm}</p>
                                         {
                                         item.iconModal
                                         &&
@@ -669,7 +756,7 @@ function Faq() {
                             boardData && boardData.length > 0 && boardData.map((item,idx)=>{
                                 return(
                                     <li  key={generateRandomString(idx)} id={`list-item-${idx+1}`} onClick={(e)=>handleClickRow(e,item)}>
-                                        <span>{String((activePage-1)*10+(idx+1)).padStart(3, '0')}</span><span>{item.subject}</span><span className="custom-stress-txt">{item.hits}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /><span>{moment(item.createdAt).format('YYYY-MM-DD')}</span>
+                                        <span>{String((activePage-1)*10+(idx+1)).padStart(3, '0')}</span><span>{item.subject}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /><span>{moment(item.createdAt).format('YYYY-MM-DD')}</span>
                                     </li>
                                 )
                             })
@@ -691,7 +778,7 @@ function Faq() {
                 </div>
                 <div className="editor-wrapper">
                {
-                selectedList ?
+                selectedList.faqId!=='' ?
                 <div className={`faq-right ${isLoading ? 'loadingOpacity':''}`} >
                 <div className="faq-right-top">
                     <p>{selectedList.subject}</p>
@@ -703,9 +790,9 @@ function Faq() {
                         </span>
                     </div>   
                     <div className="user-action custom-flex-item ">
-                        <span className="faq-like custom-flex-item" onClick={handleClickAction}><img src={Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
+                        <span className="faq-like custom-flex-item cursor-btn" onClick={(e)=>onClickAction(e,selectedList.faqId,'LIKE')}><img src={selectedList.reactionState==='LIKE' ? Liked : Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
                         <span >|</span>
-                        <span className="faq-dislike custom-flex-item" onClick={handleClickAction}><img src={Dislike} alt='btn_dislike'/><p>{selectedList.dislikeCount}</p></span> 
+                        <span className="faq-dislike custom-flex-item cursor-btn" onClick={(e)=>onClickAction(e,selectedList.faqId,'DISLIKE')}><img src={selectedList.reactionState==='DISLIKE' ? Disliked : Dislike} alt='btn_dislike'/><p>{selectedList.dislikeCount}</p></span> 
                     </div> 
                 </div>
                 <div className="faq-right-middle"><Viewer content={selectedList.content}/></div>

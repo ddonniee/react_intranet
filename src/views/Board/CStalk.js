@@ -9,7 +9,7 @@ import SelectBox from '../../components/SelectBox'
 import Viewer from "../../components/Viewer"
 import Pagination from "react-js-pagination"
 
-import { axiosInstance2, generateRandomString } from "../../utils/CommonFunction"
+import { axiosInstance2, generateRandomString,downloadAttachment } from "../../utils/CommonFunction"
 
 // Icons 
 import Search from '../../assets/svgs/icon_seeking.svg'
@@ -116,7 +116,7 @@ function CStalk() {
         csTalkId : ''
     });
 
-    const [selectedList, setSelctedList] = useState({
+    const [selectedList, setSelectedList] = useState({
         attachments : '',
         subject: '',
         branch : '',
@@ -170,7 +170,7 @@ function CStalk() {
             let resData = response.data;
             if(resData.code===200) {
                 let data = resData.result
-                setSelctedList(data)
+                setSelectedList(data)
                 console.log(data,'detail')
             }else {
                 console.log(resData)
@@ -324,7 +324,7 @@ function CStalk() {
             let resData = response.data;
             if(resData.code===200) {
                 let data = resData.result
-                setSelctedList({
+                setSelectedList({
                     ...selectedList,
                     reactionState : selectedList.reactionState==="LIKE"?"NONE":"LIKE",
                     likeCount : selectedList.reactionState==="LIKE" ? selectedList.likeCount-1 : selectedList.likeCount+1
@@ -427,7 +427,7 @@ function CStalk() {
  
     const clearState =()=>{
         getList();
-        setSelctedList({
+        setSelectedList({
             attachments : '',
             subject: '',
             branch : '',
@@ -654,7 +654,7 @@ function CStalk() {
         if(selectedList && comment==='') {
             getList();
             getDetail(selectedList.csTalkIdid);
-            setSelctedList({
+            setSelectedList({
                 ...selectedList,
                 commentCount : selectedList.commentCount+1
             })
@@ -819,6 +819,16 @@ function CStalk() {
     useEffect(()=>{
         setComment('');
         setCommentPage(1)
+
+        if(selectedList?.attachments!=='') {
+          
+            const jsonString = JSON.parse(selectedList.attachments);
+            console.log('실행이 안돼 ?,',jsonString)
+            if(jsonString!==null) {
+                let copy = [...jsonString]
+                setFileStore(copy)
+            }
+        }
         if(selectedList) {
             setIsLoading(true)
             getComment();
@@ -828,16 +838,13 @@ function CStalk() {
           
               return () => clearTimeout(timeoutId) 
         }
-        if(selectedList?.attachments!=='') {
-            const jsonString = JSON.parse(selectedList.attachments);
-            if(jsonString!==null) {
-                let copy = [...fileStore,jsonString]
-                setFileStore(copy)
-            }
-        }
+       
        
     },[selectedList.csTalkId])
 
+    useEffect(()=>{
+        console.log('file', fileStore[0]?.fileName)
+    },[fileStore])
     useEffect(()=>{
         
         getComment()
@@ -851,7 +858,7 @@ function CStalk() {
 
     useEffect(()=>{
         if(isWrite) {
-            setSelctedList({
+            setSelectedList({
                 attachments : '',
                 subject: '',
                 branch : '',
@@ -968,7 +975,7 @@ function CStalk() {
                                     <div className="custom-flex-item" key={generateRandomString(idx)}>
                                         <img src={Attachment} alt="attachment"/> 
                                         <span className="custom-self-align">Attachment</span>
-                                        <span className="custom-flex-item cstalk-attach-down ">
+                                        <span className="custom-flex-item cstalk-attach-down" onClick={()=>downloadAttachment(file.uploadPath)}>
                                             <span className="custom-self-align">{` (${idx+1}) `}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{file.fileName}</p><img src={Download} alt='download_attachment'/></span>
                                         </span>
                                     </div> 
