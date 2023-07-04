@@ -106,10 +106,9 @@ function NoticeSetting() {
     const [selectedList, setSelctedList] = useState(); // 목록에서 선택한 항목
     const [detail, setDetail] = useState(); // notice 상세
     
-    const [isWrite, setIsWrite] = useState(false); // 새 글 여부
+    const [isWrite, setIsWrite] = useState(false); // 새 글 작성화면 여부
     const [writeData, setWriteData] = useState(); // 새 글 항목
-    const [isModify, setIsModify] = useState(false); // 수정 여부
-    const [modifyData, setModifyData] = useState(); // 수정 항목
+    const [isModify, setIsModify] = useState(false); // 수정 작성화면 여부
     const [isChange, setIsChange] = useState(false); // 에디터에서 글 수정 여부
 
     console.log('isWrite', isWrite, ' / isModify', isModify)
@@ -353,31 +352,34 @@ function NoticeSetting() {
                 btnTxt : 'Confirm',
             })
         }
-    }
-
-    const [fileStore, setFileStore] = useState([])
-
-    const onAttachFiles = (e, idx) => {
-        console.log('onAttachFiles --->', e.target.files)
-
-        let copyFile = [...fileStore]
-        if(e.target?.files[0]) {
-            let formData = new FormData();
-            formData.append('fileName',e.target?.files[0])
-            // api 연동..
+        // file oversize
+        else if(type === 'file') {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Only files of 20MB or less can be attached.',
+                onClose : () => {
+                    setAlertModal(false);
+                    // return false;
+                },
+                onConfirm : () => {
+                    setAlertModal(false);
+                },
+                isDoubleBtn : false,
+                btnTxt : 'Cancel',
+            })
         }
     }
 
     const onSaveContent = () => {
         console.log('editor data >>>>>>', writeData)
 
-        if (!writeData?.title || !writeData?.content || !writeData?.view) {
+        if (!writeData?.title || !writeData?.content || !writeData?.view) { // required check
             onConfirmHandler('check')
             console.log('if')
             return false;
 
         } else {
-            if(isWrite) {
+            if(isWrite) { // 작성
                 const formData = new FormData();
                 for (let key in writeData) {
                     if (writeData.hasOwnProperty(key)) {
@@ -399,9 +401,9 @@ function NoticeSetting() {
                 }).catch(error => {
                     console.log('error', error)
                 })  
-            } else if(isModify) {
+            } else if(isModify) { // 수정
                 const formData = new FormData();
-                const keysToSave = ['noticeId', 'view', 'title', 'content', 'postStartDate', 'postEndDate'];
+                const keysToSave = ['noticeId', 'view', 'title', 'content', 'postStartDate', 'postEndDate', 'attachments'];
                 
                 keysToSave.forEach((key) => {
                     if (writeData.hasOwnProperty(key)) {
@@ -583,10 +585,10 @@ function NoticeSetting() {
                     {
                         isWrite ?
                         <EditorWrite onClose={setIsWrite} period={true} data={detail} setData={setWriteData} isChange={setIsChange} isWriter={true} //isWriter={auth.isWriter}
-                            onAttach={onAttachFiles} />
+                            />
                         : isModify ?
                         <Editor onClose={setIsModify} period={true} data={detail} setData={setWriteData} isChange={setIsChange} isWriter={true} //isWriter={auth.isWriter}
-                            onAttach={onAttachFiles} onDelete={() => onConfirmHandler('delete')} onRestore={() => onConfirmHandler('restore')} />
+                            onDelete={() => onConfirmHandler('delete')} onRestore={() => onConfirmHandler('restore')} />
                         :
                         <div className="notice-view-none">
                             <p>If you select a list, you can see the contents</p>

@@ -10,7 +10,7 @@ import SelectBox from '../../components/SelectBox'
 import Viewer from "../../components/Viewer"
 import Paging from "../../components/Paging";
 
-import { generateRandomString } from "../../utils/CommonFunction"
+import { generateRandomString, downloadAttachment } from "../../utils/CommonFunction"
 import { UserContext } from "../../hooks/UserContext";
 
 import '../../scss/style.scss';
@@ -97,6 +97,7 @@ function Notice() {
     const [boardData, setBoardData] = useState([]); // notice 목록
     const [selectedList, setSelctedList] = useState(); // 목록에서 선택한 항목
     const [detail, setDetail] = useState(); // notice 상세
+    const [attachments, setAttachments] = useState([]); // 첨부파일 목록
 
     const isWithin7Days = (date) => { // 새 게시글(등록일 기준 7일 이내) 확인
         const baseDate = new Date(moment(date).format('YYYY-MM-DD'));
@@ -112,7 +113,7 @@ function Notice() {
         for(const key in searchData) {
             sdata.append(key, searchData[key])
         }
-        console.log('search result >>>>>>', Object.fromEntries(sdata))
+        console.log('search result --->', Object.fromEntries(sdata))
 
         // 공지사항 목록 조회 API
         axiosInstance2.post('/notice/list', sdata, config).then(res => {
@@ -171,22 +172,21 @@ function Notice() {
 
             setDetail(data);
             if(data.attachments) { // 첨부파일 있을 시 추가
-                JSON.parse(data.attachments).map((file, idx) => {
-                    setDetail({ ...data, fileName: file.fileName, uploadPath: file.uploadPath });
-                })
+                const files = JSON.parse(data.attachments).map((file, idx) => ({
+                    ...file, fileName: file.fileName, uploadPath: file.uploadPath
+                }))
+                setAttachments(files)
             }
-
-            // if(data.attachments) {
-            //     console.log('$#@$%#@%@%@#%#@', JSON.parse(data.attachments))
-            //     setDetail({ ...data, fileName: JSON.parse(data.attachments)[0].fileName, uploadPath: JSON.parse(data.attachments)[0].uploadPath });
-            // } else {
-            //     setDetail(data);
-            // }
             
         }).catch(error => {
             console.error(error);
         });
     }
+
+    useEffect(() => {
+        console.log('notice detail ---->', detail)
+        console.log('notice file ---->', attachments)
+    }, [detail]);
 
     useLayoutEffect(() => {
         getList();
@@ -200,7 +200,6 @@ function Notice() {
 
     useEffect(() => {
         getList();
-        // console.log('searchData ---->', searchData)
     }, [searchData]);
 
     const handleClickRow = (e, item) => {
@@ -213,7 +212,7 @@ function Notice() {
 
     useEffect(() => {
         selectedList && getDetail();
-        // console.log('select list ---->', selectedList)
+        setAttachments()
     }, [selectedList])
 
     return (
@@ -291,17 +290,19 @@ function Notice() {
                             <div className="notice-title-attach">
                                 <AttachmentIcon /> 
                                 <span className="notice-attach">Attachment</span>
-                                <span className="custom-flex-item">
-                                    <span className="notice-attach-count">{!detail?.attachments ? '' : ` (1)`}</span>
+                                <span className="custom-flex-item custom-align-item">
+                                    <span className="notice-attach-count">{!attachments ? '' : ` (${attachments.length})`}</span>
+                                    <p className="custom-hyphen custom-self-align">{!attachments ? '' : '-'}</p>
                                     {
-                                        detail?.attachments ?
-                                        <>
-                                        <p className="custom-hyphen custom-self-align">-</p>
-                                        <span className="notice-attach-box"> 
-                                            <p>{detail?.fileName}</p>
-                                            <a href={process.env.REACT_APP_FRONT_URL /*+ detail?.uploadPath*/} target='_blank' download> <DownloadIcon /> </a>
-                                        </span>
-                                        </>
+                                        attachments ?
+                                        attachments.map((file, idx) => {
+                                            return (
+                                                <span className="notice-attach-box" key={generateRandomString(idx)}> 
+                                                    <p>{file.fileName}</p>
+                                                    <span className="notice-attach-down" onClick={() => downloadAttachment(file.uploadPath)}> <DownloadIcon /> </span>
+                                                </span>
+                                            )
+                                        })
                                         : null
                                     }
                                 </span>

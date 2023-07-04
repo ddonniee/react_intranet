@@ -4,6 +4,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'; 
 import CustomDatePicker from "./DatePicker";
 // import FileUpload from "../hooks/FileUpload";
+import { axiosInstance } from "../utils/CommonFunction";
 
 import '../scss/style.scss';
 import MoreIcon from '../assets/svgs/icon_more.svg';
@@ -21,14 +22,14 @@ import { generateRandomString } from "../utils/CommonFunction";
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
  * @returns 
  */
-function EditorWrite({ period, data, setData, range, isChange, onSave, onClose, onDelete, onRestore, isWriter }) {
+function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave, onClose, onDelete, onRestore }) {
 
     const user = useContext(UserContext);
     const [content, setContent] = useState(data);
     const [attachments, setAttachments] = useState([
         {
             fileName: '',
-            filePath: '',
+            uploadPath: '',
         },
      ])
     const [alertModal, setAlertModal] = useState(false)
@@ -83,14 +84,6 @@ function EditorWrite({ period, data, setData, range, isChange, onSave, onClose, 
         if(content) { isChange(true) }
     }, [content])
 
-    // useEffect(() => {
-    //     let start = moment(startDate).format('YYYY-MM-DD');
-    //     let end = moment(endDate).format('YYYY-MM-DD');
-    //     console.log('startDate', start, '/ endDate', end)
-
-    //     setContent({ ...content, postStartDate : start, postEndDate : end })
-    // }, [startDate, endDate])
-
     const onCheckInput = e =>{ 
         let value = e.target.value;
         if (value.length <= 100) {
@@ -107,7 +100,7 @@ function EditorWrite({ period, data, setData, range, isChange, onSave, onClose, 
         if(attachments.length < 5) {
             const newObj = {
                 fileName: '',
-                filePath : '',
+                uploadPath : '',
             }
             const arr = [...attachments, newObj]
             setAttachments(arr)
@@ -116,13 +109,32 @@ function EditorWrite({ period, data, setData, range, isChange, onSave, onClose, 
         }
     }
 
-    const deleteRow = () => {
+    const deleteRow = (idx) => {
         if(attachments.length > 1) {
-            setAttachments(prevArray => prevArray.slice(0, -1))
+            setAttachments(prevArray => {
+                const newArray = [...prevArray];
+                newArray.splice(idx, 1);
+                return newArray;
+            })
         } else {
             setAlertTxt('At least one attachment is required.')
         }
     }
+
+    const updateFile = (idx, file) => {
+        console.log('########## updateFile ###########', idx, file)
+
+        const copyFiles = [...attachments];
+        const updateFile = copyFiles[idx];
+        updateFile.fileName = file.fileName;
+        updateFile.uploadPath = file.uploadPath;
+
+        setContent({ ...content, attachments: JSON.stringify(copyFiles)})
+    };
+
+    useEffect(() => {
+        console.log('editor file --->', attachments)
+    }, [attachments])
 
     useEffect(()=>{
         if(!alertModal) {
@@ -236,25 +248,45 @@ function EditorWrite({ period, data, setData, range, isChange, onSave, onClose, 
                 
                 <div className="right file-upload"> 
                     {
-                        attachments?.map((item, idx)=>{
+                        attachments?.map((item, idx) => {
                             return (
                                 <div className="custom-flex-item custom-align-item" key={generateRandomString(idx)}>
-                                    <input type="text" className="write-input attach-input" name="filename" readOnly></input> 
+                                    <input type="text" className="write-input attach-input" name="filename" id={`filename_${idx}`} defaultValue={attachments[idx].fileName} readOnly></input> 
                                     <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" 
-                                        htmlFor="file-select-btn">Select</label>
+                                        htmlFor={`file-select-btn-${idx}`}>Select</label>
                                     <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" 
-                                        onClick={() => deleteRow()}>Delete</label>
+                                        onClick={() => deleteRow(idx)}>Delete</label>
                                     <input 
                                         type="file" 
                                         className="file-select-btn" 
                                         style={{display: "none"}} 
-                                        id='file-select-btn'
-                                        onChange={(e) => {
-                                            console.log(e.target?.files)
-                                            if(e.target?.files[0]) {
-                                                let formData = new FormData();
-                                                formData.append('fileName',e.target?.files[0])
-                                                // api 연동..
+                                        id={`file-select-btn-${idx}`}
+                                        onChange={(e) => { 
+                                            if (e.target?.files[0]) {
+                                                const file = e.target?.files[0];
+                                                if(file.size > 1024 * 1024 * 20) {
+                                                    setAlertTxt('Only files of 20MB or less can be attached.')
+                                                    return false;
+                                                }
+                                    
+                                                let formdata = new FormData();
+                                                formdata.append("uploadFiles", file);
+                                                formdata.append("directoryType", 'notice');
+                                    
+                                                // 파일업로드 API 호출
+                                                axiosInstance.post('/fileUpload', formdata).then(res => {
+                                                    let resData = res.data;
+                                                    console.log('idx ?????????????', idx)
+
+                                                    if (resData.code == 500) {
+                                                      alert(resData.msg)
+                                                    } else {
+                                                    //   document.getElementById(`filename_${idx}`).value = resData.result[0].fileName || ''; // 첨부파일명 출력
+                                                      updateFile(idx, resData.result[0]);
+                                                    }
+                                                }).catch(error => {
+                                                    console.log(error);
+                                                })
                                             }
                                         }}
                                     />

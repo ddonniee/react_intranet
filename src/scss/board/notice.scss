@@ -229,11 +229,15 @@
                             margin-right: 8px
                         }
 
-                        a {
+                        .notice-attach-down {
                             color: white;
                             cursor: pointer;
                             margin-bottom: -4px;
                         }
+
+                    }
+                    .notice-attach-box:not(:last-of-type) {
+                        margin-right: 7px;
                     }
                 }
             }
