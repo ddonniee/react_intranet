@@ -208,24 +208,26 @@ function NoticeSetting() {
         // console.log('searchData ---->', searchData)
     }, [searchData]);
 
+    useEffect(() => {
+        console.log('isChange ---->', isChange)
+    }, [isChange]);
+
     const handleClickRow = (e, item) => {
         // console.log('e', e.target.value)
         // console.log('item', item)
 
-        if(isChange || isWrite) {
+        if(isChange && (isWrite || isModify)) {
             onConfirmHandler('leave')
-            // setAlertTxt("Click confirm to leave write mode.")
-            // setSelctedList()
             return false;
         }
         setSelctedList({ noticeId: item.noticeId, tableName: item.tableName })
+        setIsWrite(false)
         setIsChange(false)
     }
 
     const handleClickWrite = () => {
         if(isChange) {
             onConfirmHandler('leave')
-            // setAlertTxt('Click confirm to leave write mode.')
             return false;
         } else {
             setDetail();
@@ -241,8 +243,6 @@ function NoticeSetting() {
     }, [selectedList])
 
     const [alertModal, setAlertModal] = useState(false)
-    // const [alertTxt, setAlertTxt] = useState('')
-    // const [alertConfirm, setAlertConfirm] = useState(false);
     const [alertSetting, setAlertSetting] = useState({
         alertTxt : '',
         onClose : function() {},
@@ -253,7 +253,7 @@ function NoticeSetting() {
     })
 
     const onConfirmHandler = (type) => {
-        // leave editor (write mode)
+        // input required check
         if(type === 'check') {
             setAlertSetting({
                 ...alertSetting,
@@ -629,7 +629,7 @@ function NoticeSetting() {
                 <div className="notice-right">
                     {
                         isWrite ?
-                        <EditorWrite onClose={setIsWrite} period={true} data={detail} setData={setWriteData} isWriter={true} //isWriter={auth.isWriter}
+                        <EditorWrite onClose={setIsWrite} period={true} data={detail} setData={setWriteData} isChange={setIsChange} isWriter={true} //isWriter={auth.isWriter}
                             />
                         : isModify ?
                         <Editor onClose={setIsModify} period={true} data={detail} setData={setWriteData} isChange={setIsChange} isWriter={true} //isWriter={auth.isWriter}

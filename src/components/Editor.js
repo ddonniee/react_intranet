@@ -174,12 +174,10 @@ function Editor({ period, data, setData, range, isChange, onSave, onClose, onDel
         <div className="editor-container">
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
-                {/* <div className="right"> <input type="text" className="write-input" name="writer" readOnly value={user.name}></input> </div> */}
                 <div className="right"> <p className="custom-flex-item custom-align-item">{user.name}</p> </div>
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Date</p> </div>
-                {/* <div className="right"> <input type="text" className="write-input" name="date" readOnly value={data ? moment(content?.createdAt).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')}></input> </div> */}
                 <div className="right"> <p className="custom-flex-item custom-align-item">{data ? moment(content?.createdAt).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')}</p> </div>
 
             </div>
@@ -270,8 +268,6 @@ function Editor({ period, data, setData, range, isChange, onSave, onClose, onDel
                 </div>
                 
                 <div className="right file-upload"> 
-                    {/* <input type="text" className="write-input attach-input" name="filename" readOnly></input> 
-                    <button className="file-delete-btn">Delete</button> */}
                     {
                         attachments?.map((item, idx)=>{
                             return (
