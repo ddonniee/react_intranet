@@ -1,10 +1,9 @@
-import { elements } from "chart.js";
 import React, {useRef, useEffect} from "react";
 import axios from 'axios';
 
 /** axios instance */
 export const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_SERVER_URL, // 서버 나오면 수정
+    baseURL: process.env.REACT_APP_SERVER_URL,
     // baseURL: 'http://192.168.0.19:8090',
     maxBodyLength: Infinity,
     headers: {
@@ -22,8 +21,8 @@ export const axiosInstance2 = axios.create({ // 희정님 로컬서버 (notice, 
 });
 
 export const axiosJsonInstance = axios.create({
-    // baseURL: process.env.REACT_APP_SERVER_URL,
-    baseURL: 'http://192.168.0.19:8090',
+    baseURL: process.env.REACT_APP_SERVER_URL,
+    // baseURL: 'http://192.168.0.19:8090',
     maxBodyLength: Infinity,
     headers: {
         'Content-Type': 'application/json; charset=utf-8',

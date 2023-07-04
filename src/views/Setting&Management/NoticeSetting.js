@@ -12,6 +12,7 @@ import SelectBox from '../../components/SelectBox'
 import CustomDatePicker from "../../components/DatePicker"
 import Paging from "../../components/Paging";
 import Editor from "../../components/Editor";
+import EditorWrite from "../../components/EditorWrite";
 import Alert from "../../components/Alert"
 
 import { generateRandomString } from "../../utils/CommonFunction"
@@ -104,9 +105,12 @@ function NoticeSetting() {
     const [boardData, setBoardData] = useState([]); // notice 목록
     const [selectedList, setSelctedList] = useState(); // 목록에서 선택한 항목
     const [detail, setDetail] = useState(); // notice 상세
+    
     const [isWrite, setIsWrite] = useState(false); // 새 글 여부
     const [writeData, setWriteData] = useState(); // 새 글 항목
     const [isModify, setIsModify] = useState(false); // 수정 여부
+    const [modifyData, setModifyData] = useState(); // 수정 항목
+    const [isChange, setIsChange] = useState(false); // 에디터에서 글 수정 여부
 
     console.log('isWrite', isWrite, ' / isModify', isModify)
 
@@ -205,24 +209,29 @@ function NoticeSetting() {
     }, [searchData]);
 
     const handleClickRow = (e, item) => {
-        console.log('e', e.target.value)
-        console.log('item', item)
+        // console.log('e', e.target.value)
+        // console.log('item', item)
 
-        if(isWrite || isModify) {
-            setAlertTxt("Click confirm to leave write mode.")
-            setSelctedList()
+        if(isChange || isWrite) {
+            onConfirmHandler('leave')
+            // setAlertTxt("Click confirm to leave write mode.")
+            // setSelctedList()
             return false;
         }
         setSelctedList({ noticeId: item.noticeId, tableName: item.tableName })
+        setIsChange(false)
     }
 
     const handleClickWrite = () => {
-        if(isModify) {
-            setAlertTxt('Click confirm to leave write mode.')
+        if(isChange) {
+            onConfirmHandler('leave')
+            // setAlertTxt('Click confirm to leave write mode.')
             return false;
         } else {
-            setIsWrite(true); 
             setDetail();
+            setIsModify(false);
+            setIsWrite(true); 
+            setIsChange(false)
         }
     }
 
@@ -232,44 +241,68 @@ function NoticeSetting() {
     }, [selectedList])
 
     const [alertModal, setAlertModal] = useState(false)
-    const [alertTxt, setAlertTxt] = useState('')
-    const [alertConfirm, setAlertConfirm] = useState(false);
+    // const [alertTxt, setAlertTxt] = useState('')
+    // const [alertConfirm, setAlertConfirm] = useState(false);
     const [alertSetting, setAlertSetting] = useState({
         alertTxt : '',
+        onClose : function() {},
         onConfirm : function() {},
         isDoubleBtn : false,
-        btnTxt : 'Close',
+        btnTxt : 'Cancel',
         // confirmTxt : ''
     })
 
     const onConfirmHandler = (type) => {
-        // leave editor 
-        if(type === 'leave') {
+        // leave editor (write mode)
+        if(type === 'check') {
             setAlertSetting({
                 ...alertSetting,
-                alertTxt: ' Click confirm to leave write mode.',
+                alertTxt: 'Please fill out all the information.',
+                onClose : () => {
+                    setAlertModal(false);
+                },
                 onConfirm : () => { 
+                    setAlertModal(false);
+                },
+                isDoubleBtn : false,
+                btnTxt : 'Cancel',
+            })
+        }
+        // leave editor
+        else if(type === 'leave') {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Click confirm to leave write mode.',
+                onClose : () => {
+                    setAlertModal(false);
+                },
+                onConfirm : () => { 
+                    setSelctedList()
                     setAlertModal(false);
                     setIsWrite(false);
                     setIsModify(false);
+                    setIsChange(false);
                 },
                 isDoubleBtn : true,
                 btnTxt : 'Confirm',
             })
         }
         // add post
-        else if(type === 'delete') {
+        else if(type === 'save') {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: `You've inserted new post.`,
-                onConfirm : () => {
+                onClose : () => {
                     setAlertModal(false);
                     setIsWrite(false)
                     setIsModify(false)
                     setDetail()
                     getList()
                 },
-                isDoubleBtn : true,
+                onConfirm : () => {
+                    setAlertModal(false);
+                },
+                isDoubleBtn : false,
                 btnTxt : 'Confirm',
             })
         }
@@ -278,14 +311,17 @@ function NoticeSetting() {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: `You've inserted modified post.`,
-                onConfirm : () => {
+                onClose : () => {
                     setAlertModal(false);
                     setIsWrite(false)
                     setIsModify(false)
                     setDetail()
                     getList()
                 },
-                isDoubleBtn : true,
+                onConfirm : () => {
+                    setAlertModal(false);
+                },
+                isDoubleBtn : false,
                 btnTxt : 'Confirm',
             })
         }
@@ -294,12 +330,11 @@ function NoticeSetting() {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: 'Are you sure to delete post?',
+                onClose : () => {
+                    setAlertModal(false);
+                },
                 onConfirm : () => {
-                    setAlertModal(false)
-                    setIsWrite(false)
-                    setIsModify(false)
-                    setDetail()
-                    getList()
+                    onDeleteContent();
                 },
                 isDoubleBtn : true,
                 btnTxt : 'Confirm',
@@ -310,27 +345,14 @@ function NoticeSetting() {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: 'Are you sure to restore post?',
+                onClose : () => {
+                    setAlertModal(false);
+                },
                 onConfirm : () => {
-                    setAlertModal(false)
-                    setIsWrite(false)
-                    setIsModify(false)
-                    setDetail()
-                    getList()
+                    onRestoreContent();
                 },
                 isDoubleBtn : true,
                 btnTxt : 'Confirm',
-            })
-        }
-        // success alert 
-        else if(type === 'submit') {
-            setAlertSetting({
-                ...alertSetting,
-                alertTxt: 'Success',
-                onConfirm : () => {
-                    setAlertModal(false);
-                },
-                isDoubleBtn : false,
-                btnTxt : 'Cancel',
             })
         }
     }
@@ -339,7 +361,8 @@ function NoticeSetting() {
         console.log('editor data >>>>>>', writeData)
 
         if (!writeData?.title || !writeData?.content || !writeData?.view) {
-            setAlertTxt('Please fill out all the information.')
+            // setAlertTxt('Please fill out all the information.')
+            onConfirmHandler('check')
             console.log('if')
             return false;
 
@@ -359,11 +382,12 @@ function NoticeSetting() {
                     
                     if(resData.code == 200) {
                         console.log('res', resData)
-                        setAlertTxt("You've inserted new post.")
-                        setIsWrite(false)
-                        setIsModify(false)
-                        setDetail()
-                        getList()
+                        onConfirmHandler('save')
+                        // setAlertTxt("You've inserted new post.")
+                        // setIsWrite(false)
+                        // setIsModify(false)
+                        // setDetail()
+                        // getList()
                     } else {
                         console.log('res', resData.msg);
                     }
@@ -377,9 +401,12 @@ function NoticeSetting() {
                 keysToSave.forEach((key) => {
                     if (writeData.hasOwnProperty(key)) {
                         if(key == 'postStartDate' || key == 'postEndDate') {
-                            formData.append(key, moment(writeData[key]).format('YYYY-MM-DD'));
+                            if(writeData[key] !== null) {
+                                formData.append(key, moment(writeData[key]).format('YYYY-MM-DD'));
+                            }
+                        } else {
+                            formData.append(key, writeData[key]);
                         }
-                      formData.append(key, writeData[key]);
                     }
                 });
                 console.log('modify data >>>>>>', Object.fromEntries(formData))
@@ -390,11 +417,12 @@ function NoticeSetting() {
 
                     if(resData.code == 200) {
                         console.log('res', resData)
-                        setAlertTxt("You've inserted modified post.")
-                        setIsWrite(false)
-                        setIsModify(false)
-                        setDetail()
-                        getList()
+                        onConfirmHandler('modify')
+                        // setAlertTxt("You've inserted modified post.")
+                        // setIsWrite(false)
+                        // setIsModify(false)
+                        // setDetail()
+                        // getList()
                     } else {
                         console.log('res', resData);
                     }
@@ -408,101 +436,122 @@ function NoticeSetting() {
     const onDeleteContent = () => {
         // let confirm = window.confirm('Are you sure you want to delete it?');
 
-        if(alertConfirm) {
-            const formData = new FormData();
-            formData.append('noticeId', detail?.noticeId);
+        const formData = new FormData();
+        formData.append('noticeId', detail?.noticeId);
 
-            // CS 공지사항 삭제 API
-            axiosInstance2.post('/notice/csDelete', formData, config).then(res => {
-                let resData = res.data;
+        // CS 공지사항 삭제 API
+        axiosInstance2.post('/notice/csDelete', formData, config).then(res => {
+            let resData = res.data;
 
-                if(resData.code == 200) {
-                    console.log('res', resData)
-                    // setAlertTxt("The post has been deleted.")
-                    // setAlertConfirm(false);
-                    setAlertModal(false)
-                    setIsWrite(false)
-                    setIsModify(false)
-                    setDetail()
-                    getList()
-                } else {
-                    console.log('res', resData.msg);
-                }
-            }).catch(error => {
-                console.log('error', error)
-            })
-        }
+            if(resData.code == 200) {
+                console.log('res', resData)
+                // setAlertTxt("The post has been deleted.")
+                // setAlertConfirm(false);
+                setAlertModal(false)
+                setIsWrite(false)
+                setIsModify(false)
+                setDetail()
+                getList()
+            } else {
+                console.log('res', resData.msg);
+            }
+        }).catch(error => {
+            console.log('error', error)
+        })
+        // if(alertConfirm) {
+        // }
     }
 
     const onRestoreContent = () => {
         // let confirm = window.confirm('Are you sure you want to restore it?');
 
-        if(alertConfirm) {
-            const formData = new FormData();
-            formData.append('noticeId', detail?.noticeId);
+        const formData = new FormData();
+        formData.append('noticeId', detail?.noticeId);
 
-            // CS 공지사항 복구 API
-            axiosInstance2.post('/notice/csRestore', formData, config).then(res => {
-                let resData = res.data;
+        // CS 공지사항 복구 API
+        axiosInstance2.post('/notice/csRestore', formData, config).then(res => {
+            let resData = res.data;
 
-                if(resData.code == 200) {
-                    console.log('res', resData)
-                    // setAlertTxt("The post has been restored.")
-                    // setAlertConfirm(false);
-                    setAlertModal(false)
-                    setIsWrite(false)
-                    setIsModify(false)
-                    setDetail()
-                    getList()
-                } else {
-                    console.log('res', resData.msg);
-                }
-            }).catch(error => {
-                console.log('error', error)
-            })
-        }
+            if(resData.code == 200) {
+                console.log('res', resData)
+                // setAlertTxt("The post has been restored.")
+                // setAlertConfirm(false);
+                setAlertModal(false)
+                setIsWrite(false)
+                setIsModify(false)
+                setDetail()
+                getList()
+            } else {
+                console.log('res', resData.msg);
+            }
+        }).catch(error => {
+            console.log('error', error)
+        })
+        // if(alertConfirm) {
+        // }
     }
 
     useEffect(() => {
         onSaveContent();
     }, [writeData])
 
-    useEffect(()=>{
+    // useEffect(()=>{
+    //     if(!alertModal) {
+    //         setAlertTxt('')
+    //     }
+    // }, [alertModal])
+
+    // useEffect(()=>{
+    //     if(alertTxt!==''){
+    //         setAlertModal(true)
+    //     }
+    // }, [alertTxt])
+
+    useEffect(() => {
         if(!alertModal) {
-            setAlertTxt('')
+           setAlertSetting({
+            alertTxt : '',
+            onClose : function() {},
+            onConfirm : function() {},
+            isDoubleBtn : false,
+            btnTxt : 'Cancel',
+            confirmTxt : ''
+           })
         }
     }, [alertModal])
 
-    useEffect(()=>{
-        if(alertTxt!==''){
-            setAlertModal(true)
-        }
-    }, [alertTxt])
-
     useEffect(() => {
-        console.log('alert', alertTxt)
-        console.log('confirm', alertConfirm)
-
-        if(alertConfirm) {
-            if(alertTxt == 'Are you sure you want to delete it?') {
-                onDeleteContent();
-                setAlertConfirm(false);
-            } else if(alertTxt == 'Are you sure you want to restore it?') {
-                onRestoreContent();
-                setAlertConfirm(false);
-            } else if(alertTxt == 'Click confirm to leave write mode.') {
-                setAlertConfirm(false);
-                setAlertModal(false);
-                setIsWrite(false);
-                setIsModify(false);
-            } else if(alertTxt == `You've inserted new post.`) {
-                setAlertConfirm(false);
-                // setIsWrite(false)
-                // setIsModify(false)
-                // setDetail()
-            }
+        if(alertSetting.alertTxt !== '') {
+            setAlertModal(true)
+        } else {
+            setAlertModal(false)
         }
-    }, [alertConfirm])
+    }, [alertSetting])
+
+    // useEffect(() => {
+    //     console.log('alert', alertTxt)
+    //     console.log('confirm', alertConfirm)
+
+    //     if(alertConfirm) {
+    //         if(alertTxt == 'Are you sure you want to delete it?') {
+    //             onDeleteContent();
+    //             setAlertConfirm(false);
+    //         } else if(alertTxt == 'Are you sure you want to restore it?') {
+    //             onRestoreContent();
+    //             setAlertConfirm(false);
+    //         } else if(alertTxt == 'Click confirm to leave write mode.') {
+    //             setAlertConfirm(false);
+    //             setAlertModal(false);
+    //             setIsWrite(false);
+    //             setIsModify(false);
+    //         } else if(alertTxt == `You've inserted new post.`) {
+    //             setAlertConfirm(false);
+    //             // setIsWrite(false)
+    //             // setIsModify(false)
+    //             // setDetail()
+    //         }
+    //     }
+    // }, [alertConfirm])
 
     return (
         <div className="notice-container">
@@ -579,10 +628,12 @@ function NoticeSetting() {
                 </div>
                 <div className="notice-right">
                     {
-                        isWrite || isModify ?
-                        <Editor onClose={isWrite ? setIsWrite : setIsModify} period={true} data={detail} setData={setWriteData} isWriter={true} //isWriter={auth.isWriter}
-                            onDelete={() => setAlertTxt('Are you sure you want to delete it?')} 
-                            onRestore={() => setAlertTxt('Are you sure you want to restore it?')} />
+                        isWrite ?
+                        <EditorWrite onClose={setIsWrite} period={true} data={detail} setData={setWriteData} isWriter={true} //isWriter={auth.isWriter}
+                            />
+                        : isModify ?
+                        <Editor onClose={setIsModify} period={true} data={detail} setData={setWriteData} isChange={setIsChange} isWriter={true} //isWriter={auth.isWriter}
+                            onDelete={() => onConfirmHandler('delete')} onRestore={() => onConfirmHandler('restore')} />
                         :
                         <div className="notice-view-none">
                             <p>If you select a list, you can see the contents</p>
@@ -593,10 +644,7 @@ function NoticeSetting() {
             {
                 alertModal
                 &&
-                <Alert alertTxt={alertTxt} onClose={() => setAlertModal(false)} onConfirm={() => {alertConfirm ? setAlertModal(false) : setAlertConfirm(true)}} 
-                    btnTxt='Confirm' twoBtn />
-                // <Alert alertTxt={alertTxt} onClose={() => setAlertModal(false)} onConfirm={() => {alertConfirm ? setAlertModal(false) : setAlertConfirm(true)}} 
-                //     btnTxt={alertConfirm ? 'Cancel' : 'Confirm'} twoBtn={alertConfirm ? false : true} />
+                <Alert alertTxt={alertSetting.alertTxt} onClose={alertSetting.onClose} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt}/>
             }
             </Style>
 

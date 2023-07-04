@@ -21,11 +21,10 @@ import { generateRandomString } from "../utils/CommonFunction";
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
  * @returns 
  */
-function Editor({ period, data, setData, range, isChange, onSave, onClose, onDelete, onRestore, isWriter }) {
+function EditorWrite({ period, data, setData, range, onSave, onClose, onDelete, onRestore, isWriter }) {
 
     const user = useContext(UserContext);
     const [content, setContent] = useState(data);
-    const [origin, setOrigin] = useState(data);
     const [attachments, setAttachments] = useState([
         {
             fileName: '',
@@ -48,19 +47,6 @@ function Editor({ period, data, setData, range, isChange, onSave, onClose, onDel
         // 에디터 설정 커스터마이징시 활성화
     };
 
-    useEffect(() => {
-        let content = data;
-        setTimeout(() => {
-            setContent(content);
-            setOrigin(content);
-        }, 10);
-
-        return () => {
-            setContent();
-            setOrigin();
-        }
-    }, [data])
-
     const handleClickRadio = (e) => {
         let value = e.target.value;
         if(!isWriter) return false;
@@ -81,8 +67,8 @@ function Editor({ period, data, setData, range, isChange, onSave, onClose, onDel
             return false;
         } else {
             if(editDate) {
-                let start = startDate // moment(startDate).format('YYYY-MM-DD');
-                let end = endDate // moment(endDate).format('YYYY-MM-DD');
+                let start = moment(startDate).format('YYYY-MM-DD');
+                let end = moment(endDate).format('YYYY-MM-DD');
                 console.log('startDate', start, '/ endDate', end)
                 setData({ ...content, postStartDate : start, postEndDate : end })
             } else {
@@ -92,27 +78,8 @@ function Editor({ period, data, setData, range, isChange, onSave, onClose, onDel
         }
     }
 
-    const extractChangedPart = (obj1, obj2) => {
-        
-        if (Object.keys(obj1).length !== Object.keys(obj2).length) {
-            return true;
-        }
-        for (let key in obj1) {
-            if (!obj2.hasOwnProperty(key)) {
-                return true;
-            }
-            if (obj1[key] !== obj2[key]) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     useEffect(() => {
-        // console.log('content >>>>>>>>>>>>>>>>>>>', content)
-        if(origin && content) {
-            isChange(extractChangedPart(origin, content))
-        }
+        console.log('content >>>>>>>>>>>>>>>>>>>', content)
     }, [content])
 
     // useEffect(() => {
@@ -170,16 +137,13 @@ function Editor({ period, data, setData, range, isChange, onSave, onClose, onDel
 
     return (
         <Style>
-        { content &&
         <div className="editor-container">
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
-                {/* <div className="right"> <input type="text" className="write-input" name="writer" readOnly value={user.name}></input> </div> */}
                 <div className="right"> <p className="custom-flex-item custom-align-item">{user.name}</p> </div>
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Date</p> </div>
-                {/* <div className="right"> <input type="text" className="write-input" name="date" readOnly value={data ? moment(content?.createdAt).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')}></input> </div> */}
                 <div className="right"> <p className="custom-flex-item custom-align-item">{data ? moment(content?.createdAt).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')}</p> </div>
 
             </div>
@@ -270,8 +234,6 @@ function Editor({ period, data, setData, range, isChange, onSave, onClose, onDel
                 </div>
                 
                 <div className="right file-upload"> 
-                    {/* <input type="text" className="write-input attach-input" name="filename" readOnly></input> 
-                    <button className="file-delete-btn">Delete</button> */}
                     {
                         attachments?.map((item, idx)=>{
                             return (
@@ -321,11 +283,10 @@ function Editor({ period, data, setData, range, isChange, onSave, onClose, onDel
                 <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} onConfirm={()=>setAlertModal(false)} btnTxt='Close' />
             }
         </div>
-        }
         </Style>
     )
 }
-export default Editor
+export default EditorWrite
 
 const Style = styled.div `
 `
