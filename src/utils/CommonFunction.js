@@ -1,9 +1,10 @@
+import { elements } from "chart.js";
 import React, {useRef, useEffect} from "react";
 import axios from 'axios';
 
 /** axios instance */
 export const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_SERVER_URL,
+    baseURL: process.env.REACT_APP_SERVER_URL, // 서버 나오면 수정
     // baseURL: 'http://192.168.0.19:8090',
     maxBodyLength: Infinity,
     headers: {
