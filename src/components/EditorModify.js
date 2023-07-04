@@ -51,10 +51,10 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
 
     const handleClickRadio = (e,num) =>{
         console.log(num)
-        setContent({
-            ...content,
-            isPublic : num
-        })
+        // setContent({
+        //     ...content,
+        //     isPublic : num
+        // })
     }
     const onStopInput = () => {
         console.log('onStopInput')
@@ -92,6 +92,37 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
         }
       
     }
+    const deleteRow = (idx) => {
+        if(attachments.length > 1) {
+            setAttachments(prevArray => {
+                const newArray = [...prevArray];
+                newArray.splice(idx, 1);
+                return newArray;
+            })
+        } else {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt : 'At least one attachment is required.'
+            })
+        }
+    }
+
+    useEffect(() => {
+        let content = data;
+        console.log(content.attachments)
+        // console.log('editor file data --->', JSON.parse(content.attachments))
+        setTimeout(() => {
+            setContent(content);
+            // setOrigin(content);
+            // setAttachments(JSON.parse(content.attachments))
+        }, 10);
+
+        return () => {
+            setContent();
+            // setOrigin();
+            setAttachments();
+        }
+    }, [data])
 
     useEffect(()=>{
         if(!alertModal) {
@@ -112,13 +143,13 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
         }
     },[alertSetting])
 
-    useEffect(()=>{
-        console.log('---------------------------------------------------------------------!!')
-        setData({
-            ...data,
-            isPublic : content.isPublic
-        })
-    },[content.isPublic])
+    // useEffect(()=>{
+    //     console.log('---------------------------------------------------------------------!!')
+    //     setData({
+    //         ...data,
+    //         isPublic : content.isPublic
+    //     })
+    // },[content.isPublic])
 
     return (
         <Style>
@@ -218,7 +249,7 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
                         return (
                             <div className="custom-flex-item custom-align-item" key={generateRandomString(idx)}>
                             <input type="text" className="write-input attach-input" name="filename" readOnly></input> 
-                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn">{item.fileName===''?'Select':'Delete'}</label>
+                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn">{item.fileName===''?'Select':'Delete'},{idx}</label>
                             <input 
                                 type="file" 
                                 className="file-delete-btn" 

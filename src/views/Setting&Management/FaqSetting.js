@@ -12,6 +12,7 @@ import Pagination from "react-js-pagination";
 import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
+import Tab from "../../components/Tab";
 import AgGrid from "../../components/AgGrid"
 import Viewer from "../../components/Viewer"
 // Utils
@@ -41,14 +42,13 @@ function FaqSetting() {
     let auth = 1;
     const user = useContext(UserContext)
     const [subsidiary, setSubsidiary ] = useState([
-        {value:'1',label:'Canada'}, 
-        {value:'2',label:'USA'}, 
-        {value:'3',label:'Germany'}, 
-        {value:'4',label:'Austrailia'}, 
-        {value:'5',label:'Mexico'},
-        {value:'6',label:'Brazil'},
-        {value:'7',label:'Vietnam'},
-        {value:'8',label:'Indonesia'}
+        {value:'',label:'All'}, 
+        {value:'LGEAI',label:'LGEAI'}, 
+        {value:'LGECI',label:'LGECI'}, 
+        {value:'LGEES',label:'LGEES'}, 
+        {value:'LGEJP',label:'LGEJP'}, 
+        {value:'LGEKR',label:'LGEKR'},
+        {value:'LGEMC',label:'LGEMC'},
     ])
 
      /** 페이징 관련 ▼ ============================================================= */
@@ -426,6 +426,7 @@ function FaqSetting() {
             </div>
 
             <Zendesk />
+            <Tab />
         </div>
         </Style>
         </>

@@ -536,9 +536,6 @@ function CStalk() {
         setIsModify(true)
     }
 
-    useEffect(()=>{
-        console.log('radio button test', content.isPublic)
-    },[content])
     const onEditContent = () =>{
         if (content.title==='' || content.content==='' || content.isPublic==='') {
             setAlertSetting({
@@ -803,13 +800,18 @@ function CStalk() {
 
     const onAttachFiles = (e,idx) => {
         console.log('onAttachFiles')
-        console.log(e.target.files)
-        let copyFile = [...fileStore]
+        console.log(e.target.files, idx)
+        
         if(e.target?.files[0]) {
             let formData = new FormData();
             formData.append('fileName',e.target?.files[0])
             // api 연동..
+            let file = e.target.files
+            let copyFile = [...fileStore]
+            copyFile[idx] = file
+            console.log(copyFile,'console.log(copyFile)')
         }
+        
     }
 
     /** loading 시 animation */
@@ -962,7 +964,7 @@ function CStalk() {
                     !isWrite && selectedList.csTalkId!=='' && !isModify
                     ?
                     <div className="editor-wrapper">
-                        <div className={`cstalk-right ${isLoading ? 'loadingOpacity':''}`}>
+                        <div className={`cstalk-right custom-flex-item ${isLoading ? 'loadingOpacity':''}`}>
                     <div className="cstalk-right-top">
                         <p>{selectedList.subject}</p>
                         <div className="custom-flex-item selected-info">
