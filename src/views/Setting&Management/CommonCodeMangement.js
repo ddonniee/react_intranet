@@ -139,11 +139,11 @@ function CommonCodeMangement() {
     
  
     const SelectBoxRenderer = (props) => {
-      console.log(props)
+      console.log(props.value[0])
       const handleChange = (e) => {
         
           const selectedValue = e.target.value;
-          console.log(props.setValue,'props는 뭔데 ?')
+          console.log(props,'props는 뭔데 ?')
           props.setValue(selectedValue);
           console.log('change use ---->', selectedValue);
 
@@ -158,7 +158,7 @@ function CommonCodeMangement() {
           {value : 'N',label:'N'}
       ]
       return (
-        <select className='row-select' value={props.value} onChange={handleChange} defaultValue='Y'>
+        <select className='row-select' onChange={handleChange} defaultValue='Y'>
           {
               useOptions.map((job, i) => (
                   <option key={i} value={job}> {job} </option>
@@ -345,11 +345,13 @@ function CommonCodeMangement() {
         if(isValid) {
          
 
+          console.log(data,'00000000000000000000000000000000000000')
+
             var config = {
                 method: 'post',
                 maxBodyLength: Infinity,
                 headers: {
-                  'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+                  'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
                  },
                 data : data
                 };
@@ -476,7 +478,11 @@ function CommonCodeMangement() {
         var config = {
           method: 'post',
             maxBodyLength: Infinity,
+            headers: {
+              'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+             },
           data :arr
+          
         };
 
         axiosJsonInstance('/codeManagement/subList', config).then(res=>{
@@ -485,19 +491,23 @@ function CommonCodeMangement() {
                 ...item,
                 type: 'update'
               }));
-              setSublist(updatedData);
-        }).catch((error)=>{
-            console.log(error)
-        })
+                setSublist(updatedData);
+          }).catch((error)=>{
+              console.log(error)
+          })
 
-      }, [codeCheckedList]);
-      
-      useEffect(()=>{
-        handleCheckId('upper-code');
-      },[codeList])
-      useEffect(()=>{
-        handleCheckId('lower-code')
-      },[subList])
+        }, [codeCheckedList]);
+        
+        useEffect(()=>{
+          handleCheckId('upper-code');
+        },[codeList])
+        useEffect(()=>{
+          handleCheckId('lower-code')
+        },[subList])
+
+        useEffect(()=>{
+          console.log('codeCheckedList',codeCheckedList)
+        },[codeCheckedList])
    
     return (
         <>

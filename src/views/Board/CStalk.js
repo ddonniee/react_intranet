@@ -881,7 +881,7 @@ function CStalk() {
             <Top auth={1} searchArea={false}/>
             {/** Search Nav */}
             <div>
-            <div className="cstalk-nav custom-flex-item" style={user.role!=='LK' ? {justifyContent :'flex-start'} : null}>
+            <div className="cstalk-nav custom-flex-item custom-justify-between" style={user.role!=='LK' ? {justifyContent :'flex-start'} : null}>
                  {/* Subsidiary는 본사 staff만 */}
                  {
                     user.role === 'LK'

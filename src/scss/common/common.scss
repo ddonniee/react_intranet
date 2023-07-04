@@ -50,6 +50,9 @@ html, body, #root{
 input, button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-select {
     cursor: pointer;
 }
+.custom-select {
+    width: 179px;
+}
 .cell-select-box > *:hover {
     background-color: $hover-color-pink;
     border: none;
