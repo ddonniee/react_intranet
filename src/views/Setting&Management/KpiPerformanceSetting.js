@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useRef, useContext } from 'react';
 import { axiosInstance, axiosJsonInstance } from '../../utils/CommonFunction';
+import readXlsxFile from 'read-excel-file';
 
 import Header from "../../components/Header"
 import Top from "../../components/Top"
@@ -11,6 +12,7 @@ import { UserContext } from "../../hooks/UserContext";
 
 import '../../scss/style.scss';
 import { ReactComponent as IntersectIcon } from '../../assets/svgs/icon_intersect2.svg';
+import { ReactComponent as UploadIcon } from '../../assets/svgs/icon_upload.svg';
 
 function KpiPerformanceSetting() {
 
@@ -60,9 +62,9 @@ function KpiPerformanceSetting() {
 
     const [subOptions, setSubOptions] = useState([]); // 법인 selectbox 데이터
     const [yearOptions, setYearOptions] = useState([
-        { value: '2023', label: '2023', group: 'year' },
-        { value: '2022', label: '2022', group: 'year' },
-        { value: '2021', label: '2021', group: 'year' },
+        { value: '2023', label: '2023', group: 'executionYear' },
+        { value: '2022', label: '2022', group: 'executionYear' },
+        { value: '2021', label: '2021', group: 'executionYear' },
     ]); // 연도 selectbox 데이터
 
     const handleSelectBox = (e) => {
@@ -72,9 +74,30 @@ function KpiPerformanceSetting() {
 
         if(group === 'corporationCode') {
             setSearchData({ ...searchData, corporationCode: value })
-        } else if(group === 'year') {
+        } else if(group === 'executionYear') {
             setSearchData({ ...searchData, year: value })
         }
+    }
+
+    const getSelectList = () => {
+        // 법인목록 조회 API
+        const corpForm = new FormData();
+
+        axiosInstance.post('/corporation/list', corpForm, config).then(res => {
+            const data = res?.data.result;
+
+            const newArray = data.map((obj, index) => ({
+                value: obj.corporationCode,
+                label: obj.corporationCode,
+                group: 'corporationCode'
+            }));
+            console.log('법인 목록 ---->', newArray)
+
+            setSubOptions(newArray);
+            
+        }).catch(error => {
+            console.error(error);
+        });
     }
 
     /* 조회 영역 ****************************************************************/
@@ -86,7 +109,7 @@ function KpiPerformanceSetting() {
 
         if(searchData?.corporationCode && searchData?.year) {
             formData.append('corporationCode', searchData?.corporationCode);
-            formData.append('centerType', searchData?.year);
+            formData.append('executionYear', searchData?.year);
         } else {
             return false;
         }
@@ -112,6 +135,37 @@ function KpiPerformanceSetting() {
         // });
     }
 
+    useLayoutEffect(() => {
+        // getList();
+        getSelectList();
+    }, []);
+
+    const [excelData, setExcelData] = useState(null);
+    const [excelError, setExcelError] = useState(null);
+
+    const handleExcelUpload = (event) => {
+        const file = event.target.files[0];
+        // console.log('input file ============', file)
+
+        const allowedFileTypes = [
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        ];
+        if(!allowedFileTypes.includes(file.type)) {
+            setAlertTxt('Only Excel files can be uploaded.')
+            return false;
+        }
+
+        readXlsxFile(file)
+          .then((rows) => {
+            setExcelData(rows);
+            setExcelError(null);
+          })
+          .catch((error) => {
+            setExcelError(error.message);
+            setExcelData(null);
+          });
+    };
+
     useEffect(()=>{
         if(!alertModal) {
             setAlertTxt('')
@@ -124,6 +178,8 @@ function KpiPerformanceSetting() {
         }
     },[alertTxt])
 
+    const [confirm, setConfirm] = useState(false); // final confirm 여부
+
     return (
         <div className="kpisetting-container">
             <Header />
@@ -134,11 +190,15 @@ function KpiPerformanceSetting() {
                     <div className='nav-header'>1. KPI Target Format Download</div>
                     <div className='nav-left'>
                         <div className='nav-line'></div>
-                        <div className='custom-flex-item custom-align-item'>
-                        <p>· Subsidiary</p>
-                        <SelectBox name='corporationCode' options={subOptions} handleChange={handleSelectBox} />
-                        <p>· Execution Year</p>
-                        <SelectBox name='executionYear' options={yearOptions} handleChange={handleSelectBox} />
+                        <div className='custom-flex-item custom-align-item custom-justify-between nav-search'>
+                            <div className='custom-flex-item custom-align-item custom-justify-between nav-search-box'>
+                                <p>· Subsidiary</p>
+                                <SelectBox name='corporationCode' options={subOptions} handleChange={handleSelectBox} />
+                            </div>
+                            <div className='custom-flex-item custom-align-item custom-justify-between nav-search-box'>
+                                <p>· Execution Year</p>
+                                <SelectBox name='executionYear' options={yearOptions} handleChange={handleSelectBox} />
+                            </div>
                         </div>
                     </div>
                     <div className='nav-right'>
@@ -153,7 +213,7 @@ function KpiPerformanceSetting() {
                     <div className='nav-header'>2. KPI format Upload</div>
                     <div className='nav-left'>
                         <div className='nav-line'></div>
-                        <input type="text" className="write-input attach-input" name="filename" id="filename" readOnly></input> 
+                        <input type="text" className="txt-input attach-input" name="filename" id="filename" readOnly></input> 
                         <label className="custom-flex-item custom-justify-center custom-align-item file-select-btn" 
                             htmlFor={`file-select-btn`}>Browse</label>
                         <input 
@@ -204,32 +264,77 @@ function KpiPerformanceSetting() {
                         <div className='nav-line'></div> 
                         <button className='custom-circle-btn' onClick={getList} >
                             <p>Upload</p>
-                            <IntersectIcon />
+                            <UploadIcon />
                         </button>
                     </div>
                 </div>
-                <div className='kpi-nav'>
+                <div className='kpi-nav' style={{height: "532px"}}>
                     <div className='nav-header'>3. Pre check</div>
-                    <div className='nav-left'>
+                    <div className='nav-left nav-check'>
                         <div className='nav-line'></div>
-                        <p>· Subsidiary</p>
-                        <SelectBox name='corporationCode' options={subOptions} handleChange={handleSelectBox} />
-                        <p>· Execution Year</p>
-                        <SelectBox name='centerType' options={yearOptions} handleChange={handleSelectBox} />
+                        {/* <button className="nav-btn-black">Pre Check</button> */}
+                        <div className='pc-check-wrapper'>
+                            <label className="custom-flex-item custom-justify-center custom-align-item nav-btn-black" 
+                                htmlFor="excel-select-btn">Pre Check</label>
+                            <input 
+                                type="file" 
+                                className="excel-select-btn" 
+                                style={{display: "none"}} 
+                                id="excel-select-btn"
+                                onChange={handleExcelUpload}
+                            />
+                            <p>· Error</p>
+                            <input type="text" className="txt-input error-input" name="errcount" id="errcount" readOnly></input>
+                            <div className="custom-flex-item custom-align-item custom-justify-between pc-check-result">
+                                <p>· Score Mistake : </p> <p>{'24'}</p>
+                            </div>
+                            <div className="custom-flex-item custom-align-item custom-justify-between pc-check-result">
+                                <p>· Format Miss : </p> <p>{'14'}</p>
+                            </div>
+                        </div>
                     </div>
-                    <div className='nav-right'>
-                        <div className='nav-line'></div>
-                        <button className='custom-circle-btn' onClick={getList} >
-                            <p>Upload</p>
-                            <IntersectIcon />
-                        </button>
+                    <div className='nav-right nav-check'>
+                        { excelError && <div>Error: {excelError}</div>}
+                        { excelData && (
+                            <div className='pc-table-wrapper'>
+                            <table className='pc-table'>
+                                <colgroup>
+                                    <col width="*"/>
+                                    <col width="16%"/>
+                                    <col width="16%"/>
+                                    <col width="16%"/>
+                                    <col width="16%"/>
+                                    <col width="16%"/>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                    { excelData[0].map((header, index) => (
+                                        <th key={index} className='pc-table-th'>{header}</th>
+                                    ))}
+                                        <th className='pc-table-th'>Error</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    { excelData.slice(1).map((row, rowIndex) => (
+                                    <tr key={rowIndex}>
+                                        { row.map((cell, cellIndex) => (
+                                            <td key={cellIndex} className='pc-table-td'>{cell}</td>
+                                        ))}
+                                        <td className='pc-table-td'>Format</td>
+                                    </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className='kpi-nav'>
                     <div className='nav-header'>4. Final Confirm</div>
                     <div className='nav-left'>
                         <div className='nav-line'></div>
-                        <p className='confirm-txt'>{'No data errors were found. Do you want to confirm it?'}</p>
+                        <p className='confirm-txt'>
+                            {confirm ? 'Upload Success' : 'No data errors were found. Do you want to confirm it?'}</p>
                     </div>
                     <div className='nav-right'>
                         <div className='nav-line'></div>

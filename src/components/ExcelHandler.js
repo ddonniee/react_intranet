@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import readXlsxFile from 'read-excel-file';
 import { utils, writeFile, write } from 'xlsx';
 
-export const ExcelUploader = () => {
+export const ExcelUploader = ({ onChange, excelData, setExcelData }) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
