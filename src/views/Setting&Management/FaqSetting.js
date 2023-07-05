@@ -13,10 +13,9 @@ import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
 import Tab from "../../components/Tab";
-import AgGrid from "../../components/AgGrid"
-import Viewer from "../../components/Viewer"
+import NewFaq from "./NewFormat/NewFaq";
 // Utils
-import { generateRandomString } from "../../utils/CommonFunction"
+import { generateRandomString,axiosInstance2 } from "../../utils/CommonFunction"
 
 // Icons 
 import Order from '../../assets/svgs/icon_truck.svg'
@@ -31,16 +30,16 @@ import Talk from '../../assets/svgs/icon_cstalk.svg'
 import Polygon from '../../assets/svgs/icon_polygon.svg'
 import Plus from '../../assets/svgs/icon_plus.svg'
 import Minus from '../../assets/svgs/icon_minus.svg';
-import Download from '../../assets/svgs/icon_download.svg'
-import Like from '../../assets/svgs/icon_like.svg'
-import Dislike from '../../assets/svgs/icon_dislike.svg'
-import Comment from '../../assets/svgs/icon_co_comment.svg'
-import More_comment from '../../assets/svgs/icon_co_more.svg'
+import New from '../../assets/svgs/icon_new.svg'
+
+import moment from "moment";
 
 function FaqSetting() {
 
     let auth = 1;
     const user = useContext(UserContext)
+    let now = moment().subtract(24,'hours').format('YYYY-MM-DD HH:mm:ss');
+
     const [subsidiary, setSubsidiary ] = useState([
         {value:'',label:'All'}, 
         {value:'LGEAI',label:'LGEAI'}, 
@@ -50,7 +49,6 @@ function FaqSetting() {
         {value:'LGEKR',label:'LGEKR'},
         {value:'LGEMC',label:'LGEMC'},
     ])
-
      /** 페이징 관련 ▼ ============================================================= */
      const [activePage, setActivePage] = useState(1); // 현재 페이지
      const [itemsPerPage] = useState(10); // 페이지당 아이템 갯수
@@ -59,211 +57,20 @@ function FaqSetting() {
          setActivePage(e);
          console.log('page ---->', e);
      };
-     /** 페이징 관련 ▲ ============================================================= */
+     
+    /** 외부클릭처리 ▼ ============================================================= */
+    const editorRef = useRef(null);
+    const detailRef = useRef(null);
+    const categoryRef = useRef(null)
+    const tabRef = useRef(null);
+    const openRef = useRef(null)
+    /** 외부클릭처리 ▲ ============================================================= */
 
     // const testValue = useContext(TestContext)
-    const [faqLists, setFaqLists] = useState([
-        {
-            num : 0,
-            title : '[Installation]',
-            content : 'Weekly Report of AX AS Back Order a september HE-OK55',
-            link : 'www.naver.com',
-            time : '2023-04-12'
-        },
-        {
-            num : 1,
-            title : '[Installation]',
-            content : 'Weekly Report of AX AS Back Order a september HE-OK55',
-            link : 'www.naver.com',
-            time : '2023-04-12'
-        },
-        {
-            num : 2,
-            title : '[Installation]',
-            content : 'Weekly Report of AX AS Back Order a september HE-OK55',
-            link : 'www.naver.com',
-            time : '2023-06-12'
-        },
-        {
-            num : 3,
-            title : '[Installation]',
-            content : 'Weekly Report of AX AS Back Order a september HE-OK55',
-            link : 'www.naver.com',
-            time : '2023-04-12'
-        },
-        {
-            num : 4,
-            title : '[Installation]',
-            content : 'Weekly Report of AX AS Back Order a september HE-OK55',
-            link : 'www.naver.com',
-            time : '2023-04-12'
-        }
-    ])
-    const [categoryLists, setCategoryLists] = useState([
-        {
-            num : 0,
-            icon : Order,
-            name : 'displacement',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 1,
-            icon : Docs,
-            name : 'Hold',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 2,
-            icon : Man,
-            name : 'Installation',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                },
-                {
-                    lowerName : 'Service Order',
-                    path : process.env.REACT_APP_FRONT_URL
-                },
-                {
-                    lowerName : 'VIDEO-Status',
-                    path : process.env.REACT_APP_FRONT_URL
-                },
-                {
-                    lowerName : 'Support',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 3,
-            icon : Lupa,
-            name : 'Agreement Process',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 4,
-            icon : Hands,
-            name : 'Order Status',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 5,
-            icon : Codes,
-            name : 'Hold Codes',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 6,
-            icon : Timer,
-            name : 'Service Order',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 7,
-            icon : Video,
-            name : 'VIDEO - Status',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-        {
-            num : 8,
-            icon : Talk,
-            name : 'Support',
-            lowerMenu : [
-                {
-                    lowerName : 'Hold Codes',
-                    path : process.env.REACT_APP_FRONT_URL
-                }
-            ],
-            iconModal : false,
-        },
-    ])
-    const [boardData, setBoardData] = useState([
-
-        {
-            num : '001',
-            title : `R007 - Used Parts Q'ty larger than avaliable`,
-        },
-        {
-            num : '002',
-            title : `What is LG Electronics' credit rating?`,
-        },
-        {
-            num : '003',
-            title : `How do I sign up to receive regular Investor Relations (IR) email updates?`,
-        },
-        {
-            num : '004',
-            title : `Which reporting convetion does LGE use when posting its finantial information?`,
-        },
-        {
-            num : '005',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...`,
-        },
-        {
-            num : '006',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...`,
-        },
-        {
-            num : '007',
-            title : `R007 - Used Parts Q'ty larger than avaliable`,
-        },
-        {
-            num : '008',
-            title : `How do I sign up to receive regular Investor Relations (IR) email updates?`,
-        },
-        {
-            num : '009',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...`,
-        },
-        {
-            num : '010',
-            title : `I would like to knoe more about LG Elctronics: e.g. corporate information, press...e`,
-        },
-    ])
+    const [faqLists, setFaqLists] = useState([])
+    const [categoryLists, setCategoryLists] = useState([])
+    const [boardLength, setBoardLength] = useState(0)
+    const [boardData, setBoardData] = useState([])
 
     const [column, setColumn] = useState([
         { field: 'num' },
@@ -310,7 +117,206 @@ function FaqSetting() {
     })
     const [content, setContent] = useState('<h1>How can I invest in LG Electronics? On which exchange is LG Electronics listed and what ard te ticker symbols ?</h1><p>LG Electronics Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p> <h1>How can I invest in LG Electronics? On which exchange is LG Electronics listed and what ard te ticker symbols ?</h1><p>LG Electronics Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p>');
 
-    const [selectedList, setSelctedList] = useState({num:null, title:''});
+    const [selectedList, setSelectedList] = useState({
+        attachments: '',
+        reactionState: "",
+        subject: "",
+        dislikeCount: 0,
+        likeCount: 0,
+        content: '',
+        subsidiary:'',
+        writerName:'',
+        commentCount : 0,
+        hits: 16,
+        createdAt: '',
+        faqId: '',
+        categoryId: '',
+        writerID: ''
+    });
+
+    const [reqData, setReqData] = useState({
+        categoryId: '',
+        subsidiary: '',
+        search : '',
+        type : 'F',
+    })
+    const getList = () =>{
+
+        console.log('검색한다', reqData)
+
+        const formData = new FormData();
+
+        for (let key in reqData) {
+            if (reqData.hasOwnProperty(key)) {
+              formData.append(key, reqData[key]);
+            }
+        }
+        formData.append('page',activePage)
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/faq/list', config)
+        .then(function (response){
+            let resData = response.data;
+            console.log(resData,'dddd')
+            if(resData.code===200) {
+                let data = resData.result
+             
+                setBoardData(data.list)
+                // setFrequentList(data.top5list)
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+    }
+    
+    const getCategory = () =>{
+
+     
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            };
+        axiosInstance2('/faqCa/list', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                let data = resData.result
+                console.log('getCategory',resData)
+                data.map(d=>{
+                    d.iconModal = false
+                })
+                setCategoryLists(data)
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+    }
+
+    const getDetail = (id) =>{
+
+        const formData = new FormData();
+
+        formData.append('faqId',id)
+
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data : formData
+            };
+        axiosInstance2('/faq/detail', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                let data = resData.result
+                setSelectedList(data)
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+    }
+
+    const [openSaver, setOpenSaver] = useState(false)
+    const addCategory = (num,id) =>{
+        console.log('add category',num,id)
+        setOpenSaver(true)
+    }
+    const clearState =()=> {
+        setSelectedList({
+            attachments: '',
+            reactionState: "",
+            subject: "",
+            dislikeCount: 0,
+            likeCount: 0,
+            content: '',
+            subsidiary:'',
+            writerName:'',
+            commentCount : 0,
+            hits: 16,
+            createdAt: '',
+            faqId: '',
+            categoryId: '',
+            writerID: ''
+           })
+      }
+    useEffect(()=>{
+        getList()
+        getCategory() 
+    },[])
+
+    const [categoryIcon, setCategoryIcon] = useState([])
+    
+    useEffect(()=>{
+        if(categoryLists.length !== 0 ) {
+            let copy = [...categoryLists]
+            copy.map(c=>{
+                let jsonString = JSON.parse(c.categoryIcon);
+                if(jsonString!==null) {
+                    c.fileName = jsonString.fileName
+                    c.uploadPath = jsonString.uploadPath
+                }
+            })
+            setCategoryIcon(copy)
+        }
+    },[categoryLists])
+
+    useEffect(()=>{
+        if(boardData.length===0) {
+            setBoardLength(0)
+       }
+       else {
+        let max = boardLength;
+        if(activePage===1) {
+         max = 0
+         boardData.map((item) =>{
+             if(item.rn>max) {
+                 max = item.rn;
+             }
+             setBoardLength(max)
+          })
+        }
+       }
+      
+      },[boardData])
+
+      const [subCategory, setSubCategory] = useState(['Hold Codes','Service Order','VIDEO-Status','Support'])
+      const [selectedCategory, setSelectedCategory] = useState('');
+    const handleClickIcon = (e,item) => {
+        console.log('handleClickIcon',item)
+        let id = item.categoryId;
+        let arr = [];
+
+        categoryLists.map(item=>
+            item.parentCategoryId === id 
+            &&
+            arr.push(item)
+            )
+        setSubCategory(arr)
+    }
+
+    useEffect(()=>{
+        setSelectedCategory(subCategory[0])
+    },[subCategory])
     const handleClickAction = e => {
         console.log('handleClickAction')
     }
@@ -318,111 +324,136 @@ function FaqSetting() {
         console.log(e)
     }
     const handleClickRow = (e,item) => {
-        if(selectedList.num===null || selectedList.num!==item.num) {
-            setSelctedList(item)
-        }else {
-            setSelctedList({num:null, title:''})
-        }
+        let id = item.faqId;
+        getDetail(id)
     }
 
-    const iconRef = useRef();
-    const [iconList, setIconLiet] = useState(['Hold Codes','Service Order','VIDEO-Status','Support'])
-
-    const IconModal = () =>{
-        return (
-            <div className='icon-modal' ref={iconRef}>
-                <img src={Polygon} alt='polygon' />
-                <ul>
-                    {
-                        iconList?.map((list,idx)=>{
-                            return(
-                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)}>{list}</li>
-                            )
-                        })
-                    }
-                </ul>
-            </div>
-        )
-    }
-    const handleClickIcon = (e,item) => {
-        
-        setCategoryLists((prevLists) => {
-            
-            const updatedLists = prevLists.map((list) => {
-              if (list.num === item.num) {
-                return { ...list, iconModal: item.iconModal ? false : true };
-              } else {
-                return { ...list, iconModal: false };
-              }
-            //   return list;
-            });
-            return updatedLists;
-          });
-    }
     useEffect(()=>{
-        console.log(selectedList)
+        getList()
+      },[activePage])
+
+    useEffect(()=>{
+        if(selectedList.faqId!=='' && openSaver) {
+            setOpenSaver(false)
+        }
     },[selectedList])
     
-    const handleOutsideClick = (e) => {
-        if (iconRef.current && !iconRef.current.contains(e.target)) {
-          setCategoryLists((prevLists) => {
-            const updatedLists = prevLists.map((list) => ({
-              ...list,
-              iconModal: false,
-            }));
-            return updatedLists;
-          });
+    useEffect(()=>{
+        if(openSaver && selectedList.faqId !=='') {
+            clearState()
         }
-      }; 
+    },[openSaver])
+
+
+    // const handleOutsideClick = (e) => {
+    //     e.stopPropagation();
+    //     if ((editorRef.current && !editorRef.current.contains(e.target)) && (detailRef.current && !detailRef.current.contains(e.target)) && (categoryRef.current && !categoryRef.current.contains(e.target)) && (tabRef.current && !tabRef.current.contains(e.target)) || (openRef.current && !openRef.current.contains(e.target))) {
+    //         clearState()
+    //     }
+    
+    //   }; 
         
 
-      useEffect(() => {
-        document.addEventListener("mousedown", handleOutsideClick);
-        return () => {
-          document.removeEventListener("mousedown", handleOutsideClick);
-        };
-      }, []);
+    //   useEffect(() => {
+    //     document.addEventListener("mousedown", handleOutsideClick);
+    //     return () => {
+    //       document.removeEventListener("mousedown", handleOutsideClick);
+    //     };
+    //   }, []);
+
 
     return (
         <>
         
         <Header />
-        <Style selectId={selectedList.num} >
+        <Style selectId={selectedList.faqId} openRight={(selectedList.faqId!=='' || openSaver)? true : false}>
         <div className="inner-container">
             <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} />
             {/** Top Area */}
-            <div className="faq-setting">
+            <div className="faq-setting"  ref={categoryRef}>
                 <div className="faq-category custom-flex-item custom-justify-between">
                     <ul className="faq-category-lists">
+                    {
+                    categoryLists?.map((list, idx) => {
+                        if (list.parentCategoryId === null) {
+                        return (
+                            <li key={generateRandomString(idx + 1)} onClick={(e) => handleClickIcon(e, list)} className="cursor-btn">
+                            <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL + list.uploadPath} alt='category-icon' /></div>
+                            <p>{list.categoryNm}</p> </li>
+                        );
+                        }
+                        return null; // 부모 카테고리가 아닌 경우에는 null을 반환하여 렌더링하지 않음
+                    })
+                    }
+
+                    </ul>
+                    <div></div>
+                    <div className="buttons">
+                        <button><img src={Minus} alt='icon_less_btn'/></button>
+                        <button onClick={()=>{addCategory(1,selectedList.faqId)}}><img src={Plus} alt='icon_more_btn'/></button>
+                    </div>
+                </div>
+            </div>
+            <div className="faq-setting-tab custom-flex-item custom-justify-between" ref={tabRef}>
+                <div>
+                    <ul className="custom-flex-item">
                         {
-                            categoryLists?.map((list,idx)=>{
+                            subCategory?.map((item,idx)=>{
                                 return(
-                                    <li key={generateRandomString(idx+1)} onClick={(e)=>handleClickIcon(e,list)}>
-                                        <div className="faq-img-wrapper"><img src={list.icon} /></div>
-                                        <p>{list.name}</p>
-                                        {
-                                        list.iconModal
-                                        &&
-                                        <IconModal />
-                                        }
+                                    <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${selectedCategory===item && `red-selected`}`} onClick={()=>setSelectedCategory(item)}>{item}</li>
+                                )
+                            })
+                        }
+                    </ul>
+                </div>
+                <div className="buttons">
+                    <button><img src={Minus} alt='icon_less_btn' /></button>
+                    <button onClick={()=>{addCategory(2,selectedList.faqId)}}><img src={Plus} alt='icon_more_btn'/></button>
+                </div>
+            </div>
+            {/** Content Area */}
+            <div className="faq-contents">
+                    <div className="faq-left custom-flex-item custom-justify-between" ref={editorRef}>
+                    <ul className="faq-custom-board" >
+                        {
+                            boardData && boardData.length > 0 && boardData.map((item,idx)=>{
+                                return(
+                                    <li className="cursor-btn" key={generateRandomString(idx)} id={`list-item-${item.faqId}`} onClick={(e)=>handleClickRow(e,item)}>
+                                        <span>{String((activePage-1)*10+(idx+1)).padStart(3, '0')}</span><span className="board-max-length">{item.subject?.slice(0,82)}{item.subject?.length > 82 && '...'}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /><span>{moment(item.createdAt).format('YY.MM.DD')}</span>
                                     </li>
                                 )
                             })
                         }
                     </ul>
-                    <div></div>
-                    <div className="buttons">
-                        <button><img src={Minus} alt='icon_less_btn'/></button>
-                        <button><img src={Plus} alt='icon_more_btn'/></button>
+                    {
+                        boardData &&
+                        <Pagination 
+                            activePage={activePage} // 현재 페이지
+                            itemsCountPerPage={itemsPerPage} // 한 페이지 당 보여줄 아이템 수
+                            totalItemsCount={boardLength} // 총 아이템 수
+                            pageRangeDisplayed={5} // paginator의 페이지 범위
+                            prevPageText={"‹"} // "이전"을 나타낼 텍스트
+                            nextPageText={"›"} // "다음"을 나타낼 텍스트
+                            onChange={(e)=>setPage(e,1)} // 페이지 변경을 핸들링하는 함수
+                        />
+                    }
+                     <div className="write-btn" onClick={()=>setOpenSaver(true)}><span>Write</span></div>
                     </div>
-                </div>
-            </div>
-
-            {/** Content Area */}
-            <div className="faq-contents">
-                
-               
-               
+                    {
+                    selectedList.faqId !== '' && !openSaver ?
+                    <div className="faq-setting-right" ref={detailRef}>
+                        {selectedList.faqId}
+                    </div>
+                    :
+                    selectedList.faqId === '' && openSaver 
+                    ?
+                    <div className="faq-setting-right" ref={openRef}>
+                        <NewFaq onClose={()=>setOpenSaver(false)}/>
+                    </div>
+                    :
+                    null
+                    }
+                   
             </div>
 
             <Zendesk />
@@ -438,4 +469,8 @@ const Style = styled.div`
     #list-item-${props=>props.selectId} {
         background : #FAF1F4; color : #BB0841; 
     }
+    .faq-left {
+        width: ${props => (props.openRight ? '48%' : '100%')};
+    }
+    
 `

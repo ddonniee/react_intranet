@@ -51,7 +51,7 @@ input, button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custo
     cursor: pointer;
 }
 .custom-select {
-    width: 179px;
+    width: 179px; border-color: #D8D8D8 !important;
 }
 .cell-select-box > *:hover {
     background-color: $hover-color-pink;
@@ -65,6 +65,9 @@ input, button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custo
     justify-content: center;
     height: 100%;
     align-items: center;
+}
+.red-selected {
+    color: white;  background: $primary-color-red;
 }
 .inner-container {
     max-width: 1560px;
@@ -309,7 +312,21 @@ body .modal {
 .primary-red-btn {
     background-color: $primary-color-red; color: white;
 }
-
+.btn-black {
+    border: none;
+    background: $primary-color-grey;
+    color: #FFFFFF;
+}
+.btn-white {
+    border: 1px solid $line-color-grey;
+    background: #FFFFFF;
+    color: #5F5F5F;
+}
+.btn-red {
+    border: none;
+    background: $primary-color-red;
+    color: #FFFFFF;
+}
 .custom-circle-btn {
     width: 88px;
     height: 88px;
@@ -539,21 +556,7 @@ input:focus {
             cursor: pointer;
         }
 
-        .btn-black {
-            border: none;
-            background: $primary-color-grey;
-            color: #FFFFFF;
-        }
-        .btn-white {
-            border: 1px solid $line-color-grey;
-            background: #FFFFFF;
-            color: #5F5F5F;
-        }
-        .btn-red {
-            border: none;
-            background: $primary-color-red;
-            color: #FFFFFF;
-        }
+        
 
         div button:first-child {
             margin-right: 11px;
