@@ -3,8 +3,9 @@ import Select from 'react-select';
 
 const SelectBox = (props) => {
     
-    const {options, handleChange, defaultValue} = props;
+    const {options, handleChange, defaultValue, placeholder} = props;
 
+    console.log(placeholder? 'dd':'hh')
     const customStyles = {
         control: (provided, state) => ({
             ...provided,
@@ -24,7 +25,8 @@ const SelectBox = (props) => {
             options={options}
             onChange={handleChange}
             styles={customStyles}
-            defaultValue={ defaultValue ? defaultValue : options[0]}
+            defaultValue={ defaultValue ? defaultValue : null}
+            placeholder={ placeholder ? placeholder : null}
         />
     )
 }

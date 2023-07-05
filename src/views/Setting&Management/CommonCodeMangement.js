@@ -303,21 +303,48 @@ function CommonCodeMangement() {
     }
     const addCode = (depth) => {
       
-        let newItem = {};
-        if(depth==='upper-code') {
-            newItem = { codeSeq: codeList.length+1, codeId: '', codeName: '', description : '', useYn : 'Y', type:'insert' };
-            setCodeList(prevData => [...prevData, newItem]);
-        }else if(depth==='lower-code' && codeCheckedList) {
-            if(codeCheckedList.type==='insert') {
-              setAlertTxt('Please save upper code first')
+      let cnt = 0;
+    
+      
+          let newItem = {};
+          if(depth==='upper-code') {
+
+            for(let i=0; i<codeList.length; i++) {
+              if(typeof(codeList[i].codeSeq)==='number') {
+                cnt++;
+              }
+            }
+      
+            if(cnt>=1) {
+              setAlertTxt('You can insert one new code at once.')
               return false
             }
-            newItem = { codeSeq: subList.length+1, codeId: '', codeName: '', parentCodeSeq: codeCheckedList?.codeSeq, description : '', useYn : 'Y', type:'insert' };
-            setSublist(prevData => [...prevData, newItem])
-        }else if(depth==='lower-code' && !codeCheckedList) {
-          setAlertTxt('No upper code has been selected')
-        }
-        setIsNewCode(true)
+
+              newItem = { codeSeq: codeList.length+1, codeId: '', codeName: '', description : '', useYn : 'Y', type:'insert' };
+              setCodeList(prevData => [...prevData, newItem]);
+          }else if(depth==='lower-code' && codeCheckedList) {
+
+            for(let i=0; i<subList.length; i++) {
+              if(typeof(subList[i].codeSeq)==='number') {
+                cnt++;
+              }
+            }
+            if(cnt>=1) {
+              setAlertTxt('You can insert one new code at once.')
+              return false
+            }
+              if(codeCheckedList.type==='insert') {
+                setAlertTxt('Please save upper code first')
+                return false
+              }
+              newItem = { codeSeq: subList.length+1, codeId: '', codeName: '', parentCodeSeq: codeCheckedList?.codeSeq, description : '', useYn : 'Y', type:'insert' };
+              setSublist(prevData => [...prevData, newItem])
+          }else if(depth==='lower-code' && !codeCheckedList) {
+            setAlertTxt('No upper code has been selected')
+          }
+          setIsNewCode(true)
+   
+
         };
 
     const onSaveEditCode = (e, depth) => {

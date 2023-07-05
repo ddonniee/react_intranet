@@ -1,4 +1,4 @@
-import React,{useEffect, useRef, useState} from "react";
+import React,{Fragment, useEffect, useRef, useState} from "react";
 import { styled } from "styled-components";
 
 import {axiosJsonInstance, generateRandomString} from '../utils/CommonFunction'
@@ -214,10 +214,10 @@ const Tab = () => {
                             userPreference!==null &&
                             menu.map((item,idx)=>{
                                return(
-                                    <>
+                                    <Fragment key={generateRandomString(idx)}>
                                     {
                                         item.isHave &&
-                                        <li key={generateRandomString(idx)}> <div> · {item.label}</div>
+                                        <li > <div> · {item.label}</div>
                                             <ul>
                                                 {
                                                     item.lowerMenu.map((i,idx)=>{
@@ -231,7 +231,7 @@ const Tab = () => {
                                             </ul>
                                         </li>
                                     }
-                                    </>
+                                    </Fragment>
                                )
                             })
                         }
