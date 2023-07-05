@@ -1,9 +1,9 @@
 @import '../variables';
 
-.kpi-container {
+.training-container {
 
     /* 상단 검색 nav */
-    .kpi-nav {
+    .training-nav {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -38,8 +38,9 @@
         .nav-center {
             display: flex;
             align-items: center;
-            width: 67%;
+            width: 85%;
             justify-content: space-between;
+            padding: 10px 0 10px 20px;
 
             .nav-box {
                 display: flex;
@@ -51,24 +52,21 @@
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    width: 100%;
+                    width: 85%;
                 }
 
                 .nav-search:first-child {
                     margin-bottom: 15px;
+                }
+
+                .custom-cal {
+                    width: 140px;
                 }
             }
 
             .css-b62m3t-container {
                 width: 179px;
             }
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            width: 15%;
-            justify-content: space-evenly;
 
             .circle {
                 width: 88px;
@@ -86,6 +84,31 @@
                     line-height: 23px;
                     padding: 30px 0 5px 0;
                 }
+            }
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            width: 15%;
+            justify-content: space-evenly;
+
+            .nav-btn-black {
+                // width: 88px;
+                padding: 0 10px;
+                height: 44px;
+                border-radius: 5px;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 19px;
+                cursor: pointer;
+                border: none;
+                background: $primary-color-grey;
+                color: #FFFFFF;
+            }
+            .nav-btn-black:disabled {
+                color: #888888;
+                background: #D8D8D8;
             }
         }
 
@@ -107,7 +130,6 @@
         margin-bottom: -1px;
 
         .tab {
-            // width: 227px;
             padding: 0 70px;
             height: 72px;
             background: #FFFFFF;
@@ -126,6 +148,13 @@
             justify-content: center;
         }
 
+        .sub-tab {
+            height: 49px;
+        }
+        .sub-tab:first-child {
+            margin-left: 0;
+        }
+
         .tab.active {
             border: none;
             background-color: $primary-color-red;
@@ -133,17 +162,38 @@
         }
     }
 
+    .sub-tab-menu {
+        padding: 32px 0 0 36px;
+    }
+
     /* 하단 value */
-    .kpi-value {
+    .training-value {
         border: 1px solid $line-color-grey;
         border-radius: 14px;
-        // height: 689px;
+        height: 540px;
         margin-bottom: 38px;
-        overflow: auto;
+        overflow: hidden;
+        // overflow: auto;
 
-        .chart {
-            height: 270px;
-            margin: 28px 18px 8px 18px;
+        .training-value-tab {
+            border-radius: 14px;
+            height: 540px;
+            overflow: auto;
+        }
+
+        .training-value-tab::-webkit-scrollbar {
+            // width: 8px;
+        }
+        .training-value-tab::-webkit-scrollbar-thumb {
+            background-color: $border-color-gery;
+            border-radius: 4px;
+        }
+        .training-value-tab::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        }
+
+        .sub-table {
+            padding: 0 36px 32px 36px;
         }
 
         .grid {
