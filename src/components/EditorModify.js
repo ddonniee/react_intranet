@@ -12,7 +12,7 @@ import { styled } from "styled-components";
 import {UserContext} from '../hooks/UserContext'
 import moment from "moment";
 import Alert from "./Alert";
-import { generateRandomString } from "../utils/CommonFunction";
+import { generateRandomString,axiosInstance } from "../utils/CommonFunction";
 
 /**
  * 작성자 : 이은정
@@ -56,6 +56,18 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
         //     isPublic : num
         // })
     }
+
+    const updateFile = (idx, file) => {
+        console.log('########## updateFile ###########', idx, file)
+
+        const copyFiles = [...attachments];
+        const updateFile = copyFiles[idx];
+        updateFile.fileName = file.fileName;
+        updateFile.uploadPath = file.uploadPath;
+
+        setContent({ ...content, attachments: JSON.stringify(copyFiles)})
+    };
+
     const onStopInput = () => {
         console.log('onStopInput')
         setData(content)
@@ -99,12 +111,13 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
                 newArray.splice(idx, 1);
                 return newArray;
             })
-        } else {
-            setAlertSetting({
-                ...alertSetting,
-                alertTxt : 'At least one attachment is required.'
-            })
-        }
+        } 
+        // else {
+        //     setAlertSetting({
+        //         ...alertSetting,
+        //         alertTxt : 'At least one attachment is required.'
+        //     })
+        // }
     }
 
     useEffect(() => {
@@ -248,21 +261,64 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
                     attachments?.map((item,idx)=>{
                         return (
                             <div className="custom-flex-item custom-align-item" key={generateRandomString(idx)}>
-                            <input type="text" className="write-input attach-input" name="filename" readOnly></input> 
-                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn">{item.fileName===''?'Select':'Delete'},{idx}</label>
+                            <input type="text" className="write-input attach-input" name="filename" readOnly defaultValue={item.fileName}></input> 
+                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-select-btn">Select</label>
                             <input 
                                 type="file" 
-                                className="file-delete-btn" 
+                                className="file-select-btn" 
                                 style={{display: "none"}} 
-                                id='file-delete-btn'
+                                id='file-select-btn'
                                 onChange={(e)=>{
-                                    let target = e.target;
-                                    onAttach(e,idx)
-                                    console.log(target)
-                                    console.log(target?.files)
+                                    let file = e.target?.files[0];
+                                    if(file.size > 1024 * 1024 * 20) {
+                                        setAlertSetting({
+                                            ...alertSetting,
+                                            alertTxt:'Only files of 20MB or less can be attached.'
+                                        })
+                                        return false;
+                                    }
+                                    const allowedFileTypes = [
+                                        'application/pdf', 
+                                        'application/x-hwp', 
+                                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                                        'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+                                    ];
+                                    if(!allowedFileTypes.includes(file.type)) {
+                                        setAlertSetting({
+                                            ...alertSetting,
+                                            alertTxt:'Attached files can only be in PDF, HWP, Docx, xls, and PPT formats.'
+                                        })
+                                        return false;
+                                    }
+                                    console.log(file)
+                                    let formdata = new FormData();
+                                    formdata.append("uploadFiles", file);
+                                    formdata.append("directoryType", 'notice');
+                        
+                                    // 파일업로드 API 호출
+                                    axiosInstance.post('/fileUpload', formdata).then(res => {
+                                        let resData = res.data;
+                                        if (resData.code == 500) {
+                                            setAlertSetting({
+                                                ...alertSetting,
+                                                alertTxt : resData.msg
+                                            })
+                                        } else {
+                                            updateFile(idx, resData.result[0]);
+                                        }
+                                    }).catch(error => {
+                                        setAlertSetting({
+                                            ...alertSetting,
+                                            alertTxt : 'Fail to attach file.'
+                                        })
+                                        console.log(error);
+                                    })
                                     
                             }}
-                            />       
+                            />   
+                            <button id="file-delete-btn" style={{display:'none'}} onClick={()=>deleteRow(idx)}></button>
+                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn" >Delete</label>
                         </div>
                         )
                     })

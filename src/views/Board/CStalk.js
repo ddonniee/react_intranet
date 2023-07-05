@@ -49,25 +49,7 @@ function CStalk() {
       isWriter : false,
     })
 
-    // useEffect(()=>{
-    //   console.log(user)
-    //   let role = user.role;
-    //   if(role==='LK') {
-    //     setAuth({
-    //       ...auth,
-    //       isViewer : true
-    //     })
-    //   }else if(role==='SA') {
-    //     setAuth({
-    //       ...auth,
-    //       isViewer : true,
-    //       isWriter : true
-    //     })
-    //   }else {
-    //     alert('No right to Access')
-    //     document.location.href='/login';
-    //   }
-    // },[])
+   
 
     /** 페이징 관련 ▼ ============================================================= */
     const [activePage, setActivePage] = useState(1); // 현재 페이지
@@ -112,7 +94,7 @@ function CStalk() {
         title : '',
         content : '',
         isPublic : '',
-        attachments : '',
+        attachments : null,
         csTalkId : ''
     });
 
@@ -135,6 +117,25 @@ function CStalk() {
         writerName : '',
     });
 
+    useEffect(()=>{
+        console.log(user)
+        let role = user.role;
+        if(role==='LK') {
+          setAuth({
+            ...auth,
+            isViewer : true
+          })
+        }else if(role==='SA') {
+          setAuth({
+            ...auth,
+            isViewer : true,
+            isWriter : selectedList.writerID === user.id ? true : false
+          })
+        }else {
+          alert('No right to Access')
+          document.location.href='/login';
+        }
+      },[selectedList.csTalkId])
     const centerOptions = [
         { value: '', label: 'All' },
         { value: '0', label: 'Me' },
@@ -173,7 +174,7 @@ function CStalk() {
                 setSelectedList(data)
                 console.log(data,'detail')
             }else {
-                console.log(resData)
+                console.log(response)
             }
         })
         .catch(function(error) {
@@ -661,8 +662,9 @@ function CStalk() {
     },[comment]) 
 
     useEffect(()=>{
-        console.log('commentList',commentList)
-    },[commentList])
+        console.log('content',content)
+    },[content])
+
     const onDeleteComment = (id) =>{
         // num = 1 댓글, num = 2 대댓글
         const formData = new FormData();
@@ -798,21 +800,7 @@ function CStalk() {
 
     const [fileStore, setFileStore] = useState([])
 
-    const onAttachFiles = (e,idx) => {
-        console.log('onAttachFiles')
-        console.log(e.target.files, idx)
-        
-        if(e.target?.files[0]) {
-            let formData = new FormData();
-            formData.append('fileName',e.target?.files[0])
-            // api 연동..
-            let file = e.target.files
-            let copyFile = [...fileStore]
-            copyFile[idx] = file
-            console.log(copyFile,'console.log(copyFile)')
-        }
-        
-    }
+    
 
     /** loading 시 animation */
     const [isLoading, setIsLoading] = useState(false)
@@ -958,7 +946,7 @@ function CStalk() {
                     isWrite
                     ?
                     <div className="editor-wrapper">
-                    <EditorModify data={content} setData={setContent} onSave={onSaveContent} onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : setIsWrite(false)} onAttach={onAttachFiles} range />
+                    <EditorModify data={content} isWriter={isWrite} setData={setContent} onSave={onSaveContent} onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : setIsWrite(false)} range />
                     </div>
                     :
                     !isWrite && selectedList.csTalkId!=='' && !isModify
