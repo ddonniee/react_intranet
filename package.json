@@ -2,8 +2,6 @@
   "name": "asc_portal",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://lgcsportalapi.anypot.co.kr"
-  ,
   "dependencies": {
     "@ag-grid-community/core": "^30.0.2",
     "@ag-grid-community/react": "^30.0.2",
