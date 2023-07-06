@@ -9,6 +9,7 @@
 @import './common/top.scss';
 @import './common/tab.scss';
 @import './common/editor.scss';
+@import './common/maximalview.scss';
 
 @import './dashboard/kpiperformance.scss';
 
@@ -22,5 +23,7 @@
 @import './setting&management/faqsetting.scss';
 @import './setting&management/kpisetting.scss';
 @import './setting&management/newformat/newFaq.scss';
-
+@import './setting&management/newformat/editor/fromeditor.scss';
+@import './setting&management/newformat/editor/newcategory.scss';
+ 
 @import './login/login.scss';

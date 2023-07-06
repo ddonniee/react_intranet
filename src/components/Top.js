@@ -41,7 +41,7 @@ const Top = props =>{
                 ?
                 <div className="search-area">
                 <div>· Subsidiary</div>
-                <SelectBox options={options} handleChange={handleChange} />
+                <SelectBox options={options} handleChange={handleChange} placeholder='Select'/>
                 <div>· Search</div>
                 <input className="top-input" onChange={onChange}/>
                 <div className="search-wrapper" onClick={onClick}><img src={Search} alt='search-btn'/></div>

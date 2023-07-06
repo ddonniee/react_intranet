@@ -14,6 +14,7 @@ import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
 import Tab from "../../components/Tab";
 import NewFaq from "./NewFormat/NewFaq";
+import NewCategory from "./NewFormat/NewCategory";
 // Utils
 import { generateRandomString,axiosInstance2 } from "../../utils/CommonFunction"
 
@@ -33,6 +34,8 @@ import Minus from '../../assets/svgs/icon_minus.svg';
 import New from '../../assets/svgs/icon_new.svg'
 
 import moment from "moment";
+import EditFaq from "./NewFormat/EditFaq";
+
 
 function FaqSetting() {
 
@@ -41,7 +44,6 @@ function FaqSetting() {
     let now = moment().subtract(24,'hours').format('YYYY-MM-DD HH:mm:ss');
 
     const [subsidiary, setSubsidiary ] = useState([
-        {value:'',label:'All'}, 
         {value:'LGEAI',label:'LGEAI'}, 
         {value:'LGECI',label:'LGECI'}, 
         {value:'LGEES',label:'LGEES'}, 
@@ -76,46 +78,13 @@ function FaqSetting() {
         { field: 'num' },
         { field: 'title' },
     ])
-    const [detail, setDetail] = useState({
-        title : 'Invest In LG Electronics',
-        attachment : 'Guide for CB03.pptx (531kKB)',
-        content : 'How',
-        comments : [
-           { 
-            writer : 'writer',
-            time : '23.1.29 16:08',
-            detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-            ,comments : [
-                {writer : 'writer',
-                time : '23.1.30 16:00',
-                detail :' lemememlfkmsdlkf dfjkdsn fjksdn gkjdfng kjdsfnpasf dkmldksfj sdlfad sfaslddfj sdf'}
-            ]
-            },
-             { 
-            writer : 'writer',
-            time : '23.1.29 16:08',
-            detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-            ,comments : [
-                {writer : 'writer',
-                time : '23.1.30 16:00',
-                detail :' lemememlfkmsdlkf dfjkdsn fjksdn gkjdfng kjdsfnpasf dkmldksfj sdlfad sfaslddfj sdf'}
-            ]
-            },
-             { 
-            writer : 'writer',
-            time : '23.1.29 16:08',
-            detail : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla. it'
-            ,comments : [
-            {writer : 'writer',
-            time : '23.1.30 16:00',
-            detail :' lemememlfkmsdlkf dfjkdsn fjksdn gkjdfng kjdsfnpasf dkmldksfj sdlfad sfaslddfj sdf'}
-           ]
-            }
-        ],
-        like : 11,
-        dislike : 7,
-    })
-    const [content, setContent] = useState('<h1>How can I invest in LG Electronics? On which exchange is LG Electronics listed and what ard te ticker symbols ?</h1><p>LG Electronics Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p> <h1>How can I invest in LG Electronics? On which exchange is LG Electronics listed and what ard te ticker symbols ?</h1><p>LG Electronics Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim ac augue tristique, eget suscipit nibh bibendum. Integer convallis sapien id libero maximus, ut ultricies diam faucibus. Donec malesuada iaculis sollicitudin. Nunc nec ultrices leo. Vivamus posuere gravida tellus sed maximus. Proin ac metus varius, aliquam est vel, congue justo. Aliquam id est ac libero fringilla faucibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed vitae erat mi. In fringilla nulla vel ante vestibulum efficitur. In viverra facilisis fringilla  Suspendisse cursus ullamcorper justo, at cursus magna efficitur id. Mauris ac malesuada velit. Fusce scelerisque fringilla elit id gravida. Phasellus ut nulla sem. Etiam ac condimentum erat, ac dictum tellus.</p>');
+    const [content, setContent] = useState({
+        title : '',
+        content : '',
+        isPublic : '',
+        attachments : null,
+        categoryId : ''
+    });
 
     const [selectedList, setSelectedList] = useState({
         attachments: '',
@@ -236,10 +205,20 @@ function FaqSetting() {
         })
     }
 
-    const [openSaver, setOpenSaver] = useState(false)
-    const addCategory = (num,id) =>{
+    const [openFaqCreator, setOpenFaqCreator] = useState(false)
+    const [openCategory, setOpenCategory] = useState(false)
+  
+    const addNewItem = (num,id)=>{
         console.log('add category',num,id)
-        setOpenSaver(true)
+        if(num===1) {
+            setOpenCategory(true)
+            setOpenFaqCreator(false)
+        }
+        else if(num===2) {
+            setOpenFaqCreator(true)
+            setOpenCategory(false)
+        }
+        clearState()
     }
     const clearState =()=> {
         setSelectedList({
@@ -266,19 +245,19 @@ function FaqSetting() {
 
     const [categoryIcon, setCategoryIcon] = useState([])
     
-    useEffect(()=>{
-        if(categoryLists.length !== 0 ) {
-            let copy = [...categoryLists]
-            copy.map(c=>{
-                let jsonString = JSON.parse(c.categoryIcon);
-                if(jsonString!==null) {
-                    c.fileName = jsonString.fileName
-                    c.uploadPath = jsonString.uploadPath
-                }
-            })
-            setCategoryIcon(copy)
-        }
-    },[categoryLists])
+    // useEffect(()=>{
+    //     if(categoryLists?.length !== 0 ) {
+    //         let copy = [...categoryLists]
+    //         copy.map(c=>{
+    //             let jsonString = JSON.parse(c.categoryIcon);
+    //             if(jsonString!==null || jsonString !=='') {
+    //                 c.fileName = jsonString.fileName
+    //                 c.uploadPath = jsonString.uploadPath
+    //             }
+    //         })
+    //         setCategoryIcon(copy)
+    //     }
+    // },[categoryLists])
 
     useEffect(()=>{
         if(boardData.length===0) {
@@ -299,8 +278,9 @@ function FaqSetting() {
       
       },[boardData])
 
-      const [subCategory, setSubCategory] = useState(['Hold Codes','Service Order','VIDEO-Status','Support'])
-      const [selectedCategory, setSelectedCategory] = useState('');
+    const [subCategory, setSubCategory] = useState(['Hold Codes','Service Order','VIDEO-Status','Support'])
+    const [selectedCategory, setSelectedCategory] = useState('');
+    
     const handleClickIcon = (e,item) => {
         console.log('handleClickIcon',item)
         let id = item.categoryId;
@@ -312,6 +292,10 @@ function FaqSetting() {
             arr.push(item)
             )
         setSubCategory(arr)
+    }
+
+    const handleChangeInput=(e)=>{
+        console.log('handleChangeInput',e)
     }
 
     useEffect(()=>{
@@ -333,16 +317,17 @@ function FaqSetting() {
       },[activePage])
 
     useEffect(()=>{
-        if(selectedList.faqId!=='' && openSaver) {
-            setOpenSaver(false)
+        if(selectedList.faqId!=='' && openFaqCreator) {
+            setOpenFaqCreator(false)
         }
+        console.log('바뀌고있니 ?',selectedList)
     },[selectedList])
     
     useEffect(()=>{
-        if(openSaver && selectedList.faqId !=='') {
+        if(openFaqCreator && selectedList.faqId !=='') {
             clearState()
         }
-    },[openSaver])
+    },[openFaqCreator])
 
 
     // const handleOutsideClick = (e) => {
@@ -366,9 +351,9 @@ function FaqSetting() {
         <>
         
         <Header />
-        <Style selectId={selectedList.faqId} openRight={(selectedList.faqId!=='' || openSaver)? true : false}>
+        <Style selectId={selectedList.faqId} openRight={(selectedList.faqId!=='' || openFaqCreator || openCategory )? true : false}>
         <div className="inner-container">
-            <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} />
+        <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Top Area */}
             <div className="faq-setting"  ref={categoryRef}>
                 <div className="faq-category custom-flex-item custom-justify-between">
@@ -378,7 +363,7 @@ function FaqSetting() {
                         if (list.parentCategoryId === null) {
                         return (
                             <li key={generateRandomString(idx + 1)} onClick={(e) => handleClickIcon(e, list)} className="cursor-btn">
-                            <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL + list.uploadPath} alt='category-icon' /></div>
+                            <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+'/' + list.categoryIcon} alt='category-icon' /></div>
                             <p>{list.categoryNm}</p> </li>
                         );
                         }
@@ -390,7 +375,7 @@ function FaqSetting() {
                     <div></div>
                     <div className="buttons">
                         <button><img src={Minus} alt='icon_less_btn'/></button>
-                        <button onClick={()=>{addCategory(1,selectedList.faqId)}}><img src={Plus} alt='icon_more_btn'/></button>
+                        <button onClick={()=>{addNewItem(1,selectedList.faqId)}}><img src={Plus} alt='icon_more_btn'/></button>
                     </div>
                 </div>
             </div>
@@ -408,7 +393,7 @@ function FaqSetting() {
                 </div>
                 <div className="buttons">
                     <button><img src={Minus} alt='icon_less_btn' /></button>
-                    <button onClick={()=>{addCategory(2,selectedList.faqId)}}><img src={Plus} alt='icon_more_btn'/></button>
+                    <button onClick={()=>{addNewItem(2,selectedList.faqId)}}><img src={Plus} alt='icon_more_btn'/></button>
                 </div>
             </div>
             {/** Content Area */}
@@ -437,18 +422,24 @@ function FaqSetting() {
                             onChange={(e)=>setPage(e,1)} // 페이지 변경을 핸들링하는 함수
                         />
                     }
-                     <div className="write-btn" onClick={()=>setOpenSaver(true)}><span>Write</span></div>
+                     <div className="write-btn" onClick={()=>setOpenFaqCreator(true)}><span>Write</span></div>
                     </div>
                     {
-                    selectedList.faqId !== '' && !openSaver ?
+                    selectedList.faqId !== '' && !openFaqCreator ?
                     <div className="faq-setting-right" ref={detailRef}>
-                        {selectedList.faqId}
+                        <EditFaq data={selectedList} setData={setSelectedList} key={selectedList.faqId} onClose={()=>clearState()} />
                     </div>
                     :
-                    selectedList.faqId === '' && openSaver 
+                    selectedList.faqId === '' && openFaqCreator 
                     ?
                     <div className="faq-setting-right" ref={openRef}>
-                        <NewFaq onClose={()=>setOpenSaver(false)}/>
+                        <NewFaq onClose={()=>setOpenFaqCreator(false)}/>
+                    </div>
+                    :
+                    openCategory 
+                    ?
+                    <div className="faq-setting-right" ref={openRef}>
+                        <NewCategory data={content} setData={setContent} onSave={()=>console.log('e')} onClose={()=>setOpenCategory(false)}/>
                     </div>
                     :
                     null
