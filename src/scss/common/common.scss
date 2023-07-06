@@ -47,17 +47,20 @@ html, body, #root{
   #root::-webkit-scrollbar-track {
     background-color: #f1f1f1;
   }  
+  
 button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-select, select {
     cursor: pointer;
 }
+
 .custom-select {
     width: 179px; border-color: #D8D8D8 !important;
 }
+
 .cell-select-box > *:hover {
     background-color: $hover-color-pink;
     border: none;
-    
-  }
+}
+
 .not-found {
     display: flex;
     margin: auto;
@@ -66,13 +69,15 @@ button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-selec
     height: 100%;
     align-items: center;
 }
+
 .red-selected {
     color: white;  background: $primary-color-red;
 }
+
 .inner-container {
     max-width: 1560px;
     margin: 0 auto;
-    height: calc(100vh - 81px);
+    // height: calc(100vh - 81px);
 }
 
 .write-btn {
@@ -122,7 +127,7 @@ button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-selec
     justify-content: center !important;
 } 
 
-.ag-header-group-cell {
+.ag-header-cell, .ag-header-group-cell {
     justify-content: center;
 }
 
@@ -130,7 +135,8 @@ button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-selec
     text-align: center;
 }
 
-.ag-header-cell-text, .ag-header-group-text, .ag-cell-last-left-pinned {
+.ag-header-cell, .ag-header-group, .ag-header-group-cell, .ag-cell-last-left-pinned,
+.ag-cell-not-inline-editing.ag-cell-normal-height.cell-span.ag-cell-value {
     font-weight: 600;
     font-size: 16px;
     line-height: 19px;
@@ -579,6 +585,7 @@ input:focus {
     border: 1px solid #CCCCCC;
     border-radius: 5px;
     padding: 0 13px;
+    background-color: #FFFFFF;
     cursor: pointer;
 
     .custom-picker {

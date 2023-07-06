@@ -64,6 +64,18 @@
                 }
             }
 
+            .nav-box:nth-of-type(3) {
+                width: 40%;
+
+                .nav-search:first-child {
+                    justify-content: flex-start;
+
+                    p {
+                        margin-right: 26px;
+                    }
+                }
+            }
+
             .css-b62m3t-container {
                 width: 179px;
             }
@@ -174,6 +186,7 @@
         margin-bottom: 38px;
         overflow: hidden;
         // overflow: auto;
+        // padding: 32px 36px;
 
         .training-value-tab {
             border-radius: 14px;
@@ -182,7 +195,7 @@
         }
 
         .training-value-tab::-webkit-scrollbar {
-            // width: 8px;
+            width: 13px;
         }
         .training-value-tab::-webkit-scrollbar-thumb {
             background-color: $border-color-gery;
@@ -192,13 +205,61 @@
             background-color: #f1f1f1;
         }
 
+        .table {
+            padding: 32px 36px;
+        }
+        
         .sub-table {
+            // padding: 0 36px 32px 36px;
+        }
+        .sub-table-wrapper {
             padding: 0 36px 32px 36px;
+
+            .sub-table {
+                // border: 1px solid black;
+                border-collapse: collapse;
+            }
+
+            th, td {
+                border: 1px solid black;
+            }
         }
 
+        /* 그리드 */
         .grid {
             width: 100%;
             height: 100%;
+        }
+
+        .ag-theme-alpine {
+            // width: 110%;
+            overflow-y: hidden;
+        }
+
+        .ag-cell-last-left-pinned {
+            text-align: left;
+        }
+
+        .ag-header-cell, .ag-header-group, .ag-header-group-cell, .ag-cell-last-left-pinned,
+        .ag-cell-not-inline-editing.ag-cell-normal-height.cell-span.ag-cell-value {
+            background-color: #E8E8E8;
+        }
+
+        .ag-pinned-left-header {
+            .ag-cell-label-container {
+                // border-left: none !important;
+            }
+            .ag-header-cell-label {
+                justify-content: left !important;
+            }
+        }
+
+        .ag-header-cell {
+            padding: 0 2px;
+        }
+
+        .ag-body-vertical-scroll {
+            display: none;
         }
 
         .cell-span {

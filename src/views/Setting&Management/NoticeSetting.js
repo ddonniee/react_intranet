@@ -14,6 +14,7 @@ import Paging from "../../components/Paging";
 import Editor from "../../components/Editor";
 import EditorWrite from "../../components/EditorWrite";
 import Alert from "../../components/Alert"
+import Tab from "../../components/Tab";
 
 import { generateRandomString } from "../../utils/CommonFunction"
 import { UserContext } from "../../hooks/UserContext";
@@ -605,6 +606,7 @@ function NoticeSetting() {
 
             <Zendesk />
         </div>
+        <Tab />
         </div>
     )
 }

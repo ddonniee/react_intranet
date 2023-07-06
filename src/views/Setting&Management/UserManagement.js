@@ -6,6 +6,7 @@ import Top from '../../components/Top';
 import Zendesk from '../../components/Zendesk';
 import AgGrid from "../../components/AgGrid";
 import EditCelldata from '../../components/EditCelldata';
+import Tab from '../../components/Tab';
 
 import SelectBox from '../../components/SelectBox';
 import { UserContext } from "../../hooks/UserContext";
@@ -390,6 +391,7 @@ function UserManagement() {
                 </div>
                 <Zendesk />
             </div>
+            <Tab />
         </div>
     )
 }

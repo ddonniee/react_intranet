@@ -9,6 +9,7 @@ import Zendesk from "../../components/Zendesk"
 import SelectBox from '../../components/SelectBox'
 import Viewer from "../../components/Viewer"
 import Paging from "../../components/Paging";
+import Tab from "../../components/Tab";
 
 import { generateRandomString, downloadAttachment } from "../../utils/CommonFunction"
 import { UserContext } from "../../hooks/UserContext";
@@ -321,6 +322,7 @@ function Notice() {
 
             <Zendesk />
         </div>
+        <Tab />
         </div>
     )
 }

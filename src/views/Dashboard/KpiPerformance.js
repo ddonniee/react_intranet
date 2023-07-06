@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
+import Tab from '../../components/Tab';
 
 import LineChart from "../../components/Chart";
 import AgGrid from "../../components/AgGrid";
@@ -543,6 +544,7 @@ function KpiPerformance() {
             <div className="kpi-value">{ renderContent() }</div>
             <Zendesk />
         </div>
+        <Tab />
         </div>
     )
 }

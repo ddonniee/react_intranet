@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Header from '../../components/Header';
 import Top from '../../components/Top';
 import Zendesk from '../../components/Zendesk';
+import Tab from '../../components/Tab';
 
 import Carousel from '../../components/Carousel';
 
@@ -214,6 +215,7 @@ function Main() {
                 </div>
                 <Zendesk />
             </div>
+            <Tab />
         </div>
     )
 }
