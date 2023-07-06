@@ -83,5 +83,5 @@ export const loadCSS =(cssPath)=> {
   }
 
   export const downloadAttachment = (path) => {
-      window.location.href = process.env.REACT_APP_DOWN_URL+path;
+      window.location.href = process.env.REACT_APP_DOWN_URL+"/"+path;
   }
