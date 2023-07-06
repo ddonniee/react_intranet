@@ -47,8 +47,8 @@ html, body, #root{
   #root::-webkit-scrollbar-track {
     background-color: #f1f1f1;
   }  
-
-input, button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-select {
+  
+button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-select, select {
     cursor: pointer;
 }
 
@@ -314,7 +314,16 @@ body .modal {
 .custom-float-end {
     justify-content: flex-end;
 }
+.custom-wide-subject{
+    width: 100% !important;
+}
+.custom-invalid-input {
+    color: #D8D8D8;   cursor:context-menu;
+}
 
+.maximizing-btn {
+    cursor: nw-resize;
+}
 .primary-red-btn {
     background-color: $primary-color-red; color: white;
 }

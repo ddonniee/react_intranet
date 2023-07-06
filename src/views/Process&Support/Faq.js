@@ -1,9 +1,4 @@
-// import { useState } from "react"
-
-// import ExportExcel from "../../utils/ExportExcel"
-
-
-import { Fragment, useContext, useEffect, useRef, useState } from "react"
+import React,{ Fragment, useContext, useEffect, useRef, useState } from "react"
 import { styled } from "styled-components";
 
 import { UserContext } from "../../hooks/UserContext"
@@ -12,13 +7,13 @@ import Pagination from "react-js-pagination";
 import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
-import AgGrid from "../../components/AgGrid"
 import Viewer from "../../components/Viewer"
 import Alert from "../../components/Alert";
 import Tab from "../../components/Tab";
 // Utils
 import { generateRandomString,axiosInstance2, downloadAttachment } from "../../utils/CommonFunction"
-
+// View
+import MaximalView from "../Common/MaximalView";
 // Icons 
 import Polygon from '../../assets/svgs/icon_polygon.svg'
 import New from '../../assets/svgs/icon_new.svg'
@@ -31,6 +26,8 @@ import Disliked from '../../assets/svgs/icon_disliked.svg'
 import Comment from '../../assets/svgs/icon_co_comment.svg'
 import More_comment from '../../assets/svgs/icon_co_more.svg'
 import Close_comment from '../../assets/svgs/icon_co_close.svg'
+import Frame from '../../assets/svgs/icon_editor_frame.svg'
+
 import moment from "moment";
 
 function Faq() {
@@ -476,7 +473,6 @@ function Faq() {
             console.log('error',error)
         })  
     }
-
     const onDeleteComment = (id) =>{
         // num = 1 댓글, num = 2 대댓글
         const formData = new FormData();
@@ -511,10 +507,10 @@ function Faq() {
             console.log('error',error)
         })                  
     }
-
+    const [maximizing, setMaxmizing] = useState(false)
+    /** Icon list */
     const iconRef = useRef();
     const [iconList, setIconLiet] = useState(['Hold Codes','Service Order','VIDEO-Status','Support'])
-
     const IconModal = () =>{
         return (
             <div className='icon-modal' ref={iconRef}>
@@ -546,28 +542,29 @@ function Faq() {
             return updatedLists;
           });
     }
-
     const [categoryIcon, setCategoryIcon] = useState([])
     
     useEffect(()=>{
-        if(categoryLists.length !== 0 ) {
-            let copy = [...categoryLists]
-            copy.map(c=>{
-                let jsonString = JSON.parse(c.categoryIcon);
-                if(jsonString!==null) {
-                    c.fileName = jsonString.fileName
-                    c.uploadPath = jsonString.uploadPath
-                }
-            })
-            setCategoryIcon(copy)
-        }
+        // if(categoryLists.length !== 0 ) {
+        //     let copy = [...categoryLists]
+        //     copy.map(c=>{
+        //         let jsonString = JSON.parse(c.categoryIcon);
+        //         if(jsonString!==null) {
+        //             c.fileName = jsonString.fileName
+        //             c.uploadPath = jsonString.uploadPath
+        //         }
+        //     })
+        //     setCategoryIcon(copy)
+        // }
+        console.log(categoryLists)
     },[categoryLists])
 
-    /** loading 시 animation */
+    /** detail loading animation */
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingComment, setIsLoadingComment] = useState(false)
     
     const [fileStore, setFileStore] = useState([])
+
      useEffect(()=>{
 
         setFileStore([])
@@ -600,10 +597,8 @@ function Faq() {
         
             return () => clearTimeout(timeoutId)
     },[commentPage])
-    /** loading 시 animation */
-
-   
     
+    /** click outside */
     const handleOutsideClick = (e) => {
         if (iconRef.current && !iconRef.current.contains(e.target)) {
           setCategoryLists((prevLists) => {
@@ -616,13 +611,12 @@ function Faq() {
         }
       }; 
         
-
-      useEffect(() => {
-        document.addEventListener("mousedown", handleOutsideClick);
-        return () => {
-          document.removeEventListener("mousedown", handleOutsideClick);
-        };
-      }, []);
+    useEffect(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+        document.removeEventListener("mousedown", handleOutsideClick);
+    };
+    }, []);
 
       useEffect(()=>{
         getCategory()
@@ -657,12 +651,11 @@ function Faq() {
         }
       },[commentPage])
 
-  
     return (
         <>
         
         <Header />
-        <Style selectId={selectedList?.num} >
+        <Style selectId={selectedList?.faqId} openRight={selectedList.faqId!=='' ? true : false}>
         <div className="inner-container">
             <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Top Area */}
@@ -688,7 +681,7 @@ function Faq() {
                             categoryLists?.map((item,idx)=>{
                                 return(
                                     <li key={generateRandomString(idx+1)} onClick={(e)=>handleClickIcon(e,item)}>
-                                        <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+item.uploadPath} alt='category-icon'/></div>
+                                        <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+item.categoryIconPath} alt='category-icon'/></div>
                                         <p>{item.categoryNm}</p>
                                         {
                                         item.iconModal
@@ -737,11 +730,14 @@ function Faq() {
                     }
                     {/* <AgGrid data={boardData} column={column} paging={true} /> */}
                 </div>
-                <div className="editor-wrapper">
+                
                {
                 selectedList.faqId!=='' ?
+
+                <div className="editor-wrapper">
                 <div className={`faq-right ${isLoading ? 'loadingOpacity':''}`} >
                 <div className="faq-right-top">
+                    <img src={Frame} onClick={()=>{setMaxmizing(true)}} className="maximizing-btn"/>
                     <p>{selectedList.subject}</p>
                     {
                         fileStore.length!==0 &&
@@ -874,12 +870,13 @@ function Faq() {
                         }
                     </div>
                 </div>
-               
+               </div>
             </div>
             :
-            <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
-                        <p>If you select a list, you can see the contents</p>
-                    </div>
+            null
+            // <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
+            //             <p>If you select a list, you can see the contents</p>
+            //         </div>
                }
                 </div>
                 {
@@ -888,34 +885,26 @@ function Faq() {
                 <Alert alertTxt={alertSetting.alertTxt} onClose={()=>setAlertModal(false)} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt}/>
             }
             </div>
-
+            {
+                maximizing 
+                &&
+                <MaximalView data={selectedList} onClose={()=>(setMaxmizing(false), clearState())} onMinimizing={()=>setMaxmizing(false)}/>
+            }
             <Zendesk />
 
             <Tab />
-        </div>
         </Style>
         </>
     )
 }
 
-// function Faq() {
-
-//     // const [csvData, setCsvData] = useState([]);
-//     const [csvData, setCsvData] = useState([{ name: 'John', age: 30, city: 'New York' },
-//     { name: 'Jane', age: 25, city: 'San Francisco' },
-//     { name: 'Bob', age: 35, city: 'Los Angeles' },])
-//     const [filename, setFilename] = useState('test');
-
-//     return (
-//         <>
-//         {csvData &&<ExportExcel csvData={csvData} filename={filename}/>}
-//         </>
-//     )
-// }
 export default Faq
 
 const Style = styled.div`
     #list-item-${props=>props.selectId} {
         background : #FAF1F4; color : #BB0841; 
+    }
+    .faq-left {
+        width: ${props => (props.openRight ? '48%' : '100%')};
     }
 `

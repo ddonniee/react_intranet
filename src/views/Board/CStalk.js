@@ -872,6 +872,7 @@ function CStalk() {
     
 
     return (
+        <Style openRight={(selectedList.csTalkId!=='' || isWrite || isModify) ? true : false}>
         <div className="notice-container cstalk-container">
         <Header />
         <div className="inner-container">
@@ -1115,9 +1116,10 @@ function CStalk() {
                     ?
                     <EditorModify data={content} setData={setContent} range onSave={onEditContent}  onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : setIsModify(false)} onDelete={()=>onConfirmHandler(3)}/>
                     :
-                    <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
-                        <p>If you select a list, you can see the contents</p>
-                    </div>
+                    null
+                    // <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
+                    //     <p>If you select a list, you can see the contents</p>
+                    // </div>
                 }
                  {/* <button style={{position:'absolute'}} onClick={()=>setFavoriteModal(true)}>test btn</button> */}
             </div>
@@ -1133,8 +1135,15 @@ function CStalk() {
         </div>
         <Tab />
         </div>
+        </Style>
     )
 }
 
 export default CStalk
 
+const Style = styled.div`
+    .cstalk-left {
+        width: ${props => (props.openRight ? '48%' : '100%')};
+    }
+    
+`

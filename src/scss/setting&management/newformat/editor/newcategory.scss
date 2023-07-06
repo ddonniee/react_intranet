@@ -1,0 +1,74 @@
+@import '../../../variables.scss';
+
+
+.faq-setting-new{
+    flex-direction: column;
+    height: 100%;
+    .left {
+        width: 25%;
+        border-right: 1px solid #D8D8D8;
+        border-bottom: 1px solid #D8D8D8;
+        display: flex; 
+        p {
+            align-self: center ;
+        }
+    }
+    .right {
+        width: 75%;
+        border-bottom: 1px solid #D8D8D8;
+       
+    }
+    .file-upload {
+        position: relative;
+    }
+    .file-upload div {
+        margin: 0 !important;
+    }
+    .btn-row {
+        padding: 36px 19px;
+        margin-top: auto;
+        button {
+            width: 88px;
+            height: 44px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 19px;
+            cursor: pointer;
+        }
+    }
+    .write-row  > div {
+        padding: 15px 30px;
+    }
+    .icon-wrapper {
+        width: 40px; height: 40px; border-radius: 50%; border: 1px solid $border-color-gery; padding: 12px;
+    }
+    .popup {
+        border-radius: 10px;
+        border: 1px solid #E8E8E8;
+        background: #FFF;
+        box-shadow: 1px 1px 15px 0px rgba(0, 0, 0, 0.15);
+        width: 316px;
+        height: 234px;
+        flex-shrink: 0;    position: absolute;
+        top: 71px;
+        left: 70px;
+        .popup-top {
+            align-items: self-end;
+            p {
+                color: #333; font-size: 20px; font-weight: 700; letter-spacing: 0.2px; padding: 0 25px;
+            }
+            img {
+                padding: 10px;
+            }
+        }
+        ul {
+            flex-wrap: wrap;
+            text-align: center; padding: 15px;
+            li {
+                width: 25%; padding-top: 5px;
+            }
+        }
+       
+    }
+}
