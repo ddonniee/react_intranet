@@ -6,6 +6,7 @@ import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
 import Alert from '../../components/Alert';
+import Tab from '../../components/Tab';
 
 import SelectBox from '../../components/SelectBox';
 import { UserContext } from "../../hooks/UserContext";
@@ -297,34 +298,34 @@ function KpiPerformanceSetting() {
                         { excelError && <div>Error: {excelError}</div>}
                         { excelData && (
                             <div className='pc-table-wrapper'>
-                            <table className='pc-table'>
-                                <colgroup>
-                                    <col width="*"/>
-                                    <col width="16%"/>
-                                    <col width="16%"/>
-                                    <col width="16%"/>
-                                    <col width="16%"/>
-                                    <col width="16%"/>
-                                </colgroup>
-                                <thead>
-                                    <tr>
-                                    { excelData[0].map((header, index) => (
-                                        <th key={index} className='pc-table-th'>{header}</th>
-                                    ))}
-                                        <th className='pc-table-th'>Error</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    { excelData.slice(1).map((row, rowIndex) => (
-                                    <tr key={rowIndex}>
-                                        { row.map((cell, cellIndex) => (
-                                            <td key={cellIndex} className='pc-table-td'>{cell}</td>
+                                <table className='pc-table'>
+                                    <colgroup>
+                                        <col width="*"/>
+                                        <col width="16%"/>
+                                        <col width="16%"/>
+                                        <col width="16%"/>
+                                        <col width="16%"/>
+                                        <col width="16%"/>
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                        { excelData[0].map((header, index) => (
+                                            <th key={index} className='pc-table-th'>{header}</th>
                                         ))}
-                                        <td className='pc-table-td'>Format</td>
-                                    </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                            <th className='pc-table-th'>Error</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        { excelData.slice(1).map((row, rowIndex) => (
+                                        <tr key={rowIndex}>
+                                            { row.map((cell, cellIndex) => (
+                                                <td key={cellIndex} className='pc-table-td'>{cell}</td>
+                                            ))}
+                                            <td className='pc-table-td'>Format</td>
+                                        </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
                         )}
                     </div>
@@ -351,6 +352,7 @@ function KpiPerformanceSetting() {
                 &&
                 <Alert alertTxt={alertTxt} onClose={()=>setAlertModal(false)} onConfirm={()=>setAlertModal(false)} btnTxt='Close' />
             }
+            <Tab />
         </div>
     )
 }

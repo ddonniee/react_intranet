@@ -119,10 +119,11 @@ const AgGrid = ({data, column, paging, checkbox, checkedItems, changeValue, isMo
     }, []);
 
     const calculateGridHeight = () => {
-        const contentHeight = (data?.length + 1.65) * 44; // 행 높이 승수 조정 (한 행의 높이 42px)
+        // const contentHeight = (data?.length + 1.65) * 44; // 행 높이 승수 조정 (한 행의 높이 42px)
+        const contentHeight = (data?.length + 1) * 44;
         const gridContainer = document.querySelector('.ag-theme-alpine');
         if (gridContainer) {
-            gridContainer.style.height = `${contentHeight}px`;
+            gridContainer.style.height = `${contentHeight}px`; // calc(100% + 17px);
         }
     };
 

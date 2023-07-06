@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
+import Tab from '../../components/Tab';
 
 import LineChart from "../../components/Chart";
 import AgGrid from "../../components/AgGrid";
@@ -17,377 +18,258 @@ function TrainingStatus() {
 
     const [rowData, setRowData] = useState([ // 테이블 데이터 설정
         {
-            center: 'Total',
-            kpi: 'Volume(C)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
-        },
-        {
-            // center: 'Total',
-            kpi: 'Reclaim (%)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
-        },
-        {
-            // center: 'Total',
-            kpi: 'RTAT (D)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
-        },
-        {
-            // center: 'Total',
-            kpi: 'Repair NPS (P)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
-        },
-        {
             center: 'ASC #1',
-            kpi: 'Volume(C)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
+            trainingStatus: 'In Progress',
+            'month1': '1', 
+            'month2': '1',
+            'month3': '1',
+            'month4': '1',
+            'month5': '1',
+            'month6': '1',
+            'month7': '1',
+            'month8': '1',
+            'month9': '1',
+            'month10': '1',
+            'month11': '1',
+            'month12': '1',
         },
         {
-            // center: 'ASC #1',
-            kpi: 'Reclaim (%)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
+            trainingStatus: 'Completed (OK)',
+            'month1': '1', 
+            'month2': '1',
+            'month3': '1',
+            'month4': '1',
+            'month5': '1',
+            'month6': '1',
+            'month7': '1',
+            'month8': '1',
+            'month9': '1',
+            'month10': '1',
+            'month11': '1',
+            'month12': '1',
         },
         {
-            // center: 'ASC #1',
-            kpi: 'RTAT (D)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
-        },
-        {
-            // center: 'ASC #1',
-            kpi: 'Repair NPS (P)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
+            trainingStatus: 'Completed (Fail)',
+            'month1': '1', 
+            'month2': '1',
+            'month3': '1',
+            'month4': '1',
+            'month5': '1',
+            'month6': '1',
+            'month7': '1',
+            'month8': '1',
+            'month9': '1',
+            'month10': '1',
+            'month11': '1',
+            'month12': '1',
         },
         {
             center: 'ASC #2',
-            kpi: 'Volume(C)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
+            trainingStatus: 'Volume(C)',
+            'month1': '1', 
+            'month2': '1',
+            'month3': '1',
+            'month4': '1',
+            'month5': '1',
+            'month6': '1',
+            'month7': '1',
+            'month8': '1',
+            'month9': '1',
+            'month10': '1',
+            'month11': '1',
+            'month12': '1',
         },
         {
-            // center: 'ASC #1',
-            kpi: 'Reclaim (%)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
+            trainingStatus: 'Reclaim (%)',
+            'month1': '1', 
+            'month2': '1',
+            'month3': '1',
+            'month4': '1',
+            'month5': '1',
+            'month6': '1',
+            'month7': '1',
+            'month8': '1',
+            'month9': '1',
+            'month10': '1',
+            'month11': '1',
+            'month12': '1',
         },
         {
-            // center: 'ASC #1',
-            kpi: 'RTAT (D)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
+            trainingStatus: 'RTAT (D)',
+            'month1': '1', 
+            'month2': '1',
+            'month3': '1',
+            'month4': '1',
+            'month5': '1',
+            'month6': '1',
+            'month7': '1',
+            'month8': '1',
+            'month9': '1',
+            'month10': '1',
+            'month11': '1',
+            'month12': '1',
         },
         {
-            // center: 'ASC #1',
-            kpi: 'Repair NPS (P)',
-            '2022': '100.1', 
-            '01-02': '100.1',
-            target: '100.1',
-            ach: '100.1',
-            yoyYear: '100.1',
-            yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
-            thisMonth: '100.1',
-            w04: '100.1',
-            w05: '100.1',
-            w06: '100.1',
-            thisWeek: '100.1'
+            center: 'ASC #3',
+            trainingStatus: 'Volume(C)',
+            'month1': '1', 
+            'month2': '1',
+            'month3': '1',
+            'month4': '1',
+            'month5': '1',
+            'month6': '1',
+            'month7': '1',
+            'month8': '1',
+            'month9': '1',
+            'month10': '1',
+            'month11': '1',
+            'month12': '1',
+        },
+        {
+            trainingStatus: 'Reclaim (%)',
+            'month1': '1', 
+            'month2': '1',
+            'month3': '1',
+            'month4': '1',
+            'month5': '1',
+            'month6': '1',
+            'month7': '1',
+            'month8': '1',
+            'month9': '1',
+            'month10': '1',
+            'month11': '1',
+            'month12': '1',
+        },
+        {
+            trainingStatus: 'RTAT (D)',
+            'month1': '1', 
+            'month2': '1',
+            'month3': '1',
+            'month4': '1',
+            'month5': '1',
+            'month6': '1',
+            'month7': '1',
+            'month8': '1',
+            'month9': '1',
+            'month10': '1',
+            'month11': '1',
+            'month12': '1',
         },
     ]);
 
     const rowSpan = (params) => {
         let center = params.data ? params.data.center : undefined;
         // console.log('center --->', center)
-        if (center === 'Total' || center === 'ASC #1' || center === 'ASC #2') {
-          return 4;
-        } else {
-          return 1;
-        }
+        return 3;
+
+        // if (center === 'ASC #1' || center === 'ASC #2' || center === 'ASC #3') {
+        //   return 3;
+        // } else {
+        //   return 1;
+        // }
     };
 
     const [column, setColumn] = useState([ // 컬럼 값 설정
-        {
-            headerName: '',
-            field: 'center',
-            spanHeaderHeight: true,
-            pinned: 'left',
-            width: 60,
-            rowSpan: rowSpan,
-            cellClassRules: {
-                'cell-span': " value==='Total' || value==='ASC #1' || value==='ASC #2' ",
-            },
-        },
+        // {
+        //     headerName: '',
+        //     field: 'center',
+        //     spanHeaderHeight: true,
+        //     pinned: 'left',
+        //     width: 60,
+        //     rowSpan: rowSpan,
+        //     cellClassRules: {
+        //         'cell-span': " value==='ASC #1' || value==='ASC #2' || value==='ASC #3' ",
+        //     },
+        // },
+        // { 
+        //     headerName: 'Training Status',
+        //     field: 'trainingStatus',
+        //     resizable: false,
+        //     spanHeaderHeight: true,
+        //     pinned: 'left',
+        //     width: 220,
+        //     // suppressAutoSize: true
+        // },
         { 
-            headerName: 'KPI',
-            field: 'kpi',
-            resizable: false,
-            spanHeaderHeight: true,
-            pinned: 'left',
-            width: 140,
-            // suppressAutoSize: true
-        },
-        {
-            headerName: '2022',
-            children: [
-                {
-                    headerName: '∑ 2022',
-                    field : '2022',
-                    resizable: false,
-                    headerClass: '2022',
-                    width: 100
-                },
-                {
-                    headerName: '01-02',
-                    field : '01-02',
-                    resizable: false,
-                    headerClass: '2022',
-                    width: 100
-                }
-            ]
-        },
-        {
-            headerName: '2023',
-            children: [
-                {
-                    headerName: 'Target',
-                    field : 'target',
-                    resizable: false,
-                    headerClass: '2023',
-                    width: 100
-                },
-                {
-                    headerName: '01-02',
-                    field : '01-02',
-                    resizable: false,
-                    headerClass: '2023',
-                    width: 100
-                },
-                {
-                    headerName: 'Ach.(%)',
-                    field : 'ach',
-                    resizable: false,
-                    headerClass: '2023',
-                    width: 100
-                }
-            ]
-        },
-        {
-            headerName: `YOY \n(year)`,
-            field: 'yoyYear',
-            resizable: false,
-            spanHeaderHeight: true,
-            wrapHeaderText: true,
-            width: 100
-        },
-        {
-            headerName: `YOY \n(Acc. Mon)`,
-            field: 'yoyMon',
-            resizable: false,
-            spanHeaderHeight: true,
-            wrapHeaderText: true,
-            width: 100
-        },
-        {
-            headerName: 'Last 3 Months',
-            children: [
-                {
-                    headerName: '2022 Nov',
-                    field : '202212',
-                    resizable: false,
-                    headerClass: 'Last 3 Months',
-                    width: 100
-                },
-                {
-                    headerName: '2022 Dec',
-                    field : '202301',
-                    resizable: false,
-                    headerClass: 'Last 3 Months',
-                    width: 100
-                },
-                {
-                    headerName: '2023 Jan',
-                    field : '202302',
-                    resizable: false,
-                    headerClass: 'Last 3 Months',
-                    width: 100
-                }
-            ]
-        },
-        { 
-            headerName: 'This Month',
-            field: 'thisMonth',
+            headerName: 'May-2023',
+            field: 'month1',
             resizable: false,
             spanHeaderHeight: true,
             wrapHeaderText: true,
         },
-        {
-            headerName: 'Last 3 Weeks',
-            children: [
-                {
-                    headerName: 'W03',
-                    field : 'w04',
-                    resizable: false,
-                    headerClass: 'Last 3 Weeks',
-                    width: 100
-                },
-                {
-                    headerName: 'W04',
-                    field : 'w05',
-                    resizable: false,
-                    headerClass: 'Last 3 Weeks',
-                    width: 100
-                },
-                {
-                    headerName: 'W05',
-                    field : 'w06',
-                    resizable: false,
-                    headerClass: 'Last 3 Weeks',
-                    width: 100
-                }
-            ]
+        { 
+            headerName: 'May-2023',
+            field: 'month2',
+            resizable: false,
+            spanHeaderHeight: true,
+            wrapHeaderText: true,
         },
         { 
-            headerName: 'This Week',
-            field: 'thisWeek',
+            headerName: 'May-2023',
+            field: 'month3',
+            resizable: false,
+            spanHeaderHeight: true,
+            wrapHeaderText: true,
+        },
+        { 
+            headerName: 'May-2023',
+            field: 'month4',
+            resizable: false,
+            spanHeaderHeight: true,
+            wrapHeaderText: true,
+        },
+        { 
+            headerName: 'May-2023',
+            field: 'month5',
+            resizable: false,
+            spanHeaderHeight: true,
+            wrapHeaderText: true,
+        },
+        { 
+            headerName: 'May-2023',
+            field: 'month6',
+            resizable: false,
+            spanHeaderHeight: true,
+            wrapHeaderText: true,
+        },
+        { 
+            headerName: 'May-2023',
+            field: 'month7',
+            resizable: false,
+            spanHeaderHeight: true,
+            wrapHeaderText: true,
+        },
+        { 
+            headerName: 'May-2023',
+            field: 'month8',
+            resizable: false,
+            spanHeaderHeight: true,
+            wrapHeaderText: true,
+        },
+        { 
+            headerName: 'May-2023',
+            field: 'month9',
+            resizable: false,
+            spanHeaderHeight: true,
+            wrapHeaderText: true,
+        },
+        { 
+            headerName: 'May-2023',
+            field: 'month10',
+            resizable: false,
+            spanHeaderHeight: true,
+            wrapHeaderText: true,
+        },
+        { 
+            headerName: 'May-2023',
+            field: 'month11',
+            resizable: false,
+            spanHeaderHeight: true,
+            wrapHeaderText: true,
+        },
+        { 
+            headerName: 'May-2023',
+            field: 'month12',
             resizable: false,
             spanHeaderHeight: true,
             wrapHeaderText: true,
@@ -457,18 +339,48 @@ function TrainingStatus() {
       {
         title: 'Training Status',
         content:
-          <div className="table sub-table">
-            sub - Training Status
+          <div className="sub-table-wrapper">
             <div className='grid'>
                 <AgGrid data={rowData} column={column} paging={false} />
             </div>
+            {/* <table className='sub-table'>
+                <colgroup>
+                    <col width="*"/>
+                    <col width="16%"/>
+                    <col width="16%"/>
+                    <col width="16%"/>
+                    <col width="16%"/>
+                    <col width="16%"/>
+                </colgroup>
+                <thead>
+                    <tr>
+                      <th className='pc-table-th' colSpan="2">Training Status</th>
+                      { column.map((col, index) => (
+                          <th key={index} className='pc-table-th'>{col.headerName}</th>
+                      ))}
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className='pc-table-td' rowSpan="3">ASC #1</td>
+                    { rowData.map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                      <td key={rowIndex} className='pc-table-td' rowSpan={row.center && 3}>{row.center}</td>
+                      <td key={rowIndex} className='pc-table-td'>{row.trainingStatus}</td>
+                        { row.map((cell, cellIndex) => (
+                            <td key={cellIndex} className='pc-table-td'>{cell}</td>
+                        ))}
+                    </tr>
+                    ))}
+                  </tr>
+                </tbody>
+            </table> */}
           </div>
       },
       {
         title: 'Average Score',
         content: 
-          <div className="table sub-table">
-            sub - Average Score
+          <div className="sub-table">
             <div className='grid'>
                 <AgGrid data={rowData} column={column} paging={false} />
             </div>
@@ -503,12 +415,6 @@ function TrainingStatus() {
           title: 'Training Status By Engineer',
           content: 
             <div className="table"> 
-              <div className='title'>
-                  <button className='excel'>
-                      <ExcelIcon />
-                      <p>Excel</p>
-                  </button>
-              </div>
               <div className='grid'>
                   <AgGrid data={rowData} column={column} paging={false} />
               </div>
@@ -517,13 +423,7 @@ function TrainingStatus() {
         {
           title: 'Average Score By Engineer',
           content: 
-            <div className="table"> 
-              <div className='title'>
-                  <button className='excel'>
-                      <ExcelIcon />
-                      <p>Excel</p>
-                  </button>
-              </div>
+            <div className="table">
               <div className='grid'>
                   <AgGrid data={rowData} column={column} paging={false} />
               </div>
@@ -556,7 +456,7 @@ function TrainingStatus() {
                             <p>· Product</p> <SelectBox options={prodOptions} onChange={handleSelectBox} />
                         </div>
                     </div>
-                    <div className='nav-box' style={{width: "40%"}}>
+                    <div className='nav-box'>
                         <div className='nav-search'>
                             <p>· Branch</p> <SelectBox options={branchOptions} onChange={handleSelectBox} />
                         </div>
@@ -565,10 +465,12 @@ function TrainingStatus() {
                             {/* <SelectBox options={subOptions} /> */}
                         </div>
                     </div>
-                    <button className='circle'>
-                        <p>Inquiry</p>
-                        <IntersectIcon />
-                    </button>
+                    <div className='nav-btn'>
+                      <button className='circle'>
+                          <p>Inquiry</p>
+                          <IntersectIcon />
+                      </button>
+                    </div>
                 </div>
                 <div className='nav-right'>
                     <div className='nav-line'></div>
@@ -581,6 +483,7 @@ function TrainingStatus() {
             <div className="training-value">{ renderContent() }</div>
             <Zendesk />
         </div>
+        <Tab />
         </div>
     )
 }
