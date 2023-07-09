@@ -18,17 +18,17 @@ import Reload from '../../assets/svgs/icon_reload.svg'
 import Link from '../../assets/svgs/icon_more.svg'
 import Check from '../../assets/svgs/icon_check.svg'
 // functions
-import { detectUserAgent, generateRandomString } from "../../utils/CommonFunction";
+import { axiosInstance, detectUserAgent, generateRandomString } from "../../utils/CommonFunction";
 import axios from "axios";
-
 
 
 const Login = () =>{
 
     const [loginInfo, setLoginInfo] = useState({
-        id : '',
-        pw : '',
-        otp : '',
+        userId : '',
+        password : '',
+        authType : '',
+        authKey : '',
     })
     
     const [failModal, setFailModal] = useState(false);               // 로그인 실패시 알림창 
@@ -37,58 +37,69 @@ const Login = () =>{
     const [otpModal, setOtpModal] = useState(false);                 // OTP 발급 모달창
     const [tempOtpModal, setTempOtpModal] = useState(false);         // 일회용 OTP 모달창
 
+    // 캡차 인증 문자 가져오기
+    const [captchaSrc, setCaptchaSrc] = useState("http://localhost:8090/login/getCaptcha");
 
     // 횟수에 따라 once 부분 바꾸는 로직 필요
     const [alertTxt, setAlertTxt] = useState(`You entered your ID and PW incorrectly once.\nYou cannot log in if you enter incorrectly more than 5 times.`)
 
-    // 보안문자 서버에서 내려오는 이미지 저장
-    const [securityUrl, setSecurityUrl] = useState('https://images.pexels.com/photos/17202950/pexels-photo-17202950.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')
     // OTP 인증 로그인 여부
     const [isOtp, setIsOtp] = useState(false);
-    const linkList = [
-        {title : `REQUEST NEW ACCOUNT`, value:'join'},
-        {title : `FORGET PASSWORD`, value:'find-pw'},
-        {title : `OTP KEY REQUEST`, value:'req-otp'},
-        {title : `OTP TEMPORARY PASSWORD`, value:'req-tmp-otp'},
-    ]
+
     const handleCheckLogin = e => {
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            },
+            data: loginInfo
+        };
+
         // 로그인 처리
-        // 실패시
-        setFailModal(true)
+        axiosInstance.post("/login/doLogin", config)
+        .then(res => {
+            console.log(res);
+
+        })
+        .catch(error => {
+            console.log(error)
+            setFailModal(true);
+        })
     }
+
     const handleChangeInput = e =>{
         let title = e.target.id;
         let value = e.target.value;
         if(title==='login-id') {
             setLoginInfo({
                 ...loginInfo,
-                id : value
+                userId : value
             })
         }else if(title==='login-pw') {
             setLoginInfo({
                 ...loginInfo,
-                pw : value
+                password : value
             })
         }else if(title==='login-otp') {
             setLoginInfo({
                 ...loginInfo,
-                otp : value
+                authKey : value
             })
         }
     }
-    const handleChangeCheck = e => {
 
+    /** 체크 박스 선택 */
+    const handleChangeCheck = e => {
         let title = e.target.id
-        console.log(title)
         if(title==='otp-checkbox') {
             setIsOtp(!isOtp)
+            let authType = e.target.value ? "otp" : "captcha";  // 인증타입
+            setLoginInfo({ ...loginInfo, authType: authType, authKey: "" });
         }
     }
-    const generateSecurityCode = e => {
-        // 서버에 보안문자 새로 요청
-        let newSecurity = 'https://cdn.pixabay.com/photo/2023/05/05/11/07/sweet-7972193_640.jpg'
-        setSecurityUrl(newSecurity);
-    }
+
     const handleClickLink = e => {
         let title = e.target.title;
         if(title==='join') {
@@ -102,6 +113,17 @@ const Login = () =>{
         }
     }
 
+
+    // 캡차 이미지 가져오기
+    const getCaptcha = (e) => {
+        e.preventDefault();
+
+        // 매번 새로운 캡차를 받기 위해 랜덤 문자열을 넣어줌
+        var rand = Math.random();
+        var url = "http://localhost:8090/login/getCaptcha?rand=" + rand;
+        setCaptchaSrc(url);
+    };
+
     const [isMobile, setIsMobile] = useState();
     const checkUserAgent = () => {
         let agent = detectUserAgent();
@@ -112,38 +134,11 @@ const Login = () =>{
     },[])
 
 
-    // 캡차 테스트
-    const [captchaSrc, setCaptchaSrc] = useState("http://localhost:8090/login/getCaptcha");
-    const [answer, setAnswer] = useState();
-
-    const getCaptcha = (e) => {
-        e.preventDefault();
-        var rand = Math.random();
-        var url = "http://localhost:8090/login/getCaptcha?rand=" + rand;  // 매번 새로운 캡차를 받기 위해 랜덤 문자열을 넣어줌
-        setCaptchaSrc(url);     
-    };
-
-    const confirmCaptcha =()=> {
-        const formData = new FormData();
-        formData.append("answer", answer);
-
-        const config = {
-            withCredentials: true
-        }
-
-        axios.post('http://localhost:8090/login/confirmCaptcha', formData, config)
-        .then(res => {
-            console.log(res);
-        }).catch(error => {
-            console.log(error);
-        })
-
-    }
 
 
     return (
         <>
-        <Style disable={(loginInfo.id === '' || loginInfo.pw ==='') && true} >
+        <Style disabled={(loginInfo.id === '' || loginInfo.pw ==='') && true} >
             {
                 isMobile &&
                 <Header />
@@ -181,20 +176,17 @@ const Login = () =>{
                                             <img src={captchaSrc} className="security-num"/>
                                             <img src={Reload} alt='reload-security-num' className="security-reload" onClick={getCaptcha}/>
                                         </div>
-                                        <input className="secutiry-txt" type="text" onChange={e => setAnswer(e.target.value)} onBlur={confirmCaptcha}/>
+                                        <input className="secutiry-txt" type="text" onChange={e => setLoginInfo({ ...loginInfo, authKey: e.target.value })}/>
                                     </div>
                                 }
                                 <button className="login-btn" onClick={handleCheckLogin} disabled={(loginInfo.id === '' || loginInfo.pw ==='') ? true : false} >ENTER</button>
                             </div>
                             <div className="login-info-right">
                                 <ul>
-                                    {
-                                        linkList?.map((list,idx)=>{
-                                            return (
-                                                <li title={list.value} key={generateRandomString(idx)} className="custom-justify-between" onClick={handleClickLink}><span title={list.value}>{list.title}</span><img  title={list.value} src={Link} alt='login-link'/></li>
-                                            )
-                                        })
-                                    }
+                                        <li title={"join"} className="custom-justify-between" onClick={handleClickLink}><span title={"join"}>REQUEST NEW ACCOUNT</span><img title={"join"} src={Link} alt='login-link' /></li>
+                                        <li title={"find-pw"} className="custom-justify-between" onClick={handleClickLink}><span title={"find-pw"}>FORGET PASSWORD</span><img title={"find-pw"} src={Link} alt='login-link' /></li>
+                                        <li title={"req-otp"} className="custom-justify-between" onClick={handleClickLink}><span title={"req-otp"}>OTP KEY REQUEST</span><img title={"req-otp"} src={Link} alt='login-link' /></li>
+                                        <li title={"req-tmp-otp"} className="custom-justify-between" onClick={handleClickLink}><span title={"req-tmp-otp"}>OTP TEMPORARY PASSWORD</span><img title={"req-tmp-otp"} src={Link} alt='login-link' /></li>
                                 </ul>
                             </div>
                         </div>
@@ -246,9 +238,9 @@ export default Login
 
 const Style = styled.div `
     .login-btn {
-        background-color : ${props=>props.disable===true ? '#FAF1F4' : '#BB0841'}
+        background-color : ${props=>props.disabled===true ? '#FAF1F4' : '#BB0841'}
     }
     .login-btn:hover {
-        background-color : ${props=>props.disable===true ? '#FAF1F4' : '#82072e'}
+        background-color : ${props=>props.disabled===true ? '#FAF1F4' : '#82072e'}
     }
 `
