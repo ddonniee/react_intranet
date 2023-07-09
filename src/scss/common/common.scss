@@ -55,7 +55,14 @@ button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-selec
 .custom-select {
     width: 179px; border-color: #D8D8D8 !important;
 }
-
+.custom-white-btn {
+    border-radius: 5px;
+border: 1px solid #D8D8D8 !important;
+background: white !important; width: 78px;
+padding: 12px 16px 11px 16px;
+justify-content: center;
+align-items: center;    
+}
 .cell-select-box > *:hover {
     background-color: $hover-color-pink;
     border: none;

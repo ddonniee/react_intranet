@@ -205,23 +205,53 @@
             background-color: #f1f1f1;
         }
 
+        /* 테이블 */
         .table {
             padding: 32px 36px;
         }
         
         .sub-table {
-            // padding: 0 36px 32px 36px;
-        }
-        .sub-table-wrapper {
             padding: 0 36px 32px 36px;
+        }
 
-            .sub-table {
-                // border: 1px solid black;
-                border-collapse: collapse;
+        .table-wrapper {
+            border-collapse: collapse;
+
+            .custom-th, .custom-td {
+                border-right: 1px solid $border-color-gery;
+                border-bottom: 1px solid $border-color-gery;
+                padding: 8px 20px;
+                text-align: center;
             }
 
-            th, td {
-                border: 1px solid black;
+            .custom-td {
+                color: #888888;
+            }
+
+            .custom-th:last-child, .custom-td:last-child {
+                border-right: none;
+            }
+            
+            .custom-th, .custom-td-center, .custom-td-status {
+                background-color: #E8E8E8;
+                color: #333333;
+            }
+
+            .custom-th, .custom-td-center {
+                font-weight: 600;
+            }
+
+            .custom-td-center {
+                width: 5%;
+            }
+
+            // .custom-td:first-child {
+            //     color: red;
+            // }
+
+            .custom-td-status {
+                padding-right: 80px;
+                text-align: left;
             }
         }
 

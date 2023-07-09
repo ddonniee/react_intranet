@@ -43,6 +43,18 @@
     .icon-wrapper {
         width: 40px; height: 40px; border-radius: 50%; border: 1px solid $border-color-gery; padding: 12px;
     }
+    #add-btn {
+        width: 72px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 100px;
+    background: #E8E8E8;
+    margin-left: 11px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 22px;
+    letter-spacing: 0.14px;
+    }
     .popup {
         border-radius: 10px;
         border: 1px solid #E8E8E8;

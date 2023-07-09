@@ -19,15 +19,16 @@ function KpiPerformance() {
         {
             center: 'Total',
             kpi: 'Volume(C)',
-            '2022': '100.1', 
-            '01-02': '100.1',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
             target: '100.1',
+            thisYear2Mon: '100.1',
             ach: '100.1',
             yoyYear: '100.1',
             yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
             thisMonth: '100.1',
             w04: '100.1',
             w05: '100.1',
@@ -35,17 +36,18 @@ function KpiPerformance() {
             thisWeek: '100.1'
         },
         {
-            // center: 'Total',
+            center: 'Total',
             kpi: 'Reclaim (%)',
-            '2022': '100.1', 
-            '01-02': '100.1',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
             target: '100.1',
+            thisYear2Mon: '100.1',
             ach: '100.1',
             yoyYear: '100.1',
             yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
             thisMonth: '100.1',
             w04: '100.1',
             w05: '100.1',
@@ -53,17 +55,18 @@ function KpiPerformance() {
             thisWeek: '100.1'
         },
         {
-            // center: 'Total',
+            center: 'Total',
             kpi: 'RTAT (D)',
-            '2022': '100.1', 
-            '01-02': '100.1',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
             target: '100.1',
+            thisYear2Mon: '100.1',
             ach: '100.1',
             yoyYear: '100.1',
             yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
             thisMonth: '100.1',
             w04: '100.1',
             w05: '100.1',
@@ -71,17 +74,18 @@ function KpiPerformance() {
             thisWeek: '100.1'
         },
         {
-            // center: 'Total',
+            center: 'Total',
             kpi: 'Repair NPS (P)',
-            '2022': '100.1', 
-            '01-02': '100.1',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
             target: '100.1',
+            thisYear2Mon: '100.1',
             ach: '100.1',
             yoyYear: '100.1',
             yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
             thisMonth: '100.1',
             w04: '100.1',
             w05: '100.1',
@@ -91,15 +95,16 @@ function KpiPerformance() {
         {
             center: 'ASC #1',
             kpi: 'Volume(C)',
-            '2022': '100.1', 
-            '01-02': '100.1',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
             target: '100.1',
+            thisYear2Mon: '100.1',
             ach: '100.1',
             yoyYear: '100.1',
             yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
             thisMonth: '100.1',
             w04: '100.1',
             w05: '100.1',
@@ -107,17 +112,18 @@ function KpiPerformance() {
             thisWeek: '100.1'
         },
         {
-            // center: 'ASC #1',
+            center: 'ASC #1',
             kpi: 'Reclaim (%)',
-            '2022': '100.1', 
-            '01-02': '100.1',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
             target: '100.1',
+            thisYear2Mon: '100.1',
             ach: '100.1',
             yoyYear: '100.1',
             yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
             thisMonth: '100.1',
             w04: '100.1',
             w05: '100.1',
@@ -125,17 +131,18 @@ function KpiPerformance() {
             thisWeek: '100.1'
         },
         {
-            // center: 'ASC #1',
+            center: 'ASC #1',
             kpi: 'RTAT (D)',
-            '2022': '100.1', 
-            '01-02': '100.1',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
             target: '100.1',
+            thisYear2Mon: '100.1',
             ach: '100.1',
             yoyYear: '100.1',
             yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
             thisMonth: '100.1',
             w04: '100.1',
             w05: '100.1',
@@ -143,17 +150,18 @@ function KpiPerformance() {
             thisWeek: '100.1'
         },
         {
-            // center: 'ASC #1',
+            center: 'ASC #1',
             kpi: 'Repair NPS (P)',
-            '2022': '100.1', 
-            '01-02': '100.1',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
             target: '100.1',
+            thisYear2Mon: '100.1',
             ach: '100.1',
             yoyYear: '100.1',
             yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
             thisMonth: '100.1',
             w04: '100.1',
             w05: '100.1',
@@ -163,15 +171,16 @@ function KpiPerformance() {
         {
             center: 'ASC #2',
             kpi: 'Volume(C)',
-            '2022': '100.1', 
-            '01-02': '100.1',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
             target: '100.1',
+            thisYear2Mon: '100.1',
             ach: '100.1',
             yoyYear: '100.1',
             yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
             thisMonth: '100.1',
             w04: '100.1',
             w05: '100.1',
@@ -179,17 +188,18 @@ function KpiPerformance() {
             thisWeek: '100.1'
         },
         {
-            // center: 'ASC #1',
+            center: 'ASC #2',
             kpi: 'Reclaim (%)',
-            '2022': '100.1', 
-            '01-02': '100.1',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
             target: '100.1',
+            thisYear2Mon: '100.1',
             ach: '100.1',
             yoyYear: '100.1',
             yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
             thisMonth: '100.1',
             w04: '100.1',
             w05: '100.1',
@@ -197,17 +207,18 @@ function KpiPerformance() {
             thisWeek: '100.1'
         },
         {
-            // center: 'ASC #1',
+            center: 'ASC #2',
             kpi: 'RTAT (D)',
-            '2022': '100.1', 
-            '01-02': '100.1',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
             target: '100.1',
+            thisYear2Mon: '100.1',
             ach: '100.1',
             yoyYear: '100.1',
             yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
             thisMonth: '100.1',
             w04: '100.1',
             w05: '100.1',
@@ -215,17 +226,18 @@ function KpiPerformance() {
             thisWeek: '100.1'
         },
         {
-            // center: 'ASC #1',
+            center: 'ASC #2',
             kpi: 'Repair NPS (P)',
-            '2022': '100.1', 
-            '01-02': '100.1',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
             target: '100.1',
+            thisYear2Mon: '100.1',
             ach: '100.1',
             yoyYear: '100.1',
             yoyMon: '100.1',
-            '202212': '100.1',
-            '202301': '100.1',
-            '202302': '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
             thisMonth: '100.1',
             w04: '100.1',
             w05: '100.1',
@@ -452,6 +464,88 @@ function KpiPerformance() {
         return tabData[activeTab].content;
     };
 
+    const renderTable = (data, tabName) => { 
+        // Get the column names from the first object
+        const columns = Object.keys(data[0]);   
+      
+        return (
+          <table className='table-wrapper'>
+            <thead>
+                <tr>
+                    <th className='custom-th' colSpan="2" rowspan="2">{tabName}</th>
+                    <th className='custom-th' colspan="2">2022</th>
+                    <th className='custom-th' colspan="3">2023</th>
+                    <th className='custom-th' rowSpan="2">YOY(year)</th>
+                    <th className='custom-th' rowSpan="2">YOY(ACC. Mon)</th>
+                    <th className='custom-th' colspan="3">Last 3 Month</th>
+                    <th className='custom-th' rowSpan="2">This Month</th>
+                    <th className='custom-th' colspan="3">Last 3 Weeks</th>
+                    <th className='custom-th' rowSpan="2">This Week</th>
+                </tr>
+                <tr>
+                    <th className='custom-th'>2022</th>
+                    <th className='custom-th'>01-02</th>
+                    <th className='custom-th'>Target</th>
+                    <th className='custom-th'>01-02</th>
+                    <th className='custom-th'>Ach</th>
+                    <th className='custom-th'>2022 Nov</th>
+                    <th className='custom-th'>2022 Dec</th>
+                    <th className='custom-th'>2023 Jan</th>
+                    <th className='custom-th'>W03</th>
+                    <th className='custom-th'>W04</th>
+                    <th className='custom-th'>W05</th>
+                </tr>
+            </thead>
+            <tbody>
+                { data.map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                        {/* <td id={`${row}-${rowIndex}`} className='custom-td custom-td-center' rowSpan="4">{ row.center }</td>
+                        <td id={`${row}-${rowIndex}`} className={`custom-td`}>{ row.kpi }</td> */}
+                    { columns.map((col, colIndex) => {
+                        if(col === 'center' && rowIndex % 4 === 0) {
+                            return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className='custom-td custom-td-center' rowSpan="4">{ row[col] }</td>;
+                        } else if(col === 'center' && rowIndex % 4 !== 0) {
+                            return false;
+                        } else if(col === 'kpi') {
+                            return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className={`custom-td custom-td-status`}>{ row[col] }</td>
+                        }
+                        // return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className={`custom-td ${colIndex === 1 ? 'custom-td-status' : ''}`}>{ row[col] }</td>;
+                    }) }
+                        <td className='custom-td'>{ row.lastYear }</td>
+                        <td className='custom-td'>{ row.lastYear2Mon }</td>
+                        <td className='custom-td'>{ row.target }</td>
+                        <td className='custom-td'>{ row.thisYear2Mon }</td>
+                        <td className='custom-td'>{ row.ach }</td>
+                        <td className='custom-td'>{ row.yoyYear }</td>
+                        <td className='custom-td'>{ row.yoyMon }</td>
+                        <td className='custom-td'>{ row.lastMonth3 }</td>
+                        <td className='custom-td'>{ row.lastMonth2 }</td>
+                        <td className='custom-td'>{ row.lastMonth1 }</td>
+                        <td className='custom-td'>{ row.thisMonth }</td>
+                        <td className='custom-td'>{ row.w04 }</td>
+                        <td className='custom-td'>{ row.w05 }</td>
+                        <td className='custom-td'>{ row.w06 }</td>
+                        <td className='custom-td'>{ row.thisWeek }</td>
+                    </tr>
+                )) }
+                
+                {/* { data.map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                    { columns.map((col, colIndex) => {
+                        if(colIndex === 0 && rowIndex % 4 === 0) {
+                            return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className='custom-td custom-td-center' rowSpan="4">{ row[col] }</td>;
+                        } else if(colIndex === 0 && rowIndex % 4 !== 0) {
+                            return false;
+                        }
+                        return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className={`custom-td ${colIndex === 1 ? 'custom-td-status' : ''}`}>{ row[col] }</td>;
+                    }) }
+                    </tr>
+                )) } */}
+            </tbody>
+          </table>
+        );
+    };
+
     const tabData = [
         {
           title: 'Summary',
@@ -466,9 +560,10 @@ function KpiPerformance() {
                         <p>Excel</p>
                     </button>
                 </div>
-                <div className='grid'>
+                {/* <div className='grid'>
                     <AgGrid data={rowData} column={column} paging={false} />
-                </div>
+                </div> */}
+                {renderTable(rowData, 'KPI')}
             </div>
           </>,
         },

@@ -15,7 +15,7 @@ import FormEditor from "./Editor/FormEditor";
 function NewCategory(props) {
 
 
-    const { period, data, setData, range, onSave, onClose, onDelete, onAttach} = props
+    const { data, setData, onSave, onClose} = props
 
     const [content, setContent] = useState(data);
     const [attachments, setAttachments] = useState([
@@ -31,7 +31,8 @@ function NewCategory(props) {
     {value:'TOP4',label:'TOP4'}, 
     {value:'TOP5',label:'TOP5'}, 
     ]
-    const [openIcon, setOpenIcon] = useState(false)
+    const [openIcon, setOpenIcon] = useState(false)       // load icon from server
+    const [insertIcon, setInsertIcon] = useState(false)   // upload icon from user pc
     const handleChange = (event) => {
     let value = event.value;
     console.log(value)
@@ -41,21 +42,41 @@ function NewCategory(props) {
     // })
     }
 
+    const clearState = () => {
+        
+
+        console.log('ㅣㅇ게 되고있는건아니지')
+        setReqData({
+            ...reqData,
+            categoryNm:'',
+            categoryIcon : '',
+            parentCategoryId : ''
+        })
+        setAlertSetting({
+            ...alertSetting,
+            alertTxt: 'Successfully inserted new catagory',
+            onClose : () => (
+                onClose(),
+                setAlertModal(false)
+            )
+        })
+    }
     const [alertModal, setAlertModal] = useState(false)
     const [alertSetting, setAlertSetting] = useState({
         alertTxt : '',
         onConfirm : function() {},
         isDoubleBtn : false,
         btnTxt : 'Close',
-        confirmTxt : ''
+        confirmTxt : '',
+        onClose : ()=>setAlertModal(false)
     })
 
     const onCheckInput = e =>{ 
         let value = e.target.value;
         if (value.length <= 100) {
-            setContent({
-                ...content,
-                title : value
+            setReqData({
+                ...reqData,
+                categoryNm : value
             })
         }else {
             setAlertSetting({
@@ -68,37 +89,57 @@ function NewCategory(props) {
         console.log('onStopInput')
         setData(content)
     }
-    const addRow = () =>{
 
-        if(attachments.length < 5) {
-            const newObj = {
-                fileName: '',
-                filePath : '',
-            }
-            const arr = [...attachments,newObj]
-            setAttachments(arr)
-        }else {
-            setAlertSetting({
-                ...alertSetting,
-                alertTxt: 'Up to 5 file attachments are allowed.'
-            })
-        }
-        
+    const [reqData, setReqData] = useState({
+        categoryNm:'',
+        categoryIcon : '',
+        parentCategoryId : ''
+    })
+    const onSelectIcon = (item) => {
+        console.log('onSelectIcon',item)
+        setReqData({
+            ...reqData,
+            categoryIcon :item.categoryIconId
+        })
     }
-    const deleteRow = (idx) => {
-        if(attachments.length > 1) {
-            setAttachments(prevArray => {
-                const newArray = [...prevArray];
-                newArray.splice(idx, 1);
-                return newArray;
-            })
-        } 
-        else {
+    useEffect(()=>{
+        console.log('request data', reqData)
+        setOpenIcon(false)
+    },[reqData])
+
+    const addNewCategory = () =>{
+        
+    if(reqData.categoryIcon==='' || reqData.categoryNm==='') {
+        setAlertSetting({
+            ...alertSetting,
+            alertTxt:'You should input all the information'
+        })
+        return false
+    }
+    let formdata = new FormData();
+    for (let key in reqData) {
+        if (reqData.hasOwnProperty(key)) {
+            formdata.append(key, reqData[key]);
+        }
+    }
+    axiosInstance.post('/faqCa/insert', formdata).then(res => {
+        let resData = res.data;
+        console.log(res,'more and more')
+        if (resData.code === 500) {
             setAlertSetting({
                 ...alertSetting,
-                alertTxt : 'At least one attachment is required.'
+                alertTxt : resData.msg
             })
+        } else if(resData.code === 200 ){
+            clearState()
         }
+    }).catch(error => {
+        setAlertSetting({
+            ...alertSetting,
+            alertTxt : 'Fail to attach file.'
+        })
+        console.log(error);
+    })
     }
     const updateFile = (idx, file) => {
         console.log('########## updateFile ###########', idx, file)
@@ -119,7 +160,8 @@ function NewCategory(props) {
                 onConfirm : function() {},
                 isDoubleBtn : false,
                 btnTxt : 'Close',
-                confirmTxt : ''
+                confirmTxt : '',
+                onClose : ()=>setAlertModal(false)
             })
         }
     },[alertModal])
@@ -186,7 +228,7 @@ function NewCategory(props) {
                 {
                     iconList?.map((item,idx) => {
                         return(
-                            <li key={generateRandomString(idx)}><img src={process.env.REACT_APP_DOWN_URL+'/'+item.categoryIconPath} alt="category-icons"/></li>
+                            <li key={generateRandomString(idx)} onClick={()=>onSelectIcon(item)}><img src={process.env.REACT_APP_DOWN_URL+'/'+item.categoryIconPath} alt="category-icons"/></li>
                         )
                     })
                 }
@@ -224,7 +266,7 @@ function NewCategory(props) {
                     type="text" 
                     className="category-subject"
                     name="subject" 
-                    value={content.title}
+                    value={reqData.categoryNm}
                     onChange={(e)=>{onCheckInput(e)}}
                     onBlur={()=>onStopInput()} 
                     >
@@ -235,11 +277,32 @@ function NewCategory(props) {
             <div className="write-row custom-flex-item">
                 <div className="left"> <p>· Icon</p> </div>
                 <div className="right file-upload custom-flex-item"> 
-                   <div className="icon-wrapper custom-flex-item custom-justify-center"><img src={Arrow} alt="icon_img"/></div>
+                   <div className="icon-wrapper custom-flex-item custom-justify-center"><img src={process.env.REACT_APP_DOWN_URL+'/'+reqData.categoryIcon.uploadPath!=='' ? reqData.categoryIcon.uploadPath : null} alt="icon_img"/></div>
                    <div className="custom-flex-item"> 
                    <button id="file-add-icon" style={{display:'none'}} onClick={()=>setOpenIcon(true)}></button>
                     <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-add-icon" >Select</label>
-                   <input 
+                    <button id="file-upload-icon" style={{display:'none'}} onClick={()=>setInsertIcon(!insertIcon)}></button>
+                    <label className="custom-flex-item custom-justify-center custom-align-item custom-white-btn" htmlFor="file-upload-icon" >+ Add</label>
+                  
+                    {
+                        openIcon &&
+                        <SelectIcon onCloseIcon={()=>setOpenIcon(false)}/> 
+                    }
+                    {/* <button id="file-delete-btn" style={{display:'none'}} onClick={()=>deleteRow()}></button>
+                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn" >Delete</label> */}
+                    </div>
+                   
+                </div>
+                
+            </div>
+            
+                {
+                    insertIcon &&
+                    <div className="write-row custom-flex-item">
+                    <div className="left"><p>· Add Icon</p></div>
+                    <div className="right custom-flex-item">
+                    <input className="category-subject custom-invalid-input" readOnly/>
+                    <input 
                         type="file" 
                         className="file-select-btn" 
                         style={{display: "none"}} 
@@ -279,7 +342,7 @@ function NewCategory(props) {
                                         alertTxt : resData.msg
                                     })
                                 } else {
-                                    updateFile(1, resData.result[0]);
+                                    console.log('file attach')
                                 }
                             }).catch(error => {
                                 setAlertSetting({
@@ -291,25 +354,21 @@ function NewCategory(props) {
                             
                     }}
                     />   
-                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-select-btn" >Add Icon</label>
-                    {
-                        openIcon &&
-                        <SelectIcon onCloseIcon={()=>setOpenIcon(false)}/> 
-                    }
-                    {/* <button id="file-delete-btn" style={{display:'none'}} onClick={()=>deleteRow()}></button>
-                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn" >Delete</label> */}
-                    </div>
-                   
+                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-select-btn" id="add-btn">Add Icon</label>
                 </div>
-
+                </div>
+                }
             </div>
-
-        </div>
         <div className="btn-row custom-flex-item custom-justify-center" >
                 <button className="btn-black" onClick={onClose}>Cancel</button>
-                <button type="submit" className="btn-red" onClick={onSave}>Save</button>
+                <button type="submit" className="btn-red" onClick={addNewCategory}>Save</button>
         </div>
         </div>
+        {
+            alertModal 
+            &&
+            <Alert alertTxt={alertSetting.alertTxt} onClose={()=>alertSetting.onClose()} btnTxt={alertSetting.btnTxt} />
+        }
         </>
     )
 }

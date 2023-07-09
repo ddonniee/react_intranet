@@ -34,6 +34,7 @@ function TrainingStatus() {
             'month12': '1',
         },
         {
+            center: 'ASC #1',
             trainingStatus: 'Completed (OK)',
             'month1': '1', 
             'month2': '1',
@@ -49,6 +50,7 @@ function TrainingStatus() {
             'month12': '1',
         },
         {
+            center: 'ASC #1',
             trainingStatus: 'Completed (Fail)',
             'month1': '1', 
             'month2': '1',
@@ -65,7 +67,7 @@ function TrainingStatus() {
         },
         {
             center: 'ASC #2',
-            trainingStatus: 'Volume(C)',
+            trainingStatus: 'In Progress',
             'month1': '1', 
             'month2': '1',
             'month3': '1',
@@ -80,7 +82,8 @@ function TrainingStatus() {
             'month12': '1',
         },
         {
-            trainingStatus: 'Reclaim (%)',
+            center: 'ASC #2',
+            trainingStatus: 'Completed (OK)',
             'month1': '1', 
             'month2': '1',
             'month3': '1',
@@ -95,7 +98,8 @@ function TrainingStatus() {
             'month12': '1',
         },
         {
-            trainingStatus: 'RTAT (D)',
+            center: 'ASC #2',
+            trainingStatus: 'Completed (Fail)',
             'month1': '1', 
             'month2': '1',
             'month3': '1',
@@ -111,7 +115,7 @@ function TrainingStatus() {
         },
         {
             center: 'ASC #3',
-            trainingStatus: 'Volume(C)',
+            trainingStatus: 'In Progress',
             'month1': '1', 
             'month2': '1',
             'month3': '1',
@@ -126,7 +130,8 @@ function TrainingStatus() {
             'month12': '1',
         },
         {
-            trainingStatus: 'Reclaim (%)',
+            center: 'ASC #3',
+            trainingStatus: 'Completed (OK)',
             'month1': '1', 
             'month2': '1',
             'month3': '1',
@@ -141,7 +146,8 @@ function TrainingStatus() {
             'month12': '1',
         },
         {
-            trainingStatus: 'RTAT (D)',
+            center: 'ASC #3',
+            trainingStatus: 'Completed (Fail)',
             'month1': '1', 
             'month2': '1',
             'month3': '1',
@@ -170,26 +176,26 @@ function TrainingStatus() {
     };
 
     const [column, setColumn] = useState([ // 컬럼 값 설정
-        // {
-        //     headerName: '',
-        //     field: 'center',
-        //     spanHeaderHeight: true,
-        //     pinned: 'left',
-        //     width: 60,
-        //     rowSpan: rowSpan,
-        //     cellClassRules: {
-        //         'cell-span': " value==='ASC #1' || value==='ASC #2' || value==='ASC #3' ",
-        //     },
-        // },
-        // { 
-        //     headerName: 'Training Status',
-        //     field: 'trainingStatus',
-        //     resizable: false,
-        //     spanHeaderHeight: true,
-        //     pinned: 'left',
-        //     width: 220,
-        //     // suppressAutoSize: true
-        // },
+        {
+            headerName: '',
+            field: 'center',
+            spanHeaderHeight: true,
+            pinned: 'left',
+            width: 60,
+            rowSpan: rowSpan,
+            cellClassRules: {
+                'cell-span': " value==='ASC #1' || value==='ASC #2' || value==='ASC #3' ",
+            },
+        },
+        { 
+            headerName: 'Training Status',
+            field: 'trainingStatus',
+            resizable: false,
+            spanHeaderHeight: true,
+            pinned: 'left',
+            width: 220,
+            // suppressAutoSize: true
+        },
         { 
             headerName: 'May-2023',
             field: 'month1',
@@ -276,6 +282,53 @@ function TrainingStatus() {
         },
     ]);
 
+    /*========================================================================= */
+    const renderTable = (data, tabName) => { 
+        // Get the column names from the first object
+        const columns = Object.keys(data[0]);   
+      
+        return (
+          <table className='table-wrapper'>
+            <thead>
+              <tr>
+                { columns.map((col, colIndex) => {
+                    if(colIndex === 0) {
+                        return <th key={colIndex} className='custom-th' colSpan={2}>{tabName}</th>;
+                    }
+                    if(colIndex === 1) {
+                        return false;
+                    }
+                    return <th key={colIndex} className='custom-th'>{col}</th>;
+                }) }
+              </tr>
+            </thead>
+            <tbody>
+                { data.map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                    { columns.map((col, colIndex) => {
+                        if(colIndex === 0 && rowIndex % 3 === 0) {
+                            return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className='custom-td custom-td-center' rowSpan="3">{ row[col] }</td>;
+                        } else if(colIndex === 0 && rowIndex % 3 !== 0) {
+                            return false;
+                        }
+                        return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className={`custom-td ${colIndex === 1 ? 'custom-td-status' : ''}`}>{ row[col] }</td>;
+                    }) }
+                    </tr>
+                )) }
+
+                {/* { rowData.map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                    { columns.map((col, colIndex) => (
+                        <td key={colIndex} id={`${rowIndex}-${colIndex}`} className='custom-td'>{ row[col] }</td>
+                    )) }
+                    </tr>
+                )) } */}
+            </tbody>
+          </table>
+        );
+    };
+    /*========================================================================= */
+
     const subOptions = [
         { value: 'LGEAI', label: 'LGEAI' },
         { value: 'LGEAI2', label: 'LGEAI2' },
@@ -339,51 +392,21 @@ function TrainingStatus() {
       {
         title: 'Training Status',
         content:
-          <div className="sub-table-wrapper">
-            <div className='grid'>
+          <div className="sub-table">
+            {/* <div className='grid'>
                 <AgGrid data={rowData} column={column} paging={false} />
-            </div>
-            {/* <table className='sub-table'>
-                <colgroup>
-                    <col width="*"/>
-                    <col width="16%"/>
-                    <col width="16%"/>
-                    <col width="16%"/>
-                    <col width="16%"/>
-                    <col width="16%"/>
-                </colgroup>
-                <thead>
-                    <tr>
-                      <th className='pc-table-th' colSpan="2">Training Status</th>
-                      { column.map((col, index) => (
-                          <th key={index} className='pc-table-th'>{col.headerName}</th>
-                      ))}
-                    </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className='pc-table-td' rowSpan="3">ASC #1</td>
-                    { rowData.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
-                      <td key={rowIndex} className='pc-table-td' rowSpan={row.center && 3}>{row.center}</td>
-                      <td key={rowIndex} className='pc-table-td'>{row.trainingStatus}</td>
-                        { row.map((cell, cellIndex) => (
-                            <td key={cellIndex} className='pc-table-td'>{cell}</td>
-                        ))}
-                    </tr>
-                    ))}
-                  </tr>
-                </tbody>
-            </table> */}
+            </div> */}
+            {renderTable(rowData, 'Training Status')}
           </div>
       },
       {
         title: 'Average Score',
         content: 
           <div className="sub-table">
-            <div className='grid'>
+            {/* <div className='grid'>
                 <AgGrid data={rowData} column={column} paging={false} />
-            </div>
+            </div> */}
+            {renderTable(rowData, 'Average Score')}
           </div>
       },
   ];
@@ -415,18 +438,20 @@ function TrainingStatus() {
           title: 'Training Status By Engineer',
           content: 
             <div className="table"> 
-              <div className='grid'>
+              {/* <div className='grid'>
                   <AgGrid data={rowData} column={column} paging={false} />
-              </div>
+              </div> */}
+                {renderTable(rowData, 'Training Status By Engineer')}
             </div>
         },
         {
           title: 'Average Score By Engineer',
           content: 
             <div className="table">
-              <div className='grid'>
+              {/* <div className='grid'>
                   <AgGrid data={rowData} column={column} paging={false} />
-              </div>
+              </div> */}
+              {renderTable(rowData, 'Average Score By Engineer')}
             </div>
         }
     ];
