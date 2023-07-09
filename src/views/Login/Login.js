@@ -178,7 +178,7 @@ const Login = () =>{
                                 <input type="password" id="login-pw" placeholder="PASSWORD"  onChange={handleChangeInput}/>
                                 <div className="login-check-area">
                                     <label htmlFor="login-checkbox" className="custom-checkbox-label">
-                                        <input type="checkbox" id="login-checkbox" className="custom-checkbox" onClick={rememberId} defaultChecked={localStorage.getItem("csportalId") ? true : false}/>
+                                        <input type="checkbox" id="login-checkbox" className="custom-checkbox" onClick={rememberId} defaultChecked={localStorage.getItem("csportalId") ? true: false}/>
                                         <span className="custom-checkbox-icon"><img src={Check} alt='icon-check'/></span>
                                         <span className="custom-checkbox-text">Remember my ID</span>
                                     </label>
