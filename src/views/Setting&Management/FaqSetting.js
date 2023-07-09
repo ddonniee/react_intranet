@@ -16,19 +16,9 @@ import Tab from "../../components/Tab";
 import NewFaq from "./NewFormat/NewFaq";
 import NewCategory from "./NewFormat/NewCategory";
 // Utils
-import { generateRandomString,axiosInstance2 } from "../../utils/CommonFunction"
+import { generateRandomString,axiosInstance2 } from "../../utils/CommonFunction";
 
 // Icons 
-import Order from '../../assets/svgs/icon_truck.svg'
-import Docs from '../../assets/svgs/icon_docs.svg'
-import Man from '../../assets/svgs/icon_man.svg'
-import Lupa from '../../assets/svgs/icon_tools.svg'
-import Hands from '../../assets/svgs/icon_hands.svg'
-import Codes from '../../assets/svgs/icon_codes.svg'
-import Timer from '../../assets/svgs/icon_timer.svg'
-import Video from '../../assets/svgs/icon_video.svg'
-import Talk from '../../assets/svgs/icon_cstalk.svg'
-import Polygon from '../../assets/svgs/icon_polygon.svg'
 import Plus from '../../assets/svgs/icon_plus.svg'
 import Minus from '../../assets/svgs/icon_minus.svg';
 import New from '../../assets/svgs/icon_new.svg'
@@ -301,6 +291,10 @@ function FaqSetting() {
     useEffect(()=>{
         setSelectedCategory(subCategory[0])
     },[subCategory])
+
+    useEffect(()=>{
+        console.log(selectedCategory,'selectedCategory')
+    },[selectedCategory])
     const handleClickAction = e => {
         console.log('handleClickAction')
     }
@@ -385,7 +379,7 @@ function FaqSetting() {
                         {
                             subCategory?.map((item,idx)=>{
                                 return(
-                                    <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${selectedCategory===item && `red-selected`}`} onClick={()=>setSelectedCategory(item)}>{item}</li>
+                                    <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${selectedCategory===item && `red-selected`}`} onClick={()=>setSelectedCategory(item)} key={generateRandomString(idx)}>{item}</li>
                                 )
                             })
                         }
