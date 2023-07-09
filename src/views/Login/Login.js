@@ -25,9 +25,9 @@ import axios from "axios";
 const Login = () =>{
 
     const [loginInfo, setLoginInfo] = useState({
-        userId : '',
+        userId : localStorage.getItem("csportalId") || '',
         password : '',
-        authType : '',
+        authType : 'captcha',
         authKey : '',
     })
     
@@ -38,35 +38,50 @@ const Login = () =>{
     const [tempOtpModal, setTempOtpModal] = useState(false);         // 일회용 OTP 모달창
 
     // 캡차 인증 문자 가져오기
-    const [captchaSrc, setCaptchaSrc] = useState("http://localhost:8090/login/getCaptcha");
 
     // 횟수에 따라 once 부분 바꾸는 로직 필요
-    const [alertTxt, setAlertTxt] = useState(`You entered your ID and PW incorrectly once.\nYou cannot log in if you enter incorrectly more than 5 times.`)
+    const [alertTxt, setAlertTxt] = useState();
+    // const [alertTxt, setAlertTxt] = useState(`You entered your ID and PW incorrectly once.\nYou cannot log in if you enter incorrectly more than 5 times.`)
 
     // OTP 인증 로그인 여부
     const [isOtp, setIsOtp] = useState(false);
 
+    // 로그인 API 호출
     const handleCheckLogin = e => {
-        var config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-            },
-            data: loginInfo
-        };
-
-        // 로그인 처리
-        axiosInstance.post("/login/doLogin", config)
+        let config = {
+            withCredentials: true,
+        }
+        axiosInstance.post("http://localhost:8090/login/doLogin", jsonToFormData(loginInfo), config)
         .then(res => {
-            console.log(res);
-
+            let resData = res.data;
+            if (resData.code !== 200) {  // 로그인 실패
+                setAlertTxt(resData.msg);
+                setFailModal(true);
+                getCaptcha();
+            } else {  // 성공
+                sessionStorage.setItem("token", resData.result.token);
+                sessionStorage.setItem("userInfo", resData.result.userInfo);
+                rememberId();
+                window.location.href = "/";
+            }
         })
         .catch(error => {
-            console.log(error)
-            setFailModal(true);
+            console.log("ERROR>>>", error.response)
+            // setFailModal(true);
         })
+    }
+
+    /** JSON to FormData */
+    const jsonToFormData = (json) => {
+        const formData = new FormData();
+
+        for (const key in json) {
+            if (json.hasOwnProperty(key)) {
+                formData.append(key, json[key]);
+            }
+        }
+
+        return formData;
     }
 
     const handleChangeInput = e =>{
@@ -100,6 +115,7 @@ const Login = () =>{
         }
     }
 
+    // 우측 링크 클릭
     const handleClickLink = e => {
         let title = e.target.title;
         if(title==='join') {
@@ -116,24 +132,33 @@ const Login = () =>{
 
     // 캡차 이미지 가져오기
     const getCaptcha = (e) => {
-        e.preventDefault();
+        e && e.preventDefault();
 
         // 매번 새로운 캡차를 받기 위해 랜덤 문자열을 넣어줌
         var rand = Math.random();
         var url = "http://localhost:8090/login/getCaptcha?rand=" + rand;
-        setCaptchaSrc(url);
+        document.getElementById("captchaImage").setAttribute('src', url);
     };
 
+
+    // 아이디 저장
+    const rememberId =()=> {
+        let checked = document.getElementById("login-checkbox").value;
+        let id =  document.getElementById("login-id").value;
+        if(checked) localStorage.setItem("csportalId", id);
+        else localStorage.removeItem("csportalId");
+    }
+
+    // 모바일 대응
     const [isMobile, setIsMobile] = useState();
     const checkUserAgent = () => {
         let agent = detectUserAgent();
         setIsMobile(agent==='pc'?false:true)
     }
+
     useEffect(()=>{
         checkUserAgent()
     },[])
-
-
 
 
     return (
@@ -149,11 +174,11 @@ const Login = () =>{
                         <div className="login-top"><span className="welcome-title">{isMobile ? 'Login' : 'Welcome to LG CS portal' } </span></div>
                         <div className="login-middle" >
                             <div className="login-info-left">
-                                <input type="text" id="login-id" placeholder="USER ID"  onChange={handleChangeInput}/>
+                                <input type="text" id="login-id" placeholder="USER ID" value={loginInfo.userId} onChange={handleChangeInput}/>
                                 <input type="password" id="login-pw" placeholder="PASSWORD"  onChange={handleChangeInput}/>
                                 <div className="login-check-area">
                                     <label htmlFor="login-checkbox" className="custom-checkbox-label">
-                                        <input type="checkbox" id="login-checkbox" className="custom-checkbox" />
+                                        <input type="checkbox" id="login-checkbox" className="custom-checkbox" onClick={rememberId} defaultChecked={localStorage.getItem("csportalId") ? true : false}/>
                                         <span className="custom-checkbox-icon"><img src={Check} alt='icon-check'/></span>
                                         <span className="custom-checkbox-text">Remember my ID</span>
                                     </label>
@@ -173,7 +198,7 @@ const Login = () =>{
                                     :
                                     <div className="login-security-txt custom-justify-between">
                                         <div>
-                                            <img src={captchaSrc} className="security-num"/>
+                                            <img src={"http://localhost:8090/login/getCaptcha"} className="security-num" id="captchaImage" />
                                             <img src={Reload} alt='reload-security-num' className="security-reload" onClick={getCaptcha}/>
                                         </div>
                                         <input className="secutiry-txt" type="text" onChange={e => setLoginInfo({ ...loginInfo, authKey: e.target.value })}/>
