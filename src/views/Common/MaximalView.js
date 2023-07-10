@@ -2,8 +2,9 @@ import React, {useState} from "react";
 
 import Pagination from "react-js-pagination";
 import { axiosInstance } from "../../utils/CommonFunction";
-import Close from '../../assets/svgs/icon_close.svg'
-
+import Close from '../../assets/svgs/icon_close2.svg'
+import Minimize from '../../assets/svgs/icon_screen.svg'
+import moment from "moment";
 function MaximalView(props) {
 
     const { data, onClose, onMinimizing} = props;
@@ -55,10 +56,19 @@ function MaximalView(props) {
         <div className="modal">
            <div className="maximal-content">
              <div className="content-top">
-                <img src={Close} alt="minimize-btn" onClick={onMinimizing} />
-                <span>{detail.subject}</span>
+             <div className="board-btn-area custom-flex-item custom-align-item custom-justify-between">
+                <button className="board-full-btn" onClick={onMinimizing}>
+                <img src={Minimize} alt="minimize-btn"/> Exit Full Screen
+                </button>
                 <img src={Close} alt="minimize-btn" onClick={onClose} />
+                </div>
              </div>
+            <p>{detail.subject}</p>
+            <p className="board-title-detail">
+                                <span>Category</span> : {detail?.categoryId} &nbsp;
+                                <span>Writer</span> : {detail?.WriterName}
+                                <span>Date</span> : {moment(detail?.createdAt).format('YY.M.DD')} &nbsp;
+                            </p>
              <div className="content-middle"></div>
              <div className="content-bottom">
                 <ul>

@@ -355,6 +355,15 @@ body .modal {
     background: $primary-color-red;
     color: #FFFFFF;
 }
+.board-full-btn {
+    align-items: center;
+    background: #828282;
+    border: 1px solid #828282;
+    border-radius: 3px;
+    color: #fff;
+    display: flex;
+    padding: 4px 8px 4px 6px;
+}
 .custom-circle-btn {
     width: 88px;
     height: 88px;
