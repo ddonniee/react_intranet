@@ -77,28 +77,29 @@
             .notice-title {
                 width: 100%;
                 display: flex;
-                background-color: yellow;
+                border-top: 2px solid #BB0841;
+                background: #FBFBFB;
                 
                 span {
                     text-align: center;
                     width: 10%;
                 }
-                span:first-child {
-                    background-color: red;
-                }
+                // span:first-child {
+                //     background-color: red;
+                // }
                 span:nth-child(2) {
                     width: 60%;
-                    background-color: orange;
+                    // background-color: orange;
                 }
-                span:nth-child(3) {
-                    background-color: yellow;
-                }
-                span:nth-child(4) {
-                    background-color: green;
-                }
-                span:nth-child(5) {
-                    background-color: skyblue;
-                }
+                // span:nth-child(3) {
+                //     background-color: yellow;
+                // }
+                // span:nth-child(4) {
+                //     background-color: green;
+                // }
+                // span:nth-child(5) {
+                //     background-color: skyblue;
+                // }
             }
 
             .notice-list {
