@@ -220,11 +220,11 @@ const Tab = () => {
                                         <li > <div> · {item.label}</div>
                                             <ul>
                                                 {
-                                                    item.lowerMenu.map((i,idx)=>{
+                                                    item.lowerMenu.map((i,index)=>{
                                                         return (
-                                                            <>
+                                                            <Fragment key={generateRandomString(index)}>
                                                            { i.isFavorite &&  <li className="cursor-btn" onClick={()=>{onClickLink(i.path)}}>{i.label}</li>}
-                                                            </>
+                                                            </Fragment>
                                                         )
                                                     })
                                                 }

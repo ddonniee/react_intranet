@@ -184,7 +184,7 @@ span {
     width: 350px; min-height: 195px; height: fit-content; 
     display: flex; flex-direction: column;
     .alert-bottom {
-        text-align: right;
+        text-align: right; justify-content: end;
     }
     button {
         background-color: $primary-color-red; color: white; font-weight: 600;

@@ -27,6 +27,7 @@ import New from '../../assets/svgs/icon_new.svg'
 import moment from "moment";
 import EditFaq from "./NewFormat/EditFaq";
 import Alert from "../../components/Alert";
+import MiddleTop from "../../components/MiddleTop";
 
 
 function FaqSetting() {
@@ -108,7 +109,8 @@ function FaqSetting() {
         onConfirm : function() {},
         isDoubleBtn : false,
         btnTxt : 'Close',
-        confirmTxt : ''
+        confirmTxt : '',
+        onClose : () => setAlertModal(false)
     })
     useEffect(()=>{
         if(alertSetting.alertTxt!=='') {
@@ -238,18 +240,10 @@ function FaqSetting() {
             console.log('error',error)
         })
     }
-    const onConfirm = () => {
-        setAlertSetting({
-            ...alertSetting,
-            alertTxt : `Are you sure to delete ${selectedCategory.categoryNm}?`,
-            onConfirm : ()=>(deleteItem(), setAlertModal(false), clearState(2)),
-            isDoubleBtn : true,
-            btnTxt : '',
-            confirmTxt : 'Delete'
-        })
-    }
+
     const clearState =(num)=> {
         if(num===1) {
+            console.log('ppppppppppppppppppppppppppp')
             setSelectedList({
                 attachments: '',
                 reactionState: "",
@@ -260,12 +254,13 @@ function FaqSetting() {
                 subsidiary:'',
                 writerName:'',
                 commentCount : 0,
-                hits: 16,
+                hits: 0,
                 createdAt: '',
                 faqId: '',
                 categoryId: '',
                 writerID: ''
                })
+               getList(); 
         }else if(num===2) {
             setSelectedCategory({
                 categoryIconFileNM : '',
@@ -368,8 +363,7 @@ function FaqSetting() {
                     setAlertModal(false)
                 },
                 isDoubleBtn : true,
-                btnTxt : 'Confirm',
-                confirmTxt : ""
+                confirmTxt : "Confirm"
             })
                    
         }
@@ -401,11 +395,10 @@ function FaqSetting() {
         else if(num===4) {
             setAlertSetting({
                 ...alertSetting,
-                alertTxt : `Are you sure to delete ${selectedCategory.categoryNm}?`,
+                alertTxt : `Are you sure to delete icon for ${selectedCategory.categoryNm}?`,
                 onConfirm : ()=>(deleteItem(), setAlertModal(false), clearState(2)),
                 isDoubleBtn : true,
-                btnTxt : '',
-                confirmTxt : 'Delete'
+                btnTxt : 'Delete',
             })
 
            
@@ -425,11 +418,10 @@ function FaqSetting() {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: 'Success',
-                onConfirm :  ()=>{setAlertModal(false); getList(); setOpenFaqCreator(false)},
+                onClose :  ()=>{setAlertModal(false); clearState(1)},
                 isDoubleBtn : false,
                 btnTxt : 'Close',
             })
-            clearState()
         }else if(num===7) {
             setAlertSetting({
                 ...alertSetting,
@@ -438,7 +430,7 @@ function FaqSetting() {
                 isDoubleBtn : false,
                 btnTxt : 'Close',
             })
-            clearState()
+            clearState(1)
         }
     }
 
@@ -463,12 +455,10 @@ function FaqSetting() {
             if(mode==='edit') {
                 formData.append('faqId',selectedList.faqId)
             }
-            console.log('save data >>>>>>', Object.fromEntries(formData))
-            console.log(url)
             // faq 등록/수정faqTopId
             axiosInstance2.post(url, formData,config).then(res => {
                 let resData = res.data;
-                console.log(res,'===========================================================')
+                console.log(resData.code == 200,'===========================================================')
                 if(resData.code == 200) {
                     console.log('res', resData)
                     onConfirmHandler(6)
@@ -533,7 +523,7 @@ function FaqSetting() {
         <Header />
         <Style selectId={selectedList.faqId} openRight={(selectedList?.faqId!=='' || openFaqCreator || openCategory )? true : false}>
         <div className="inner-container">
-        <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
+        <MiddleTop searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Top Area */}
             <div className="faq-setting" >
                 <div className="faq-category custom-flex-item custom-justify-between">
@@ -631,7 +621,7 @@ function FaqSetting() {
             </div>
             {
                 alertModal &&
-                <Alert alertTxt={alertSetting.alertTxt} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt} onClose={()=>setAlertModal(false)}/>
+                <Alert alertTxt={alertSetting.alertTxt} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt} onClose={()=>alertSetting.onClose()}/>
             }
             <Zendesk />
             <Tab />

@@ -25,8 +25,12 @@
             border-radius:  0px 5px 5px 0px; border-left: 1px solid #D8D8D8;
         }
     }
-   
+   .alert-bottom {
+    display: flex !important;
+    justify-content: end !important;
+    }
 }
+
 .faq-setting-tab {
     min-height: 73px;
     & > div:first-child {

@@ -93,7 +93,7 @@ function CStalk() {
     const [content, setContent] = useState({
         title : '',
         content : '',
-        isPublic : '',
+        isPublic : null,
         attachments : null,
         csTalkId : ''
     });
@@ -108,7 +108,7 @@ function CStalk() {
         createdAt : '',
         csTalkId : '',
         hits : 0,
-        isPublic :  '',
+        isPublic :  null,
         likeCount : 0, 
         parentCsId : '',
         subsidiary : '',
@@ -205,7 +205,7 @@ function CStalk() {
                     setContent({
                         title : '',
                         content : '',
-                        isPublic : '',
+                        isPublic : null,
                         attachments : '',
                         csTalkId : ''
                     })
@@ -438,7 +438,7 @@ function CStalk() {
             createdAt : '',
             csTalkId : '',
             hits : 0,
-            isPublic :  0,
+            isPublic :  null,
             likeCount : 0, 
             parentCsId : '',
             subsidiary : '',
@@ -469,7 +469,7 @@ function CStalk() {
 
         console.log(content,'111111111111111111111111111111111111')
 
-        if (content.title==='' || content.content==='' || content.isPublic==='') {
+        if (content.title==='' || content.content==='' || content.isPublic===null) {
             
             setAlertSetting({
                 ...alertSetting,
@@ -510,7 +510,13 @@ function CStalk() {
                         confirmTxt : ''
                     })
                        setIsWrite(false)
-                       setContent({})
+                       setContent({
+                        title : selectedList.subject,
+                        content : selectedList.content,
+                        isPublic : selectedList.isPublic,
+                        attachments : selectedList.attachments,
+                        csTalkId : selectedList.csTalkId,
+                       })
                        getList();
                        clearState()
                     }else {
@@ -538,7 +544,7 @@ function CStalk() {
     }
 
     const onEditContent = () =>{
-        if (content.title==='' || content.content==='' || content.isPublic==='') {
+        if (content.title==='' || content.content==='' || content.isPublic===null) {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt : "Please fill out all the information.",
@@ -578,7 +584,13 @@ function CStalk() {
                         })
 
                        setIsModify(false)
-                       setContent({})
+                       setContent({
+                        title : selectedList.subject,
+                        content : selectedList.content,
+                        isPublic : selectedList.isPublic,
+                        attachments : selectedList.attachments,
+                        csTalkId : selectedList.csTalkId,
+                       })
                        getList();
                        getDetail(content.csTalkId);
                     }else {
@@ -859,7 +871,7 @@ function CStalk() {
                 createdAt : '',
                 csTalkId : '',
                 hits : 0,
-                isPublic :  '',
+                isPublic :  null,
                 likeCount : 0, 
                 parentCsId : '',
                 subsidiary : '',

@@ -12,7 +12,7 @@ const Alert = props => {
                 <div className="modal-content alert-only custom-justify-between">
                     <div className="alert-top"><img src={Close} alt="close-btn" onClick={onClose} /></div>
                     <div className="alert-middle"><span>{alertTxt}</span></div>
-                    <div className="alert-bottom">
+                    <div className="alert-bottom custom-flex-item">
                         {
                             !twoBtn
                             ?

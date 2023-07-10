@@ -3,7 +3,6 @@ import { styled } from "styled-components";
 import Close from '../../../assets/svgs/icon_close.svg'
 import Frame from '../../../assets/svgs/icon_editor_frame.svg'
 import MoreIcon from '../../../assets/svgs/icon_more.svg';
-import EditorModify from "../../../components/EditorModify";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Alert from "../../../components/Alert";

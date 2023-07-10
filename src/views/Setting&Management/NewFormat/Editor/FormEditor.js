@@ -135,7 +135,7 @@ function FormEditor(props) {
                     {/* <input type="text" className="write-input"></input>  */}
                     <CKEditor
                         editor={ ClassicEditor }
-                        data={content.content}
+                        data={data.content}
                         // config={editorConfig}
                         onReady={ editor => {
                             console.log( 'Editor is ready to use!', editor );
@@ -151,7 +151,7 @@ function FormEditor(props) {
                             })
                         } }
                         onBlur={ ( event, editor ) => {
-                            onStopInput();
+                            // onStopInput();
                         } }
                         onFocus={ ( event, editor ) => 
                             {

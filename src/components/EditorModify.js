@@ -21,11 +21,11 @@ import { generateRandomString,axiosInstance } from "../utils/CommonFunction";
  * react-html-parser -> buffer 모듈설치 // npm install buffer 추후에
  * @returns 
  */
-function EditorModify({ period, data, setData, range, onSave, onClose, onDelete, onAttach }) {
+function EditorModify(props) {
 
-    console.log(data,'editedit')
+    
+    const { period, data, setData, range, onSave, onClose, onDelete, onAttach } = props;
     const user = useContext(UserContext);
-    const [content, setContent] = useState(data);
     const [alertModal, setAlertModal] = useState(false)
     const [alertSetting, setAlertSetting] = useState({
         alertTxt : '',
@@ -51,10 +51,10 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
 
     const handleClickRadio = (e,num) =>{
         console.log(num)
-        // setContent({
-        //     ...content,
-        //     isPublic : num
-        // })
+        setData({
+            ...data,
+            isPublic : num
+        })
     }
 
     const updateFile = (idx, file) => {
@@ -65,18 +65,18 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
         updateFile.fileName = file.fileName;
         updateFile.uploadPath = file.uploadPath;
 
-        setContent({ ...content, attachments: JSON.stringify(copyFiles)})
+        setData({ ...data, attachments: JSON.stringify(copyFiles)})
     };
 
     const onStopInput = () => {
         console.log('onStopInput')
-        setData(content)
+        setData(data)
     }
     const onCheckInput = e =>{ 
         let value = e.target.value;
         if (value.length <= 100) {
-            setContent({
-                ...content,
+            setData({
+                ...data,
                 title : value
             })
         }else {
@@ -120,22 +120,7 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
         // }
     }
 
-    useEffect(() => {
-        let content = data;
-        console.log(content.attachments)
-        // console.log('editor file data --->', JSON.parse(content.attachments))
-        setTimeout(() => {
-            setContent(content);
-            // setOrigin(content);
-            // setAttachments(JSON.parse(content.attachments))
-        }, 10);
 
-        return () => {
-            setContent();
-            // setOrigin();
-            setAttachments();
-        }
-    }, [data])
 
     useEffect(()=>{
         if(!alertModal) {
@@ -156,13 +141,13 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
         }
     },[alertSetting])
 
-    // useEffect(()=>{
-    //     console.log('---------------------------------------------------------------------!!')
-    //     setData({
-    //         ...data,
-    //         isPublic : content.isPublic
-    //     })
-    // },[content.isPublic])
+    useEffect(()=>{
+        console.log('---------------------------------------------------------------------!!')
+        setData({
+            ...data,
+            isPublic : data.isPublic
+        })
+    },[data.isPublic])
 
     return (
         <Style>
@@ -179,17 +164,17 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
                 <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>
                 <div className="right radio-row custom-flex-item">
                 <label id="custom-label" onClick={(e)=>handleClickRadio(e,1)}>
-                    <input className="hiddenRadio" type="radio" name="release" value={range ? 1 : "ALL"} checked={content.isPublic === 1 ? true : false}/>
+                    <input className="hiddenRadio" type="radio" name="release" value={range ? 1 : "ALL"} checked={data.isPublic === 1 ? true : false}/>
                     <div className="showRadio"></div>
                     <span>All</span>
                 </label>
                 <label id="custom-label" onClick={(e)=>handleClickRadio(e,0)}>
-                    <input className="hiddenRadio" type="radio" name="release" value={range ? 0 : "LGC"} checked={content.isPublic === 0 ? true : false}/>
+                    <input className="hiddenRadio" type="radio" name="release" value={range ? 0 : "LGC"} checked={data.isPublic === 0 ? true : false}/>
                     <div className="showRadio"></div>
                     <span>{range ? 'Me' : 'LGC'}</span>
                 </label>
                 <label id="custom-label" onClick={(e)=>handleClickRadio(e,2)}>
-                    <input className="hiddenRadio" type="radio" name="release" value={range ? 2 : "ASC"} checked={content.isPublic === 2 ? true : false}/>
+                    <input className="hiddenRadio" type="radio" name="release" value={range ? 2 : "ASC"} checked={data.isPublic === 2 ? true : false}/>
                     <div className="showRadio"></div>
                     <span>{range ? 'Center' : 'ASC'}</span>
                 </label>
@@ -211,7 +196,7 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
                     type="text" 
                     className="write-input" 
                     ame="subject" 
-                    value={content.title}
+                    value={data.title}
                     onChange={(e)=>{onCheckInput(e)}}
                     onBlur={()=>onStopInput()} 
                     >
@@ -224,8 +209,7 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
                     {/* <input type="text" className="write-input"></input>  */}
                     <CKEditor
                         editor={ ClassicEditor }
-                        data={content.content}
-                        // config={editorConfig}
+                        data={data.content}
                         onReady={ editor => {
                             console.log( 'Editor is ready to use!', editor );
                         } }
@@ -233,8 +217,8 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
                             const inputData = editor.getData();
                             const dbTxt = encodeURIComponent(inputData)
                             // setTxt(dbTxt)
-                            setContent({
-                                ...content,
+                            setData({
+                                ...data,
                                 content : inputData,
                             })
                         } }
@@ -327,9 +311,9 @@ function EditorModify({ period, data, setData, range, onSave, onClose, onDelete,
                     <p className="attach-desc">Attached files can only be in PDF, HWP, Docx, xls, and PPT formats (Support up to 100MB)</p>
                 </div>
             </div>
-            <div className="btn-row" style={content.csTalkId==='' ? {justifyContent:'flex-end'} : null}>
+            <div className="btn-row" style={data.csTalkId==='' ? {justifyContent:'flex-end'} : null}>
                 {
-                    content.csTalkId !== '' &&
+                    data.csTalkId !== '' &&
                     <button className="btn-white" onClick={onDelete}>Delete</button>
                 }
                 <div>
