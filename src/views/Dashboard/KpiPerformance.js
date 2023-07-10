@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useLayoutEffect } from 'react';
+
 import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
 import Tab from '../../components/Tab';
-
 import LineChart from "../../components/Chart";
 import AgGrid from "../../components/AgGrid";
 import SelectBox from '../../components/SelectBox';
+
+import { generateRandomString } from "../../utils/CommonFunction"
+import { UserContext } from "../../hooks/UserContext";
 
 import '../../scss/style.scss';
 import { ReactComponent as SearchIcon } from '../../assets/svgs/icon_search.svg';
@@ -15,6 +18,115 @@ import { ReactComponent as ExcelIcon } from '../../assets/svgs/icon_excel.svg';
 
 function KpiPerformance() {
 
+    /**
+     * 화면 접근 권한
+     * 
+     * - Subsidiary 조회
+     * 본사 staff    (LK)  : 법인 선택 가능
+     * 법인관리자    (SS)  : 소속 법인 고정 (선택불가)
+     * 법인 admin    (SA)  : N/A
+     * LGC 관리자    (LD)  : 소속 법인 고정 (선택불가)
+     * LGC Engineer  (LE)  : 소속 법인 고정 (선택불가)
+     * ASC 관리자    (AD)  : 소속 법인 고정 (선택불가)
+     * ASC Engineer  (AE)  : 소속 법인 고정 (선택불가)
+     * 
+     * - Center Type 조회
+     * 본사 staff    (LK)  : LGC/ASC 선택 가능
+     * 법인관리자    (SS)  : LGC/ASC 선택 가능
+     * 법인 admin    (SA)  : N/A
+     * LGC 관리자    (LD)  : LGC 고정
+     * LGC Engineer  (LE)  : LGC 고정
+     * ASC 관리자    (AD)  : ASC 고정
+     * ASC Engineer  (AE)  : ASC 고정
+     * 
+     * - KPI 표 Total(차트)
+     * 본사 staff    (LK)  : 법인별 / Center / Branch 합계 내용
+     * 법인관리자    (SS)  : 소속 법인 / Center / Branch 합계 내용
+     * 법인 admin    (SA)  : N/A
+     * LGC 관리자    (LD)  : 소속 센터 합계 내용
+     * LGC Engineer  (LE)  : 본인 내용
+     * ASC 관리자    (AD)  : 소속 센터 합계 내용
+     * ASC Engineer  (AE)  : 본인 내용
+     * 
+     * - KPI 표 Detail
+     * 본사 staff    (LK)  : Center / Branch별 내용
+     * 법인관리자    (SS)  : Center / Branch별 내용
+     * 법인 admin    (SA)  : N/A
+     * LGC 관리자    (LD)  : 수리기사별로 표시
+     * LGC Engineer  (LE)  : N/A
+     * ASC 관리자    (AD)  : Branch / 수리기사별로 표시
+     * ASC Engineer  (AE)  : N/A
+     */
+
+    // 로그인 유저 정보
+    const user = useContext(UserContext);
+    const [token, setToken] = useState('LGEKR');
+    const [auth, setAuth] = useState({
+        isViewer : user.role === 'LK' || user.role === 'SA' ? true : false,
+        isWriter : user.role === 'SA' ? true : false,
+        isStaff : user.role === 'LK' ? true : false,
+    })
+
+    useEffect(() => {
+        console.log('login user', user)
+
+        if(!auth.isViewer) {
+            alert('No right to Access')
+            document.location.href='/login';
+        }
+    }, [])
+
+    const USER_CORP_CODE = 'LGEAI' // 로그인유저 법인코드
+    const USER_CENTER_TYPE = 'ASC' // 로그인유저 센터타입
+
+    const config = { // axios header
+        maxBodyLength: Infinity,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            // 'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+        }
+    }
+
+    /* 검색 영역 ****************************************************************/
+    const [searchData, setSearchData] = useState({ // 검색데이터
+        page: 1,
+        type: 'S',
+    });
+
+    const subOptions = [ // 법인 selectbox 데이터
+        { value: 'LGEAI', label: 'LGEAI', group: 'corporationCode' },
+    ]
+    const centerOptions = [ // center type selectbox 데이터
+        { value: 'LGC', label: 'LGC', group: 'centerType' },
+        { value: 'ASC', label: 'ASC', group: 'centerType' },
+    ]
+    const branchOptions = [
+        { value: 'NW', label: 'NW' },
+        { value: 'NW2', label: 'NW2' },
+    ]
+    const divOptions = [
+        { value: 'ASC', label: 'ASC' },
+        { value: 'ASC2', label: 'ASC2' },
+    ]
+    const prodOptions = [
+        { value: 'NW', label: 'NW' },
+        { value: 'NW2', label: 'NW2' },
+    ]
+
+    const handleSelectBox = (e) => {
+        console.log('select ---->', e)
+        let group = e.group;
+        let value = e.value;
+
+        if(group === 'corporationCode') {
+            setSearchData({ ...searchData, subsidiary: value })
+        } else if(group === 'centerType') {
+            setSearchData({ ...searchData, view: value })
+        }
+    }
+
+    /* 컨텐츠 영역 ****************************************************************/
     const [rowData, setRowData] = useState([ // 테이블 데이터 설정
         {
             center: 'Total',
@@ -93,6 +205,44 @@ function KpiPerformance() {
             thisWeek: '100.1'
         },
         {
+            center: 'Total',
+            kpi: 'Long Pending rate > 7D (%)',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
+            target: '100.1',
+            thisYear2Mon: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            center: 'Total',
+            kpi: 'Input Lead Time (S)',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
+            target: '100.1',
+            thisYear2Mon: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
             center: 'ASC #1',
             kpi: 'Volume(C)',
             lastYear: '100.1', 
@@ -169,6 +319,44 @@ function KpiPerformance() {
             thisWeek: '100.1'
         },
         {
+            center: 'ASC #1',
+            kpi: 'Long Pending rate > 7D (%)',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
+            target: '100.1',
+            thisYear2Mon: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            center: 'ASC #1',
+            kpi: 'Input Lead Time (S)',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
+            target: '100.1',
+            thisYear2Mon: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
             center: 'ASC #2',
             kpi: 'Volume(C)',
             lastYear: '100.1', 
@@ -228,6 +416,44 @@ function KpiPerformance() {
         {
             center: 'ASC #2',
             kpi: 'Repair NPS (P)',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
+            target: '100.1',
+            thisYear2Mon: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            center: 'ASC #2',
+            kpi: 'Long Pending rate > 7D (%)',
+            lastYear: '100.1', 
+            lastYear2Mon: '100.1',
+            target: '100.1',
+            thisYear2Mon: '100.1',
+            ach: '100.1',
+            yoyYear: '100.1',
+            yoyMon: '100.1',
+            lastMonth3: '100.1',
+            lastMonth2: '100.1',
+            lastMonth1: '100.1',
+            thisMonth: '100.1',
+            w04: '100.1',
+            w05: '100.1',
+            w06: '100.1',
+            thisWeek: '100.1'
+        },
+        {
+            center: 'ASC #2',
+            kpi: 'Input Lead Time (S)',
             lastYear: '100.1', 
             lastYear2Mon: '100.1',
             target: '100.1',
@@ -406,42 +632,6 @@ function KpiPerformance() {
         },
     ]);
 
-    const subOptions = [
-        { value: 'LGEAI', label: 'LGEAI' },
-        { value: 'LGEAI2', label: 'LGEAI2' },
-    ]
-
-    const centerOptions = [
-        { value: 'ASC', label: 'ASC' },
-        { value: 'ASC2', label: 'ASC2' },
-    ]
-
-    const branchOptions = [
-        { value: 'NW', label: 'NW' },
-        { value: 'NW2', label: 'NW2' },
-    ]
-
-    const divOptions = [
-        { value: 'ASC', label: 'ASC' },
-        { value: 'ASC2', label: 'ASC2' },
-    ]
-
-    const prodOptions = [
-        { value: 'NW', label: 'NW' },
-        { value: 'NW2', label: 'NW2' },
-    ]
-
-    const handleSelectBox = (event,params) => {
-        const { data } = params.node;
-        const { checked } = event.target;
-
-        if (checked) {
-            setRowData([...rowData, data]);
-          } else {
-            setRowData(rowData.filter(item => item !== data));
-          }
-    }
-
     const [activeTab, setActiveTab] = useState(0);
 
     const handleTabClick = (index) => {
@@ -464,7 +654,7 @@ function KpiPerformance() {
         return tabData[activeTab].content;
     };
 
-    const renderTable = (data, tabName) => { 
+    const renderTable = (data, isDetail) => { 
         // Get the column names from the first object
         const columns = Object.keys(data[0]);   
       
@@ -472,15 +662,16 @@ function KpiPerformance() {
           <table className='table-wrapper'>
             <thead>
                 <tr>
-                    <th className='custom-th' colSpan="2" rowspan="2">{tabName}</th>
+                    { isDetail ? <th className='custom-th custom-th-rowspan' rowspan="2">{'Employee ID'}</th> : null}
+                    <th className='custom-th custom-th-rowspan' colSpan={isDetail ? 1 : 2} rowspan="2">KPI</th>
                     <th className='custom-th' colspan="2">2022</th>
                     <th className='custom-th' colspan="3">2023</th>
-                    <th className='custom-th' rowSpan="2">YOY(year)</th>
-                    <th className='custom-th' rowSpan="2">YOY(ACC. Mon)</th>
+                    <th className='custom-th custom-th-rowspan' rowSpan="2">YOY(year)</th>
+                    <th className='custom-th custom-th-rowspan' rowSpan="2">YOY(ACC. Mon)</th>
                     <th className='custom-th' colspan="3">Last 3 Month</th>
-                    <th className='custom-th' rowSpan="2">This Month</th>
+                    <th className='custom-th custom-th-rowspan' rowSpan="2">This Month</th>
                     <th className='custom-th' colspan="3">Last 3 Weeks</th>
-                    <th className='custom-th' rowSpan="2">This Week</th>
+                    <th className='custom-th custom-th-rowspan' rowSpan="2">This Week</th>
                 </tr>
                 <tr>
                     <th className='custom-th'>2022</th>
@@ -493,7 +684,7 @@ function KpiPerformance() {
                     <th className='custom-th'>2023 Jan</th>
                     <th className='custom-th'>W03</th>
                     <th className='custom-th'>W04</th>
-                    <th className='custom-th'>W05</th>
+                    <th className='custom-th' style={{borderRight: "1px solid #D5D5D5"}}>W05</th>
                 </tr>
             </thead>
             <tbody>
@@ -502,9 +693,9 @@ function KpiPerformance() {
                         {/* <td id={`${row}-${rowIndex}`} className='custom-td custom-td-center' rowSpan="4">{ row.center }</td>
                         <td id={`${row}-${rowIndex}`} className={`custom-td`}>{ row.kpi }</td> */}
                     { columns.map((col, colIndex) => {
-                        if(col === 'center' && rowIndex % 4 === 0) {
-                            return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className='custom-td custom-td-center' rowSpan="4">{ row[col] }</td>;
-                        } else if(col === 'center' && rowIndex % 4 !== 0) {
+                        if(col === 'center' && rowIndex % 6 === 0) {
+                            return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className='custom-td custom-td-center' rowSpan="6">{ row[col] }</td>;
+                        } else if(col === 'center' && rowIndex % 6 !== 0) {
                             return false;
                         } else if(col === 'kpi') {
                             return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className={`custom-td custom-td-status`}>{ row[col] }</td>
@@ -563,7 +754,7 @@ function KpiPerformance() {
                 {/* <div className='grid'>
                     <AgGrid data={rowData} column={column} paging={false} />
                 </div> */}
-                {renderTable(rowData, 'KPI')}
+                {renderTable(rowData, false)}
             </div>
           </>,
         },
@@ -577,9 +768,10 @@ function KpiPerformance() {
                         <p>Excel</p>
                     </button>
                 </div>
-                <div className='grid'>
+                {/* <div className='grid'>
                     <AgGrid data={rowData} column={column} paging={false} />
-                </div>
+                </div> */}
+                {renderTable(rowData, true)}
             </div>
         }
     ];
@@ -602,26 +794,26 @@ function KpiPerformance() {
                 <div className='nav-center'>
                     <div className='nav-box'>
                         <div className='nav-search'>
-                            <p>· Subsidiary</p> <SelectBox options={subOptions} onChange={handleSelectBox} />
+                            <p>· Subsidiary</p> <SelectBox options={subOptions} onChange={handleSelectBox} defaultValue={subOptions[0]} />
                         </div>
                         <div className='nav-search'>
-                            <p>· Division</p> <SelectBox options={divOptions} onChange={handleSelectBox} />
-                        </div>
-                    </div>
-                    <div className='nav-box'>
-                        <div className='nav-search'>
-                            <p>· Center</p> <SelectBox options={centerOptions} onChange={handleSelectBox} />
-                        </div>
-                        <div className='nav-search'>
-                            <p>· Product</p> <SelectBox options={prodOptions} onChange={handleSelectBox} />
+                            <p>· Division</p> <SelectBox options={divOptions} onChange={handleSelectBox} placeholder="Select" />
                         </div>
                     </div>
                     <div className='nav-box'>
                         <div className='nav-search'>
-                            <p>· Branch</p> <SelectBox options={branchOptions} onChange={handleSelectBox} />
+                            <p>· Center</p> <SelectBox options={centerOptions} onChange={handleSelectBox} placeholder="Select" />
+                        </div>
+                        <div className='nav-search'>
+                            <p>· Product</p> <SelectBox options={prodOptions} onChange={handleSelectBox} placeholder="Select" />
+                        </div>
+                    </div>
+                    <div className='nav-box'>
+                        <div className='nav-search'>
+                            <p>· Branch</p> <SelectBox options={branchOptions} onChange={handleSelectBox} placeholder="Select" />
                         </div>
                         <div className='nav-search' style={{visibility: "hidden"}}>
-                            <p>· Branch</p> <SelectBox options={subOptions} />
+                            <p>· Branch</p> <SelectBox options={subOptions} onChange={handleSelectBox} placeholder="Select" />
                         </div>
                     </div>
                 </div>

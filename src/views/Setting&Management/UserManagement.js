@@ -361,11 +361,11 @@ function UserManagement() {
                 <div className='user-nav'>
                     <div className='nav-left'>
                         <p>· Subsidiary</p>
-                        <SelectBox name='corporationCode' options={subOptions} handleChange={handleSelectBox} />
+                        <SelectBox name='corporationCode' options={subOptions} handleChange={handleSelectBox} placeholder="Select" />
                         <p>· Center Type</p>
-                        <SelectBox name='centerType' options={centerOptions} handleChange={handleSelectBox} />
+                        <SelectBox name='centerType' options={centerOptions} handleChange={handleSelectBox} placeholder="Select" />
                         <p>· Branch</p>
-                        <SelectBox name='branchCode' options={branchOptions} handleChange={handleSelectBox} />
+                        <SelectBox name='branchCode' options={branchOptions} handleChange={handleSelectBox} placeholder="Select" />
                     </div>
                     <div className='nav-right'>
                         <button className='circle-btn' onClick={getSearch} >

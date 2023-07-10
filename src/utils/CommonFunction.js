@@ -5,7 +5,7 @@ import axios from 'axios';
 /** axios instance */
 export const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL, // 서버 나오면 수정
-    baseURL: 'http://localhost:8090',
+    // baseURL: 'http://localhost:8090',
     maxBodyLength: Infinity,
     headers: {
         'Content-Type': 'multipart/form-data',

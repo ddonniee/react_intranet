@@ -19,148 +19,244 @@ function TrainingStatus() {
     const [rowData, setRowData] = useState([ // 테이블 데이터 설정
         {
             center: 'ASC #1',
-            trainingStatus: 'In Progress',
-            'month1': '1', 
-            'month2': '1',
-            'month3': '1',
-            'month4': '1',
-            'month5': '1',
-            'month6': '1',
-            'month7': '1',
-            'month8': '1',
-            'month9': '1',
-            'month10': '1',
-            'month11': '1',
-            'month12': '1',
+            status: 'In Progress',
+            month1: '1', 
+            month2: '1',
+            month3: '1',
+            month4: '1',
+            month5: '1',
+            month6: '1',
+            month7: '1',
+            month8: '1',
+            month9: '1',
+            month10: '1',
+            month11: '1',
+            month12: '1',
         },
         {
             center: 'ASC #1',
-            trainingStatus: 'Completed (OK)',
-            'month1': '1', 
-            'month2': '1',
-            'month3': '1',
-            'month4': '1',
-            'month5': '1',
-            'month6': '1',
-            'month7': '1',
-            'month8': '1',
-            'month9': '1',
-            'month10': '1',
-            'month11': '1',
-            'month12': '1',
+            status: 'Completed (OK)',
+            month1: '1', 
+            month2: '1',
+            month3: '1',
+            month4: '1',
+            month5: '1',
+            month6: '1',
+            month7: '1',
+            month8: '1',
+            month9: '1',
+            month10: '1',
+            month11: '1',
+            month12: '1',
         },
         {
             center: 'ASC #1',
-            trainingStatus: 'Completed (Fail)',
-            'month1': '1', 
-            'month2': '1',
-            'month3': '1',
-            'month4': '1',
-            'month5': '1',
-            'month6': '1',
-            'month7': '1',
-            'month8': '1',
-            'month9': '1',
-            'month10': '1',
-            'month11': '1',
-            'month12': '1',
+            status: 'Completed (Fail)',
+            month1: '1', 
+            month2: '1',
+            month3: '1',
+            month4: '1',
+            month5: '1',
+            month6: '1',
+            month7: '1',
+            month8: '1',
+            month9: '1',
+            month10: '1',
+            month11: '1',
+            month12: '1',
         },
         {
             center: 'ASC #2',
-            trainingStatus: 'In Progress',
-            'month1': '1', 
-            'month2': '1',
-            'month3': '1',
-            'month4': '1',
-            'month5': '1',
-            'month6': '1',
-            'month7': '1',
-            'month8': '1',
-            'month9': '1',
-            'month10': '1',
-            'month11': '1',
-            'month12': '1',
+            status: 'In Progress',
+            month1: '1', 
+            month2: '1',
+            month3: '1',
+            month4: '1',
+            month5: '1',
+            month6: '1',
+            month7: '1',
+            month8: '1',
+            month9: '1',
+            month10: '1',
+            month11: '1',
+            month12: '1',
         },
         {
             center: 'ASC #2',
-            trainingStatus: 'Completed (OK)',
-            'month1': '1', 
-            'month2': '1',
-            'month3': '1',
-            'month4': '1',
-            'month5': '1',
-            'month6': '1',
-            'month7': '1',
-            'month8': '1',
-            'month9': '1',
-            'month10': '1',
-            'month11': '1',
-            'month12': '1',
+            status: 'Completed (OK)',
+            month1: '1', 
+            month2: '1',
+            month3: '1',
+            month4: '1',
+            month5: '1',
+            month6: '1',
+            month7: '1',
+            month8: '1',
+            month9: '1',
+            month10: '1',
+            month11: '1',
+            month12: '1',
         },
         {
             center: 'ASC #2',
-            trainingStatus: 'Completed (Fail)',
-            'month1': '1', 
-            'month2': '1',
-            'month3': '1',
-            'month4': '1',
-            'month5': '1',
-            'month6': '1',
-            'month7': '1',
-            'month8': '1',
-            'month9': '1',
-            'month10': '1',
-            'month11': '1',
-            'month12': '1',
+            status: 'Completed (Fail)',
+            month1: '1', 
+            month2: '1',
+            month3: '1',
+            month4: '1',
+            month5: '1',
+            month6: '1',
+            month7: '1',
+            month8: '1',
+            month9: '1',
+            month10: '1',
+            month11: '1',
+            month12: '1',
         },
         {
             center: 'ASC #3',
-            trainingStatus: 'In Progress',
-            'month1': '1', 
-            'month2': '1',
-            'month3': '1',
-            'month4': '1',
-            'month5': '1',
-            'month6': '1',
-            'month7': '1',
-            'month8': '1',
-            'month9': '1',
-            'month10': '1',
-            'month11': '1',
-            'month12': '1',
+            status: 'In Progress',
+            month1: '1', 
+            month2: '1',
+            month3: '1',
+            month4: '1',
+            month5: '1',
+            month6: '1',
+            month7: '1',
+            month8: '1',
+            month9: '1',
+            month10: '1',
+            month11: '1',
+            month12: '1',
         },
         {
             center: 'ASC #3',
-            trainingStatus: 'Completed (OK)',
-            'month1': '1', 
-            'month2': '1',
-            'month3': '1',
-            'month4': '1',
-            'month5': '1',
-            'month6': '1',
-            'month7': '1',
-            'month8': '1',
-            'month9': '1',
-            'month10': '1',
-            'month11': '1',
-            'month12': '1',
+            status: 'Completed (OK)',
+            month1: '1', 
+            month2: '1',
+            month3: '1',
+            month4: '1',
+            month5: '1',
+            month6: '1',
+            month7: '1',
+            month8: '1',
+            month9: '1',
+            month10: '1',
+            month11: '1',
+            month12: '1',
         },
         {
             center: 'ASC #3',
-            trainingStatus: 'Completed (Fail)',
-            'month1': '1', 
-            'month2': '1',
-            'month3': '1',
-            'month4': '1',
-            'month5': '1',
-            'month6': '1',
-            'month7': '1',
-            'month8': '1',
-            'month9': '1',
-            'month10': '1',
-            'month11': '1',
-            'month12': '1',
+            status: 'Completed (Fail)',
+            month1: '1', 
+            month2: '1',
+            month3: '1',
+            month4: '1',
+            month5: '1',
+            month6: '1',
+            month7: '1',
+            month8: '1',
+            month9: '1',
+            month10: '1',
+            month11: '1',
+            month12: '1',
         },
+        {
+          center: 'ASC #4',
+          status: 'In Progress',
+          month1: '1', 
+          month2: '1',
+          month3: '1',
+          month4: '1',
+          month5: '1',
+          month6: '1',
+          month7: '1',
+          month8: '1',
+          month9: '1',
+          month10: '1',
+          month11: '1',
+          month12: '1',
+      },
+      {
+          center: 'ASC #4',
+          status: 'Completed (OK)',
+          month1: '1', 
+          month2: '1',
+          month3: '1',
+          month4: '1',
+          month5: '1',
+          month6: '1',
+          month7: '1',
+          month8: '1',
+          month9: '1',
+          month10: '1',
+          month11: '1',
+          month12: '1',
+      },
+      {
+          center: 'ASC #4',
+          status: 'Completed (Fail)',
+          month1: '1', 
+          month2: '1',
+          month3: '1',
+          month4: '1',
+          month5: '1',
+          month6: '1',
+          month7: '1',
+          month8: '1',
+          month9: '1',
+          month10: '1',
+          month11: '1',
+          month12: '1',
+      },
+      {
+        center: 'ASC #5',
+        status: 'In Progress',
+        month1: '1', 
+        month2: '1',
+        month3: '1',
+        month4: '1',
+        month5: '1',
+        month6: '1',
+        month7: '1',
+        month8: '1',
+        month9: '1',
+        month10: '1',
+        month11: '1',
+        month12: '1',
+    },
+    {
+        center: 'ASC #5',
+        status: 'Completed (OK)',
+        month1: '1', 
+        month2: '1',
+        month3: '1',
+        month4: '1',
+        month5: '1',
+        month6: '1',
+        month7: '1',
+        month8: '1',
+        month9: '1',
+        month10: '1',
+        month11: '1',
+        month12: '1',
+    },
+    {
+        center: 'ASC #5',
+        status: 'Completed (Fail)',
+        month1: '1', 
+        month2: '1',
+        month3: '1',
+        month4: '1',
+        month5: '1',
+        month6: '1',
+        month7: '1',
+        month8: '1',
+        month9: '1',
+        month10: '1',
+        month11: '1',
+        month12: '1',
+    },
     ]);
 
     const rowSpan = (params) => {
@@ -282,53 +378,6 @@ function TrainingStatus() {
         },
     ]);
 
-    /*========================================================================= */
-    const renderTable = (data, tabName) => { 
-        // Get the column names from the first object
-        const columns = Object.keys(data[0]);   
-      
-        return (
-          <table className='table-wrapper'>
-            <thead>
-              <tr>
-                { columns.map((col, colIndex) => {
-                    if(colIndex === 0) {
-                        return <th key={colIndex} className='custom-th' colSpan={2}>{tabName}</th>;
-                    }
-                    if(colIndex === 1) {
-                        return false;
-                    }
-                    return <th key={colIndex} className='custom-th'>{col}</th>;
-                }) }
-              </tr>
-            </thead>
-            <tbody>
-                { data.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
-                    { columns.map((col, colIndex) => {
-                        if(colIndex === 0 && rowIndex % 3 === 0) {
-                            return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className='custom-td custom-td-center' rowSpan="3">{ row[col] }</td>;
-                        } else if(colIndex === 0 && rowIndex % 3 !== 0) {
-                            return false;
-                        }
-                        return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className={`custom-td ${colIndex === 1 ? 'custom-td-status' : ''}`}>{ row[col] }</td>;
-                    }) }
-                    </tr>
-                )) }
-
-                {/* { rowData.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
-                    { columns.map((col, colIndex) => (
-                        <td key={colIndex} id={`${rowIndex}-${colIndex}`} className='custom-td'>{ row[col] }</td>
-                    )) }
-                    </tr>
-                )) } */}
-            </tbody>
-          </table>
-        );
-    };
-    /*========================================================================= */
-
     const subOptions = [
         { value: 'LGEAI', label: 'LGEAI' },
         { value: 'LGEAI2', label: 'LGEAI2' },
@@ -388,6 +437,53 @@ function TrainingStatus() {
         return tabData[activeTab].content;
     };
 
+    /*========================================================================= */
+    const renderTable = (data, tabName) => { 
+      // Get the column names from the first object
+      const columns = Object.keys(data[0]);   
+    
+      return (
+        <table className='table-wrapper'>
+          <thead>
+            <tr>
+              { columns.map((col, colIndex) => {
+                  if(colIndex === 0) {
+                      return <th key={colIndex} className='custom-th' colSpan={2}>{tabName}</th>;
+                  }
+                  if(colIndex === 1) {
+                      return false;
+                  }
+                  return <th key={colIndex} className='custom-th'>{col}</th>;
+              }) }
+            </tr>
+          </thead>
+          <tbody>
+              { data.map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                  { columns.map((col, colIndex) => {
+                      if(colIndex === 0 && rowIndex % 3 === 0) {
+                          return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className='custom-td custom-td-center' rowSpan="3">{ row[col] }</td>;
+                      } else if(colIndex === 0 && rowIndex % 3 !== 0) {
+                          return false;
+                      }
+                      return <td key={colIndex} id={`${rowIndex}-${colIndex}`} className={`custom-td ${colIndex === 1 ? 'custom-td-status' : ''}`}>{ row[col] }</td>;
+                  }) }
+                  </tr>
+              )) }
+
+              {/* { rowData.map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                  { columns.map((col, colIndex) => (
+                      <td key={colIndex} id={`${rowIndex}-${colIndex}`} className='custom-td'>{ row[col] }</td>
+                  )) }
+                  </tr>
+              )) } */}
+          </tbody>
+        </table>
+      );
+  };
+  /*========================================================================= */
+
     const lowerTabData = [
       {
         title: 'Training Status',
@@ -437,22 +533,26 @@ function TrainingStatus() {
         {
           title: 'Training Status By Engineer',
           content: 
+          <div className='training-value-tab'>
             <div className="table"> 
               {/* <div className='grid'>
                   <AgGrid data={rowData} column={column} paging={false} />
               </div> */}
                 {renderTable(rowData, 'Training Status By Engineer')}
             </div>
+          </div>
         },
         {
           title: 'Average Score By Engineer',
           content: 
+          <div className='training-value-tab'>
             <div className="table">
               {/* <div className='grid'>
                   <AgGrid data={rowData} column={column} paging={false} />
               </div> */}
               {renderTable(rowData, 'Average Score By Engineer')}
             </div>
+          </div>
         }
     ];
 

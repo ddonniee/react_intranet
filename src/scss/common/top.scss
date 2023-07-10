@@ -1,88 +1,173 @@
 @import '../variables';
 
 .title-wrapper {
-    // display: flex; justify-content: space-between; 
     height: 70px;
     margin: 45px 0 22px 0;
-    // align-items: center; 
     padding: 12px 12px 12px 0;
+
+    /* 검색영역 */
+    .title-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        p {
+            margin-right: 5px;
+            color: #2B2B2B;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .css-b62m3t-container {
+            width: 179px;
+        }
+
+        .title-nav-box {
+            margin-right: 20px;
+        }
+        
+        .title-nav-input {
+            width: 160px;
+            height: 42px;
+            background: #FFFFFF;
+            border: 1px solid #D8D8D8;
+            border-radius: 5px;
+            margin: 0 10px;
+            padding: 0 10px;
+            font-size: 16px;
+        }
+
+        .title-nav-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: $primary-color-red;
+            cursor: pointer;
+            justify-content: center;
+
+            svg {
+                width: 16px;
+            }
+        }
+    }
 }
+
+.title-wrapper.title-board-wrapper {
+    margin: 45px 0 40px 0;
+}
+
 .title-wrapper.title-main-wrapper {
     height: auto;
     margin: 15px 0 3px 0;
 }
+
+.title-wrapper.title-board-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
 .title-wrapper .title-inner {
     display: flex;
     align-items: center;
 }
+
 .title-wrapper .page-title-area {
     flex-grow: 1; 
     // margin-left: 120px;
 }
+
 .title-wrapper .search-wrapper {
     background-color: $primary-color-red;
     width: 35px; height: 35px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
 }
-.title-wrapper .search-area  {
+
+.title-wrapper .search-area {
     display: flex; 
     margin-right: 120px;
+
     .top-input {
         width: 160px;
     }
 }
-.title-wrapper .search-area > div{
+
+.title-wrapper .search-area > div {
     align-self: center;
 }
+
 .title-wrapper .search-area {
     input {
-         border-radius: 5px; border: 1px solid $border-color-gery; padding: 0 10px; font-size: 16px;
-    }
-    input:first-child {
-        
+        border-radius: 5px; border: 1px solid $border-color-gery; padding: 0 10px; font-size: 16px;
     }
 }
+
 .title-wrapper .search-area input:focus {
     outline: none
 }
+
+.title-wrapper .path-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .title-wrapper .page-path-area  {
-    display: flex; align-items: center;
+    display: flex; 
+    align-items: center;
     justify-content: flex-end;
     margin-top: -10px;
+
+    margin-bottom: 10px;
 }
+
 .bold-title {
     font-weight: 600; padding-left: 11px;
 }
+
 /* 노트북 & PC (해상도 1024px)*/ 
 @media all and (min-width:1024px) {
    .page-path-area img {
         vertical-align: middle; padding: 4px;
    }
+
    .title-wrapper .search-area {
         width: 37%;
+
         div {
             font-weight: 600;
             font-size: 16px;
-           }
+        }
+
         & > *:nth-child(3),
         & > *:nth-child(4),
-        & > *:nth-child(5), {
+        & > *:nth-child(5) {
             margin-left: auto;
         }
    }
+
    .title-wrapper .search-area div {
-    font-weight: 600;
-    font-size: 16px;
+        font-weight: 600;
+        font-size: 16px;
    }
+
    .title-wrapper .page-title-area {
-    font-weight: 600;
-    font-size: 25px;
+        font-weight: 600;
+        font-size: 25px;
    }
+
+   .title-wrapper .page-board-title-area {
+        color: #2D2D2D;
+        font-size: 32px;
+        font-weight: 700;
+   }
+
    .title-wrapper .search-wrapper img {
-    width: 16px;
+        width: 16px;
    }
+
    .empty_area {
-    width: 310px;
+        width: 310px;
    }
 } 
 

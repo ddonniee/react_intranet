@@ -520,7 +520,7 @@ function NoticeSetting() {
                 { auth.isStaff && // 본사 스태프만 반영
                     <div className="notice-nav-box custom-flex-item custom-align-item">
                         <p>· Subsidiary</p>
-                        <SelectBox options={subOptions} handleChange={handleSelectBox} />
+                        <SelectBox options={subOptions} handleChange={handleSelectBox} placeholder="Select" />
                     </div>
                 }
                 {/* <div className="custom-flex-item custom-align-item">
@@ -535,7 +535,7 @@ function NoticeSetting() {
             </div>
 
             {/** Content Area */}
-            <Style selectId={selectedList?.noticeId}>
+            <Style selectId={selectedList?.noticeId} openRight={(selectedList?.noticeId || isWrite || isModify) ? true : false}>
             <div className="notice-content">
                 <div className="notice-left">
                     <div className="notice-count">
@@ -590,7 +590,7 @@ function NoticeSetting() {
                         : isModify ?
                         <Editor onClose={setIsModify} period={true} data={detail} setData={setWriteData} isChange={setIsChange} isWriter={true} //isWriter={auth.isWriter}
                             onDelete={() => onConfirmHandler('delete')} onRestore={() => onConfirmHandler('restore')} />
-                        :
+                        : 
                         <div className="notice-view-none">
                             <p>If you select a list, you can see the contents</p>
                         </div>
@@ -628,5 +628,12 @@ const Style = styled.div`
     }
     #list-del-item-${props => props.selectId} .etc-del {
         color : #777777;
+    }
+
+    .notice-left {
+        width: ${props => (props.openRight ? '49%' : '100%')} !important;
+    }
+    .notice-right {
+        display: ${props => (props.openRight ? 'block' : 'none')} !important;
     }
 `
