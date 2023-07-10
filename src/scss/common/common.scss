@@ -47,7 +47,7 @@ html, body, #root{
   #root::-webkit-scrollbar-track {
     background-color: #f1f1f1;
   }  
-  
+
 button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-select, select {
     cursor: pointer;
 }
@@ -276,6 +276,7 @@ body .modal {
 .modal {
     z-index: 1000;
 }
+
 /* 공통 CSS */
 .custom-stress-txt {
     color: $primary-color-red;
@@ -623,10 +624,168 @@ input:focus {
     }
 }
 
-/* 노트북 & PC (해상도 1024px)*/ 
-@media all and (min-width:1024px) {
-    //스타일 입력
-} 
+/* 게시판 팝업*/
+.board-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+
+    .window {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .popup {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #ffffff;
+    }
+
+    /* 상세페이지 */
+    .board-view {
+        width: 1560px;
+        height: 931px;
+    }
+
+    .board-view-top {
+        position: relative;
+        padding: 16px 25px;
+        border-bottom: 1px solid $border-color-gery; 
+
+        .board-btn-area {
+            width: 100%;
+            margin-bottom: 6px;
+
+            * {
+                cursor: pointer;
+            }
+
+            .board-full-btn {
+                border-radius: 3px;
+                border: 1px solid #828282;
+                background: #828282;
+                color: #FFFFFF;
+
+                display: flex;
+                align-items: center;
+                padding: 4px 8px 4px 6px;
+
+                svg {
+                    margin-right: 5px;
+                }
+            }
+        }
+
+        .board-title {
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 30px;
+            color: #333333;
+        }
+
+        .board-title-detail {
+            font-size: 14px;
+            line-height: 24px;
+            padding-top: 4px;
+
+            span {
+                padding: 0;
+                font-weight: 600;
+            }
+        }
+
+        .board-title-attach {
+            display: flex;
+            align-items: center;
+
+            span {
+                padding: 4px;
+            }
+
+            .board-attach {
+                margin-left: 4px;
+            }
+
+            .board-attach-count {
+                color: #A50035;
+                font-weight: 600;
+                margin-left: -5px;
+            }
+
+            .board-attach-box {
+                border: 1px solid $border-color-gery; 
+                border-radius: 5px; 
+                font-weight: 600;
+                font-size: 13px;
+                padding: 4px 10px;
+                display: flex;
+                align-items: center;
+
+                p {
+                    margin-right: 8px
+                }
+
+                .board-attach-down {
+                    color: white;
+                    cursor: pointer;
+                    margin-bottom: -4px;
+                }
+
+            }
+            .board-attach-box:not(:last-of-type) {
+                margin-right: 7px;
+            }
+        }
+    }
+
+    .board-view-middle {
+        flex: 1;
+
+        .ck.ck-editor,
+        .ck.ck-editor__main,
+        .ck.ck-editor__main>.ck-editor__editable {
+            height: 100%;
+        }
+
+        .ck.ck-editor__editable_inline>:first-child {
+            margin-top: 0;
+        }
+
+        .ck-sticky-panel {
+            display: none;
+        }
+
+        .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+            border-bottom: none;
+        }
+
+        h2, p {
+            // margin-left: 10px;
+            margin: 0 5px;
+        }
+
+        h2 {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 26px;
+            color: #333333;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 22px;
+            color: #626262;
+        }
+    }
+}
+
 
 /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 
 @media all and (min-width:768px) and (max-width:1023px) {

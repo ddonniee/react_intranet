@@ -21,8 +21,10 @@
             display: flex;
             align-items: center;
             position: absolute;
-            top: 84%;
-            left: 1.5%;
+            // top: 84%;
+            // left: 1.5%;
+            top: 83%;
+            left: 83.5%;
 
             img {
                 width: 38px;
@@ -101,16 +103,24 @@
         }
 
         .card-cstalk {
-            
-            .circle {
-                margin-bottom: 20px;
+
+            .list-slider {
+                display: flex;
+                flex-direction: column;
             }
 
-            .mainlist {
-                .bold {
-                    border-bottom: 1px solid #D9D9D9;
-                    padding-bottom: 25px;
-                    margin-bottom: 10px;
+            .top {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .circle {
+                    margin-bottom: 20px;
+                }
+    
+                .mainlist {
+                    width: 70%;
                 }
             }
         }
@@ -126,7 +136,7 @@
                 width: 72px;
                 height: 72px;
                 border-radius: 50%;
-                background: $primary-color-red;
+                background: #ED5C7D;
                 color: #FFFFFF;
                 text-align: center;
  
@@ -152,7 +162,7 @@
             }
             
             .mainlist {
-                flex-grow: 1;
+                // flex-grow: 1;
                 word-break: keep-all;
                 margin-bottom: 20px;
 
@@ -201,8 +211,6 @@
                         margin-bottom: -3px;
                     }
                 }
-
-
             }
         }
 

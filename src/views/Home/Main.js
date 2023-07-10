@@ -66,19 +66,22 @@ function Main() {
 
     /* 하단 CS Talk Slider 리스트 */
     const csList = [17, 18, 19].map((list, i) => (
-        <div key={i} className='custom-flex-item'>
-        <div className='left'>
+        <div key={i} className='list-slider'>
+        <div className='top'>
             <div className='circle'>
                 <p className='day'>{list}</p>
                 <p className='month'>2023.05</p>
                 <IntersectIcon/>
             </div>
+            <div className='mainlist'>
+                <p className='bold'>Weekly Report of AC AS Back Order a September HE – OK55 Main Defect</p>
+            </div>
         </div>
-        <div className='right'>
+        <div className='bottom'>
             <div className='content'>
                 <div className='mainlist'>
-                    <p className='bold'>Weekly Report of AC AS Back Order a September HE – OK55 Main Defect</p>
                     <p className='normal'>
+                        GSFS Information – LED Arra Rank Collection time of GSFS Information – LED
                         GSFS Information – LED Arra Rank Collection time of GSFS Information – LED
                         GSFS Information – LED Arra Rank Collection time of GSFS Information – LED
                         GSFS Information – LED Arra Rank Collection time of GSFS Information – LED

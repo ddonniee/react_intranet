@@ -10,6 +10,7 @@ import SelectBox from '../../components/SelectBox'
 import Viewer from "../../components/Viewer"
 import Paging from "../../components/Paging";
 import Tab from "../../components/Tab";
+import BoardPopup from "../../components/BoardPopup";
 
 import { generateRandomString, downloadAttachment } from "../../utils/CommonFunction"
 import { UserContext } from "../../hooks/UserContext";
@@ -20,6 +21,8 @@ import { ReactComponent as SpeakerIcon } from '../../assets/svgs/icon_speaker.sv
 import { ReactComponent as NewIcon } from '../../assets/svgs/icon_new.svg';
 import { ReactComponent as AttachmentIcon } from '../../assets/svgs/icon_attachment.svg';
 import { ReactComponent as DownloadIcon } from '../../assets/svgs/icon_download.svg';
+import { ReactComponent as ScreenIcon } from '../../assets/svgs/icon_screen.svg';
+import { ReactComponent as CloseIcon } from '../../assets/svgs/icon_close2.svg';
 
 function Notice() {
 
@@ -195,7 +198,7 @@ function Notice() {
     }, []);
 
     const submitInput = () => {
-        const input = document.getElementById('notice-nav-input').value;
+        const input = document.getElementById('title-nav-input').value;
         setSearchData({ ...searchData, search: input });
     }
 
@@ -208,6 +211,7 @@ function Notice() {
             setSelctedList({ noticeId: item.noticeId, tableName: item.tableName })
         } else {
             setSelctedList()
+            setDetail()
         }
     }
 
@@ -216,31 +220,29 @@ function Notice() {
         setAttachments()
     }, [selectedList])
 
+    const [popup, setPopup] = useState(false);
+
     return (
         <div className="notice-container">
         <Header />
         <div className="inner-container">
             {/** auth 권한체크로 수정 필요 */}
-            <Top auth={1} searchArea={false}/>
+            <Top auth={1} searchArea={true} options={subOptions} handleChange={handleSelectBox} onClick={submitInput} />
             {/** Search Nav */}
-            <div className="notice-nav">
+            {/* <div className="notice-nav">
                 <div className="notice-nav-box custom-flex-item custom-align-item">
                     <p>· Subsidiary</p>
-                    <SelectBox options={subOptions} handleChange={handleSelectBox} />
+                    <SelectBox options={subOptions} handleChange={handleSelectBox} placeholder="Select" />
                 </div>
-                {/* <div className="custom-flex-item custom-align-item">
-                    <p>· View</p>
-                    <SelectBox options={centerOptions} handleChange={handleSelectBox} />
-                </div> */}
                 <div className="custom-flex-item custom-align-item">
                     <p>· Search</p>
                     <input type="text" className="notice-nav-input" id="notice-nav-input"></input>
                     <button className="notice-nav-btn custom-flex-item custom-align-item" onClick={submitInput}> <SearchIcon /> </button>
                 </div>
-            </div>
+            </div> */}
 
             {/** Content Area */}
-            <Style selectId={selectedList?.noticeId}>
+            <Style selectId={selectedList?.noticeId} openRight={selectedList?.noticeId ? true : false}>
             <div className="notice-content">
                 <div className="notice-left">
                     <div className="notice-count">
@@ -248,6 +250,13 @@ function Notice() {
                         Total <span>{pageInfo?.totalCount}</span>
                     </div>
                     <ul className="notice-custom-board">
+                        <li className="notice-title">
+                            <span>No.</span>
+                            <span>Title</span>
+                            <span>Writer</span>
+                            <span>Count</span>
+                            <span>Date</span>
+                        </li>
                         {
                             boardData.length > 0 ? (
                                 boardData?.map((item, idx) => {
@@ -282,6 +291,12 @@ function Notice() {
                         detail ?
                         <>
                         <div className="notice-view-top">
+                            <div className="notice-btn-area custom-flex-item custom-align-item custom-justify-between">
+                                <button className="notice-full-btn" onClick={() => setPopup(true)}>
+                                    <ScreenIcon /> Full Screen
+                                </button>
+                                <CloseIcon onClick={() => {setSelctedList(); setDetail();}} />
+                            </div>
                             <p className="notice-title">{detail?.title}</p>
                             <p className="notice-title-detail">
                                 <span>Writer</span> : {detail?.writerName} &nbsp;
@@ -311,13 +326,17 @@ function Notice() {
                         </div>
                         <div className="notice-view-middle"> <Viewer content={detail?.content}/> </div>
                         </>
-                        :
-                        <div className="notice-view-none">
-                            <p>If you select a list, you can see the contents</p>
-                        </div>
+                        : null
+                        // <div className="notice-view-none">
+                        //     <p>If you select a list, you can see the contents</p>
+                        // </div>
                     }
                 </div>
             </div>
+            {
+                popup &&
+                <BoardPopup detail={detail} attachments={attachments} onClose={() => setPopup(false)} />
+            }
             </Style>
 
             <Zendesk />
@@ -335,5 +354,12 @@ const Style = styled.div`
     }
     #list-item-${props => props.selectId} .title {
         color : #BB0841;
+    }
+
+    .notice-left {
+        width: ${props => (props.openRight ? '49%' : '100%')} !important;
+    }
+    .notice-right {
+        display: ${props => (props.openRight ? 'block' : 'none')} !important;
     }
 `
