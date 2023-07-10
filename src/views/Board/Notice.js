@@ -10,6 +10,7 @@ import SelectBox from '../../components/SelectBox'
 import Viewer from "../../components/Viewer"
 import Paging from "../../components/Paging";
 import Tab from "../../components/Tab";
+import BoardPopup from "../../components/BoardPopup";
 
 import { generateRandomString, downloadAttachment } from "../../utils/CommonFunction"
 import { UserContext } from "../../hooks/UserContext";
@@ -20,6 +21,8 @@ import { ReactComponent as SpeakerIcon } from '../../assets/svgs/icon_speaker.sv
 import { ReactComponent as NewIcon } from '../../assets/svgs/icon_new.svg';
 import { ReactComponent as AttachmentIcon } from '../../assets/svgs/icon_attachment.svg';
 import { ReactComponent as DownloadIcon } from '../../assets/svgs/icon_download.svg';
+import { ReactComponent as ScreenIcon } from '../../assets/svgs/icon_screen.svg';
+import { ReactComponent as CloseIcon } from '../../assets/svgs/icon_close2.svg';
 
 function Notice() {
 
@@ -208,6 +211,7 @@ function Notice() {
             setSelctedList({ noticeId: item.noticeId, tableName: item.tableName })
         } else {
             setSelctedList()
+            setDetail()
         }
     }
 
@@ -215,6 +219,8 @@ function Notice() {
         selectedList && getDetail();
         setAttachments()
     }, [selectedList])
+
+    const [popup, setPopup] = useState(false);
 
     return (
         <div className="notice-container">
@@ -278,6 +284,12 @@ function Notice() {
                         detail ?
                         <>
                         <div className="notice-view-top">
+                            <div className="notice-btn-area custom-flex-item custom-align-item custom-justify-between">
+                                <button className="notice-full-btn" onClick={() => setPopup(true)}>
+                                    <ScreenIcon /> Full Screen
+                                </button>
+                                <CloseIcon onClick={() => {setSelctedList(); setDetail();}} />
+                            </div>
                             <p className="notice-title">{detail?.title}</p>
                             <p className="notice-title-detail">
                                 <span>Writer</span> : {detail?.writerName} &nbsp;
@@ -307,13 +319,17 @@ function Notice() {
                         </div>
                         <div className="notice-view-middle"> <Viewer content={detail?.content}/> </div>
                         </>
-                        : 
-                        <div className="notice-view-none">
-                            <p>If you select a list, you can see the contents</p>
-                        </div>
+                        : null
+                        // <div className="notice-view-none">
+                        //     <p>If you select a list, you can see the contents</p>
+                        // </div>
                     }
                 </div>
             </div>
+            {
+                popup &&
+                <BoardPopup detail={detail} attachments={attachments} onClose={() => setPopup(false)} />
+            }
             </Style>
 
             <Zendesk />

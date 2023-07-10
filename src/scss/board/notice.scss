@@ -180,6 +180,30 @@
                 padding: 16px 25px;
                 border-bottom: 1px solid $border-color-gery; 
 
+                .notice-btn-area {
+                    width: 100%;
+                    margin-bottom: 6px;
+
+                    * {
+                        cursor: pointer;
+                    }
+
+                    .notice-full-btn {
+                        border-radius: 3px;
+                        border: 1px solid #828282;
+                        background: #828282;
+                        color: #FFFFFF;
+    
+                        display: flex;
+                        align-items: center;
+                        padding: 4px 8px 4px 6px;
+    
+                        svg {
+                            margin-right: 5px;
+                        }
+                    }
+                }
+
                 .notice-title {
                     font-weight: 700;
                     font-size: 24px;
@@ -257,6 +281,10 @@
 
                 .ck-sticky-panel {
                     display: none;
+                }
+
+                .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+                    border-bottom: none;
                 }
 
                 h2, p {
