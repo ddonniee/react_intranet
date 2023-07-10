@@ -74,6 +74,33 @@
         .notice-custom-board {
             margin-bottom: 40px;
 
+            .notice-title {
+                width: 100%;
+                display: flex;
+                background-color: yellow;
+                
+                span {
+                    text-align: center;
+                    width: 10%;
+                }
+                span:first-child {
+                    background-color: red;
+                }
+                span:nth-child(2) {
+                    width: 60%;
+                    background-color: orange;
+                }
+                span:nth-child(3) {
+                    background-color: yellow;
+                }
+                span:nth-child(4) {
+                    background-color: green;
+                }
+                span:nth-child(5) {
+                    background-color: skyblue;
+                }
+            }
+
             .notice-list {
                 border-bottom: 1px solid #E8E8E8;
                 padding: 9px 24px;

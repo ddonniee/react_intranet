@@ -250,6 +250,13 @@ function Notice() {
                         Total <span>{pageInfo?.totalCount}</span>
                     </div>
                     <ul className="notice-custom-board">
+                        <li className="notice-title">
+                            <span>No.</span>
+                            <span>Title</span>
+                            <span>Writer</span>
+                            <span>Count</span>
+                            <span>Date</span>
+                        </li>
                         {
                             boardData.length > 0 ? (
                                 boardData?.map((item, idx) => {
