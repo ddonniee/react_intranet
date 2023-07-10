@@ -8,7 +8,7 @@ import Frame from '../../../assets/svgs/icon_editor_frame.svg'
 import Arrow from '../../../assets/svgs/icon_arrow.svg'
 
 function EditFaq(props) {
-    const { period, data, setData, range, onSave, onClose, onDelete, onAttach} = props;
+    const { data, setData, onSave, onClose} = props;
     const [content, setContent] = useState(data)
 
     const options = [
@@ -29,13 +29,12 @@ function EditFaq(props) {
     const handleChange = (event) =>{
         let value = event.target.value;
         console.log(value)
-        setContent({
-            ...content,
-            subject: value
+        setData({
+            ...data,
+            title: value
         })
     }
 
-    console.log(content,'========EditFaq=========')
     return(
         <>
          <div className="faq-setting-new custom-flex-item">
@@ -83,7 +82,7 @@ function EditFaq(props) {
                     type="text" 
                     className="category-subject custom-wide-subject" 
                     name="subject" 
-                    value={content.subject}
+                    defaultValue={data.title}
                     onChange={handleChange}
                     // onBlur={()=>onStopInput()} 
                     >
@@ -92,7 +91,7 @@ function EditFaq(props) {
             </div>
 
             <div className="content-middle setting-middle">
-                <FormEditor data={content} setData={setContent} onSave={()=>setData(content)}/>
+                <FormEditor data={data} setData={setData} onSave={onSave} onClose={onClose}/>
             </div>
             </div>
         </>

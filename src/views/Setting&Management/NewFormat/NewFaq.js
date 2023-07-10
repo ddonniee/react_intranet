@@ -15,7 +15,7 @@ import Arrow from '../../../assets/svgs/icon_arrow.svg'
 function NewFaq(props) {
 
 
-    const { period, data, setData, range, onSave, onClose, onDelete, onAttach} = props
+    const { data, setData, onSave, onClose, onAttach} = props
 
     const [content, setContent] = useState({
         title : '',
@@ -52,7 +52,8 @@ function NewFaq(props) {
             onConfirm : function() {},
             isDoubleBtn : false,
             btnTxt : 'Close',
-            confirmTxt : ''
+            confirmTxt : '',
+            onClose : ()=>setAlertModal(false)
         })
 
     const onCheckInput = e =>{ 
@@ -189,9 +190,13 @@ function NewFaq(props) {
                     </input> 
                 </div>
             </div>
-            <FormEditor data={content} setData={setContent} onSave={onSave} onClose={onClose} onDelete={()=>console.log('dd')}/>
+            <FormEditor data={content} setData={setContent} onSave={onSave} onClose={onClose}/>
         </div>
             </div>
+            {
+                alertModal &&
+                <Alert alertTxt={alertSetting.alertTxt} btnTxt={alertSetting.btnTxt} onClose={alertSetting.onClose} />
+            }
         </div>
         </>
     )

@@ -21,12 +21,12 @@
     .file-upload {
         position: relative;
     }
-    .file-upload div {
-        margin: 0 !important;
-    }
+    // .file-upload div {
+    //     margin: 0 !important;
+    // }
     .btn-row {
         padding: 36px 19px;
-        margin-top: auto;
+        margin-top: 0 !important;
         button {
             width: 88px;
             height: 44px;
@@ -41,7 +41,11 @@
         padding: 15px 30px;
     }
     .icon-wrapper {
-        width: 40px; height: 40px; border-radius: 50%; border: 1px solid $border-color-gery; padding: 12px;
+        width: 40px; height: 40px; border-radius: 50%; border: 1px solid $border-color-gery; 
+        justify-content: center; align-items: center;
+        img {
+            width: 22px; height: 22px;
+        }
     }
     #add-btn {
         width: 72px;

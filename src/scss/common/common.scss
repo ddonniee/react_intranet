@@ -78,9 +78,12 @@ align-items: center;
 }
 
 .red-selected {
-    color: white;  background: $primary-color-red;
+    color: white;  background: $primary-color-red; 
 }
-
+.hover-selected {
+    background-color: $hover-color-pink;
+    border: none; border-radius: 5px; color: $primary-color-red;
+}
 .inner-container {
     max-width: 1560px;
     margin: 0 auto;
@@ -327,7 +330,9 @@ body .modal {
 .custom-invalid-input {
     color: #D8D8D8;   cursor:context-menu;
 }
-
+.custom-invalid-btn {
+    background-color: $chart-color-grey !important; cursor:not-allowed !important;
+}
 .maximizing-btn {
     cursor: nw-resize;
 }
@@ -446,7 +451,7 @@ input:focus {
 
 .editor-container { // Editor.js
     border-radius: 14px;
-    height: 800px; 
+    max-height: 800px; 
     overflow: auto;
 
     .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused),

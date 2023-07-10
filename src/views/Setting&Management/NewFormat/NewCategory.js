@@ -7,7 +7,7 @@ import EditorModify from "../../../components/EditorModify";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Alert from "../../../components/Alert";
-import { generateRandomString, axiosInstance } from "../../../utils/CommonFunction";
+import { generateRandomString, axiosInstance, axiosIconInstance } from "../../../utils/CommonFunction";
 import SelectBox from "../../../components/SelectBox";
 
 import Arrow from '../../../assets/svgs/icon_arrow.svg'
@@ -15,7 +15,7 @@ import FormEditor from "./Editor/FormEditor";
 function NewCategory(props) {
 
 
-    const { data, setData, onSave, onClose} = props
+    const { period, data, setData, range, onSave, onClose, onDelete, onAttach, onMinimize} = props
 
     const [content, setContent] = useState(data);
     const [attachments, setAttachments] = useState([
@@ -41,16 +41,23 @@ function NewCategory(props) {
     //  useYn: value
     // })
     }
+    const [reqData, setReqData] = useState({
+        categoryNm:'',
+        categoryIcon : '',
+        parentCategoryId : '',
+        categoryIconPath : '',
+        categoryIconFileNM : '',
+        
+    })
 
     const clearState = () => {
         
-
-        console.log('ㅣㅇ게 되고있는건아니지')
         setReqData({
-            ...reqData,
             categoryNm:'',
             categoryIcon : '',
-            parentCategoryId : ''
+            parentCategoryId : '',
+            categoryIconPath : '',
+            categoryIconFileNM : '',
         })
         setAlertSetting({
             ...alertSetting,
@@ -90,18 +97,16 @@ function NewCategory(props) {
         setData(content)
     }
 
-    const [reqData, setReqData] = useState({
-        categoryNm:'',
-        categoryIcon : '',
-        parentCategoryId : ''
-    })
+   
     const onSelectIcon = (item) => {
         console.log('onSelectIcon',item)
         setReqData({
             ...reqData,
-            categoryIcon :item.categoryIconId
+            categoryIcon :item.categoryIconId,
+            categoryIconFileNM : item.categoryIconFileNM,
+            categoryIconPath : item.categoryIconPath
         })
-    }
+            }
     useEffect(()=>{
         console.log('request data', reqData)
         setOpenIcon(false)
@@ -109,22 +114,31 @@ function NewCategory(props) {
 
     const addNewCategory = () =>{
         
-    if(reqData.categoryIcon==='' || reqData.categoryNm==='') {
+        console.log('add new', reqData)
+    if(reqData.categoryIcon==='' && reqData.categoryIconFileNM==='') {
         setAlertSetting({
             ...alertSetting,
-            alertTxt:'You should input all the information'
+        alertTxt:'Please select or attach icon file.'
+        })
+        return false
+    }else if( reqData.categoryNm==='') {
+        setAlertSetting({
+            ...alertSetting,
+        alertTxt:'You should input all the information.'
         })
         return false
     }
+
     let formdata = new FormData();
     for (let key in reqData) {
         if (reqData.hasOwnProperty(key)) {
-            formdata.append(key, reqData[key]);
-        }
+            if(key !== 'categoryIconPath' && key!=='categoryIconFileNM') {
+                formdata.append(key, reqData[key]);
+            }
     }
-    axiosInstance.post('/faqCa/insert', formdata).then(res => {
+    }
+        axiosIconInstance.post('/faqCa/insert', formdata).then(res => {
         let resData = res.data;
-        console.log(res,'more and more')
         if (resData.code === 500) {
             setAlertSetting({
                 ...alertSetting,
@@ -132,12 +146,12 @@ function NewCategory(props) {
             })
         } else if(resData.code === 200 ){
             clearState()
-        }
+        } 
     }).catch(error => {
-        setAlertSetting({
-            ...alertSetting,
-            alertTxt : 'Fail to attach file.'
-        })
+            setAlertSetting({
+                ...alertSetting,
+            alertTxt : 'Fail to upload file.'
+            })
         console.log(error);
     })
     }
@@ -184,7 +198,7 @@ function NewCategory(props) {
                 method: 'post',
                 maxBodyLength: Infinity,
                 headers: { 
-                   'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+                   'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
                 },
                 };
             axiosInstance('/faqCa/iconList', config)
@@ -277,7 +291,7 @@ function NewCategory(props) {
             <div className="write-row custom-flex-item">
                 <div className="left"> <p>· Icon</p> </div>
                 <div className="right file-upload custom-flex-item"> 
-                   <div className="icon-wrapper custom-flex-item custom-justify-center"><img src={process.env.REACT_APP_DOWN_URL+'/'+reqData.categoryIcon.uploadPath!=='' ? reqData.categoryIcon.uploadPath : null} alt="icon_img"/></div>
+                   <div className="icon-wrapper custom-flex-item custom-justify-center">{reqData.categoryIconPath !== '' ? <img src={process.env.REACT_APP_DOWN_URL+'/'+reqData.categoryIconPath} alt="icon_img"/>:null}</div>
                    <div className="custom-flex-item"> 
                    <button id="file-add-icon" style={{display:'none'}} onClick={()=>setOpenIcon(true)}></button>
                     <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-add-icon" >Select</label>
@@ -301,8 +315,8 @@ function NewCategory(props) {
                     <div className="write-row custom-flex-item">
                     <div className="left"><p>· Add Icon</p></div>
                     <div className="right custom-flex-item">
-                    <input className="category-subject custom-invalid-input" readOnly/>
-                    <input 
+                    <input className="category-subject custom-invalid-input" defaultValue={reqData.categoryIconFileNM} readOnly/>
+                   <input 
                         type="file" 
                         className="file-select-btn" 
                         style={{display: "none"}} 
@@ -328,37 +342,57 @@ function NewCategory(props) {
                                 })
                                 return false;
                             }
-                            console.log(file)
+                            console.log(file.name,'didi')
                             let formdata = new FormData();
-                            formdata.append("uploadFiles", file);
-                            formdata.append("directoryType", 'notice');
-                
-                            // 파일업로드 API 호출
-                            axiosInstance.post('/fileUpload', formdata).then(res => {
+                            formdata.append("uploadFile", file);
+                            // 아이콘 업로드 API 호출
+                            const config = { // axios header
+                                maxBodyLength: Infinity,
+                                headers: {
+                                    'Content-Type': 'multipart/form-data',
+                                    'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+                                }
+                            }
+                            axiosInstance.post('faqCa/iconUpload', formdata, config).then(res => {
                                 let resData = res.data;
-                                if (resData.code == 500) {
+                                
+                                if (resData.code === 200) {
+                                    setReqData({
+                                        ...reqData,
+                                        categoryIconFileNM : file.name,
+                                    })
+                                   
+                                } else {
+                                    console.log(resData)
                                     setAlertSetting({
                                         ...alertSetting,
                                         alertTxt : resData.msg
                                     })
-                                } else {
-                                    console.log('file attach')
                                 }
                             }).catch(error => {
                                 setAlertSetting({
                                     ...alertSetting,
-                                    alertTxt : 'Fail to attach file.'
+                                    alertTxt : 'Fail to upload file.'
                                 })
                                 console.log(error);
                             })
                             
                     }}
                     />   
-                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-select-btn" id="add-btn">Add Icon</label>
-                </div>
+                    <input
+                    type="button" 
+                    id="file-delete-btn"
+                    onClick={()=>setReqData({
+                        ...reqData,
+                        categoryIconFileNM:''
+                    })}
+                    style={{display:'none'}}
+                    />
+                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor={reqData.categoryIconFileNM==='' ?'file-select-btn' : 'file-delete-btn'} id="add-btn">{reqData.categoryIconFileNM==='' ?'Add Icon' : 'Delete'} </label>
+                    </div>
                 </div>
                 }
-            </div>
+        </div>
         <div className="btn-row custom-flex-item custom-justify-center" >
                 <button className="btn-black" onClick={onClose}>Cancel</button>
                 <button type="submit" className="btn-red" onClick={addNewCategory}>Save</button>

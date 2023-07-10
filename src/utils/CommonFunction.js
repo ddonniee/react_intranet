@@ -5,7 +5,7 @@ import axios from 'axios';
 /** axios instance */
 export const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL, // 서버 나오면 수정
-    baseURL: 'http://localhost:8090',
+    // baseURL: 'http://localhost:8090',
     maxBodyLength: Infinity,
     headers: {
         'Content-Type': 'multipart/form-data',
@@ -29,7 +29,13 @@ export const axiosJsonInstance = axios.create({
         'Content-Type': 'application/json; charset=utf-8',
     }
 });
-
+export const axiosIconInstance = axios.create({
+  baseURL: process.env.REACT_APP_SERVER_URL,
+  maxBodyLength: Infinity,
+  headers: { 
+    'Authorization': 'Bearer '+process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN, 
+  },
+});
 /** key값 추가를 위한 랜덤문자열 생성 함수 */
 export const generateRandomString = (num) => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';

@@ -681,7 +681,7 @@ function Faq() {
                             categoryLists?.map((item,idx)=>{
                                 return(
                                     <li key={generateRandomString(idx+1)} onClick={(e)=>handleClickIcon(e,item)}>
-                                        <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+item.categoryIconPath} alt='category-icon'/></div>
+                                        <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+'/'+item.categoryIconPath} alt='category-icon'/></div>
                                         <p>{item.categoryNm}</p>
                                         {
                                         item.iconModal

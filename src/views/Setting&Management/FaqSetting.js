@@ -17,7 +17,8 @@ import NewFaq from "./NewFormat/NewFaq";
 import NewCategory from "./NewFormat/NewCategory";
 // Utils
 import { generateRandomString,axiosInstance2 } from "../../utils/CommonFunction";
-
+// hooks
+import {useHorizontalScroll} from '../../hooks/useSideScroll'
 // Icons 
 import Plus from '../../assets/svgs/icon_plus.svg'
 import Minus from '../../assets/svgs/icon_minus.svg';
@@ -25,6 +26,7 @@ import New from '../../assets/svgs/icon_new.svg'
 
 import moment from "moment";
 import EditFaq from "./NewFormat/EditFaq";
+import Alert from "../../components/Alert";
 
 
 function FaqSetting() {
@@ -49,33 +51,40 @@ function FaqSetting() {
          setActivePage(e);
          console.log('page ---->', e);
      };
-     
+     // acios header
+     var config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        headers: { 
+           'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+        },
+        };
+
     /** 외부클릭처리 ▼ ============================================================= */
     const editorRef = useRef(null);
     const detailRef = useRef(null);
-    const categoryRef = useRef(null)
+    const categoryRef = useHorizontalScroll();
     const tabRef = useRef(null);
     const openRef = useRef(null)
     /** 외부클릭처리 ▲ ============================================================= */
 
     // const testValue = useContext(TestContext)
-    const [faqLists, setFaqLists] = useState([])
     const [categoryLists, setCategoryLists] = useState([])
     const [boardLength, setBoardLength] = useState(0)
     const [boardData, setBoardData] = useState([])
 
-    const [column, setColumn] = useState([
-        { field: 'num' },
-        { field: 'title' },
-    ])
+    // 글 작성/수정시  state 담기
     const [content, setContent] = useState({
         title : '',
         content : '',
-        isPublic : '',
+        faqTopId : '',
         attachments : null,
-        categoryId : ''
+        categoryId : '',
     });
-
+    useEffect(()=>{
+        console.log('content',content)
+    },[content])
+    // 게시판 글 중 선택된 항목
     const [selectedList, setSelectedList] = useState({
         attachments: '',
         reactionState: "",
@@ -92,16 +101,29 @@ function FaqSetting() {
         categoryId: '',
         writerID: ''
     });
-
+    /** Alert Handler */
+    const [alertModal, setAlertModal] = useState(false)
+    const [alertSetting, setAlertSetting] = useState({
+        alertTxt : '',
+        onConfirm : function() {},
+        isDoubleBtn : false,
+        btnTxt : 'Close',
+        confirmTxt : ''
+    })
+    useEffect(()=>{
+        if(alertSetting.alertTxt!=='') {
+            setAlertModal(true)
+        }
+    },[alertSetting.alertTxt])
+    // API 요청시 필요한 form 
     const [reqData, setReqData] = useState({
+        page : 1,
         categoryId: '',
         subsidiary: '',
         search : '',
-        type : 'F',
+        type : 'S',
     })
     const getList = () =>{
-
-        console.log('검색한다', reqData)
 
         const formData = new FormData();
 
@@ -111,23 +133,15 @@ function FaqSetting() {
             }
         }
         formData.append('page',activePage)
-        var config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            headers: { 
-               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-            },
-            data : formData
-            };
-        axiosInstance2('/faq/list', config)
+      
+        console.log(Object.fromEntries(formData))
+        axiosInstance2.post('/faq/list', formData,config)
         .then(function (response){
             let resData = response.data;
-            console.log(resData,'dddd')
             if(resData.code===200) {
+                console.log(resData)
                 let data = resData.result
-             
                 setBoardData(data.list)
-                // setFrequentList(data.top5list)
             }else {
                 console.log(resData)
             }
@@ -139,14 +153,6 @@ function FaqSetting() {
     
     const getCategory = () =>{
 
-     
-        var config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            headers: { 
-               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-            },
-            };
         axiosInstance2('/faqCa/list', config)
         .then(function (response){
             let resData = response.data;
@@ -172,20 +178,19 @@ function FaqSetting() {
 
         formData.append('faqId',id)
 
-        var config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            headers: { 
-               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-            },
-            data : formData
-            };
-        axiosInstance2('/faq/detail', config)
+        axiosInstance2.post('/faq/detail',formData,config)
         .then(function (response){
             let resData = response.data;
             if(resData.code===200) {
                 let data = resData.result
                 setSelectedList(data)
+                setContent({
+                    ...content,
+                    title : data.subject,
+                    content : data.content,
+                    attachments : data.attachments,
+                    categoryId : data.categoryId,
+                })
             }else {
                 console.log(resData)
             }
@@ -208,46 +213,89 @@ function FaqSetting() {
             setOpenFaqCreator(true)
             setOpenCategory(false)
         }
-        clearState()
+        clearState(1)
     }
-    const clearState =()=> {
-        setSelectedList({
-            attachments: '',
-            reactionState: "",
-            subject: "",
-            dislikeCount: 0,
-            likeCount: 0,
-            content: '',
-            subsidiary:'',
-            writerName:'',
-            commentCount : 0,
-            hits: 16,
-            createdAt: '',
-            faqId: '',
-            categoryId: '',
-            writerID: ''
-           })
+    const deleteItem = () => {
+        
+        if(selectedCategory.categoryId==='') {
+            return false
+        }
+        const formData = new FormData();
+        formData.append('categoryId',selectedCategory.categoryId)
+
+        axiosInstance2.post('/faqCa/delete',formData,config)
+        .then(function (res){
+            console.log(res)
+            let resData = res.data;
+            console.log(resData,'dddd')
+            if(resData.code===200) {
+                getCategory();
+            }else {
+                console.log(resData)
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
+    }
+    const onConfirm = () => {
+        setAlertSetting({
+            ...alertSetting,
+            alertTxt : `Are you sure to delete ${selectedCategory.categoryNm}?`,
+            onConfirm : ()=>(deleteItem(), setAlertModal(false), clearState(2)),
+            isDoubleBtn : true,
+            btnTxt : '',
+            confirmTxt : 'Delete'
+        })
+    }
+    const clearState =(num)=> {
+        if(num===1) {
+            setSelectedList({
+                attachments: '',
+                reactionState: "",
+                subject: "",
+                dislikeCount: 0,
+                likeCount: 0,
+                content: '',
+                subsidiary:'',
+                writerName:'',
+                commentCount : 0,
+                hits: 16,
+                createdAt: '',
+                faqId: '',
+                categoryId: '',
+                writerID: ''
+               })
+        }else if(num===2) {
+            setSelectedCategory({
+                categoryIconFileNM : '',
+                categoryIconId: '' ,
+                categoryIconPath: '',
+                categoryId: '',
+                categoryNm : '', 
+                createdAt : '',
+                iconModal :  false,
+                parentCategoryId : '',
+                rn : 0,
+                subComment :  []
+            })
+        }else if(num===2) {
+            setContent({
+                title:'',
+                content:'',
+                attachments: null,
+                categoryId: ''
+            })
+            setOpenFaqCreator(false)
+            getList()
+        }
+        
       }
     useEffect(()=>{
-        getList()
-        getCategory() 
-    },[])
-
-    const [categoryIcon, setCategoryIcon] = useState([])
-    
-    // useEffect(()=>{
-    //     if(categoryLists?.length !== 0 ) {
-    //         let copy = [...categoryLists]
-    //         copy.map(c=>{
-    //             let jsonString = JSON.parse(c.categoryIcon);
-    //             if(jsonString!==null || jsonString !=='') {
-    //                 c.fileName = jsonString.fileName
-    //                 c.uploadPath = jsonString.uploadPath
-    //             }
-    //         })
-    //         setCategoryIcon(copy)
-    //     }
-    // },[categoryLists])
+        if(!openCategory) {
+            getCategory() 
+        }
+    },[openCategory])
 
     useEffect(()=>{
         if(boardData.length===0) {
@@ -268,33 +316,173 @@ function FaqSetting() {
       
       },[boardData])
 
-    const [subCategory, setSubCategory] = useState(['Hold Codes','Service Order','VIDEO-Status','Support'])
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const [subCategory, setSubCategory] = useState([])
+    const [selectedCategory, setSelectedCategory] = useState({
+        categoryIconFileNM : '',
+        categoryIconId: '' ,
+        categoryIconPath: '',
+        categoryId: '',
+        categoryNm : '', 
+        createdAt : '',
+        iconModal :  false,
+        parentCategoryId : '',
+        rn : 0,
+        subComment :  []
+    });
     
-    const handleClickIcon = (e,item) => {
-        console.log('handleClickIcon',item)
-        let id = item.categoryId;
-        let arr = [];
-
-        categoryLists.map(item=>
-            item.parentCategoryId === id 
-            &&
-            arr.push(item)
-            )
-        setSubCategory(arr)
-    }
-
+    const handleClickIcon = (e, selectedItem) => {
+        console.log('handleClickIcon', selectedItem);
+        
+        const subCategories = selectedItem.subComment;
+        console.log('selectedItem',selectedItem.subComment)
+        setSubCategory(subCategories);
+       
+        if(selectedCategory.categoryId!==selectedItem.categoryId) {
+            setSelectedCategory(selectedItem)
+        }else {
+            setSelectedCategory({
+                categoryIconFileNM : '',
+                categoryIconId: '' ,
+                categoryIconPath: '',
+                categoryId: '',
+                categoryNm : '', 
+                createdAt : '',
+                iconModal :  false,
+                parentCategoryId : '',
+                rn : 0,
+                subComment :  []
+            })
+        }
+      };
     const handleChangeInput=(e)=>{
         console.log('handleChangeInput',e)
     }
+    const onConfirmHandler = (num,txt) =>{
 
-    useEffect(()=>{
-        setSelectedCategory(subCategory[0])
-    },[subCategory])
+        // leave editor 
+        if(num===1) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: ' Click confirm to leave write mode.',
+                onConfirm : ()=>{ 
+                    setAlertModal(false)
+                },
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : ""
+            })
+                   
+        }
+        // open post to public
+        else if(num===2) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Are you sure to oepn this post to public?',
+                // onConfirm : ()=>{ onChangePublic(); setAlertModal(false); clearState() },
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : "You've allowed all to show this post."
+            })
+            
+        }
+        // delete post
+        else if(num===3) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Are you sure to delete post?',
+                // onConfirm :  ()=>{onDeletePost(); setAlertModal(false); clearState(); getList()},
+                isDoubleBtn : true,
+                btnTxt : 'Confirm',
+                confirmTxt : "Deleted post."
+            })
+           
+        }
+        // delete comment
+        else if(num===4) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt : `Are you sure to delete ${selectedCategory.categoryNm}?`,
+                onConfirm : ()=>(deleteItem(), setAlertModal(false), clearState(2)),
+                isDoubleBtn : true,
+                btnTxt : '',
+                confirmTxt : 'Delete'
+            })
 
-    useEffect(()=>{
-        console.log(selectedCategory,'selectedCategory')
-    },[selectedCategory])
+           
+        }
+        // no input data when clicked submit
+        else if(num===5) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Any content input',
+                onConfirm :  ()=>setAlertModal(false),
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+            })
+        }
+        // success alert 
+        else if(num===6) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: 'Success',
+                onConfirm :  ()=>{setAlertModal(false); getList(); setOpenFaqCreator(false)},
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+            })
+            clearState()
+        }else if(num===7) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: txt,
+                onConfirm :  ()=>{setAlertModal(false);},
+                isDoubleBtn : false,
+                btnTxt : 'Close',
+            })
+            clearState()
+        }
+    }
+
+    const onSaveContent = (mode) => {
+        console.log('editor data >>>>>>', content)
+
+        if (!content?.title || !content?.content) { // required check
+            onConfirmHandler(1)
+            console.log('if')
+            return false;
+
+        } else {
+
+            const formData = new FormData();
+            const url = mode==='edit' ? '/faq/update' : '/faq/insert'
+            for (let key in content) {
+                if (content.hasOwnProperty(key)) {
+                    formData.append(key, content[key]);
+                }
+            }
+           
+            if(mode==='edit') {
+                formData.append('faqId',selectedList.faqId)
+            }
+            console.log('save data >>>>>>', Object.fromEntries(formData))
+            console.log(url)
+            // faq 등록/수정faqTopId
+            axiosInstance2.post(url, formData,config).then(res => {
+                let resData = res.data;
+                console.log(res,'===========================================================')
+                if(resData.code == 200) {
+                    console.log('res', resData)
+                    onConfirmHandler(6)
+                } else {
+                    onConfirmHandler(7,resData.msg)
+                    console.log('res', resData.msg);
+                }
+            }).catch(error => {
+                console.log('error', error)
+            })  
+        }
+    }
+
+
     const handleClickAction = e => {
         console.log('handleClickAction')
     }
@@ -308,21 +496,19 @@ function FaqSetting() {
 
     useEffect(()=>{
         getList()
-      },[activePage])
+      },[activePage, reqData.categoryId])
 
     useEffect(()=>{
         if(selectedList.faqId!=='' && openFaqCreator) {
             setOpenFaqCreator(false)
         }
-        console.log('바뀌고있니 ?',selectedList)
     },[selectedList])
     
     useEffect(()=>{
         if(openFaqCreator && selectedList.faqId !=='') {
-            clearState()
+            clearState(1)
         }
     },[openFaqCreator])
-
 
     // const handleOutsideClick = (e) => {
     //     e.stopPropagation();
@@ -345,19 +531,19 @@ function FaqSetting() {
         <>
         
         <Header />
-        <Style selectId={selectedList.faqId} openRight={(selectedList.faqId!=='' || openFaqCreator || openCategory )? true : false}>
+        <Style selectId={selectedList.faqId} openRight={(selectedList?.faqId!=='' || openFaqCreator || openCategory )? true : false}>
         <div className="inner-container">
         <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Top Area */}
-            <div className="faq-setting"  ref={categoryRef}>
+            <div className="faq-setting" >
                 <div className="faq-category custom-flex-item custom-justify-between">
-                    <ul className="faq-category-lists">
+                    <ul className="faq-category-lists"  ref={categoryRef}>
                     {
                     categoryLists?.map((list, idx) => {
                         if (list.parentCategoryId === null) {
                         return (
-                            <li key={generateRandomString(idx + 1)} onClick={(e) => handleClickIcon(e, list)} className="cursor-btn">
-                            <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+'/' + list.categoryIcon} alt='category-icon' /></div>
+                            <li key={generateRandomString(idx + 1)} onClick={(e) => handleClickIcon(e, list)} className={`cursor-btn ${selectedCategory.categoryId===list.categoryId && `hover-selected`}`}>
+                            <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+'/' + list.categoryIconPath} alt='category-icon' /></div>
                             <p>{list.categoryNm}</p> </li>
                         );
                         }
@@ -368,31 +554,34 @@ function FaqSetting() {
                     </ul>
                     <div></div>
                     <div className="buttons">
-                        <button><img src={Minus} alt='icon_less_btn'/></button>
+                        <button className={selectedCategory.categoryId==='' && 'custom-invalid-btn'} onClick={()=>onConfirmHandler(4)}><img src={Minus} alt='icon_less_btn' /></button>
                         <button onClick={()=>{addNewItem(1,selectedList.faqId)}}><img src={Plus} alt='icon_more_btn'/></button>
                     </div>
                 </div>
             </div>
-            <div className="faq-setting-tab custom-flex-item custom-justify-between" ref={tabRef}>
-                <div>
-                    <ul className="custom-flex-item">
-                        {
-                            subCategory?.map((item,idx)=>{
-                                return(
-                                    <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${selectedCategory===item && `red-selected`}`} onClick={()=>setSelectedCategory(item)} key={generateRandomString(idx)}>{item}</li>
-                                )
-                            })
-                        }
-                    </ul>
-                </div>
-                <div className="buttons">
-                    <button><img src={Minus} alt='icon_less_btn' /></button>
-                    <button onClick={()=>{addNewItem(2,selectedList.faqId)}}><img src={Plus} alt='icon_more_btn'/></button>
-                </div>
-            </div>
+            
             {/** Content Area */}
             <div className="faq-contents">
-                    <div className="faq-left custom-flex-item custom-justify-between" ref={editorRef}>
+                <div className="faq-left" ref={editorRef}>
+
+                    <div className="faq-setting-tab custom-flex-item custom-justify-between" ref={tabRef}>
+                    <div>
+                        <ul className="custom-flex-item">
+                            {
+                                subCategory.length !== 0 &&  subCategory.map((item,idx)=>{
+                                    return(
+                                        <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${selectedCategory.categoryIconId===item.categoryId && `red-selected`}`} onClick={()=>setReqData({...reqData, categoryId:item.categoryId})} key={generateRandomString(idx)}>{item.categoryNm}</li>
+                                    )
+                                })
+                            }
+                        </ul>
+                    </div>
+                    <div className="buttons">
+                        <button><img src={Minus} alt='icon_less_btn' /></button>
+                        <button onClick={()=>{addNewItem(2,selectedList.faqId)}}><img src={Plus} alt='icon_more_btn'/></button>
+                    </div>
+                </div>
+
                     <ul className="faq-custom-board" >
                         {
                             boardData && boardData.length > 0 && boardData.map((item,idx)=>{
@@ -421,13 +610,13 @@ function FaqSetting() {
                     {
                     selectedList.faqId !== '' && !openFaqCreator ?
                     <div className="faq-setting-right" ref={detailRef}>
-                        <EditFaq data={selectedList} setData={setSelectedList} key={selectedList.faqId} onClose={()=>clearState()} />
+                        <EditFaq data={content} setData={setContent} key={selectedList.faqId} onSave={()=>onSaveContent('edit')} onClose={()=>clearState(1)} />
                     </div>
                     :
                     selectedList.faqId === '' && openFaqCreator 
                     ?
                     <div className="faq-setting-right" ref={openRef}>
-                        <NewFaq onClose={()=>setOpenFaqCreator(false)}/>
+                        <NewFaq data={content} setData={setContent} onClose={()=>setOpenFaqCreator(false)} onSave={()=>onSaveContent('save')}/>
                     </div>
                     :
                     openCategory 
@@ -440,7 +629,10 @@ function FaqSetting() {
                     }
                    
             </div>
-
+            {
+                alertModal &&
+                <Alert alertTxt={alertSetting.alertTxt} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt} onClose={()=>setAlertModal(false)}/>
+            }
             <Zendesk />
             <Tab />
         </div>

@@ -38,32 +38,7 @@ function FormEditor(props) {
         confirmTxt : ''
     })
 
-    const getCategoyList = () =>{
-
-        var config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            headers: { 
-               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-            },
-            };
-        axiosInstance('/faqCa/list', config)
-        .then(function (response){
-            let resData = response.data;
-            console.log(resData,'dddd')
-            if(resData.code===200) {
-                let data = resData.result
-                console.log(data)
-                // setBoardData(data.list)
-                // setFrequentList(data.top5list)
-            }else {
-                console.log(resData)
-            }
-        })
-        .catch(function(error) {
-            console.log('error',error)
-        })
-    }
+   
     const handleChange = (event) => {
         let value = event.value;
         console.log(value)
@@ -133,9 +108,7 @@ function FormEditor(props) {
         setContent({ ...content, attachments: JSON.stringify(copyFiles)})
     };
 
-    useEffect(() => {
-        getCategoyList()
-    },[])
+ 
     useEffect(()=>{
         if(!alertModal) {
             setAlertSetting({
@@ -170,9 +143,10 @@ function FormEditor(props) {
                         onChange={ ( event, editor ) => {
                             const inputData = editor.getData();
                             const dbTxt = encodeURIComponent(inputData)
+                            console.log(inputData)
                             // setTxt(dbTxt)
-                            setContent({
-                                ...content,
+                            setData({
+                                ...data,
                                 content : inputData,
                             })
                         } }
@@ -236,6 +210,7 @@ function FormEditor(props) {
                         
                                     // 파일업로드 API 호출
                                     axiosInstance.post('/fileUpload', formdata).then(res => {
+                                        console.log(res,'////////////////////////////////>>>>')
                                         let resData = res.data;
                                         if (resData.code == 500) {
                                             setAlertSetting({

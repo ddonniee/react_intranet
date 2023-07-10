@@ -26,21 +26,34 @@
     padding: 20px 25px;
 }
 .faq-category-lists {
-    display: flex; justify-content: space-between; position: relative;
+    display: flex; justify-content: space-between; position: relative; overflow-x: auto; pointer-events: auto; 
+    li {
+        align-self: center; position: relative; min-width: 115px;
+        div {
+            text-align: center;     padding-bottom: 10px; min-height: 59px;
+        }
+    }
+    .icon-modal {
+        position: absolute; width: 146px; left: -10px; z-index: 999;
+        img {
+            position: relative;
+            top: 5px;
+        }
+    }
 }
-.faq-category-lists li {
-    align-self: center; position: relative; width: 115px;
+.faq-category-lists::-webkit-scrollbar {
+    width: 1px; height: 8px;
 }
-.faq-category-lists li div {
-    text-align: center;     padding-bottom: 10px;
+  
+.faq-category-lists::-webkit-scrollbar-thumb {
+    background-color: $border-color-gery;
+    border-radius: 4px;
 }
-.faq-category-lists .icon-modal {
-    position: absolute; width: 146px; left: -10px; z-index: 999;
-}
-.faq-category-lists .icon-modal img {
-    position: relative;
-    top: 5px;
-}
+
+.faq-category-lists::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}  
+.faq-category-lists .icon-modal
 .faq-category-lists .icon-modal ul {
     border: 2px solid $primary-color-red; border-radius: 15px; padding: 10px; background-color: white;
 }
