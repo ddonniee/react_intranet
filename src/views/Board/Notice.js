@@ -273,8 +273,8 @@ function Notice() {
                                                 <span className="title">
                                                     { item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null } 
                                                     { item.tableName !== 'CS' ? <p>{`[${item.tableName}]`}</p> : null }
-                                                    { item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
-                                                    selectedList?.noticeId ? (item.title).substr(0, 50) + '...' : item.title } 
+                                                    { !selectedList?.noticeId && item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
+                                                    selectedList?.noticeId && item.title.length > 50 ? (item.title).substr(0, 50) + '...' : item.title } 
                                                     { item.new ? <NewIcon /> : null }
                                                 </span>
                                                 {
