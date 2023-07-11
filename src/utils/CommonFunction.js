@@ -1,6 +1,7 @@
 import { elements } from "chart.js";
 import React, {useRef, useEffect} from "react";
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
 
 /** axios instance */
 export const axiosInstance = axios.create({
