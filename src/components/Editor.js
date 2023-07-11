@@ -66,7 +66,11 @@ function Editor({ period, data, setData, range, isChange, isWriter, onSave, onCl
         setTimeout(() => {
             setContent(content);
             setOrigin(content);
-            setAttachments(JSON.parse(content.attachments))
+            if(content.attachments) {
+                setAttachments(JSON.parse(content.attachments))
+            } else {
+                setAttachments([{ fileName: '', uploadPath: '', },])
+            }
         }, 10);
 
         return () => {
