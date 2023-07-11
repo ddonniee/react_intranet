@@ -201,7 +201,7 @@ function NoticeSetting() {
     }, []);
 
     const submitInput = () => {
-        const input = document.getElementById('notice-nav-input').value;
+        const input = document.getElementById('title-nav-input').value;
         setSearchData({ ...searchData, search: input });
     }
 
@@ -218,7 +218,13 @@ function NoticeSetting() {
             onConfirmHandler('leave')
             return false;
         }
-        setSelctedList({ noticeId: item.noticeId, tableName: item.tableName })
+
+        if(selectedList?.noticeId === null || selectedList?.noticeId !== item.noticeId) {
+            setSelctedList({ noticeId: item.noticeId, tableName: item.tableName })
+        } else {
+            setSelctedList()
+            setIsModify(false)
+        }
         setIsWrite(false)
         setIsChange(false)
     }

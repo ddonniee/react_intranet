@@ -259,7 +259,8 @@
         .notice-right {
             border: 1px solid $border-color-gery; 
             border-radius: 14px;
-            overflow: hidden;
+            // overflow: hidden;
+            overflow: auto;
             display: flex;
             flex-direction: column;
             // height: 800px;
@@ -543,6 +544,19 @@
                 }
             }
         }
+
+        .notice-right::-webkit-scrollbar {
+            width: 8px;
+        }
+          
+        .notice-right::-webkit-scrollbar-thumb {
+            background-color: $border-color-gery;
+            border-radius: 4px;
+        }
+        
+        .notice-right::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        } 
     }
 
     /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 

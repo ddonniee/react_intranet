@@ -5,16 +5,14 @@ import CryptoJS from 'crypto-js';
 
 /** axios instance */
 export const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_SERVER_URL, // 서버 나오면 수정
-    // baseURL: 'http://localhost:8090',
+    baseURL: process.env.REACT_APP_SERVER_URL,
     maxBodyLength: Infinity,
     headers: {
         'Content-Type': 'multipart/form-data',
     }
 });
 
-export const axiosInstance2 = axios.create({ // 희정님 로컬서버 (notice, cstalk, qna)
-    // baseURL: 'http://192.168.0.30:8090',
+export const axiosInstance2 = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
     maxBodyLength: Infinity,
     headers: {
@@ -24,7 +22,6 @@ export const axiosInstance2 = axios.create({ // 희정님 로컬서버 (notice, 
 
 export const axiosJsonInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
-    // baseURL: 'http://192.168.0.19:8090',
     maxBodyLength: Infinity,
     headers: {
         'Content-Type': 'application/json; charset=utf-8',

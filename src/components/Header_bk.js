@@ -28,15 +28,6 @@ function Header() {
     ]
     const [thirdMenuList, setThirdMenuList] = useState([])
 
-    const [thirdMenuList2, setThirdMenuList2] = useState([
-        {group: 'dashboard', name : 'KPI performance', id:'kpi-performance', path : '/dashboard/kpiperformance'},
-        {group: 'dashboard', name : 'Asc Holding Status', id:'asc-holding-status', path : '/dashboard/ascholdingstatus'},
-        {group: 'dashboard', name : 'Evaluation/Incentive', id:'evaluation-incentive', path : '/dashboard/evaluation'},
-        {group: 'dashboard', name : 'Parts Delivery Time', id:'part-delivery-time', path : '/dashboard/partsdeliverytime'},
-        {group: 'dashboard', name : 'Training Status', id:'training-status', path : '/dashboard/trainingstatus'},
-        {group: 'dashboard', name : 'Work In Process', id:'work-in-process', path : '/dashboard/wip'},
-    ])
-
     const handleClickTab = e => {
        
         let tabID = e.target.id;
@@ -89,20 +80,6 @@ function Header() {
     }
     const ThirdMenu = () => {
         return (
-            // <div className='nav-third' ref={headerRef}>
-            //     <div className='third-tab'>
-            //     <ul>
-            //         {
-            //             thirdMenuList?.map((list,idx)=>{
-            //                 return(
-            //                     <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
-            //                 )
-            //             })
-            //         }
-            //     </ul>
-            //     </div>
-            // </div>
-
             <div className='nav-modal' ref={headerRef}>
                 <img src={Polygon} alt='polygon' />
                 <ul>
@@ -253,8 +230,7 @@ function Header() {
                             </>
                             :
                             null
-                        }
-                        </li>
+                        }</li>
                         
                         )
                     })}

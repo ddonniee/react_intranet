@@ -80,14 +80,10 @@ ul, li {
     align-items: center;
     justify-content: center;
 }
-
 .nav-modal{
-    height: fit-content; 
-    position: absolute;
+    height: fit-content; position: absolute;
     z-index: 1000;
-    background: white; 
-    border: 1px solid $primary-color-red;
-    border-radius: 20px;
+    background: white; border: 1px solid $primary-color-red; border-radius: 20px;
 }
 .nav-modal li {
     text-align: left; border-radius: 5px;
@@ -118,8 +114,7 @@ ul, li {
         width: 240px; font-weight: 600; font-size: 21px; line-height: 24px;
     }
     .more-lists > li {
-        // width: 246px; 
-        width: 240px;
+        width: 246px; 
     }
     .nav-division {
         width: 1px; height: 40px; background-color:  rgba(255, 255, 255, 0.2);

@@ -106,7 +106,9 @@ function Editor({ period, data, setData, range, isChange, isWriter, onSave, onCl
                 setData({ ...content, postStartDate : start, postEndDate : end })
             } else {
                 console.log('save success')
-                setData(content)
+                const uploadFiles = attachments.filter(item => item.fileName !== '');
+                // setData(content)
+                setData({ ...content, attachments: JSON.stringify(uploadFiles)})
             }
         }
     }
@@ -180,6 +182,8 @@ function Editor({ period, data, setData, range, isChange, isWriter, onSave, onCl
     }
 
     const updateFile = (idx, file) => {
+        console.log('########## updateFile ###########', idx, file)
+
         const copyFiles = [...attachments];
         const updateFile = copyFiles[idx];
         updateFile.fileName = file.fileName;
@@ -319,8 +323,8 @@ function Editor({ period, data, setData, range, isChange, isWriter, onSave, onCl
                                                 const file = e.target?.files[0];
                                                 // console.log('input file type ============', file.type)
 
-                                                if(file.size > 1024 * 1024 * 20) {
-                                                    setAlertTxt('Only files of 20MB or less can be attached.')
+                                                if(file.size > 1024 * 1024 * 100) {
+                                                    setAlertTxt('Only files of 100MB or less can be attached.')
                                                     return false;
                                                 }
                                                 const allowedFileTypes = [
