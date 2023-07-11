@@ -260,7 +260,7 @@ const Style = styled.div`
         background : #FAF1F4; color : #BB0841; 
     }
     .faq-left {
-        width: ${props => (props.openRight ? '48%' : '100%')};
+        width: ${props => (props.openRight ? '49%' : '100%')};
     }
     
 `
