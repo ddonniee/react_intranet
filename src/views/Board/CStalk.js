@@ -1053,10 +1053,6 @@ function CStalk() {
                                 )
                             })
                         }  
-                        <div className="user-action custom-flex-item ">
-                            <span className="cstalk-like custom-flex-item " onClick={(e)=>onClickAction(e,selectedList.csTalkId)}><img src={selectedList.reactionState!=='NONE'?Liked : Like} alt="btn_like" className="cursor-btn"/><p>{selectedList.likeCount}</p></span>   
-                            
-                        </div> 
                     </div>
                     <div className="cstalk-right-middle">
                        <div className="ck-viewer"> <Viewer content={selectedList.content}/></div>
@@ -1082,6 +1078,9 @@ function CStalk() {
                         </div>
                     </div>
                     <div className="cstalk-right-bottom">
+                    <div className="user-action custom-flex-item ">
+                            <span className="cstalk-like custom-flex-item " onClick={(e)=>onClickAction(e,selectedList.csTalkId)}><img src={selectedList.reactionState!=='NONE'?Liked : Like} alt="btn_like" className="cursor-btn"/><p>{selectedList.likeCount}</p></span>   
+                        </div> 
                         <div className="cstalk-comment-wrapper">
                         <span>Comments</span><span className="comment-cnt-title">total <p className="custom-stress-txt comment-cnt">{selectedList?.commentCount}</p></span>
                             <div className="custom-justify-between">
@@ -1092,6 +1091,7 @@ function CStalk() {
                                 <button onClick={()=>onAddComment(1)}>Write</button>
                             </div>
                         </div>
+                        
                         <div className="cstalk-comment-list">
                             <ul>
                                 {

@@ -151,7 +151,7 @@ function EditorModify(props) {
 
     return (
         <Style>
-        <div className="editor-container editor-border">
+        <div className="editor-container editor-border cstalk-editor">
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
                 <div className="right"> <input type="text" className="write-input" name="writer" readOnly value={user.name}></input> </div>

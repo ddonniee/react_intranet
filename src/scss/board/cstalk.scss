@@ -79,10 +79,18 @@
     padding: 10px 20px; justify-content: end;
 }
 .setting-viewer button  {
-       background-color: white; padding: 10px;  width: 86px;
-       height: 30px ; border-radius: 100px ; color: $txt-color-edit;
-       border: 1px solid $border-color-gery;  justify-content: center; 
-    //    margin-left: 10px;    
+    height: 30px;
+    border-radius: 100px;
+    border: 1px solid #D5D5D5;
+    justify-content: center;
+    border-radius: 3px;
+    border: 1px solid #BB0841;
+    background: #FCF8F9;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    min-width: 78px; 
+    color: $primary-color-red;
 } 
 .setting-viewer button:not(:first-child) {
     margin-left: 10px;  
@@ -242,11 +250,31 @@
     flex-direction: column; overflow: hidden;
     
 }
-.editor-wrapper {
-    padding-top: 39px !important;
-    // min-height: 
+.cstalk-contents{
+    .editor-border {
+        overflow: hidden !important;
+    }
+    .cstalk-editor {
+      overflow: auto;
+      padding-top: 39px !important;
     max-height: 812px;
+    }
+
+    .cstalk-editor::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      .cstalk-editor::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 4px;
+      }
+      
+      .cstalk-editor::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+      }  
 }
+.editor-container,
+    
 .cstalk-custom-board {
     overflow: auto;
     li {
@@ -279,6 +307,7 @@
 .cstalk-right {
     border-radius: 14px; overflow: auto; width: 100%; transition: transform 0.3s ease; 
     border: 1px solid $border-color-gery; flex-direction: column;
+    
 }
 .cstalk-right .ck-sticky-panel {
     display: none !important;
