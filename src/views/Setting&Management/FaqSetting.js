@@ -119,7 +119,7 @@ function FaqSetting() {
     },[alertSetting.alertTxt])
     // API 요청시 필요한 form 
     const [reqData, setReqData] = useState({
-        page : 1,
+        page : activePage,
         categoryId: '',
         subsidiary: '',
         search : '',
@@ -134,8 +134,6 @@ function FaqSetting() {
               formData.append(key, reqData[key]);
             }
         }
-        formData.append('page',activePage)
-      
         console.log(Object.fromEntries(formData))
         axiosInstance2.post('/faq/list', formData,config)
         .then(function (response){
@@ -180,6 +178,7 @@ function FaqSetting() {
 
         formData.append('faqId',id)
 
+        console.log(config)
         axiosInstance2.post('/faq/detail',formData,config)
         .then(function (response){
             let resData = response.data;
@@ -486,8 +485,14 @@ function FaqSetting() {
 
     useEffect(()=>{
         getList()
-      },[activePage, reqData.categoryId])
+      },[reqData])
 
+      useEffect(()=>{
+        setReqData({
+            ...reqData,
+            page:activePage
+        })
+      },[activePage])
     useEffect(()=>{
         if(selectedList.faqId!=='' && openFaqCreator) {
             setOpenFaqCreator(false)
@@ -544,7 +549,7 @@ function FaqSetting() {
                     </ul>
                     <div></div>
                     <div className="buttons">
-                        <button className={selectedCategory.categoryId==='' && 'custom-invalid-btn'} onClick={()=>onConfirmHandler(4)}><img src={Minus} alt='icon_less_btn' /></button>
+                        <button className={selectedCategory.categoryId==='' && 'custom-invalid-btn'} onClick={()=>selectedCategory.categoryIconId!==''&&onConfirmHandler(4)}><img src={Minus} alt='icon_less_btn' /></button>
                         <button onClick={()=>{addNewItem(1,selectedList.faqId)}}><img src={Plus} alt='icon_more_btn'/></button>
                     </div>
                 </div>

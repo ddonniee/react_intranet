@@ -11,8 +11,10 @@
     margin-right: 10px; 
 }
 .faq-lists .faq-top {
-    display: flex; margin-bottom: 14px;
+    display: flex; margin-bottom: 14px; 
+    
 }
+
 .faq-lists .faq-top p {
     font-weight: 600;  font-size: 20px; line-height: 23px; letter-spacing: 0.01em;
 }
@@ -26,7 +28,8 @@
     padding: 20px 25px;
 }
 .faq-category-lists {
-    display: flex; justify-content: space-between; position: relative; overflow-x: auto; pointer-events: auto; 
+    display: flex; justify-content: space-between; position: relative; 
+    pointer-events: auto; 
     li {
         align-self: center; position: relative; min-width: 115px;
         div {
@@ -53,9 +56,11 @@
 .faq-category-lists::-webkit-scrollbar-track {
     background-color: #f1f1f1;
 }  
-.faq-category-lists .icon-modal
-.faq-category-lists .icon-modal ul {
-    border: 2px solid $primary-color-red; border-radius: 15px; padding: 10px; background-color: white;
+.faq-category-lists .icon-modal {
+    ul {
+        border: 2px solid $primary-color-red; border-radius: 15px; padding: 10px; background-color: white;
+        text-align: initial;
+    }
 }
 .faq-category-lists .icon-modal li {
     padding: 5px; font-weight: 400;
@@ -64,6 +69,10 @@
 }
 .faq-contents {
     display: flex; justify-content: space-between; 
+    .board-table {
+        border-top: 2px solid $primary-color-red;  background: #FBFBFB; height: 30px; 
+        
+    }
 }
 .faq-right, .faq-left {
     width: 48%; height: 800px;
@@ -100,8 +109,8 @@
    margin-bottom: 40px;
     li {
         padding: 18px 24px 18px 0px;  display: flex;
-        align-items: center;  border-bottom: 2px solid $board-color-grey;
-        img {
+        align-items: center;  border-bottom: 2px solid $board-color-grey;  max-height: 54px;
+        img { 
             margin-left: 10px;
         }
         span {

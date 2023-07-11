@@ -3,8 +3,8 @@
 .faq-setting {
     border: 1px solid #D8D8D8; border-radius: 10px; 
      padding: 10px 0;
-     ul {
-        width: 85%; 
+     ul { 
+        width: 85%; overflow-x: auto;
      }
      ul + div {
         width: 1px; background-color: #D8D8D8; 
@@ -29,8 +29,51 @@
     display: flex !important;
     justify-content: end !important;
     }
+   & + .faq-contents {
+    margin-top: 30px;
+    .faq-left, .faq-setting-right {
+        height: 648px;
+    }
+    .pagination {
+        padding-top: 18px !important;
+    }
+    .write-btn {
+        bottom: 0px !important;
+    }
+        .faq-setting-right::-webkit-scrollbar {
+        width: 8px;
+        }
+        
+        .faq-setting-right::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 4px;
+        }
+        
+        .faq-setting-right::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+        } 
+   }
 }
-
+.faq-custom-board {
+    max-height: 486px;
+    overflow: auto;
+   }
+    /* 스크롤바 스타일링 */
+  .faq-custom-board::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .faq-custom-board::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  
+  .faq-custom-board::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }  
+.faq-img-wrapper img {
+    max-width: 44px ; max-height: 44px;
+}
 .faq-setting-tab {
     min-height: 73px;
     & > div:first-child {
@@ -77,5 +120,5 @@
 }
 .faq-setting-right {
     width: 48%; 
-    border-radius: 10px; border: 1px solid #E8E8E8;
+    border-radius: 10px; border: 1px solid #E8E8E8; overflow: auto;
 }

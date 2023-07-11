@@ -2,7 +2,6 @@
 
 .maximal-content{
     background-color: #fff;
-    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     width: 80%;
@@ -11,4 +10,63 @@
     height: 80%;
     display: flex;
     flex-direction: column;
+    .content-top {
+        position: relative;
+        padding: 16px 25px;
+        border-bottom: 1px solid #D5D5D5;
+        .maximal-title {
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 30px;
+            color: #333333;
+        }
+        .maximal-title-detail {
+            font-size: 14px;
+            line-height: 24px;
+            padding-top: 4px;
+            span {
+                padding: 0;
+            font-weight: 600;
+            }
+        }
+        .maximal-attachment  {
+            & span:first-child {
+                margin-left: 4px;
+                padding: 4px;
+            }
+            img + span {
+                padding: 0 5px; align-self: center;
+            }
+        }
+        .faq-attach {
+            p {
+                align-self: center;
+                padding: 0 5px;  white-space: nowrap;
+            }
+        }
+        
+    }
+    .ck-toolbar__items {
+        display: none !important;
+    }
+    .ck-content {
+        border: none !important;
+    }
+    .content-bottom {
+        margin-top: auto;
+        .comment-wrapper {
+            & span:first-child {
+                font-size: 15px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 18px;
+            }
+        }
+        .user-reaction{
+            padding: 18px 30px; border-top: 1px solid $border-color-gery;
+            &  * {
+                padding: 0px 3px;
+            }
+        }
+    }
 }

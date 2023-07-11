@@ -368,8 +368,9 @@ function CStalk() {
             data : formData
             };
         axiosInstance2('/csTalk/list', config)
-        .then(function (response){
-            let resData = response.data;
+        .then(function (res){
+            let resData = res.data;
+            console.log('cs',res)
             if(resData.code===200) {
                 let data = resData.result
                 setBoardData(data)
@@ -1155,7 +1156,10 @@ export default CStalk
 
 const Style = styled.div`
     .cstalk-left {
-        width: ${props => (props.openRight ? '48%' : '100%')};
+        width: ${props => (props.openRight ? '48%' : '100%')}; 
+    }
+    .cstalk-left .cstalk-custom-board li {
+        padding : ${props => (props.openRight ? '10px 30px;':'17px 30px')}
     }
     
 `
