@@ -124,7 +124,6 @@
     margin: 0; font-weight: 600; text-align: center;
 }
 .faq-left {
-    position: relative; overflow-y: auto; overflow-x: hidden;
     .faq-count{
         margin-bottom: 15px;
         font-size: 14px;
@@ -146,7 +145,10 @@
     .pagination {
         margin-top: 0 !important; padding-top: 40px;  border-top: 1px solid #E8E8E8;
     }
-    
+    .custom-scroll-area {
+        max-height: 534px;
+        min-height: 534px;
+    }
 } 
 .faq-left::-webkit-scrollbar {
     width: 8px;

@@ -133,7 +133,7 @@ function MaximalView(props) {
              </div>
             
              <div className="content-bottom">
-             <div className="user-reaction custom-flex-item ">
+             <div className="user-action custom-flex-item ">
                         <span className="faq-like custom-flex-item" ><img src={detail.reactionState==='LIKE' ? Liked : Like} alt="btn_like"/><p>{detail.likeCount}</p></span>   
                         <span >|</span>
                         <span className="faq-dislike custom-flex-item"> <img src={detail.reactionState==='DISLIKE' ? Disliked : Dislike} alt='btn_dislike'/><p>{detail.dislikeCount}</p></span> 

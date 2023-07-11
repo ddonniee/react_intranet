@@ -5,7 +5,6 @@ const SelectBox = (props) => {
     
     const {options, handleChange, defaultValue, placeholder} = props;
 
-    console.log(placeholder? 'dd':'hh')
     const customStyles = {
         control: (provided, state) => ({
             ...provided,

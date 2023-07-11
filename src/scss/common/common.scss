@@ -92,16 +92,21 @@ align-items: center;
 
 .write-btn {
     position: absolute;
-    bottom: -41px;
+    bottom: 0;
     right: 0;
-    width: 61px;
-    height: 61px;
-    border-radius: 50%;
-    background: $primary-color-red; color: white;
     display: flex;
     align-items: center;
     justify-content: center; 
-
+    background: #323232;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    height: 35px;
+    line-height: 19px;
+    width: 72px;
     span {
         font-weight: 600; font-size: 14px; line-height: 16px; text-align: center; letter-spacing: 0.025em;
     }
@@ -340,6 +345,22 @@ body .modal {
 .custom-invalid-btn {
     background-color: $chart-color-grey !important; cursor:not-allowed !important;
 }
+.custom-scroll-area {
+    overflow: auto;
+}
+.custom-scroll-area::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-scroll-area::-webkit-scrollbar-thumb {
+background-color: #888;
+border-radius: 4px;
+}
+
+.custom-scroll-area::-webkit-scrollbar-track {
+background-color: #f1f1f1;
+} 
+
 .maximizing-btn {
     cursor: nw-resize;
     align-items: center; background: #828282;  border: 1px solid #828282; border-radius: 3px;
@@ -391,7 +412,7 @@ body .modal {
 }
 /* Fav tab */
 .user-action{
-    padding: 18px 30px; border-top: 1px solid $border-color-gery;
+    padding: 18px 30px; border-top: 1px solid $border-color-gery; background-color: white;
     &  * {
         padding: 0px 3px;
     }
