@@ -628,24 +628,24 @@ function Faq() {
     },[commentPage])
     
     /** click outside */
-    // const handleOutsideClick = (e) => {
-    //     if (iconRef.current && !iconRef.current.contains(e.target)) {
-    //       setCategoryLists((prevLists) => {
-    //         const updatedLists = prevLists.map((list) => ({
-    //           ...list,
-    //           iconModal: false,
-    //         }));
-    //         return updatedLists;
-    //       });
-    //     }
-    //   }; 
+    const handleOutsideClick = (e) => {
+        if (iconRef.current && !iconRef.current.contains(e.target)) {
+          setCategoryLists((prevLists) => {
+            const updatedLists = prevLists.map((list) => ({
+              ...list,
+              iconModal: false,
+            }));
+            return updatedLists;
+          });
+        }
+      }; 
         
-    // useEffect(() => {
-    // document.addEventListener("mousedown", handleOutsideClick);
-    // return () => {
-    //     document.removeEventListener("mousedown", handleOutsideClick);
-    // };
-    // }, []);
+    useEffect(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+        document.removeEventListener("mousedown", handleOutsideClick);
+    };
+    }, []);
 
       useEffect(()=>{
         getCategory()

@@ -2,12 +2,17 @@ import { useContext, useState, useEffect, useLayoutEffect } from "react"
 import { styled } from "styled-components"
 
 import moment from "moment"
+import Pagination from "react-js-pagination"
+
 import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Zendesk from "../../components/Zendesk"
 import SelectBox from '../../components/SelectBox'
 import Viewer from "../../components/Viewer"
-import Pagination from "react-js-pagination"
+import MaximalView from "../Common/MaximalView"
+import EditorModify from "../../components/EditorModify"
+import Tab from "../../components/Tab"
+import Alert from "../../components/Alert"
 
 import { axiosInstance2, generateRandomString,downloadAttachment } from "../../utils/CommonFunction"
 
@@ -21,12 +26,11 @@ import Liked from '../../assets/svgs/icon_liked.svg'
 import Comment from '../../assets/svgs/icon_co_comment.svg'
 import More_comment from '../../assets/svgs/icon_co_more.svg'
 import Close_comment from '../../assets/svgs/icon_co_close.svg'
-import Editor from "../../components/Editor"
-import EditorModify from "../../components/EditorModify"
+import Close from '../../assets/svgs/icon_close2.svg'
+import Maximize from '../../assets/svgs/icon_screen.svg'
 
 import {UserContext} from '../../hooks/UserContext'
-import Tab from "../../components/Tab"
-import Alert from "../../components/Alert"
+
 
 function CStalk() {
 
@@ -53,7 +57,7 @@ function CStalk() {
 
     /** 페이징 관련 ▼ ============================================================= */
     const [activePage, setActivePage] = useState(1); // 현재 페이지
-    const [itemsPerPage] = useState(10); // 페이지당 아이템 갯수
+    const [itemsPerPage] = useState(16); // 페이지당 아이템 갯수
 
     const [subsidiary, setSubsidiary ] = useState([
         {value:'',label:'All'}, 
@@ -65,7 +69,7 @@ function CStalk() {
         {value:'LGEMC',label:'LGEMC'},
     ])
 
-
+    const [maximizing, setMaxmizing] = useState(false)
     const [isWrite, setIsWrite] = useState(false); // 글 작성시 에디터 on, viewer off
     
     const handleSelectSubsidiary = e => {
@@ -136,6 +140,18 @@ function CStalk() {
           document.location.href='/login';
         }
       },[selectedList.csTalkId])
+
+      const [openRight, setOpenRight] = useState(false);
+
+      useEffect(()=>{
+        if(selectedList.csTalkId!=='' || isWrite) {
+            // if(selectedList.csTalkId!=='' || openCategory || openFaqCreator) {
+            setOpenRight(true)
+        }else {
+            setOpenRight(false)
+        }
+      },[selectedList.csTalkId])
+
     const centerOptions = [
         { value: '', label: 'All' },
         { value: '0', label: 'Me' },
@@ -158,6 +174,7 @@ function CStalk() {
         const formData = new FormData();
         formData.append('csTalkId', id);
 
+        console.log(Object.fromEntries(formData))
         var config = {
             method: 'post',
             maxBodyLength: Infinity,
@@ -278,13 +295,14 @@ function CStalk() {
     }
 
     const handleClickRow = (e, item) => {
+        console.log('handle clikc edf smflknsdklf', item)
         setFileStore([])
         if((isWrite || isModify) && (content.title !== '' || content.content !=='')) {
             onConfirmHandler(1,item)
             return false
         }else {
             isWrite ? setIsWrite(false) : setIsModify(false)
-            getDetail(item)
+            getDetail(item.csTalkId)
         }
     }
     
@@ -885,7 +903,7 @@ function CStalk() {
     
 
     return (
-        <Style openRight={(selectedList.csTalkId!=='' || isWrite || isModify) ? true : false}>
+        <Style openright={(openRight || isWrite || isModify) ? 1 : 0}>
         <div className="notice-container cstalk-container">
         <Header />
         <div className="inner-container">
@@ -917,30 +935,72 @@ function CStalk() {
             </div>
 
             {/** Content Area */}
-            <div className="cstalk-contents">
+            <div className="cstalk-contents ">
                 <div className="cstalk-left">
                 <div className="cstalk-count">
                         Total <span className="custom-stress-txt">{boardLength}</span>
                     </div>
 
-                    <ul className="cstalk-custom-board ">
-                        {
-                            boardData?.map((item,idx)=>{
+                    <div className="custom-scroll-area">
+                    <ul className="board-table custom-align-item custom-flex-item">
+                        <li className="col-1">No.</li>
+                        <li className={`col-2 ${openRight && 'custom-hide-item'}`}>Category</li>
+                        <li className="col-3">Title</li>
+                        <li className={`col-4 ${openRight && 'custom-hide-item'}`}>Writer</li>
+                        <li className={`col-5 ${openRight && 'custom-hide-item'}`}>Recommand</li>
+                        <li className="col-6">Count</li>
+                        <li className="col-7">Date</li>
+                    </ul>
+                    {
+                            boardData && boardData.length > 0 && boardData.map((item,idx)=>{
                                 return(
-                                    <li key={generateRandomString(idx)} id={`list-item-${item.csTalkId}`} onClick={(e)=>handleClickRow(e,item.csTalkId)} className={selectedList?.csTalkId === item.csTalkId ? 'selected-row cursor-btn':'cursor-btn'}>
-                                        <div className="cstalk-subject custom-flex-item custom-txt-align">
-                                            <span className="custom-flex-item">{item.level===2 && `[RE]  `}{item.subject}<span className="custom-stress-txt">{item.commentCount!==0 && `( ${item.commentCount} )`}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /></span>
-                                            {/* <span>{item.writerName}</span> */}
-                                        </div>
-                                        <div className="etc">
-                                                <p>{item.writerID}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
-                                            </div>
-                                        {/* <span>{item.createdAt}</span > */}
-                                    </li>
+                                   <div className="board-list custom-flex-item custom-align-item cursor-btn" key={generateRandomString(idx)} onClick={(e)=>handleClickRow(e,item)} >
+                                        <ul className="col-1">
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{String((activePage-1)*16+(idx+1)).padStart(3, '0')}</span>
+                                            </li>
+                                        </ul>
+                                        <ul className={`col-2 ${openRight && 'custom-hide-item'}`}>
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{item.categoryTree?.slice(0,15)} {item?.categoryTree?.length>10 && '....'}</span>
+                                            </li>
+                                        </ul>
+                                        <ul className="col-3" >
+                                            <li id={`list-item-${idx+1}`}>
+                                                <span className="board-max-length">{!openRight ? item?.subject.slice(0,82) : item?.subject.slice(0,60)}{!openRight ? item.subject?.length > 82 && '...' : item.subject?.length >60 && '...'}</span><img src={moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
+                                                 <div className={`small-detail custom-flex-item ${!openRight ? 'custom-hide-item' : ''}`}>
+                                                 <span>{item?.writerName}</span>
+                                                    <img src={Like} alt="like-img"/><span className="custom-self-align">{item?.likeCount}</span>
+                                                 </div>
+                                                    
+                                            </li>
+                                        </ul>
+                                        <ul className={`col-4 ${openRight && 'custom-hide-item'}`}>
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{item?.writerName?.slice(0,10)}{item?.writerName.length >= 10 && '...'}</span>
+                                            </li>
+                                        </ul>
+                                        <ul className={`col-5 ${openRight && 'custom-hide-item'}`}>
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <img src={Like} alt="like-img"/><span>{item?.likeCount}</span>
+                                            </li>
+                                        </ul>
+                                        <ul className="col-6">
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{item?.hits}</span>
+                                            </li>
+                                        </ul>
+                                        <ul className="col-7">
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{moment(item?.createdAt).format('YYYY-MM-DD')}</span>
+                                            </li>
+                                        </ul>
+                                   </div>
                                 )
                             })
                         }
-                    </ul>
+
+                    </div>
                     {
                         boardData &&
                         <Pagination 
@@ -968,6 +1028,12 @@ function CStalk() {
                     <div className="editor-wrapper">
                         <div className={`cstalk-right custom-flex-item ${isLoading ? 'loadingOpacity':''}`}>
                     <div className="cstalk-right-top">
+                    <div className="custom-flex-item custom-justify-between">
+                        <button className="maximizing-btn" onClick={()=>{setMaxmizing(true)}}>
+                        <img src={Maximize} alt="minimize-btn"/> Full Screen
+                        </button> 
+                        <img src={Close} alt="close-btn" onClick={clearState} />
+                    </div>
                         <p>{selectedList.subject}</p>
                         <div className="custom-flex-item selected-info">
                             <span>Writer : {selectedList.writerName}</span>
@@ -1130,13 +1196,13 @@ function CStalk() {
                     <EditorModify data={content} setData={setContent} range onSave={onEditContent}  onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : setIsModify(false)} onDelete={()=>onConfirmHandler(3)}/>
                     :
                     null
-                    // <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
-                    //     <p>If you select a list, you can see the contents</p>
-                    // </div>
                 }
-                 {/* <button style={{position:'absolute'}} onClick={()=>setFavoriteModal(true)}>test btn</button> */}
             </div>
-
+            {
+                maximizing 
+                &&
+                <MaximalView data={selectedList} onClose={()=>(setMaxmizing(false), clearState())} onMinimizing={()=>setMaxmizing(false)}/>
+            }
             <Zendesk />
 
             {
@@ -1156,10 +1222,36 @@ export default CStalk
 
 const Style = styled.div`
     .cstalk-left {
-        width: ${props => (props.openRight ? '48%' : '100%')}; 
+        width: ${props => (props.openright ? '48%' : '100%')}; 
     }
     .cstalk-left .cstalk-custom-board li {
-        padding : ${props => (props.openRight ? '10px 30px;':'17px 30px')}
+        padding : ${props => (props.openright ? '10px 30px;':'17px 30px')}
+    }
+    .col-1 {
+        width: 75px;
+    }
+    .col-2 {
+        min-width: 160px;
+    }
+    .col-3 {
+        width: 734px; 
+    }
+    .col-4 {
+        width: 194px;
+    }
+    .col-5 {
+        width: 122px;
+    }
+    .col-6 {
+        width: 115px;
+    }
+    .col-7 {
+        width: 160px;
+    }
+    .board-list {
+        padding : ${props => (props.openright ? '17px 30px;':'10px 30px;')}
+        max-height :  ${props => (props.openright ? '64px;':'42px;')}
+        height :  ${props => (props.openright ? '64px;':'42px;')}
     }
     
 `
