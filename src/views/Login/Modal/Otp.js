@@ -65,7 +65,7 @@ const Otp = props => {
     
     return (
         <>
-        <Style isActive={ userInfo.email === '' || userInfo.id==='' || userInfo.password === '' ? false : true} >
+        <Style isactive={ userInfo.email === '' || userInfo.id==='' || userInfo.password === '' ? false : true} >
             <div className="modal">
                 <form onSubmit={handleSubmitForm} >
                 <div className="modal-content modal-join modal-otp">
@@ -73,15 +73,15 @@ const Otp = props => {
                     <div className="alert-middle">
                         <div className="alert-middle-info">
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
-                                <lable htmlfor='user-id' className='label-txt'>· GSFS ID</lable>
+                                <label htmlFor='user-id' className='label-txt'>· GSFS ID</label>
                                 <input type="text" id='user-id' name="user-id" onChange={handleChangeInput}></input>
                             </div>
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
-                                <lable htmlfor='user-password' className='label-txt'>· PASSWORD</lable>
+                                <label htmlFor='user-password' className='label-txt'>· PASSWORD</label>
                                 <input type="password" id='user-password' name="user-password" onChange={handleChangeInput}></input>
                             </div>
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
-                                <lable htmlfor='user-email' className='label-txt'>· EMAIL</lable>
+                                <label htmlFor='user-email' className='label-txt'>· EMAIL</label>
                                 <input type="email" id='user-email' name="user-email" onChange={handleChangeInput}></input>
                             </div>
                         </div>
@@ -102,6 +102,6 @@ export default Otp
 
 const Style = styled.div `
     .checkForm-btn {
-        background-color : ${props=>props.isActive ? '#BB0841' : '#666666'}
+        background-color : ${props=>props.isactive ? '#BB0841' : '#666666'}
     }
 `
