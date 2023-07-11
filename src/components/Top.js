@@ -40,7 +40,7 @@ const Top = props =>{
             
     return(
 
-        <div className={`title-wrapper${ title === 'Main' ? ' title-main-wrapper' : title === 'CS Talk' || title === 'Notice' || title === 'Notice Setting' || title === 'Process & FAQ' ? ' title-board-wrapper' : '' }`}>
+        <div className={`title-wrapper${ title === 'Main' ? ' title-main-wrapper' : searchArea ? ' title-board-wrapper' : ''}`}>
             <div className="title-inner">
             {/* {
                 (auth && searchArea ) 
@@ -61,11 +61,11 @@ const Top = props =>{
                 title === 'Main'
                 ? null
                 :
-                <div className={`page-title-area ${!searchArea ? 'custom-txt-align' : ''} ${title === 'CS Talk' || title === 'Notice' || title === 'Notice Setting' || title === 'Process & FAQ' ? 'page-board-title-area' : ''}`} style={!auth ? {textAlign:'center'}:null}>{title}</div>
+                <div className={`page-title-area ${!searchArea ? 'custom-txt-align' : ''}`} style={!auth ? {textAlign:'center'}:null}>{title}</div>
             }
             </div>
 
-            <div className="path-inner">
+            <div className={`path-inner${searchArea ? ' path-column' : ''}`}>
                 <div className="page-path-area">
                     <img src={Home} alt='home'/>{pagePath} <p className="bold-title">{title}</p>
                 </div>
