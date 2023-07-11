@@ -1222,7 +1222,7 @@ export default CStalk
 
 const Style = styled.div`
     .cstalk-left {
-        width: ${props => (props.openright ? '48%' : '100%')}; 
+        width: ${props => (props.openright ? '49%' : '100%')}; 
     }
     .cstalk-left .cstalk-custom-board li {
         padding : ${props => (props.openright ? '10px 30px;':'17px 30px')}
