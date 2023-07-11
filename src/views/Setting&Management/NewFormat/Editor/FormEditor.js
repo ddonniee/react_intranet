@@ -100,12 +100,12 @@ function FormEditor(props) {
     const updateFile = (idx, file) => {
         console.log('########## updateFile ###########', idx, file)
 
-        const copyFiles = [...attachments];
-        const updateFile = copyFiles[idx];
-        updateFile.fileName = file.fileName;
-        updateFile.uploadPath = file.uploadPath;
+        // const copyFiles = [...attachments];
+        // const updateFile = copyFiles[idx];
+        // updateFile.fileName = file.fileName;
+        // updateFile.uploadPath = file.uploadPath;
 
-        setContent({ ...content, attachments: JSON.stringify(copyFiles)})
+        // setContent({ ...content, attachments: JSON.stringify(copyFiles)})
     };
 
  
@@ -174,12 +174,12 @@ function FormEditor(props) {
                         return (
                             <div className="custom-flex-item custom-align-item" key={generateRandomString(idx)}>
                             <input type="text" className="write-input attach-input" name="filename" readOnly defaultValue={item.fileName}></input> 
-                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-select-btn">Select</label>
+                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor={`file-select-btn-${idx}`}>Select</label>
                             <input 
                                 type="file" 
                                 className="file-select-btn" 
                                 style={{display: "none"}} 
-                                id='file-select-btn'
+                                id={`file-select-btn-${idx}`}
                                 onChange={(e)=>{
                                     let file = e.target?.files[0];
                                     if(file.size > 1024 * 1024 * 20) {
@@ -203,14 +203,12 @@ function FormEditor(props) {
                                         })
                                         return false;
                                     }
-                                    console.log(file)
                                     let formdata = new FormData();
                                     formdata.append("uploadFiles", file);
                                     formdata.append("directoryType", 'notice');
-                        
+                                    updateFile(idx,file)
                                     // 파일업로드 API 호출
                                     axiosInstance.post('/fileUpload', formdata).then(res => {
-                                        console.log(res,'////////////////////////////////>>>>')
                                         let resData = res.data;
                                         if (resData.code == 500) {
                                             setAlertSetting({
@@ -220,6 +218,7 @@ function FormEditor(props) {
                                         } else {
                                             updateFile(idx, resData.result[0]);
                                         }
+                                       
                                     }).catch(error => {
                                         setAlertSetting({
                                             ...alertSetting,
@@ -227,6 +226,7 @@ function FormEditor(props) {
                                         })
                                         console.log(error);
                                     })
+                                    
                                     
                             }}
                             />   

@@ -460,7 +460,7 @@ function FaqSetting() {
                 console.log(resData.code == 200,'===========================================================')
                 if(resData.code == 200) {
                     console.log('res', resData)
-                    onConfirmHandler(6)
+                    // onConfirmHandler(6)
                 } else {
                     onConfirmHandler(7,resData.msg)
                     console.log('res', resData.msg);
