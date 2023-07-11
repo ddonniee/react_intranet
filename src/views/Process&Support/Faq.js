@@ -26,7 +26,7 @@ import Disliked from '../../assets/svgs/icon_disliked.svg'
 import Comment from '../../assets/svgs/icon_co_comment.svg'
 import More_comment from '../../assets/svgs/icon_co_more.svg'
 import Close_comment from '../../assets/svgs/icon_co_close.svg'
-import Frame from '../../assets/svgs/icon_editor_frame.svg'
+import Close from '../../assets/svgs/icon_close2.svg'
 import Maximize from '../../assets/svgs/icon_screen.svg'
 
 import moment from "moment";
@@ -510,24 +510,31 @@ function Faq() {
     const [maximizing, setMaxmizing] = useState(false)
     /** Icon list */
     const iconRef = useRef();
-    const [iconList, setIconLiet] = useState(['Hold Codes','Service Order','VIDEO-Status','Support'])
-    const IconModal = () =>{
+    const IconModal = (items) =>{
+        
+        const iconList = items.items;
+        console.log('icon list : ',iconList)
         return (
             <div className='icon-modal' ref={iconRef}>
                 <img src={Polygon} alt='polygon' />
                 <ul>
                     {
-                        iconList?.map((item,idx)=>{
+                        iconList.length !== 0
+                        ?
+                        
+                        iconList.map((item,idx)=>{
                             return(
-                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)}>{item}</li>
+                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)} onClick={()=>setReqData({...reqData, categoryId:item.categoryId})}>{item.categoryNm}</li>
                             )
                         })
+                        :
+                        <div className="custom-flex-item custom-align-item custom-justify-center">No subcategory</div>
                     }
                 </ul>
             </div>
         )
     }
-    const handleClickIcon = (e,item) => {
+    const handleMouseEnter = (e,item) => {
         
         setCategoryLists((prevLists) => {
             
@@ -542,6 +549,18 @@ function Faq() {
             return updatedLists;
           });
     }
+
+    const handleMouseLeave = (e,item) => {
+        setCategoryLists((prevLists) => {
+            
+            const updatedLists = prevLists.map((list) => {
+                return { ...list, iconModal: false };
+            //   return list;
+            });
+            return updatedLists;
+          });
+      };
+
     const [categoryIcon, setCategoryIcon] = useState([])
     
     useEffect(()=>{
@@ -624,7 +643,7 @@ function Faq() {
 
       useEffect(()=>{
         getList()
-      },[activePage])
+      },[reqData.page, reqData.categoryId])
 
       useEffect(()=>{
         if(boardData.length===0) {
@@ -651,11 +670,20 @@ function Faq() {
         }
       },[commentPage])
 
+      const [openRight, setOpenRight] = useState(false);
+
+      useEffect(()=>{
+        if(selectedList.faqId==='') {
+            setOpenRight(false)
+        }else {
+            setOpenRight(true)
+        }
+      },[selectedList.faqId])
     return (
         <>
         
         <Header />
-        <Style selectId={selectedList?.faqId} openRight={selectedList.faqId!=='' ? true : false}>
+        <Style selectId={selectedList?.faqId} openRight={openRight}>
         <div className="inner-container">
             <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Top Area */}
@@ -680,13 +708,13 @@ function Faq() {
                         {
                             categoryLists?.map((item,idx)=>{
                                 return(
-                                    <li key={generateRandomString(idx+1)} onClick={(e)=>handleClickIcon(e,item)}>
+                                    <li key={generateRandomString(idx+1)} onMouseEnter={(e)=>handleMouseEnter(e,item)} onMouseLeave={(e)=>handleMouseLeave(e,item)}>
                                         <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+'/'+item.categoryIconPath} alt='category-icon'/></div>
                                         <p>{item.categoryNm}</p>
                                         {
                                         item.iconModal
                                         &&
-                                        <IconModal />
+                                        <IconModal items={item.subComment}/>
                                         }
                                     </li>
                                 )
@@ -706,50 +734,55 @@ function Faq() {
                     </div>
                     <ul className="board-table custom-align-item custom-flex-item">
                         <li className="col-1">No.</li>
-                        <li className="col-2">Category</li>
+                        <li className={`col-2 ${openRight && 'custom-hide-item'}`}>Category</li>
                         <li className="col-3">Title</li>
-                        <li className="col-4">Writer</li>
-                        <li className="col-5">Recommand</li>
+                        <li className={`col-4 ${openRight && 'custom-hide-item'}`}>Writer</li>
+                        <li className={`col-5 ${openRight && 'custom-hide-item'}`}>Recommand</li>
                         <li className="col-6">Count</li>
                         <li className="col-7">Date</li>
                     </ul>
                         {
                             boardData && boardData.length > 0 && boardData.map((item,idx)=>{
                                 return(
-                                   <div className="board-list custom-flex-item custom-align-item" key={generateRandomString(idx)} onClick={(e)=>handleClickRow(e,item)} >
-                                        <ul>
-                                            <li className="col" id={`list-item-${idx+1}`}>
+                                   <div className="board-list custom-flex-item custom-align-item cursor-btn" key={generateRandomString(idx)} onClick={(e)=>handleClickRow(e,item)} >
+                                        <ul className="col-1">
+                                            <li  id={`list-item-${idx+1}`}>
                                                 <span>{String((activePage-1)*16+(idx+1)).padStart(3, '0')}</span>
                                             </li>
                                         </ul>
-                                        <ul >
-                                            <li className="col-2" id={`list-item-${idx+1}`}>
-                                                <span>{item.categoryTree}</span>
+                                        <ul className={`col-2 ${openRight && 'custom-hide-item'}`}>
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{item.categoryTree?.slice(0,15)} {item?.categoryTree?.length>10 && '....'}</span>
                                             </li>
                                         </ul>
-                                        <ul >
-                                            <li className="col-3" id={`list-item-${idx+1}`}>
-                                                <span className="board-max-length">{item.subject.slice(0,82)}{item.subject.length > 82 && '...'}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
+                                        <ul className="col-3" >
+                                            <li id={`list-item-${idx+1}`}>
+                                                <span className="board-max-length">{!openRight ? item?.subject.slice(0,82) : item?.subject.slice(0,60)}{!openRight ? item.subject?.length > 82 && '...' : item.subject?.length >60 && '...'}</span><img src={moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
+                                                 <div className={`small-detail custom-flex-item ${!openRight ? 'custom-hide-item' : ''}`}>
+                                                 <span>{item?.writerName}</span>
+                                                    <img src={Like} alt="like-img"/><span className="custom-self-align">{item?.likeCount}</span>
+                                                 </div>
+                                                    
                                             </li>
                                         </ul>
-                                        <ul >
-                                            <li className="col-4" id={`list-item-${idx+1}`}>
-                                                <span>{item.writerName}</span>
+                                        <ul className={`col-4 ${openRight && 'custom-hide-item'}`}>
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{item?.writerName?.slice(0,10)}{item?.writerName.length >= 10 && '...'}</span>
                                             </li>
                                         </ul>
-                                        <ul >
-                                            <li className="col-5" id={`list-item-${idx+1}`}>
-                                                <img src={Like} alt="like-img"/><span>{item.likeCount}</span>
+                                        <ul className={`col-5 ${openRight && 'custom-hide-item'}`}>
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <img src={Like} alt="like-img"/><span>{item?.likeCount}</span>
                                             </li>
                                         </ul>
-                                        <ul >
-                                            <li className="col-6" id={`list-item-${idx+1}`}>
-                                                <span>{item.hits}</span>
+                                        <ul className="col-6">
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{item?.hits}</span>
                                             </li>
                                         </ul>
-                                        <ul >
-                                            <li className="col-7" id={`list-item-${idx+1}`}>
-                                                <span>{moment(item.createdAt).format('YY.MM.DD')}</span>
+                                        <ul className="col-7">
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{moment(item?.createdAt).format('YYYY-MM-DD')}</span>
                                             </li>
                                         </ul>
                                    </div>
@@ -778,9 +811,12 @@ function Faq() {
                 <div className={`faq-right ${isLoading ? 'loadingOpacity':''}`} >
                 <div className="faq-right-top">
                     {/* <img src={Frame} onClick={()=>{setMaxmizing(true)}} className="maximizing-btn"/> */}
-                    <button className="maximizing-btn" onClick={()=>{setMaxmizing(true)}}>
-                    <img src={Maximize} alt="minimize-btn"/> Exit Full Screen
-                    </button>
+                    <div className="custom-flex-item custom-justify-between">
+                        <button className="maximizing-btn" onClick={()=>{setMaxmizing(true)}}>
+                        <img src={Maximize} alt="minimize-btn"/> Full Screen
+                        </button> 
+                        <img src={Close} alt="close-btn" onClick={clearState} />
+                    </div>
                     <p>{selectedList.subject}</p>
                     {
                         fileStore.length!==0 &&
@@ -796,14 +832,15 @@ function Faq() {
                             )
                         })
                     }  
-                    <div className="user-action custom-flex-item ">
-                        <span className="faq-like custom-flex-item cursor-btn" onClick={(e)=>onClickAction(e,selectedList.faqId,'LIKE')}><img src={selectedList.reactionState==='LIKE' ? Liked : Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
-                        <span >|</span>
-                        <span className="faq-dislike custom-flex-item cursor-btn" onClick={(e)=>onClickAction(e,selectedList.faqId,'DISLIKE')}><img src={selectedList.reactionState==='DISLIKE' ? Disliked : Dislike} alt='btn_dislike'/><p>{selectedList.dislikeCount}</p></span> 
-                    </div> 
+                    
                 </div>
                 <div className="faq-right-middle"><Viewer content={selectedList.content}/></div>
                 <div className="faq-right-bottom">
+                    <div className="user-action custom-flex-item ">
+                            <span className="faq-like custom-flex-item cursor-btn" onClick={(e)=>onClickAction(e,selectedList.faqId,'LIKE')}><img src={selectedList.reactionState==='LIKE' ? Liked : Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
+                            <span >|</span>
+                            <span className="faq-dislike custom-flex-item cursor-btn" onClick={(e)=>onClickAction(e,selectedList.faqId,'DISLIKE')}><img src={selectedList.reactionState==='DISLIKE' ? Disliked : Dislike} alt='btn_dislike'/><p>{selectedList.dislikeCount}</p></span> 
+                    </div> 
                     <div className="faq-comment-wrapper">
                         <span>Comments</span><span className="comment-cnt-title">total <p className="custom-stress-txt comment-cnt">{selectedList.commentCount}</p></span>
                         <div className="custom-justify-between">
@@ -955,10 +992,10 @@ const Style = styled.div`
         width: 75px;
     }
     .col-2 {
-        width: 160px;
+        min-width: 160px;
     }
     .col-3 {
-        width: 734px;
+        width: 734px; 
     }
     .col-4 {
         width: 194px;
@@ -972,5 +1009,9 @@ const Style = styled.div`
     .col-7 {
         width: 160px;
     }
-
+    .board-list {
+        padding : ${props => (props.openRight ? '17px 30px;':'10px 30px;')}
+        max-height :  ${props => (props.openRight ? '64px;':'42px;')}
+        height :  ${props => (props.openRight ? '64px;':'42px;')}
+    }
 `

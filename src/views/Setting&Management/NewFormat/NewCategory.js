@@ -399,10 +399,7 @@ function NewCategory(props) {
                     <input
                     type="button" 
                     id="file-delete-btn"
-                    onClick={()=>setReqData({
-                        ...reqData,
-                        categoryIconFileNM:''
-                    })}
+                    onClick={()=>onDeleteIcon()}
                     style={{display:'none'}}
                     />
                     <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor={reqData.categoryIconFileNM==='' ?'file-select-btn' : 'file-delete-btn'} id="add-btn">{reqData.categoryIconFileNM==='' ?'Add Icon' : 'Delete'} </label>

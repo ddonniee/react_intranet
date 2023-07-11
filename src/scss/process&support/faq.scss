@@ -68,11 +68,54 @@
     line-height: 30px;
 }
 .faq-contents {
-    display: flex; justify-content: space-between; 
+    display: flex; justify-content: space-between; overflow: hidden;
     .board-table {
-        border-top: 2px solid $primary-color-red;  background: #FBFBFB; height: 30px; 
-        
+        border-top: 2px solid $primary-color-red;  background: #FBFBFB; 
+        padding: 10px 30px; text-align: center;
+        li {
+            font-size: 16px; font-weight: 400;  padding: 0 5px;
+        }
     }
+    .board-list {
+        border-top: 1px solid #E8E8E8;
+        font-size: 15px; font-weight: 400; justify-self: end; 
+        ul:not(:nth-child(3)) {
+            text-align: center;
+        }
+        li > *{
+            padding: 0 5px;
+        }
+        span {
+            color: $board-color-txt;
+        }
+        .col-3  {
+           span {
+            font-size: 16px; font-style: normal; font-weight: 600; line-height: normal; color: #333333;
+           }
+           img {
+            vertical-align: bottom;
+           }
+        }
+        .col-5 img {
+            vertical-align: bottom;
+        }
+        .small-detail {
+            margin-top: 2px;
+            & > * {
+                padding-right: 10px;
+            }
+            span {
+                color: #5F5F5F; font-size: 15px; font-weight: 400;
+            }
+        }
+    }
+    .board-list:hover {
+        background-color: $hover-color-pink; 
+        span {
+            color: $primary-color-red;
+        }
+    }
+
 }
 .faq-right, .faq-left {
     width: 48%; height: 800px;
@@ -81,7 +124,7 @@
     margin: 0; font-weight: 600; text-align: center;
 }
 .faq-left {
-    position: relative;
+    position: relative; overflow-y: auto; overflow-x: hidden;
     .faq-count{
         margin-bottom: 15px;
         font-size: 14px;
@@ -101,9 +144,22 @@
         }
     }
     .pagination {
-        margin-top: 0 !important; padding-top: 40px;
+        margin-top: 0 !important; padding-top: 40px;  border-top: 1px solid #E8E8E8;
     }
+    
 } 
+.faq-left::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .faq-left::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  
+  .faq-left::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }  
 // board
 .faq-custom-board {
    margin-bottom: 40px;

@@ -528,7 +528,7 @@ function FaqSetting() {
         <Header />
         <Style selectId={selectedList.faqId} openRight={(selectedList?.faqId!=='' || openFaqCreator || openCategory )? true : false}>
         <div className="inner-container">
-        <MiddleTop searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
+        <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Top Area */}
             <div className="faq-setting" >
                 <div className="faq-category custom-flex-item custom-justify-between">
@@ -643,6 +643,9 @@ const Style = styled.div`
     }
     .faq-left {
         width: ${props => (props.openRight ? '48%' : '100%')};
+    }
+    .board-list li {
+        padding : ${props => (props.openRight ? '10px 30px;':'17px 30px')}
     }
     
 `

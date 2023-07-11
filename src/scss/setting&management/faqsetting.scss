@@ -75,7 +75,7 @@
     max-width: 44px ; max-height: 44px;
 }
 .faq-setting-tab {
-    min-height: 73px;
+    min-height: 73px; overflow-x: auto ;
     & > div:first-child {
         align-self:end;
     }
@@ -118,6 +118,18 @@
         }
     }
 }
+.faq-setting-tab::-webkit-scrollbar {
+    width: 8px; height: 4px;
+}
+
+.faq-setting-tab::-webkit-scrollbar-thumb {
+    background-color: #D7D7D7;
+    border-radius: 4px;
+}
+
+.faq-setting-tab::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+} 
 .faq-setting-right {
     width: 48%; 
     border-radius: 10px; border: 1px solid #E8E8E8; overflow: auto;

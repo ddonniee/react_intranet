@@ -285,7 +285,9 @@ body .modal {
 .comment-cnt{
     display: contents;
 }
-
+.custom-hide-item {
+    display: none !important;
+}
 .custom-hidden {
     visibility: hidden;
 }
