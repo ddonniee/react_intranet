@@ -250,31 +250,8 @@
     flex-direction: column; overflow: hidden;
     
 }
-.cstalk-contents{
-    .editor-border {
-        overflow: hidden !important;
-    }
-    .cstalk-editor {
-      overflow: auto;
-      padding-top: 39px !important;
-    max-height: 812px;
-    }
 
-    .cstalk-editor::-webkit-scrollbar {
-        width: 8px;
-      }
-      
-      .cstalk-editor::-webkit-scrollbar-thumb {
-        background-color: #888;
-        border-radius: 4px;
-      }
-      
-      .cstalk-editor::-webkit-scrollbar-track {
-        background-color: #f1f1f1;
-      }  
-}
 .editor-container,
-    
 .cstalk-custom-board {
     overflow: auto;
     li {

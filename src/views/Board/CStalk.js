@@ -903,7 +903,7 @@ function CStalk() {
     
 
     return (
-        <Style openright={(openRight || isWrite || isModify) ? 1 : 0}>
+        <Style openright={(openRight || isWrite || isModify) ? 1 : 0} iswrite={isWrite}>
         <div className="notice-container cstalk-container">
         <Header />
         <div className="inner-container">
@@ -1253,5 +1253,27 @@ const Style = styled.div`
         max-height :  ${props => (props.openright ? '64px;':'42px;')}
         height :  ${props => (props.openright ? '64px;':'42px;')}
     }
+    .cstalk-contents{
+        .editor-border {
+            overflow: ${props => (props.iswrite ? 'auto':'hidden !important;')}
+        }
+        .cstalk-editor {
+          overflow: auto;
+          padding-top: 39px !important;
+        max-height: 812px;
+        }
     
+        .cstalk-editor::-webkit-scrollbar {
+            width: 8px;
+          }
+          
+          .cstalk-editor::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 4px;
+          }
+          
+          .cstalk-editor::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+          }  
+    }
 `
