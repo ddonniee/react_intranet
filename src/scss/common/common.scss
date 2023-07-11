@@ -306,6 +306,10 @@ body .modal {
     padding: 0 5px;
 }
 
+.custom-justify-start {
+    justify-content: flex-start;
+}
+
 .custom-justify-between {
     justify-content: space-between;
 }
@@ -461,7 +465,8 @@ input:focus {
 
 .editor-container { // Editor.js
     border-radius: 14px;
-    max-height: 800px; 
+    // max-height: 800px; 
+    max-height: 862px;
     overflow: auto;
 
     .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused),

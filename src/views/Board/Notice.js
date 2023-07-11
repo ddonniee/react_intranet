@@ -269,23 +269,24 @@ function Notice() {
                                         <li className="notice-list" key={generateRandomString(idx)} id={`list-item-${item.noticeId}`} onClick={(e)=>handleClickRow(e, item)}>
                                             <span className="notice-no" style={selectedList?.noticeId ? {width: "10%"} : null}>{item.rn}</span>
                                             <span className="notice-title">
-                                                { item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null } 
-                                                { item.tableName !== 'CS' ? <p>{`[${item.tableName}]`}</p> : null }
-                                                { item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
-                                                  selectedList?.noticeId ? (item.title).substr(0, 50) + '...' : item.title } 
-                                                { item.new ? <NewIcon /> : null }
-                                                {/* {
+                                                <span className="title">
+                                                    { item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null } 
+                                                    { item.tableName !== 'CS' ? <p>{`[${item.tableName}]`}</p> : null }
+                                                    { item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
+                                                    selectedList?.noticeId ? (item.title).substr(0, 50) + '...' : item.title } 
+                                                    { item.new ? <NewIcon /> : null }
+                                                </span>
+                                                {
                                                     selectedList?.noticeId 
-                                                    ? null
-                                                    : <span className="notice-writer">{item.writerName}</span>
-                                                } */}
+                                                    ? <span className="notice-writer">{item.writerName}</span>
+                                                    : null
+                                                }
                                             </span>
                                             {
                                                 selectedList?.noticeId 
                                                 ? null
                                                 : <span className="notice-writer">{item.writerName}</span>
                                             }
-                                            {/* <span className="notice-writer">{item.writerName}</span> */}
                                             <span className="notice-count" style={selectedList?.noticeId ? {width: "15%"} : null}>{item.hits}</span>
                                             <span className="notice-date" style={selectedList?.noticeId ? {width: "15%"} : null}>{moment(item.createdAt).format('YYYY-MM-DD')}</span>
 

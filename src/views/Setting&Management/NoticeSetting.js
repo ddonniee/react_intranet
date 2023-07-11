@@ -539,16 +539,16 @@ function NoticeSetting() {
                     </div>
                     <ul className="notice-custom-board">
                         <li className="notice-menu">
-                            <span style={selectedList?.noticeId ? {width: "10%"} : null}>No.</span>
+                            <span style={ isWrite || isModify ? {width: "10%"} : null }>No.</span>
                             <span>Title</span>
                             {
-                                selectedList?.noticeId 
+                                isWrite || isModify
                                 ? null
                                 : <span>Writer</span>
                             }
                             {/* <span>Writer</span> */}
-                            <span style={selectedList?.noticeId ? {width: "15%"} : null}>Count</span>
-                            <span style={selectedList?.noticeId ? {width: "15%"} : null}>Date</span>
+                            <span style={ isWrite || isModify ? {width: "15%"} : null}>Count</span>
+                            <span style={ isWrite || isModify ? {width: "15%"} : null}>Date</span>
                         </li>
                         {
                             boardData.length > 0 ? (
@@ -557,27 +557,27 @@ function NoticeSetting() {
                                         <li className={`notice-list ${item.deleteAt ? 'notice-del-list' : ''}`} key={generateRandomString(idx)} 
                                             id={`list${item.deleteAt ? '-del' : ''}-item${isModify ? `-${item.noticeId}` : ''}`} onClick={(e) => handleClickRow(e, item)}>
 
-                                            <span className="notice-no" style={selectedList?.noticeId ? {width: "10%"} : null}>{item.rn}</span>
-                                            <span className={`notice-title ${item.deleteAt ? 'notice-title-del' : ''}`}>
-                                                { (!item.deleteAt && item.postEndDate) && item.isTodayInRange === 1 ? <SpeakerIcon /> : null } 
-                                                { item.tableName !== 'CS' ? <p>{`[${item.tableName}]`}</p> : null }
-                                                { item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
-                                                  selectedList?.noticeId ? (item.title).substr(0, 50) + '...' : item.title } 
-                                                { item.new ? <NewIcon /> : null }
-                                                {/* {
-                                                    selectedList?.noticeId 
-                                                    ? null
-                                                    : <span className="notice-writer">{item.writerName}</span>
-                                                } */}
+                                            <span className="notice-no" style={isWrite || isModify ? {width: "10%"} : null}>{item.rn}</span>
+                                            <span className="notice-title">
+                                                <span className={`title ${item.deleteAt ? 'title-del' : ''}`}>
+                                                    { (!item.deleteAt && item.postEndDate) && item.isTodayInRange === 1 ? <SpeakerIcon /> : null } 
+                                                    { !isWrite && !isModify && item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
+                                                    (isWrite || isModify) && item.title.length > 60 ? (item.title).substr(0, 60) + '...' : item.title } 
+                                                    { (!item.deleteAt && item.new) ? <NewIcon /> : null }
+                                                </span>
+                                                {
+                                                    isWrite || isModify
+                                                    ? <span className="notice-writer">{item.writerName}</span>
+                                                    : null
+                                                }
                                             </span>
                                             {
-                                                selectedList?.noticeId 
+                                                isWrite || isModify
                                                 ? null
                                                 : <span className="notice-writer">{item.writerName}</span>
                                             }
-                                            {/* <span className="notice-writer">{item.writerName}</span> */}
-                                            <span className="notice-count" style={selectedList?.noticeId ? {width: "15%"} : null}>{item.hits}</span>
-                                            <span className="notice-date" style={selectedList?.noticeId ? {width: "15%"} : null}>{moment(item.createdAt).format('YYYY-MM-DD')}</span>
+                                            <span className="notice-count" style={isWrite || isModify ? {width: "15%"} : null}>{item.hits}</span>
+                                            <span className="notice-date" style={isWrite || isModify ? {width: "15%"} : null}>{moment(item.createdAt).format('YYYY-MM-DD')}</span>
 
                                             {/* <div className={`title ${item.deleteAt ? 'title-del' : ''}`}>
                                                 <span className="custom-flex-item custom-align-item">
@@ -608,7 +608,7 @@ function NoticeSetting() {
                     {
                         // auth.isWriter &&
                         <div className="notice-bottom">
-                            <button className="notice-btn-circle" onClick={() => handleClickWrite()}>Write</button>
+                            <button className="notice-btn-black" onClick={() => handleClickWrite()}>Write</button>
                         </div>
                     }
                 </div>
