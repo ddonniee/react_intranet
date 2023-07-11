@@ -82,7 +82,7 @@ const TempOtp = props => {
     
     return (
         <>
-        <Style isActive={userInfo.id==='' || userInfo.password === '' ? false : true} >
+        <Style isactive={userInfo.id==='' || userInfo.password === '' ? false : true} >
             <div className="modal">
                 <form onSubmit={handleSubmitForm} >
                 <div className="modal-content modal-join modal-otp tmp-otp">
@@ -90,11 +90,11 @@ const TempOtp = props => {
                     <div className="alert-middle">
                         <div className="alert-middle-info">
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
-                                <lable htmlfor='user-id' className='label-txt'>· GSFS ID</lable>
+                                <label htmlFor='user-id' className='label-txt'>· GSFS ID</label>
                                 <input type="text" id='user-id' name="user-id" onChange={handleChangeInput}></input>
                             </div>
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
-                                <lable htmlfor='user-password' className='label-txt'>· PASSWORD</lable>
+                                <label htmlFor='user-password' className='label-txt'>· PASSWORD</label>
                                 <input type="password" id='user-password' name="user-password" onChange={handleChangeInput}></input>
                             </div>
                             
@@ -107,11 +107,11 @@ const TempOtp = props => {
                         <div className="custom-flex-item custom-align-item otp-checkbox">
                                 <div className="custom-flex-item">
                                     <input type="radio" id='email' name="auth-type" onChange={handleChangeCheckbox} className="radio-btn"></input>
-                                    <lable htmlfor='user-email' className='label-txt'>· EMAIL</lable>
+                                    <label htmlFor='user-email' className='label-txt'>· EMAIL</label>
                                 </div>
                                 <div className="custom-flex-item">
                                     <input type="radio" id='tel' name="auth-type" onChange={handleChangeCheckbox} className="radio-btn"></input>
-                                    <lable htmlfor='user-mobile' className='label-txt'>· MOBILE NO</lable>
+                                    <label htmlFor='user-mobile' className='label-txt'>· MOBILE NO</label>
                                 </div>
                         </div>
                         <div className="custom-flex-item custom-justify-between custom-align-item ">
@@ -136,6 +136,6 @@ export default TempOtp
 
 const Style = styled.div `
     .checkForm-btn {
-        background-color : ${props=>props.isActive ? '#BB0841' : '#666666'}
+        background-color : ${props=>props.isactive ? '#BB0841' : '#666666'}
     }
 `

@@ -18,14 +18,14 @@ import Reload from '../../assets/svgs/icon_reload.svg'
 import Link from '../../assets/svgs/icon_more.svg'
 import Check from '../../assets/svgs/icon_check.svg'
 // functions
-import { axiosInstance, detectUserAgent, generateRandomString } from "../../utils/CommonFunction";
+import { axiosInstance, detectUserAgent, encryptData, generateRandomString, userinfoDecrypt } from "../../utils/CommonFunction";
 import axios from "axios";
 
 
 const Login = () =>{
 
     const [loginInfo, setLoginInfo] = useState({
-        userId : localStorage.getItem("csportalId") || '',
+        userId : localStorage.getItem("csportalId") || document.getElementById("login-id")?.value || '',
         password : '',
         authType : 'captcha',
         authKey : '',
@@ -51,7 +51,7 @@ const Login = () =>{
         let config = {
             withCredentials: true,
         }
-        axiosInstance.post("http://localhost:8090/login/doLogin", jsonToFormData(loginInfo), config)
+        axiosInstance.post("/login/doLogin", jsonToFormData(loginInfo), config)
         .then(res => {
             let resData = res.data;
             if (resData.code !== 200) {  // 로그인 실패
@@ -59,8 +59,8 @@ const Login = () =>{
                 setFailModal(true);
                 getCaptcha();
             } else {  // 성공
-                sessionStorage.setItem("token", resData.result.token);
-                sessionStorage.setItem("userInfo", resData.result.userInfo);
+                sessionStorage.setItem("cstkn", resData.result.token);
+                sessionStorage.setItem("userInfo", encryptData(resData.result.userInfo));
                 rememberId();
                 window.location.href = "/";
             }
@@ -129,17 +129,15 @@ const Login = () =>{
         }
     }
 
-
     // 캡차 이미지 가져오기
     const getCaptcha = (e) => {
         e && e.preventDefault();
 
         // 매번 새로운 캡차를 받기 위해 랜덤 문자열을 넣어줌
         var rand = Math.random();
-        var url = "http://localhost:8090/login/getCaptcha?rand=" + rand;
+        var url = process.env.REACT_APP_SERVER_URL + "/login/getCaptcha?rand=" + rand;
         document.getElementById("captchaImage").setAttribute('src', url);
     };
-
 
     // 아이디 저장
     const rememberId =()=> {
@@ -160,6 +158,12 @@ const Login = () =>{
         checkUserAgent()
     },[])
 
+    // 로그아웃
+    const logout =()=> {
+        sessionStorage.removeItem("userInfo");
+        sessionStorage.removeItem("cstkn");
+        document.location.href = '/login';
+    }
 
     return (
         <>
@@ -175,7 +179,7 @@ const Login = () =>{
                         <div className="login-middle" >
                             <div className="login-info-left">
                                 <input type="text" id="login-id" placeholder="USER ID" value={loginInfo.userId} onChange={handleChangeInput}/>
-                                <input type="password" id="login-pw" placeholder="PASSWORD"  onChange={handleChangeInput}/>
+                                <input type="password" id="login-pw" placeholder="PASSWORD" value={loginInfo.password} autoComplete="new-password" onChange={handleChangeInput}/>
                                 <div className="login-check-area">
                                     <label htmlFor="login-checkbox" className="custom-checkbox-label">
                                         <input type="checkbox" id="login-checkbox" className="custom-checkbox" onClick={rememberId} defaultChecked={localStorage.getItem("csportalId") ? true: false}/>
@@ -198,7 +202,7 @@ const Login = () =>{
                                     :
                                     <div className="login-security-txt custom-justify-between">
                                         <div>
-                                            <img src={"http://localhost:8090/login/getCaptcha"} className="security-num" id="captchaImage" />
+                                            <img src={process.env.REACT_APP_SERVER_URL + "/login/getCaptcha"} className="security-num" id="captchaImage" />
                                             <img src={Reload} alt='reload-security-num' className="security-reload" onClick={getCaptcha}/>
                                         </div>
                                         <input className="secutiry-txt" type="text" onChange={e => setLoginInfo({ ...loginInfo, authKey: e.target.value })}/>
@@ -210,8 +214,10 @@ const Login = () =>{
                                 <ul>
                                         <li title={"join"} className="custom-justify-between" onClick={handleClickLink}><span title={"join"}>REQUEST NEW ACCOUNT</span><img title={"join"} src={Link} alt='login-link' /></li>
                                         <li title={"find-pw"} className="custom-justify-between" onClick={handleClickLink}><span title={"find-pw"}>FORGET PASSWORD</span><img title={"find-pw"} src={Link} alt='login-link' /></li>
-                                        <li title={"req-otp"} className="custom-justify-between" onClick={handleClickLink}><span title={"req-otp"}>OTP KEY REQUEST</span><img title={"req-otp"} src={Link} alt='login-link' /></li>
-                                        <li title={"req-tmp-otp"} className="custom-justify-between" onClick={handleClickLink}><span title={"req-tmp-otp"}>OTP TEMPORARY PASSWORD</span><img title={"req-tmp-otp"} src={Link} alt='login-link' /></li>
+                                        {// loginInfo.authType === "otp" && 
+                                            <li title={"req-otp"} className="custom-justify-between" onClick={handleClickLink}><span title={"req-otp"}>OTP KEY REQUEST</span><img title={"req-otp"} src={Link} alt='login-link' /></li>}
+                                        {// loginInfo.authType === "otp" && 
+                                            <li title={"req-tmp-otp"} className="custom-justify-between" onClick={handleClickLink}><span title={"req-tmp-otp"}>OTP TEMPORARY PASSWORD</span><img title={"req-tmp-otp"} src={Link} alt='login-link' /></li>}
                                 </ul>
                             </div>
                         </div>

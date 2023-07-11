@@ -19,10 +19,12 @@ const Password = props => {
     Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed qu
     `;
 
+    const [resultMsg, setResultMsg] = useState();
     const [userInfo, setUserInfo] = useState({
-        id: '',
+        userId: '',
         email: ''
     })
+
     const handleChangeInput = e =>{
         let title = e.target.id;
         let value = e.target.value;
@@ -44,30 +46,42 @@ const Password = props => {
         event.stopPropagation();
 
         let form = event.currentTarget;
-        let formData = Object.fromEntries(new FormData(form));
+        let formData = new FormData(form)
         
-        console.log(formData)
-        // 통신. . . .
+        console.log(Object.fromEntries(formData));
+        
+        axiosInstance.post("/login/findPassword", formData)
+        .then(res => {
+            setResultMsg(res.data.msg);
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
+
+    const closeAlert =()=> {
+        onClose();
+    }
+
     return (
         <>
-        <Style isActive={userInfo.email==='' || userInfo.id==='' ? false : true}>
-            <div className="modal" >
+        <Style isactive={userInfo.email==='' || userInfo.id==='' ? false : true}>
+            <div className={`modal ${resultMsg ? "no-radius" : ""}`}>
                 <form onSubmit={handleSubmitForm}>
                 <div className="modal-content modal-join modal-password">
-                    <div className="alert-top"><span className="modal-title">Find Password</span><img src={Close} alt="close-btn" onClick={onClose} /></div>
+                    <div className="alert-top"><span className="modal-title">Find Password</span><img src={Close} alt="close-btn" onClick={closeAlert} /></div>
                     <div className="alert-middle">
                         <div className="alert-middle-txt">{infoTxt}</div>
                         <div className="alert-middle-info join-input">
                          
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
-                                <lable htmlfor='user-id' className='label-txt'>· USER ID</lable>
-                                <input type="text" id='user-id' name="user-id" onChange={handleChangeInput}></input>
+                                <label htmlFor='user-id' className='label-txt'>· USER ID</label>
+                                <input type="text" id='user-id' name="userId" onChange={handleChangeInput}></input>
                             </div>
 
                             <div className="custom-flex-item custom-justify-between custom-align-item ">
-                                <lable htmlfor='user-email' className='label-txt'>· EMAIL</lable>
-                                <input type="mail" id='user-email' name="user-email" onChange={handleChangeInput}></input>
+                                <label htmlFor='user-email' className='label-txt'>· EMAIL</label>
+                                <input type="email" id='user-email' name="email" onChange={handleChangeInput}></input>
                             </div>
                           
                         </div>
@@ -75,9 +89,8 @@ const Password = props => {
                     <div className="alert-bottom">
                         <button type="submit" className="checkForm-btn" disabled={userInfo.email==='' || userInfo.id==='' ? true : false}>Apply</button>
                     </div>
-
-                    
                 </div>
+                {resultMsg && <div className="result-msg">{resultMsg}</div>}
                 </form>
             </div>
             </Style>
@@ -88,6 +101,6 @@ export default Password
 
 const Style = styled.div `
     .checkForm-btn {
-        background-color : ${props=>props.isActive ? '#BB0841' : '#666666'}
+        background-color : ${props=>props.isactive ? '#BB0841' : '#666666'}
     }
 `

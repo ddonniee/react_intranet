@@ -1,6 +1,7 @@
 import { elements } from "chart.js";
 import React, {useRef, useEffect} from "react";
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
 
 /** axios instance */
 export const axiosInstance = axios.create({
@@ -91,3 +92,46 @@ export const loadCSS =(cssPath)=> {
   export const downloadAttachment = (path) => {
       window.location.href = process.env.REACT_APP_DOWN_URL+"/"+path;
   }
+
+
+
+
+// 데이터 암호화 
+export const encryptData = (plaindata) => {
+  const secretPass = process.env.REACT_APP_ENCRYPT_KEY;
+  const data = CryptoJS.AES.encrypt(
+    JSON.stringify(plaindata),
+    secretPass
+  ).toString();
+  return data;
+}
+
+//데이터 복호화
+export const decryptData = (plaindata) => {
+  const secretPass = process.env.REACT_APP_ENCRYPT_KEY;
+  const bytes = CryptoJS.AES.decrypt(plaindata, secretPass);
+  const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  return data;
+};
+
+// 로그인 정보 암호화한 데이터 복호화 하기
+export const userinfoDecrypt = () => {
+  try {
+    return decryptData(sessionStorage.getItem('userInfo'))
+  } catch (error) {
+    document.location.href = '/login';
+  }
+}
+
+// json -> form data
+export const jsonToFormData = (json) => {
+  const formData = new FormData();
+
+  for (const key in json) {
+      if (json.hasOwnProperty(key)) {
+          formData.append(key, json[key]);
+      }
+  }
+
+  return formData;
+}
