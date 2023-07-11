@@ -7,8 +7,11 @@ import {detectUserAgent} from '../src/utils/CommonFunction'
 // test useContext
 import { UserContext } from "./hooks/UserContext";
 
-function App({isMobile}) {
+function App({}) {
 
+  // 모바일로 화면 분기시에 활성화
+  // function App({isMobile}) {
+    
   const [user, setUser] = useState({
     id: 'ID_LK',
     name : 'LGEKR 본사스태프(한국고객가치혁실ㄴ)',
@@ -23,24 +26,25 @@ function App({isMobile}) {
   })
 
   let loginCheck = 1;
+  
+  // 모바일로 화면 분기시에 활성화
+  // useEffect(() => {
+  //   if (isMobile) {
+  //     import('./m_scss/style.scss');
+  //   } else {
+  //     import('./scss/style.scss');
+  //   }
 
-  useEffect(() => {
-    if (isMobile) {
-      import('./m_scss/style.scss');
-    } else {
-      import('./scss/style.scss');
-    }
-
-    return () => {
-      // 컴포넌트가 언마운트될 때 CSS 파일 제거
-      const linkElements = document.querySelectorAll('link[rel="styleshe et"]');
-      linkElements.forEach((element) => {
-        if (element.href.includes('mobile.css') || element.href.includes('pc.css')) {
-          element.remove();
-        }
-      });
-    };
-  }, [isMobile]);
+  //   return () => {
+  //     // 컴포넌트가 언마운트될 때 CSS 파일 제거
+  //     const linkElements = document.querySelectorAll('link[rel="styleshe et"]');
+  //     linkElements.forEach((element) => {
+  //       if (element.href.includes('mobile.css') || element.href.includes('pc.css')) {
+  //         element.remove();
+  //       }
+  //     });
+  //   };
+  // }, [isMobile]);
  
   return (
     <>

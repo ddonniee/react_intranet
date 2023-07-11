@@ -1,15 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import './scss/style.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+// 모바일로 화면 분기시에 활성화
+// const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <App isMobile={isMobile}/>
+    // 모바일로 화면 분기시에 활성화
+    // <App isMobile={isMobile}/>
+    <App/>
 );
 
 // If you want to start measuring performance in your app, pass a function
