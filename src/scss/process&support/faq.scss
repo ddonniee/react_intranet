@@ -115,7 +115,10 @@
             color: $primary-color-red;
         }
     }
-
+    .editor-wrapper {
+        min-height: 649px;
+        max-height: 649px;
+    }
 }
 .faq-right, .faq-left {
     width: 48%; height: 800px;

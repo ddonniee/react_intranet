@@ -526,7 +526,10 @@ function Faq() {
     const iconRef = useRef();
     const IconModal = (items) =>{
         
-        const iconList = items.items;
+        let  iconList = [];
+        if(items) {
+            iconList = items.items;
+        }
         console.log('icon list : ',iconList)
         return (
             <div className='icon-modal' ref={iconRef}>
@@ -537,7 +540,7 @@ function Faq() {
                         ?
                         iconList.map((item,idx)=>{
                             return(
-                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)} onClick={()=>handleClickTab(item)}>{item.categoryNm}</li>
+                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)} onMo={()=>handleClickTab(item)}>{item.categoryNm}</li>
                             )
                         })
                         :
@@ -553,7 +556,7 @@ function Faq() {
             
             const updatedLists = prevLists.map((list) => {
               if (list.categoryId === item.categoryId) {
-                return { ...list, iconModal: item.iconModal ? false : true };
+                return { ...list, iconModal: true };
               } else {
                 return { ...list, iconModal: false };
               }
@@ -562,13 +565,19 @@ function Faq() {
           });
     }
 
-    const handleMouseLeave = () => {
+    const handleMouseLeave = (e,item) => {
+        console.log('handleMouseLeave',item)
+
         setCategoryLists((prevLists) => {
             
             const updatedLists = prevLists.map((list) => {
+              if (list.categoryId === item.categoryId) {
                 return { ...list, iconModal: false };
+              } else {
+                return { ...list, iconModal: false };
+              }
             });
-            return updatedLists; 
+            return updatedLists;
           });
       };
 
@@ -619,24 +628,24 @@ function Faq() {
     },[commentPage])
     
     /** click outside */
-    const handleOutsideClick = (e) => {
-        if (iconRef.current && !iconRef.current.contains(e.target)) {
-          setCategoryLists((prevLists) => {
-            const updatedLists = prevLists.map((list) => ({
-              ...list,
-              iconModal: false,
-            }));
-            return updatedLists;
-          });
-        }
-      }; 
+    // const handleOutsideClick = (e) => {
+    //     if (iconRef.current && !iconRef.current.contains(e.target)) {
+    //       setCategoryLists((prevLists) => {
+    //         const updatedLists = prevLists.map((list) => ({
+    //           ...list,
+    //           iconModal: false,
+    //         }));
+    //         return updatedLists;
+    //       });
+    //     }
+    //   }; 
         
-    useEffect(() => {
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-        document.removeEventListener("mousedown", handleOutsideClick);
-    };
-    }, []);
+    // useEffect(() => {
+    // document.addEventListener("mousedown", handleOutsideClick);
+    // return () => {
+    //     document.removeEventListener("mousedown", handleOutsideClick);
+    // };
+    // }, []);
 
       useEffect(()=>{
         getCategory()
