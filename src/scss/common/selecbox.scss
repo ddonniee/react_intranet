@@ -6,6 +6,8 @@
 }
 .custom-select >div:hover {
     border-color: $primary-color-red !important;
+    min-height: 0px !important;
+    height: 32px !important;
 }
 // #react-select-2-listbox > * > *:hover {
 //     background-color: $chart-color-pink; color: $primary-color-red;
@@ -29,9 +31,11 @@
 .cell-select-box {
     min-width: 50px;
     margin: 0 10px;
-    padding: 5px;font-weight: 400;
+    padding: 5px;
+    font-weight: 400;
     font-size: 14px;
-    line-height: 16px; text-align: center;
+    line-height: 16px; 
+    text-align: center;
     appearance: none;
     background-image: url('../../assets/svgs/icon_below.svg');
     background-repeat: no-repeat;

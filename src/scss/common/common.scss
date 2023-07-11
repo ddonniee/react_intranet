@@ -487,11 +487,13 @@ input:focus {
         display: flex;
 
         > div {
-            padding: 15px 30px;
+            // padding: 15px 30px;
+            padding: 10px 30px;
         }
 
         .radio-row {
-            padding: 25px 30px;
+            // padding: 25px 30px;
+            padding: 20px 30px;
         }
 
         .left {
@@ -669,12 +671,15 @@ input:focus {
         left: 50%;
         transform: translate(-50%, -50%);
         background-color: #ffffff;
+        border-radius: 10px;
     }
 
     /* 상세페이지 */
     .board-view {
         width: 1560px;
         height: 931px;
+        border-radius: 10px;
+        border: 1px solid #D8D8D8;
     }
 
     .board-view-top {

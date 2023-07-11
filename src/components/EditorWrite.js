@@ -32,6 +32,7 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
             uploadPath: '',
         },
      ])
+    const [attachLength, setAttachLength] = useState(1);
     const [alertModal, setAlertModal] = useState(false)
     const [alertTxt, setAlertTxt] = useState('')
     
@@ -74,7 +75,9 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
                 setData({ ...content, postStartDate : start, postEndDate : end })
             } else {
                 console.log('save success')
-                setData(content)
+                const uploadFiles = attachments.filter(item => item.fileName !== '');
+                // setData(content)
+                setData({ ...content, attachments: JSON.stringify(uploadFiles)})
             }
         }
     }
@@ -264,10 +267,11 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
                                         onChange={(e) => { 
                                             if (e.target?.files[0]) {
                                                 const file = e.target?.files[0];
-                                                // console.log('input file type ============', file.type)
+                                                console.log('input file type ============', file.type)
+                                                console.log('input file size ============', file.size)
 
-                                                if(file.size > 1024 * 1024 * 20) {
-                                                    setAlertTxt('Only files of 20MB or less can be attached.')
+                                                if(file.size > 1024 * 1024 * 100) {
+                                                    setAlertTxt('Only files of 100MB or less can be attached.')
                                                     return false;
                                                 }
                                                 const allowedFileTypes = [

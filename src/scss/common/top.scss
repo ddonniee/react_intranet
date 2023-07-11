@@ -24,13 +24,20 @@
             width: 179px;
         }
 
+        .css-19pgbrk-control,
+        .css-19pgbrk-control:hover {
+            min-height: 0px !important;
+            height: 32px !important;
+        }
+
         .title-nav-box {
             margin-right: 20px;
         }
         
         .title-nav-input {
             width: 160px;
-            height: 42px;
+            // height: 42px;
+            height: 32px;
             background: #FFFFFF;
             border: 1px solid #D8D8D8;
             border-radius: 5px;
