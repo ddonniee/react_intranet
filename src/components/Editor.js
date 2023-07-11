@@ -364,16 +364,19 @@ function Editor({ period, data, setData, range, isChange, isWriter, onSave, onCl
             </div>
 
             <div className="btn-row">
-                <button className={`btn-white ${(!data || !isWriter || content?.deleteAt) && 'custom-hidden'}`} onClick={onDelete}>Delete</button>
-                <div>
-                    <button className="btn-black" onClick={() => onClose(false)}>Cancel</button>
-                    { (isWriter && !content?.deleteAt) ? 
+                {
+                    isWriter && content?.deleteAt
+                    ? <button type="submit" className="btn-white" style={{width: "122px"}} onClick={onRestore}>Restoration</button>
+                    : <button className={`btn-white ${(!data || !isWriter || content?.deleteAt) && 'custom-hidden'}`} onClick={onDelete}>Delete</button>
+                }
+                { 
+                    isWriter && !content?.deleteAt ? 
+                    <div>
+                        <button className="btn-black" onClick={() => onClose(false)}>Cancel</button>
                         <button type="submit" className="btn-red" onClick={onSaveEditor}>Save</button> 
-                        : (isWriter && content?.deleteAt) ? 
-                        <button type="submit" className="btn-red" style={{width: "122px"}} onClick={onRestore}>Restoration</button>
-                        : null 
-                    }
-                </div>
+                    </div>
+                    : null 
+                }
             </div>
             {
                 alertModal
