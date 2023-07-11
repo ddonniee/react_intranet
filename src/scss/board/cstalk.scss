@@ -38,7 +38,7 @@
     
 }
 .cstalk-custom-board {
-    text-align: center;  height: 93%;
+    text-align: center; margin-bottom: 41px;
     .selected-row {
         background-color: $hover-color-pink; color: $primary-color-red;
     }
@@ -192,18 +192,22 @@
 
 
 .cstalk-contents {
-    display: flex; justify-content: space-between; 
-}
-.cstalk-left, 
-.cstalk-contents > div:nth-child(2) {
-    width: 48%; height: 800px;
+    display: flex; justify-content: space-between;  height: 1041px;
+    > * {
+        height: 100%; overflow: auto;
+    }
+    .editor-container {
+        min-height: 1041px !important;
+    }
 }
 
 .cstalk-left {
-    position: relative;
+    position: relative;     display: flex;
+    flex-direction: column; overflow: hidden;
 }
 
 .cstalk-custom-board {
+    overflow: auto;
     li {
      display: flex; flex-direction: column;
      border-bottom: 2px solid $board-color-grey; align-items: start; justify-content: center;
@@ -232,7 +236,7 @@
     }
 }
 .cstalk-right {
-    border-radius: 14px; height: 800px; overflow: auto; width: 100%; transition: transform 0.3s ease; 
+    border-radius: 14px; overflow: auto; width: 100%; transition: transform 0.3s ease; 
     border: 1px solid $border-color-gery; flex-direction: column;
 }
 .cstalk-right .ck-sticky-panel {
@@ -364,6 +368,19 @@ line-height: 24px; padding: 0 3px;
 
   
   /* 스크롤바 스타일링 */
+  .cstalk-custom-board::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .cstalk-custom-board::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  
+  .cstalk-custom-board::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }  
+
   .cstalk-right::-webkit-scrollbar {
     width: 8px;
   }
@@ -377,14 +394,24 @@ line-height: 24px; padding: 0 3px;
     background-color: #f1f1f1;
   }  
 .cstalk-contents {
+    .pagination {
+        margin-top: auto;
+    }
     .pagination li{
         margin: 0 5px;
     }
     .pagination li a,
     .pagination  .disabled {
     color: $chart-color-grey;
+    
 }
-
+.ck-content,
+.ck-viewer {
+    min-height: 705px;
+}
+.write-btn {
+    bottom: 0px !important;
+    }
     // .cstalk-subject span {
     //     padding-left: 5px;
     // }
@@ -398,8 +425,8 @@ line-height: 24px; padding: 0 3px;
 }
 .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
     border: none;
-   
-    border-bottom: 1px solid $border-color-gery; padding: 20px;
+    padding: 20px;
+    // border-bottom: 1px solid $border-color-gery; 
 }
 .ck.ck-editor {
     z-index: -1px;

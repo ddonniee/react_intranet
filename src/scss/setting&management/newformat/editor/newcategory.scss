@@ -68,9 +68,10 @@
         height: 234px;
         flex-shrink: 0;    position: absolute;
         top: 71px;
-        left: 70px;
+        left: 70px;overflow: auto;
+        
         .popup-top {
-            align-items: self-end;
+            align-items: self-end; 
             p {
                 color: #333; font-size: 20px; font-weight: 700; letter-spacing: 0.2px; padding: 0 25px;
             }
@@ -78,13 +79,29 @@
                 padding: 10px;
             }
         }
+        
         ul {
             flex-wrap: wrap;
             text-align: center; padding: 15px;
             li {
                 width: 25%; padding-top: 5px;
+                img {
+                    max-width: 44px; max-height: 44px;
+                }
             }
         }
        
     }
 }
+.popup::-webkit-scrollbar {
+    width: 8px;
+}
+  
+.popup::-webkit-scrollbar-thumb {
+    background-color: $border-color-gery;
+    border-radius: 4px;
+}
+
+.popup::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}  

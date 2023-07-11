@@ -46,7 +46,7 @@ function NewCategory(props) {
         parentCategoryId : '',
         categoryIconPath : '',
         categoryIconFileNM : '',
-        
+        categoryIconId : '',        
     })
 
     const clearState = () => {
@@ -104,16 +104,23 @@ function NewCategory(props) {
             categoryIcon :item.categoryIconId,
             categoryIconFileNM : item.categoryIconFileNM,
             categoryIconPath : item.categoryIconPath
-        })
-            }
+    })
+        }
+    const onDeleteIcon = () => {
+        setReqData({
+            ...reqData,
+            categoryIcon :'',
+            categoryIconFileNM : '',
+            categoryIconPath : ''
+    })
+    }
+
     useEffect(()=>{
-        console.log('request data', reqData)
         setOpenIcon(false)
     },[reqData])
 
     const addNewCategory = () =>{
         
-        console.log('add new', reqData)
     if(reqData.categoryIcon==='' && reqData.categoryIconFileNM==='') {
         setAlertSetting({
             ...alertSetting,
@@ -128,6 +135,14 @@ function NewCategory(props) {
         return false
     }
 
+    var config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        headers: { 
+           'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+        },
+        };
+
     let formdata = new FormData();
     for (let key in reqData) {
         if (reqData.hasOwnProperty(key)) {
@@ -136,23 +151,24 @@ function NewCategory(props) {
             }
     }
     }
-        axiosIconInstance.post('/faqCa/insert', formdata).then(res => {
-        let resData = res.data;
-        if (resData.code === 500) {
-            setAlertSetting({
-                ...alertSetting,
-                alertTxt : resData.msg
-            })
-        } else if(resData.code === 200 ){
-            clearState()
-        } 
-    }).catch(error => {
-            setAlertSetting({
-                ...alertSetting,
-            alertTxt : 'Fail to upload file.'
-            })
-        console.log(error);
-    })
+    console.log(Object.fromEntries(formdata,'new icon'))
+    axiosIconInstance.post('/faqCa/insert', formdata).then(res => {
+    let resData = res.data;
+    if (resData.code === 500) {
+        setAlertSetting({
+            ...alertSetting,
+            alertTxt : resData.msg
+        })
+    } else if(resData.code === 200 ){
+        clearState()
+    } 
+}).catch(error => {
+        setAlertSetting({
+            ...alertSetting,
+        alertTxt : 'Fail to upload file.'
+        })
+    console.log(error);
+})
     }
     const updateFile = (idx, file) => {
         console.log('########## updateFile ###########', idx, file)
@@ -237,7 +253,7 @@ function NewCategory(props) {
                 <div className="popup-top custom-flex-item custom-justify-between">
                     <p>Icon select</p><img src={Close} alt="close-btn" onClick={onCloseIcon}/>
                 </div>
-               <ul className="custom-flex-item">
+               <ul className="custom-flex-item select-icon">
                 {
                     iconList?.map((item,idx) => {
                         return(
@@ -292,8 +308,8 @@ function NewCategory(props) {
                 <div className="right file-upload custom-flex-item"> 
                    <div className="icon-wrapper custom-flex-item custom-justify-center">{reqData.categoryIconPath !== '' ? <img src={process.env.REACT_APP_DOWN_URL+'/'+reqData.categoryIconPath} alt="icon_img"/>:null}</div>
                    <div className="custom-flex-item"> 
-                   <button id="file-add-icon" style={{display:'none'}} onClick={()=>setOpenIcon(true)}></button>
-                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-add-icon" >Select</label>
+                   <button id="file-add-icon" style={{display:'none'}} onClick={()=>reqData.categoryIcon===''? setOpenIcon(true):onDeleteIcon()}></button>
+                    <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-add-icon" >{`${reqData.categoryIcon===''? 'Select':'Delete'}`}</label>
                     <button id="file-upload-icon" style={{display:'none'}} onClick={()=>setInsertIcon(!insertIcon)}></button>
                     <label className="custom-flex-item custom-justify-center custom-align-item custom-white-btn" htmlFor="file-upload-icon" >+ Add</label>
                   
@@ -356,9 +372,11 @@ function NewCategory(props) {
                                 let resData = res.data;
                                 
                                 if (resData.code === 200) {
+                                    console.log(res,'icon insert')
                                     setReqData({
                                         ...reqData,
                                         categoryIconFileNM : file.name,
+                                        categoryIcon : resData.result.categoryIconId,
                                     })
                                    
                                 } else {

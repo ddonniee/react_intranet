@@ -27,6 +27,7 @@ import Comment from '../../assets/svgs/icon_co_comment.svg'
 import More_comment from '../../assets/svgs/icon_co_more.svg'
 import Close_comment from '../../assets/svgs/icon_co_close.svg'
 import Frame from '../../assets/svgs/icon_editor_frame.svg'
+import Maximize from '../../assets/svgs/icon_screen.svg'
 
 import moment from "moment";
 
@@ -404,7 +405,6 @@ function Faq() {
                 }
                 )
                 setCommentList(data)
-                console.log(data.subComment,'댓글목ㄹ고')
             }else {
                 console.log(resData)
             }
@@ -704,18 +704,58 @@ function Faq() {
                         {/* Total <span>{boardData.length}</span> */}
                         Total <span className="custom-stress-txt">{boardLength}</span>
                     </div>
-
-                    <ul className="faq-custom-board">
+                    <ul className="board-table custom-align-item custom-flex-item">
+                        <li className="col-1">No.</li>
+                        <li className="col-2">Category</li>
+                        <li className="col-3">Title</li>
+                        <li className="col-4">Writer</li>
+                        <li className="col-5">Recommand</li>
+                        <li className="col-6">Count</li>
+                        <li className="col-7">Date</li>
+                    </ul>
                         {
                             boardData && boardData.length > 0 && boardData.map((item,idx)=>{
                                 return(
-                                    <li  key={generateRandomString(idx)} id={`list-item-${idx+1}`} onClick={(e)=>handleClickRow(e,item)}>
-                                        <span>{String((activePage-1)*10+(idx+1)).padStart(3, '0')}</span><span className="board-max-length">{item.subject.slice(0,82)}{item.subject.length > 82 && '...'}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /><span>{moment(item.createdAt).format('YY.MM.DD')}</span>
-                                    </li>
+                                   <div className="board-list custom-flex-item custom-align-item" key={generateRandomString(idx)} onClick={(e)=>handleClickRow(e,item)} >
+                                        <ul>
+                                            <li className="col" id={`list-item-${idx+1}`}>
+                                                <span>{String((activePage-1)*16+(idx+1)).padStart(3, '0')}</span>
+                                            </li>
+                                        </ul>
+                                        <ul >
+                                            <li className="col-2" id={`list-item-${idx+1}`}>
+                                                <span>{item.categoryTree}</span>
+                                            </li>
+                                        </ul>
+                                        <ul >
+                                            <li className="col-3" id={`list-item-${idx+1}`}>
+                                                <span className="board-max-length">{item.subject.slice(0,82)}{item.subject.length > 82 && '...'}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
+                                            </li>
+                                        </ul>
+                                        <ul >
+                                            <li className="col-4" id={`list-item-${idx+1}`}>
+                                                <span>{item.writerName}</span>
+                                            </li>
+                                        </ul>
+                                        <ul >
+                                            <li className="col-5" id={`list-item-${idx+1}`}>
+                                                <img src={Like} alt="like-img"/><span>{item.likeCount}</span>
+                                            </li>
+                                        </ul>
+                                        <ul >
+                                            <li className="col-6" id={`list-item-${idx+1}`}>
+                                                <span>{item.hits}</span>
+                                            </li>
+                                        </ul>
+                                        <ul >
+                                            <li className="col-7" id={`list-item-${idx+1}`}>
+                                                <span>{moment(item.createdAt).format('YY.MM.DD')}</span>
+                                            </li>
+                                        </ul>
+                                   </div>
                                 )
                             })
                         }
-                    </ul>
                     {
                         boardData &&
                         <Pagination 
@@ -737,7 +777,10 @@ function Faq() {
                 <div className="editor-wrapper">
                 <div className={`faq-right ${isLoading ? 'loadingOpacity':''}`} >
                 <div className="faq-right-top">
-                    <img src={Frame} onClick={()=>{setMaxmizing(true)}} className="maximizing-btn"/>
+                    {/* <img src={Frame} onClick={()=>{setMaxmizing(true)}} className="maximizing-btn"/> */}
+                    <button className="maximizing-btn" onClick={()=>{setMaxmizing(true)}}>
+                    <img src={Maximize} alt="minimize-btn"/> Exit Full Screen
+                    </button>
                     <p>{selectedList.subject}</p>
                     {
                         fileStore.length!==0 &&
@@ -907,4 +950,27 @@ const Style = styled.div`
     .faq-left {
         width: ${props => (props.openRight ? '48%' : '100%')};
     }
+   
+    .col-1 {
+        width: 75px;
+    }
+    .col-2 {
+        width: 160px;
+    }
+    .col-3 {
+        width: 734px;
+    }
+    .col-4 {
+        width: 194px;
+    }
+    .col-5 {
+        width: 122px;
+    }
+    .col-6 {
+        width: 115px;
+    }
+    .col-7 {
+        width: 160px;
+    }
+
 `
