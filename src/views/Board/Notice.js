@@ -217,6 +217,7 @@ function Notice() {
 
     useEffect(() => {
         selectedList && getDetail();
+        // setDetail()
         setAttachments()
     }, [selectedList])
 
@@ -272,8 +273,8 @@ function Notice() {
                                                 <span className="title">
                                                     { item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null } 
                                                     { item.tableName !== 'CS' ? <p>{`[${item.tableName}]`}</p> : null }
-                                                    { item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
-                                                    selectedList?.noticeId ? (item.title).substr(0, 50) + '...' : item.title } 
+                                                    { !selectedList?.noticeId && item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
+                                                    selectedList?.noticeId && item.title.length > 50 ? (item.title).substr(0, 50) + '...' : item.title } 
                                                     { item.new ? <NewIcon /> : null }
                                                 </span>
                                                 {
@@ -323,7 +324,7 @@ function Notice() {
                                 <button className="notice-full-btn" onClick={() => setPopup(true)}>
                                     <ScreenIcon /> Full Screen
                                 </button>
-                                <CloseIcon onClick={() => {setSelctedList(); setDetail();}} />
+                                <CloseIcon onClick={() => setSelctedList()} />
                             </div>
                             <p className="notice-title">{detail?.title}</p>
                             <p className="notice-title-detail">
@@ -363,7 +364,7 @@ function Notice() {
             </div>
             {
                 popup &&
-                <BoardPopup detail={detail} attachments={attachments} onClose={() => setPopup(false)} />
+                <BoardPopup detail={detail} attachments={attachments} onClose={() => (setPopup(false), setSelctedList())} onMinimizing={() => setPopup(false)} />
             }
             </Style>
 
