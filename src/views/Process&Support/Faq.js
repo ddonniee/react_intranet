@@ -99,9 +99,7 @@ function Faq() {
             writerID: ''
            })
       }
-    useEffect(()=>{
-        console.log('selectedList.reactionState',selectedList)
-    },[selectedList])
+
     
     const onClickAction = (e,id,reaction) => {
         const formData = new FormData();

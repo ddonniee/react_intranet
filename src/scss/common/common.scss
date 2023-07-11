@@ -390,7 +390,12 @@ body .modal {
     }
 }
 /* Fav tab */
-
+.user-action{
+    padding: 18px 30px; border-top: 1px solid $border-color-gery;
+    &  * {
+        padding: 0px 3px;
+    }
+}
 
 /* 에디터 */
 .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused),

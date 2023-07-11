@@ -92,6 +92,9 @@
         }
        
     }
+    .editor-container {
+        overflow: unset !important;
+    }
 }
 .popup::-webkit-scrollbar {
     width: 8px;

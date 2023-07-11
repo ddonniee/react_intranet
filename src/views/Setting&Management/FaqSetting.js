@@ -82,9 +82,7 @@ function FaqSetting() {
         attachments : null,
         categoryId : '',
     });
-    useEffect(()=>{
-        console.log('content',content)
-    },[content])
+
     // 게시판 글 중 선택된 항목
     const [selectedList, setSelectedList] = useState({
         attachments: '',
@@ -178,10 +176,10 @@ function FaqSetting() {
 
         formData.append('faqId',id)
 
-        console.log(config)
         axiosInstance2.post('/faq/detail',formData,config)
-        .then(function (response){
-            let resData = response.data;
+        .then(function (res){
+            let resData = res.data;
+            console.log('detail : ',res)
             if(resData.code===200) {
                 let data = resData.result
                 setSelectedList(data)
@@ -242,7 +240,6 @@ function FaqSetting() {
 
     const clearState =(num)=> {
         if(num===1) {
-            console.log('ppppppppppppppppppppppppppp')
             setSelectedList({
                 attachments: '',
                 reactionState: "",
@@ -273,7 +270,7 @@ function FaqSetting() {
                 rn : 0,
                 subComment :  []
             })
-        }else if(num===2) {
+        }else if(num===3) {
             setContent({
                 title:'',
                 content:'',
@@ -288,6 +285,9 @@ function FaqSetting() {
     useEffect(()=>{
         if(!openCategory) {
             getCategory() 
+        }else {
+            setOpenFaqCreator(false)
+            clearState(1)
         }
     },[openCategory])
 
@@ -480,6 +480,7 @@ function FaqSetting() {
     }
     const handleClickRow = (e,item) => {
         let id = item.faqId;
+        console.log('faq id ==> ',id)
         getDetail(id)
     }
 
@@ -565,15 +566,15 @@ function FaqSetting() {
                             {
                                 subCategory.length !== 0 &&  subCategory.map((item,idx)=>{
                                     return(
-                                        <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${selectedCategory.categoryIconId===item.categoryId && `red-selected`}`} onClick={()=>setReqData({...reqData, categoryId:item.categoryId})} key={generateRandomString(idx)}>{item.categoryNm}</li>
+                                        <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${reqData.categoryId===item.categoryId && `red-selected`}`} onClick={()=>setReqData({...reqData, categoryId:item.categoryId})} key={generateRandomString(idx)}>{item.categoryNm}</li>
                                     )
                                 })
                             }
                         </ul>
                     </div>
-                    <div className="buttons">
+                    <div className={`buttons ${subCategory.length===0 && 'custom-hide-item'}`}>
                         <button><img src={Minus} alt='icon_less_btn' /></button>
-                        <button onClick={()=>{addNewItem(2,selectedList.faqId)}}><img src={Plus} alt='icon_more_btn'/></button>
+                        <button onClick={()=>{setOpenCategory(true)}}><img src={Plus} alt='icon_more_btn'/></button>
                     </div>
                 </div>
 
