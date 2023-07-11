@@ -23,11 +23,14 @@ import {useHorizontalScroll} from '../../hooks/useSideScroll'
 import Plus from '../../assets/svgs/icon_plus.svg'
 import Minus from '../../assets/svgs/icon_minus.svg';
 import New from '../../assets/svgs/icon_new.svg'
+import Like from '../../assets/svgs/icon_like.svg'
+import Liked from '../../assets/svgs/icon_liked.svg'
+import Dislike from '../../assets/svgs/icon_dislike.svg'
+import Disliked from '../../assets/svgs/icon_disliked.svg'
 
 import moment from "moment";
 import EditFaq from "./NewFormat/EditFaq";
 import Alert from "../../components/Alert";
-import MiddleTop from "../../components/MiddleTop";
 
 
 function FaqSetting() {
@@ -46,7 +49,7 @@ function FaqSetting() {
     ])
      /** 페이징 관련 ▼ ============================================================= */
      const [activePage, setActivePage] = useState(1); // 현재 페이지
-     const [itemsPerPage] = useState(10); // 페이지당 아이템 갯수
+     const [itemsPerPage] = useState(16); // 페이지당 아이템 갯수
  
      const setPage = (e) => {
          setActivePage(e);
@@ -268,7 +271,7 @@ function FaqSetting() {
                 iconModal :  false,
                 parentCategoryId : '',
                 rn : 0,
-                subComment :  []
+                subCategory :  []
             })
         }else if(num===3) {
             setContent({
@@ -321,14 +324,14 @@ function FaqSetting() {
         iconModal :  false,
         parentCategoryId : '',
         rn : 0,
-        subComment :  []
+        subCategory :  []
     });
     
     const handleClickIcon = (e, selectedItem) => {
         console.log('handleClickIcon', selectedItem);
         
-        const subCategories = selectedItem.subComment;
-        console.log('selectedItem',selectedItem.subComment)
+        const subCategories = selectedItem.subCategory;
+        console.log('selectedItem',selectedItem.subCategory)
         setSubCategory(subCategories);
        
         if(selectedCategory.categoryId!==selectedItem.categoryId) {
@@ -344,10 +347,29 @@ function FaqSetting() {
                 iconModal :  false,
                 parentCategoryId : '',
                 rn : 0,
-                subComment :  []
+                subCategory :  []
             })
         }
       };
+
+    const [selectedTab, setSelectedTab] = useState({
+        categoryIconFileNM : '',
+        categoryIconId : '',
+        categoryIconPath : '',
+        categoryId : '',
+        categoryNm : '',
+        createdAt : '',
+        parentCategoryId : '',
+        parentCategoryNm : '',
+    })
+    const handleClickTab=(item)=>{
+        console.log('handleClickTab',item)
+        setReqData({...reqData, categoryId:item.categoryId})
+        setSelectedTab(item)
+    }
+    useEffect(()=>{
+        console.log('selectedTab',selectedTab)
+    },[selectedTab])
     const handleChangeInput=(e)=>{
         console.log('handleChangeInput',e)
     }
@@ -471,10 +493,6 @@ function FaqSetting() {
         }
     }
 
-
-    const handleClickAction = e => {
-        console.log('handleClickAction')
-    }
     const handleSelectBox = e => {
         console.log(e)
     }
@@ -499,6 +517,17 @@ function FaqSetting() {
             setOpenFaqCreator(false)
         }
     },[selectedList])
+
+    const [openRight, setOpenRight] = useState(false);
+
+      useEffect(()=>{
+        if(selectedList.faqId!=='' || openCategory || openFaqCreator) {
+            setOpenRight(true)
+        }else {
+            setOpenRight(false)
+        }
+      },[selectedList.faqId])
+
     
     useEffect(()=>{
         if(openFaqCreator && selectedList.faqId !=='') {
@@ -527,7 +556,7 @@ function FaqSetting() {
         <>
         
         <Header />
-        <Style selectId={selectedList.faqId} openRight={(selectedList?.faqId!=='' || openFaqCreator || openCategory )? true : false}>
+        <Style selectid={selectedList.faqId} openright={(openRight || openFaqCreator || openCategory )? 1 : 0}>
         <div className="inner-container">
         <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Top Area */}
@@ -561,12 +590,12 @@ function FaqSetting() {
                 <div className="faq-left" ref={editorRef}>
 
                     <div className="faq-setting-tab custom-flex-item custom-justify-between" ref={tabRef}>
-                    <div>
+                    <div >
                         <ul className="custom-flex-item">
                             {
-                                subCategory.length !== 0 &&  subCategory.map((item,idx)=>{
+                                subCategory?.length !== 0 &&  subCategory.map((item,idx)=>{
                                     return(
-                                        <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${reqData.categoryId===item.categoryId && `red-selected`}`} onClick={()=>setReqData({...reqData, categoryId:item.categoryId})} key={generateRandomString(idx)}>{item.categoryNm}</li>
+                                        <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${reqData.categoryId===item.categoryId && `red-selected`}`} onClick={()=>handleClickTab(item)} key={generateRandomString(idx)}>{item.categoryNm}</li>
                                     )
                                 })
                             }
@@ -578,7 +607,68 @@ function FaqSetting() {
                     </div>
                 </div>
 
-                    <ul className="faq-custom-board" >
+                <div className="custom-scroll-area">
+                    <ul className="board-table custom-align-item custom-flex-item">
+                        <li className="col-1">No.</li>
+                        <li className={`col-2 ${openRight && 'custom-hide-item'}`}>Category</li>
+                        <li className="col-3">Title</li>
+                        <li className={`col-4 ${openRight && 'custom-hide-item'}`}>Writer</li>
+                        <li className={`col-5 ${openRight && 'custom-hide-item'}`}>Recommand</li>
+                        <li className="col-6">Count</li>
+                        <li className="col-7">Date</li>
+                    </ul>
+                        {
+                            boardData && boardData.length > 0 && boardData.map((item,idx)=>{
+                                return(
+                                   <div className="board-list custom-flex-item custom-align-item cursor-btn" key={generateRandomString(idx)} onClick={(e)=>handleClickRow(e,item)} >
+                                        <ul className="col-1">
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{String((activePage-1)*16+(idx+1)).padStart(3, '0')}</span>
+                                            </li>
+                                        </ul>
+                                        <ul className={`col-2 ${openRight && 'custom-hide-item'}`}>
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{item.categoryTree?.slice(0,15)} {item?.categoryTree?.length>10 && '....'}</span>
+                                            </li>
+                                        </ul>
+                                        <ul className="col-3" >
+                                            <li id={`list-item-${idx+1}`}>
+                                                <span className="board-max-length">{!openRight ? item?.subject.slice(0,82) : item?.subject.slice(0,60)}{!openRight ? item.subject?.length > 82 && '...' : item.subject?.length >60 && '...'}</span><img src={moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
+                                                 <div className={`small-detail custom-flex-item ${!openRight ? 'custom-hide-item' : ''}`}>
+                                                 <span>{item?.writerName}</span>
+                                                    <img src={Like} alt="like-img"/><span className="custom-self-align">{item?.likeCount}</span>
+                                                 </div>
+                                                    
+                                            </li>
+                                        </ul>
+                                        <ul className={`col-4 ${openRight && 'custom-hide-item'}`}>
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{item?.writerName?.slice(0,10)}{item?.writerName.length >= 10 && '...'}</span>
+                                            </li>
+                                        </ul>
+                                        <ul className={`col-5 ${openRight && 'custom-hide-item'}`}>
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <img src={Like} alt="like-img"/><span>{item?.likeCount}</span>
+                                            </li>
+                                        </ul>
+                                        <ul className="col-6">
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{item?.hits}</span>
+                                            </li>
+                                        </ul>
+                                        <ul className="col-7">
+                                            <li  id={`list-item-${idx+1}`}>
+                                                <span>{moment(item?.createdAt).format('YYYY-MM-DD')}</span>
+                                            </li>
+                                        </ul>
+                                   </div>
+                                )
+                            })
+                        }
+                </div>
+
+
+                    {/* <ul className="faq-custom-board" >
                         {
                             boardData && boardData.length > 0 && boardData.map((item,idx)=>{
                                 return(
@@ -588,7 +678,7 @@ function FaqSetting() {
                                 )
                             })
                         }
-                    </ul>
+                    </ul> */}
                     {
                         boardData &&
                         <Pagination 
@@ -618,7 +708,7 @@ function FaqSetting() {
                     openCategory 
                     ?
                     <div className="faq-setting-right" ref={openRef}>
-                        <NewCategory data={content} setData={setContent} onSave={()=>console.log('e')} onClose={()=>setOpenCategory(false)}/>
+                        <NewCategory item={selectedTab} data={content} setData={setContent} onSave={()=>console.log('e')} onClose={()=>setOpenCategory(false)}/>
                     </div>
                     :
                     null
@@ -639,14 +729,37 @@ function FaqSetting() {
 export default FaqSetting
 
 const Style = styled.div`
-    #list-item-${props=>props.selectId} {
+    #list-item-${props=>props.selectid} {
         background : #FAF1F4; color : #BB0841; 
     }
     .faq-left {
-        width: ${props => (props.openRight ? '48%' : '100%')};
+        width: ${props => (props.openright ? '49%' : '100%')};
     }
-    .board-list li {
-        padding : ${props => (props.openRight ? '10px 30px;':'17px 30px')}
+    .col-1 {
+        width: 75px;
+    }
+    .col-2 {
+        min-width: 160px;
+    }
+    .col-3 {
+        width: 734px; 
+    }
+    .col-4 {
+        width: 194px;
+    }
+    .col-5 {
+        width: 122px;
+    }
+    .col-6 {
+        width: 115px;
+    }
+    .col-7 {
+        width: 160px;
+    }
+    .board-list {
+        padding : ${props => (props.openright ? '17px 30px;':'10px 30px;')}
+        max-height :  ${props => (props.openright ? '64px;':'42px;')}
+        height :  ${props => (props.openright ? '64px;':'42px;')}
     }
     
 `

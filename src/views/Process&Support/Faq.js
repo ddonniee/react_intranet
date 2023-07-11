@@ -30,6 +30,7 @@ import Close from '../../assets/svgs/icon_close2.svg'
 import Maximize from '../../assets/svgs/icon_screen.svg'
 
 import moment from "moment";
+import { max } from "date-fns";
 
 function Faq() {
 
@@ -48,10 +49,18 @@ function Faq() {
         {value:'LGEKR',label:'LGEKR'},
         {value:'LGEMC',label:'LGEMC'},
     ])
-
+    const [faqTab, setFaqTab] = useState([
+        {
+            value : 'All',
+            label : 'All'
+        },
+        {
+            value : 'System Guide',
+            label : 'System Guide'
+        }]) 
      /** 페이징 관련 ▼ ============================================================= */
      const [activePage, setActivePage] = useState(1); // 현재 페이지
-     const [itemsPerPage] = useState(10); // 페이지당 아이템 갯수
+     const [itemsPerPage] = useState(16); // 페이지당 아이템 갯수
      const [boardLength, setBoardLength] = useState(0)
      const setPage = (e,num) => {
         if(num===1) {
@@ -267,13 +276,21 @@ function Faq() {
         }
     },[alertSetting])
 
-
+ 
     const [reqData, setReqData] = useState({
         categoryId: '',
         subsidiary: '',
         search : '',
         type : 'F',
+        page : activePage,
+        tab : '',
     })
+
+    const handleClickTab=(item)=>{
+        console.log(item)
+        setReqData({...reqData, categoryId:item.categoryId})
+        // setSubCategory(item)
+    }
     const getList = () =>{
 
         console.log('검색한다', reqData)
@@ -285,7 +302,6 @@ function Faq() {
               formData.append(key, reqData[key]);
             }
         }
-        formData.append('page',activePage)
         var config = {
             method: 'post',
             maxBodyLength: Infinity,
@@ -517,12 +533,11 @@ function Faq() {
                 <img src={Polygon} alt='polygon' />
                 <ul>
                     {
-                        iconList.length !== 0
+                        iconList.length!==0
                         ?
-                        
                         iconList.map((item,idx)=>{
                             return(
-                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)} onClick={()=>setReqData({...reqData, categoryId:item.categoryId})}>{item.categoryNm}</li>
+                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)} onClick={()=>handleClickTab(item)}>{item.categoryNm}</li>
                             )
                         })
                         :
@@ -542,39 +557,27 @@ function Faq() {
               } else {
                 return { ...list, iconModal: false };
               }
-            //   return list;
             });
             return updatedLists;
           });
     }
 
-    const handleMouseLeave = (e,item) => {
+    const handleMouseLeave = () => {
         setCategoryLists((prevLists) => {
             
             const updatedLists = prevLists.map((list) => {
                 return { ...list, iconModal: false };
-            //   return list;
             });
-            return updatedLists;
+            return updatedLists; 
           });
       };
 
-    const [categoryIcon, setCategoryIcon] = useState([])
-    
     useEffect(()=>{
-        // if(categoryLists.length !== 0 ) {
-        //     let copy = [...categoryLists]
-        //     copy.map(c=>{
-        //         let jsonString = JSON.parse(c.categoryIcon);
-        //         if(jsonString!==null) {
-        //             c.fileName = jsonString.fileName
-        //             c.uploadPath = jsonString.uploadPath
-        //         }
-        //     })
-        //     setCategoryIcon(copy)
-        // }
-        console.log(categoryLists)
-    },[categoryLists])
+        setReqData({
+            ...reqData,
+            page: activePage
+        })
+    },[activePage])
 
     /** detail loading animation */
     const [isLoading, setIsLoading] = useState(false)
@@ -659,9 +662,12 @@ function Faq() {
           })
         }
        }
-      
+     
       },[boardData])
       
+      useEffect(()=>{
+        console.log('page ==> ',boardLength)
+      },[boardLength])
       useEffect(()=>{
         if(selectedList) {
             getComment()
@@ -712,7 +718,7 @@ function Faq() {
                                         {
                                         item.iconModal
                                         &&
-                                        <IconModal items={item.subComment}/>
+                                        <IconModal items={item.subCategory}/>
                                         }
                                     </li>
                                 )
@@ -726,10 +732,21 @@ function Faq() {
             <div className="faq-contents">
                 <div className="faq-left">
 
-                <div className="faq-count">
-                        {/* Total <span>{boardData.length}</span> */}
-                        Total <span className="custom-stress-txt">{boardLength}</span>
+                <div className="faq-setting-tab custom-flex-item custom-justify-between">
+                    <div >
+                        <ul className="custom-flex-item">
+                            {
+                                faqTab?.map((item,idx)=>{
+                                    return(
+                                        <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${item.value==='All' && `red-selected`}`} onClick={()=>console.log('No function')} key={generateRandomString(idx)}>{item.value}</li>
+                                    )
+                                })
+                            }
+                        </ul>
                     </div>
+                </div>
+
+                    <div className="custom-scroll-area">
                     <ul className="board-table custom-align-item custom-flex-item">
                         <li className="col-1">No.</li>
                         <li className={`col-2 ${openRight && 'custom-hide-item'}`}>Category</li>
@@ -787,6 +804,7 @@ function Faq() {
                                 )
                             })
                         }
+                        </div>
                     {
                         boardData &&
                         <Pagination 
@@ -952,9 +970,6 @@ function Faq() {
             </div>
             :
             null
-            // <div className="cstalk-right custom-flex-item custom-align-item custom-justify-center">
-            //             <p>If you select a list, you can see the contents</p>
-            //         </div>
                }
                 </div>
                 {

@@ -35,7 +35,7 @@
         height: 648px;
     }
     .pagination {
-        padding-top: 18px !important;
+        padding-top: 9px !important;
     }
     .write-btn {
         bottom: 0px !important;
@@ -53,6 +53,17 @@
         background-color: #f1f1f1;
         } 
    }
+   & + .faq-contents .faq-left {
+    flex-direction: column;
+    position: relative;
+    .custom-scroll-area {
+        max-height: 534px !important;
+        min-height: 534px !important;
+    }
+    .write-btn {
+        margin-top: 9px;
+    }
+}
 }
 .faq-custom-board {
     // max-height: 486px;
@@ -79,12 +90,7 @@
     & > div:first-child {
         align-self:end;
     }
-    & + .faq-contents .faq-left {
-        flex-direction: column;
-        .write-btn {
-            bottom: 6px
-        }
-    }
+   
     ul {
         li { 
             border-radius: 10px 10px 0px 0px;
@@ -119,7 +125,7 @@
     }
 }
 .faq-setting-tab::-webkit-scrollbar {
-    width: 8px; height: 4px;
+    width: 8px; height: 10px;
 }
 
 .faq-setting-tab::-webkit-scrollbar-thumb {

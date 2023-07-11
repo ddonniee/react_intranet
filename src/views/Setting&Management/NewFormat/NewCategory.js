@@ -14,7 +14,7 @@ import FormEditor from "./Editor/FormEditor";
 function NewCategory(props) {
 
 
-    const { period, data, setData, range, onSave, onClose, onDelete, onAttach, onMinimize} = props
+    const { item, data, setData, onSave, onClose} = props
 
     const [content, setContent] = useState(data);
     const [attachments, setAttachments] = useState([
@@ -23,13 +23,7 @@ function NewCategory(props) {
             filePath : '',
         }
     ])
-    const options = [
-    {value:'TOP1',label:'TOP1'}, 
-    {value:'TOP2',label:'TOP2'}, 
-    {value:'TOP3',label:'TOP3'}, 
-    {value:'TOP4',label:'TOP4'}, 
-    {value:'TOP5',label:'TOP5'}, 
-    ]
+
     const [openIcon, setOpenIcon] = useState(false)       // load icon from server
     const [insertIcon, setInsertIcon] = useState(false)   // upload icon from user pc
     const handleChange = (event) => {
@@ -274,19 +268,22 @@ function NewCategory(props) {
                 <div onClick={onClose}><img src={Close} alt="close_btn"/> </div>               
             </div>
             <div className="content-middle setting-middle">
-            
-            <div className="write-row custom-flex-item">
-                <div className="left"> <p>· Parent categoryName</p> </div>
-                <div className="right"> 
-                <input 
-                type="text" 
-                className="category-subject custom-invalid-input" 
-                name="category" 
-                value='Hold'
-                readOnly
-                />
-                </div>
-            </div>
+
+            {
+                 item.categoryNm !== '' && 
+                 <div className="write-row custom-flex-item">
+                 <div className="left"> <p>· Parent categoryName</p> </div>
+                 <div className="right"> 
+                 <input 
+                 type="text" 
+                 className="category-subject custom-invalid-input" 
+                 name="category" 
+                 value={item?.categoryNm}
+                 readOnly
+                 />
+                 </div>
+             </div>
+            }
 
             <div className="write-row custom-flex-item">
                 <div className="left"> <p>· Category Name</p> </div>

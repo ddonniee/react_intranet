@@ -702,3 +702,26 @@ span {
      }
      
 }
+
+
+/* 추가 yeonzoo */
+.result-msg {
+    border-radius: 0px 0px 10px 10px;
+    background: #F6F6F6;
+    height: 69px;
+    color: #BB0841;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: pre-line;
+}
+
+.modal.no-radius .modal-content {
+    border-radius: 10px 10px 0 0;
+}
