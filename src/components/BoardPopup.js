@@ -11,7 +11,7 @@ import { ReactComponent as DownloadIcon } from '../assets/svgs/icon_download.svg
 import { ReactComponent as ScreenIcon } from '../assets/svgs/icon_screen.svg';
 import { ReactComponent as CloseIcon } from '../assets/svgs/icon_close2.svg';
 
-const BoardPopup = ({ detail, attachments, onClose }) => {
+const BoardPopup = ({ detail, attachments, onClose, onMinimizing }) => {
 
     return (
         <div className="board-popup">
@@ -22,7 +22,7 @@ const BoardPopup = ({ detail, attachments, onClose }) => {
                         <div className="board-view">
                         <div className="board-view-top">
                             <div className="board-btn-area custom-flex-item custom-align-item custom-justify-between">
-                                <button className="board-full-btn" onClick={onClose}>
+                                <button className="board-full-btn" onClick={onMinimizing}>
                                     <ScreenIcon /> Exit Full Screen
                                 </button>
                                 <CloseIcon onClick={onClose} />
