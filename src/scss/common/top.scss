@@ -2,8 +2,10 @@
 
 .title-wrapper {
     height: 70px;
-    margin: 45px 0 22px 0;
-    padding: 12px 12px 12px 0;
+    margin: 5px 0;
+    // padding: 12px 12px 12px 0;
+    display: flex;
+    justify-content: space-between;
 
     /* 검색영역 */
     .title-nav {
@@ -54,17 +56,12 @@
 }
 
 .title-wrapper.title-board-wrapper {
-    margin: 45px 0 40px 0;
+    margin: 30px 0 25px 0;
 }
 
 .title-wrapper.title-main-wrapper {
     height: auto;
     margin: 15px 0 3px 0;
-}
-
-.title-wrapper.title-board-wrapper {
-    display: flex;
-    justify-content: space-between;
 }
 
 .title-wrapper .title-inner {
@@ -108,16 +105,23 @@
 
 .title-wrapper .path-inner {
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     justify-content: space-between;
+}
+
+.title-wrapper .path-inner.path-column {
+    flex-direction: column;
 }
 
 .title-wrapper .page-path-area  {
     display: flex; 
     align-items: center;
     justify-content: flex-end;
-    margin-top: -10px;
+    
+}
 
+.title-wrapper.title-board-wrapper .page-path-area {
+    margin-top: -10px;
     margin-bottom: 10px;
 }
 
@@ -152,11 +156,9 @@
    }
 
    .title-wrapper .page-title-area {
-        font-weight: 600;
-        font-size: 25px;
-   }
+        // font-weight: 600;
+        // font-size: 25px;
 
-   .title-wrapper .page-board-title-area {
         color: #2D2D2D;
         font-size: 32px;
         font-weight: 700;
