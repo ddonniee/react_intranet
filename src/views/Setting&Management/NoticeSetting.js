@@ -514,44 +514,74 @@ function NoticeSetting() {
         <Header />
         <div className="inner-container">
             {/** auth 권한체크로 수정 필요 */}
-            <Top auth={1} searchArea={false}/>
+            <Top auth={1} searchArea={true} options={subOptions} handleChange={handleSelectBox} onClick={submitInput} />
             {/** Search Nav */}
-            <div className={`notice-nav ${!auth.isStaff && 'notice-nav-lk'}`}>
+            {/* <div className={`notice-nav ${!auth.isStaff && 'notice-nav-lk'}`}>
                 { auth.isStaff && // 본사 스태프만 반영
                     <div className="notice-nav-box custom-flex-item custom-align-item">
                         <p>· Subsidiary</p>
                         <SelectBox options={subOptions} handleChange={handleSelectBox} placeholder="Select" />
                     </div>
                 }
-                {/* <div className="custom-flex-item custom-align-item">
-                    <p>· View</p>
-                    <SelectBox options={centerOptions} handleChange={handleSelectBox} />
-                </div> */}
                 <div className="custom-flex-item custom-align-item">
                     <p>· Search</p>
                     <input type="text" className="notice-nav-input" id="notice-nav-input"></input>
                     <button className="notice-nav-btn custom-flex-item custom-align-item" onClick={submitInput}> <SearchIcon /> </button>
                 </div>
-            </div>
+            </div> */}
 
             {/** Content Area */}
             <Style selectId={selectedList?.noticeId} openRight={(selectedList?.noticeId || isWrite || isModify) ? true : false}>
             <div className="notice-content">
                 <div className="notice-left">
-                    <div className="notice-count">
+                    <div className="notice-total notice-left-fold">
                         Total <span>{pageInfo?.totalCount}</span>
                     </div>
                     <ul className="notice-custom-board">
+                        <li className="notice-menu">
+                            <span style={selectedList?.noticeId ? {width: "10%"} : null}>No.</span>
+                            <span>Title</span>
+                            {
+                                selectedList?.noticeId 
+                                ? null
+                                : <span>Writer</span>
+                            }
+                            {/* <span>Writer</span> */}
+                            <span style={selectedList?.noticeId ? {width: "15%"} : null}>Count</span>
+                            <span style={selectedList?.noticeId ? {width: "15%"} : null}>Date</span>
+                        </li>
                         {
                             boardData.length > 0 ? (
                                 boardData?.map((item, idx) => {
                                     return(
                                         <li className={`notice-list ${item.deleteAt ? 'notice-del-list' : ''}`} key={generateRandomString(idx)} 
                                             id={`list${item.deleteAt ? '-del' : ''}-item${isModify ? `-${item.noticeId}` : ''}`} onClick={(e) => handleClickRow(e, item)}>
-                                            <div className={`title ${item.deleteAt ? 'title-del' : ''}`}>
+
+                                            <span className="notice-no" style={selectedList?.noticeId ? {width: "10%"} : null}>{item.rn}</span>
+                                            <span className={`notice-title ${item.deleteAt ? 'notice-title-del' : ''}`}>
+                                                { (!item.deleteAt && item.postEndDate) && item.isTodayInRange === 1 ? <SpeakerIcon /> : null } 
+                                                { item.tableName !== 'CS' ? <p>{`[${item.tableName}]`}</p> : null }
+                                                { item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
+                                                  selectedList?.noticeId ? (item.title).substr(0, 50) + '...' : item.title } 
+                                                { item.new ? <NewIcon /> : null }
+                                                {/* {
+                                                    selectedList?.noticeId 
+                                                    ? null
+                                                    : <span className="notice-writer">{item.writerName}</span>
+                                                } */}
+                                            </span>
+                                            {
+                                                selectedList?.noticeId 
+                                                ? null
+                                                : <span className="notice-writer">{item.writerName}</span>
+                                            }
+                                            {/* <span className="notice-writer">{item.writerName}</span> */}
+                                            <span className="notice-count" style={selectedList?.noticeId ? {width: "15%"} : null}>{item.hits}</span>
+                                            <span className="notice-date" style={selectedList?.noticeId ? {width: "15%"} : null}>{moment(item.createdAt).format('YYYY-MM-DD')}</span>
+
+                                            {/* <div className={`title ${item.deleteAt ? 'title-del' : ''}`}>
                                                 <span className="custom-flex-item custom-align-item">
-                                                {/** 게시기간 종료일이 현재 날짜 이전이면 확성기 아이콘 출력 */}
-                                                {/* { (!item.deleteAt && item.postEndDate) && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) >= new Date(moment().format('YYYY-MM-DD')) ? <SpeakerIcon /> : null }  */}
+                                                // 게시기간 종료일이 현재 날짜 이전이면 확성기 아이콘 출력
                                                 { (!item.deleteAt && item.postEndDate) && item.isTodayInRange === 1 ? <SpeakerIcon /> : null } 
                                                 { item.title.length > 90 ? (item.title).substr(0,90) + '...' : item.title } 
                                                 { (!item.deleteAt && item.new) ? <NewIcon /> : null }
@@ -560,7 +590,7 @@ function NoticeSetting() {
                                             </div>
                                             <div className={`etc ${item.deleteAt ? 'etc-del' : ''}`}>
                                                 <p>{item.writerName}</p> <p>{moment(item.createdAt).format('YY.M.DD')}</p>
-                                            </div>
+                                            </div> */}
                                         </li>
                                     )
                                 })

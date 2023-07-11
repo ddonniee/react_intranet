@@ -244,34 +244,51 @@ function Notice() {
             {/** Content Area */}
             <Style selectId={selectedList?.noticeId} openRight={selectedList?.noticeId ? true : false}>
             <div className="notice-content">
-                <div className="notice-left">
+                <div className="notice-left notice-left-fold">
                     <div className="notice-total">
                         {/* Total <span>{boardData.length}</span> */}
                         Total <span>{pageInfo?.totalCount}</span>
                     </div>
                     <ul className="notice-custom-board">
                         <li className="notice-menu">
-                            <span>No.</span>
+                            <span style={selectedList?.noticeId ? {width: "10%"} : null}>No.</span>
                             <span>Title</span>
-                            <span>Writer</span>
-                            <span>Count</span>
-                            <span>Date</span>
+                            {
+                                selectedList?.noticeId 
+                                ? null
+                                : <span>Writer</span>
+                            }
+                            {/* <span>Writer</span> */}
+                            <span style={selectedList?.noticeId ? {width: "15%"} : null}>Count</span>
+                            <span style={selectedList?.noticeId ? {width: "15%"} : null}>Date</span>
                         </li>
                         {
                             boardData.length > 0 ? (
                                 boardData?.map((item, idx) => {
                                     return(
                                         <li className="notice-list" key={generateRandomString(idx)} id={`list-item-${item.noticeId}`} onClick={(e)=>handleClickRow(e, item)}>
-                                            <span className="notice-no">No.</span>
+                                            <span className="notice-no" style={selectedList?.noticeId ? {width: "10%"} : null}>{item.rn}</span>
                                             <span className="notice-title">
-                                                {item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null} 
-                                                {/* {item.tableName !== 'CS' ? } */}
-                                                {item.title.length > 90 ? (item.title).substr(0,90) + '...' : item.title} 
-                                                {item.new ? <NewIcon /> : null}
+                                                { item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null } 
+                                                { item.tableName !== 'CS' ? <p>{`[${item.tableName}]`}</p> : null }
+                                                { item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
+                                                  selectedList?.noticeId ? (item.title).substr(0, 50) + '...' : item.title } 
+                                                { item.new ? <NewIcon /> : null }
+                                                {/* {
+                                                    selectedList?.noticeId 
+                                                    ? null
+                                                    : <span className="notice-writer">{item.writerName}</span>
+                                                } */}
                                             </span>
-                                            <span className="notice-writer">{item.writerName}</span>
-                                            <span className="notice-count">Count</span>
-                                            <span className="notice-date">{moment(item.createdAt).format('YYYY-MM-DD')}</span>
+                                            {
+                                                selectedList?.noticeId 
+                                                ? null
+                                                : <span className="notice-writer">{item.writerName}</span>
+                                            }
+                                            {/* <span className="notice-writer">{item.writerName}</span> */}
+                                            <span className="notice-count" style={selectedList?.noticeId ? {width: "15%"} : null}>{item.hits}</span>
+                                            <span className="notice-date" style={selectedList?.noticeId ? {width: "15%"} : null}>{moment(item.createdAt).format('YYYY-MM-DD')}</span>
+
                                             {/* <div className="title">
                                                 // 게시기간 종료일이 현재 날짜 이전이면 확성기 아이콘 출력
                                                 {item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null} 

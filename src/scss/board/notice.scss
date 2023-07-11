@@ -79,27 +79,22 @@
                 display: flex;
                 border-top: 2px solid #BB0841;
                 background: #FBFBFB;
+                border-bottom: 1px solid #E8E8E8;
                 
                 span {
                     text-align: center;
                     width: 10%;
-                    padding: 5px 0;
+                    padding: 6px 0;
+
+                    font-size: 16px;
+                    color: #333333;
                 }
+
                 span:first-child {
-                    // background-color: red;
+                    width: 7%;
                 }
                 span:nth-child(2) {
-                    width: 60%;
-                    // background-color: orange;
-                }
-                span:nth-child(3) {
-                    // background-color: yellow;
-                }
-                span:nth-child(4) {
-                    // background-color: green;
-                }
-                span:nth-child(5) {
-                    // background-color: skyblue;
+                    width: 63%;
                 }
             }
 
@@ -117,17 +112,26 @@
                     justify-content: center;
                     width: 10%;
                     padding: 5px 0;
+
+                    font-size: 15px;
+                    color: #5F5F5F;
                 }
-                span:first-child {
-                    // background-color: red;
+
+                .notice-no {
+                    width: 7%;
                 }
-                span:nth-child(2) {
-                    width: 60%;
+                .notice-title {
+                    width: 63%;
                     justify-content: flex-start;
                     font-weight: 600;
                     font-size: 16px;
                     line-height: 24px;
                     color: #333333;
+
+                    p {
+                        color: #ED5C7D;
+                        margin-right: 5px;
+                    }
 
                     svg:first-child {
                         margin-right: 6px;
@@ -136,17 +140,6 @@
                     svg:last-child {
                         margin-left: 6px;
                     }
-
-                    // background-color: orange;
-                }
-                span:nth-child(3) {
-                    // background-color: yellow;
-                }
-                span:nth-child(4) {
-                    // background-color: green;
-                }
-                span:nth-child(5) {
-                    // background-color: skyblue;
                 }
 
                 ////////////////////////////////////////
