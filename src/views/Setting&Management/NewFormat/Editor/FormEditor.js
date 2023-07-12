@@ -108,7 +108,7 @@ function FormEditor(props) {
         })
     }
 
-    
+
     const updateFile = (idx, file) => {
         console.log('########## updateFile ###########', idx, file)
 
@@ -243,8 +243,8 @@ function FormEditor(props) {
                             }}
                             />   
                             <button id={`file-reset-btn-${idx}`} style={{display:'none'}} onClick={()=>resetRowFile(idx)}></button>
-                            <button id="file-delete-btn" style={{display:'none'}} onClick={()=>deleteRow(idx)}></button>
-                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn" >Delete</label>
+                            <button id={`file-delete-btn-${idx}`} style={{display:'none'}} onClick={()=>deleteRow(idx)}></button>
+                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor={`file-delete-btn-${idx}`} >Delete</label>
                         </div>
                         )
                     })

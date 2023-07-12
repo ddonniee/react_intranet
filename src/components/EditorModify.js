@@ -105,20 +105,20 @@ function EditorModify(props) {
       
     }
     const deleteRow = (idx) => {
-        if(attachments.length > 1) {
-            setAttachments(prevArray => {
-                const newArray = [...prevArray];
-                newArray.splice(idx, 1);
-                return newArray;
-            })
-        } 
-        else {
-            setAlertSetting({
-                ...alertSetting,
-                alertTxt : 'At least one attachment is required.'
-            })
+        console.log(idx)
+        if (attachments.length > 1) {
+          setAttachments(prevArray => {
+            const newArray = [...prevArray];
+            newArray.splice(idx, 1);
+            return newArray;
+          });
+        } else {
+          setAlertSetting({
+            ...alertSetting,
+            alertTxt: 'At least one attachment is required.'
+          });
         }
-    }
+      };
 
     const resetRowFile = (idx) =>{
         setAttachments(prevArray => {
