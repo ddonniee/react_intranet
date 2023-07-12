@@ -121,24 +121,30 @@ function CStalk() {
         writerName : '',
     });
 
+    // 유저 정보로 권한 체크 추가
     useEffect(()=>{
         console.log(user)
         let role = user.role;
-        if(role==='LK') {
-          setAuth({
-            ...auth,
-            isViewer : true
-          })
-        }else if(role==='SA') {
-          setAuth({
+        setAuth({
             ...auth,
             isViewer : true,
-            isWriter : selectedList.writerID === user.id ? true : false
-          })
-        }else {
-          alert('No right to Access')
-          document.location.href='/login';
-        }
+            isWriter : true
+        })
+        // if(role==='LK') {
+        //   setAuth({
+        //     ...auth,
+        //     isViewer : true
+        //   })
+        // }else if(role==='SA') {
+        //   setAuth({
+        //     ...auth,
+        //     isViewer : true,
+        //     isWriter : selectedList.writerID === user.id ? true : false
+        //   })
+        // }else {
+        //   alert('No right to Access')
+        //   document.location.href='/login';
+        // }
       },[selectedList.csTalkId])
 
       const [openRight, setOpenRight] = useState(false);
@@ -908,31 +914,16 @@ function CStalk() {
         <Header />
         <div className="inner-container">
             {/** auth 권한체크로 수정 필요 */}
-            <Top auth={1} searchArea={false}/>
+            <Top searchArea={true} auth={auth.isWriter} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Search Nav */}
             <div>
-            <div className="cstalk-nav custom-flex-item custom-justify-between" style={user.role!=='LK' ? {justifyContent :'flex-start'} : null}>
-                 {/* Subsidiary는 본사 staff만 */}
-                 {
-                    user.role === 'LK'
-                    &&
-                    <div className="cstalk-nav-box custom-flex-item custom-align-item">
-                        <p>· Subsidiary</p>
-                        <SelectBox options={subsidiary} handleChange={handleSelectSubsidiary} />
-                    </div>
-                }
-{/*                 
-                <div className="custom-flex-item custom-align-item">
-                    <p>· View</p>
-                    <SelectBox options={centerOptions} handleChange={handleSelectBox} defaultValue={centerOptions[0]}/>
-                </div> */}
+            {/* <div className="cstalk-nav custom-flex-item custom-justify-between" style={user.role!=='LK' ? {justifyContent :'flex-start'} : null}>
                 <div className="custom-flex-item custom-align-item">
                     <p>· Search</p>
                     <input type="text" className="cstalk-nav-input" onChange={(e)=>setReqData({...reqData, search:e.target.value})}></input>
                     <div className="search-wrapper" onClick={getList}><img src={Search} alt='search-btn'/></div>
                 </div>
-                {/* </div> */}
-            </div>
+            </div> */}
 
             {/** Content Area */}
             <div className="cstalk-contents ">
