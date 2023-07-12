@@ -145,6 +145,10 @@ function Faq() {
             console.log('error',error)
         })
     }
+
+    useEffect(()=>{
+        console.log(selectedList.dislikeCount,'0-00000000000000000000000000000')
+    },[selectedList])
     const handleSelectBox = e => {
         let value = e.value;
         setReqData({

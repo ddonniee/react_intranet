@@ -121,24 +121,30 @@ function CStalk() {
         writerName : '',
     });
 
+    // 유저 정보로 권한 체크 추가
     useEffect(()=>{
         console.log(user)
         let role = user.role;
-        if(role==='LK') {
-          setAuth({
-            ...auth,
-            isViewer : true
-          })
-        }else if(role==='SA') {
-          setAuth({
+        setAuth({
             ...auth,
             isViewer : true,
-            isWriter : selectedList.writerID === user.id ? true : false
-          })
-        }else {
-          alert('No right to Access')
-          document.location.href='/login';
-        }
+            isWriter : true
+        })
+        // if(role==='LK') {
+        //   setAuth({
+        //     ...auth,
+        //     isViewer : true
+        //   })
+        // }else if(role==='SA') {
+        //   setAuth({
+        //     ...auth,
+        //     isViewer : true,
+        //     isWriter : selectedList.writerID === user.id ? true : false
+        //   })
+        // }else {
+        //   alert('No right to Access')
+        //   document.location.href='/login';
+        // }
       },[selectedList.csTalkId])
 
       const [openRight, setOpenRight] = useState(false);
@@ -903,36 +909,21 @@ function CStalk() {
     
 
     return (
-        <Style openright={(openRight || isWrite || isModify) ? 1 : 0} iswrite={isWrite}>
+        <Style openright={(openRight || isWrite || isModify) ? 1 : 0} iswrite={isWrite || isModify}>
         <div className="notice-container cstalk-container">
         <Header />
         <div className="inner-container">
             {/** auth 권한체크로 수정 필요 */}
-            <Top auth={1} searchArea={false}/>
+            <Top searchArea={true} auth={auth.isWriter} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Search Nav */}
             <div>
-            <div className="cstalk-nav custom-flex-item custom-justify-between" style={user.role!=='LK' ? {justifyContent :'flex-start'} : null}>
-                 {/* Subsidiary는 본사 staff만 */}
-                 {
-                    user.role === 'LK'
-                    &&
-                    <div className="cstalk-nav-box custom-flex-item custom-align-item">
-                        <p>· Subsidiary</p>
-                        <SelectBox options={subsidiary} handleChange={handleSelectSubsidiary} />
-                    </div>
-                }
-{/*                 
-                <div className="custom-flex-item custom-align-item">
-                    <p>· View</p>
-                    <SelectBox options={centerOptions} handleChange={handleSelectBox} defaultValue={centerOptions[0]}/>
-                </div> */}
+            {/* <div className="cstalk-nav custom-flex-item custom-justify-between" style={user.role!=='LK' ? {justifyContent :'flex-start'} : null}>
                 <div className="custom-flex-item custom-align-item">
                     <p>· Search</p>
                     <input type="text" className="cstalk-nav-input" onChange={(e)=>setReqData({...reqData, search:e.target.value})}></input>
                     <div className="search-wrapper" onClick={getList}><img src={Search} alt='search-btn'/></div>
                 </div>
-                {/* </div> */}
-            </div>
+            </div> */}
 
             {/** Content Area */}
             <div className="cstalk-contents ">
@@ -944,10 +935,9 @@ function CStalk() {
                     <div className="custom-scroll-area">
                     <ul className="board-table custom-align-item custom-flex-item">
                         <li className="col-1">No.</li>
-                        <li className={`col-2 ${openRight && 'custom-hide-item'}`}>Category</li>
                         <li className="col-3">Title</li>
-                        <li className={`col-4 ${openRight && 'custom-hide-item'}`}>Writer</li>
-                        <li className={`col-5 ${openRight && 'custom-hide-item'}`}>Recommand</li>
+                        <li className={`col-4 ${openRight ? 'custom-hide-item' : ''}`}>Writer</li>
+                        <li className={`col-5 ${openRight ? 'custom-hide-item' : ''}`}>Recommand</li>
                         <li className="col-6">Count</li>
                         <li className="col-7">Date</li>
                     </ul>
@@ -960,14 +950,21 @@ function CStalk() {
                                                 <span>{String((activePage-1)*16+(idx+1)).padStart(3, '0')}</span>
                                             </li>
                                         </ul>
-                                        <ul className={`col-2 ${openRight && 'custom-hide-item'}`}>
-                                            <li  id={`list-item-${idx+1}`}>
-                                                <span>{item.categoryTree?.slice(0,15)} {item?.categoryTree?.length>10 && '....'}</span>
-                                            </li>
-                                        </ul>
+                                       
                                         <ul className="col-3" >
                                             <li id={`list-item-${idx+1}`}>
+                                                {
+                                                    item.commentCount!==0
+                                                    &&
+                                                    <span className="custom-stress-txt">[RE]</span>
+                                                }
                                                 <span className="board-max-length">{!openRight ? item?.subject.slice(0,82) : item?.subject.slice(0,60)}{!openRight ? item.subject?.length > 82 && '...' : item.subject?.length >60 && '...'}</span><img src={moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
+                                                {
+                                                    item.commentCount!==0
+                                                    &&
+                                                    <span className="custom-stress-txt">{`(${item.commentCount})`}</span>
+                                                }
+                                                
                                                  <div className={`small-detail custom-flex-item ${!openRight ? 'custom-hide-item' : ''}`}>
                                                  <span>{item?.writerName}</span>
                                                     <img src={Like} alt="like-img"/><span className="custom-self-align">{item?.likeCount}</span>
@@ -1227,17 +1224,17 @@ const Style = styled.div`
     .cstalk-left .cstalk-custom-board li {
         padding : ${props => (props.openright ? '10px 30px;':'17px 30px')}
     }
-    .col-1 {
-        width: 75px;
+    .cstalk-left + div {
+        width: ${props => (props.openright ? '49%' : '0%')}; 
     }
-    .col-2 {
-        min-width: 160px;
+    .col-1 {
+        width: 85px;
     }
     .col-3 {
-        width: 734px; 
+        width: 884px;
     }
     .col-4 {
-        width: 194px;
+        width: 194px; 
     }
     .col-5 {
         width: 122px;
@@ -1275,5 +1272,6 @@ const Style = styled.div`
           .cstalk-editor::-webkit-scrollbar-track {
             background-color: #f1f1f1;
           }  
+          
     }
 `
