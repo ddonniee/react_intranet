@@ -112,14 +112,24 @@ function EditorModify(props) {
                 return newArray;
             })
         } 
-        // else {
-        //     setAlertSetting({
-        //         ...alertSetting,
-        //         alertTxt : 'At least one attachment is required.'
-        //     })
-        // }
+        else {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt : 'At least one attachment is required.'
+            })
+        }
     }
 
+    const resetRowFile = (idx) =>{
+        setAttachments(prevArray => {
+            const newArray = [...prevArray];
+            newArray[idx] = {
+                fileName: '',
+                filePath : '',
+               }
+            return newArray;
+        })
+    }
 
 
     useEffect(()=>{
@@ -246,12 +256,12 @@ function EditorModify(props) {
                         return (
                             <div className="custom-flex-item custom-align-item" key={generateRandomString(idx)}>
                             <input type="text" className="write-input attach-input" name="filename" readOnly defaultValue={item.fileName}></input> 
-                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-select-btn">Select</label>
+                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor={attachments[idx].fileName===''? `file-select-btn-${idx}`:`file-reset-btn-${idx}`}>{attachments[idx].fileName===''?'Select':'Delete'}</label>
                             <input 
                                 type="file" 
                                 className="file-select-btn" 
                                 style={{display: "none"}} 
-                                id='file-select-btn'
+                                id={`file-select-btn-${idx}`}
                                 onChange={(e)=>{
                                     let file = e.target?.files[0];
                                     if(file.size > 1024 * 1024 * 20) {
@@ -278,7 +288,7 @@ function EditorModify(props) {
                                     console.log(file)
                                     let formdata = new FormData();
                                     formdata.append("uploadFiles", file);
-                                    formdata.append("directoryType", 'notice');
+                                    formdata.append("directoryType", 'cstalk');
                         
                                     // 파일업로드 API 호출
                                     axiosInstance.post('/fileUpload', formdata).then(res => {
@@ -300,7 +310,8 @@ function EditorModify(props) {
                                     })
                                     
                             }}
-                            />   
+                            />  
+                            <button id={`file-reset-btn-${idx}`} style={{display:'none'}} onClick={()=>resetRowFile(idx)}></button>
                             <button id="file-delete-btn" style={{display:'none'}} onClick={()=>deleteRow(idx)}></button>
                             <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn" >Delete</label>
                         </div>

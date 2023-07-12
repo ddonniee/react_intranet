@@ -750,7 +750,7 @@ function Faq() {
                     </ul>
                 </div>
                 <div className="faq-category">
-                    <ul className="faq-category-lists" ref={categoryRef}>
+                    <ul className="faq-category-lists custom-justify-center" ref={categoryRef}>
                         {
                             categoryLists?.map((item,idx)=>{
                                 return(
@@ -895,7 +895,7 @@ function Faq() {
                     }  
                     
                 </div>
-                <div className="faq-right-middle"><Viewer content={selectedList.content}/></div>
+                <div className="faq-right-middle"><Viewer content={selectedList.content} key={selectedList.faqId}/></div>
                 <div className="faq-right-bottom">
                     <div className="user-action custom-flex-item ">
                             <span className="faq-like custom-flex-item cursor-btn" onClick={(e)=>onClickAction(e,selectedList.faqId,'LIKE')}><img src={selectedList.reactionState==='LIKE' ? Liked : Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
@@ -953,7 +953,7 @@ function Faq() {
                                                                        {
                                                                          comment.subComment.map((sub,idx)=>{
                                                                             return(
-                                                                                <li>
+                                                                                <li key={generateRandomString(idx)}>
                                                                                     <div className="comment-top custom-flex-item custom-justify-between">
                                                                                         <div>
                                                                                             <span>{sub.writerName}</span>

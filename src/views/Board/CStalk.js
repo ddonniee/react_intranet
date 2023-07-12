@@ -149,14 +149,7 @@ function CStalk() {
 
       const [openRight, setOpenRight] = useState(false);
 
-      useEffect(()=>{
-        if(selectedList.csTalkId!=='' || isWrite) {
-            // if(selectedList.csTalkId!=='' || openCategory || openFaqCreator) {
-            setOpenRight(true)
-        }else {
-            setOpenRight(false)
-        }
-      },[selectedList.csTalkId])
+      
 
     const centerOptions = [
         { value: '', label: 'All' },
@@ -888,6 +881,15 @@ function CStalk() {
     },[commentPage]) 
 
     useEffect(()=>{
+        if(selectedList.csTalkId!=='' || isWrite || isModify) {
+            // if(selectedList.csTalkId!=='' || openCategory || openFaqCreator) {
+            setOpenRight(true)
+        }else {
+            setOpenRight(false)
+        }
+      },[selectedList.csTalkId,isWrite,isModify])
+
+    useEffect(()=>{
         if(isWrite) {
             setSelectedList({
                 attachments : '',
@@ -912,7 +914,7 @@ function CStalk() {
     
 
     return (
-        <Style openright={openRight? true : false} iswrite={isWrite || isModify}>
+        <Style openright={openRight} iswrite={isWrite || isModify}>
         <div className="notice-container cstalk-container">
         <Header />
         <div className="inner-container">
@@ -1013,8 +1015,7 @@ function CStalk() {
                             onChange={setPage} // 페이지 변경을 핸들링하는 함수
                         />
                     }
-                    {/* <AgGrid data={boardData} column={column} paging={true} /> */}
-                    <div className="write-btn" onClick={()=> isWrite ? setIsWrite(!isWrite) : isModify ? onConfirmHandler(7,selectedList.csTalkId) : !isWrite ? onConfirmHandler(1):null}><span>Write</span></div>
+                    <div className="write-btn" onClick={()=> !isWrite ? setIsWrite(true) : isModify ? onConfirmHandler(7,selectedList.csTalkId) : isWrite ? onConfirmHandler(1):null}><span>Write</span></div>
                 </div>
                 {
                     isWrite
@@ -1046,7 +1047,7 @@ function CStalk() {
                                     <div className="custom-flex-item" key={generateRandomString(idx)}>
                                         <img src={Attachment} alt="attachment"/> 
                                         <span className="custom-self-align">Attachment</span>
-                                        <span className="custom-flex-item cstalk-attach-down" onClick={()=>downloadAttachment(file.uploadPath)}>
+                                        <span className="custom-flex-item cstalk-attach-down cursor-btn" onClick={()=>downloadAttachment(file.uploadPath)}>
                                             <span className="custom-self-align">{` (${idx+1}) `}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{file.fileName}</p><img src={Download} alt='download_attachment'/></span>
                                         </span>
                                     </div> 
@@ -1106,9 +1107,9 @@ function CStalk() {
                                                     <span className="custom-flex-item">
                                                         {
                                                             comment.writerID===user.id &&
-                                                            <p className="cursor-btn" onClick={()=>onConfirmHandler(4,comment.commentId)}>Delete</p>
+                                                            <p className="cursor-btn comment-btn" onClick={()=>onConfirmHandler(4,comment.commentId)}>Delete</p>
                                                         }
-                                                         <p className="cursor-btn" onClick={()=>{openCommentInput(idx); setSubComment('')}}>Answer</p>
+                                                         <p className="cursor-btn comment-btn" onClick={()=>{openCommentInput(idx); setSubComment('')}}>Answer</p>
                                                     </span>
                                                 </div>
                                                 <div className="comment-middle">{comment.content?.slice(0,250)}{comment.content?.length>250 && <span className="custom-stress-txt">...More</span>}</div>
@@ -1227,9 +1228,7 @@ const Style = styled.div`
     .cstalk-left .cstalk-custom-board li {
         padding : ${props => (props.openright ? '10px 30px;':'17px 30px')}
     }
-    .cstalk-left + div {
-        width: ${props => (props.openright ? '49%' : '0%')};   margin-top: 19px !important;
-    }
+
     .col-1 {
         width: 85px;
     }
