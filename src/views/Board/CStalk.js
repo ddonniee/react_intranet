@@ -1229,7 +1229,7 @@ const Style = styled.div`
         width: 85px;
     }
     .col-3 {
-        min-width: 884px;
+        width: 884px;
     }
     .col-4 {
         width: 194px; 
@@ -1270,5 +1270,6 @@ const Style = styled.div`
           .cstalk-editor::-webkit-scrollbar-track {
             background-color: #f1f1f1;
           }  
+          
     }
 `
