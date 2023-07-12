@@ -903,7 +903,7 @@ function CStalk() {
     
 
     return (
-        <Style openright={(openRight || isWrite || isModify) ? 1 : 0} iswrite={isWrite}>
+        <Style openright={(openRight || isWrite || isModify) ? 1 : 0} iswrite={isWrite || isModify}>
         <div className="notice-container cstalk-container">
         <Header />
         <div className="inner-container">
@@ -1221,6 +1221,9 @@ const Style = styled.div`
     }
     .cstalk-left .cstalk-custom-board li {
         padding : ${props => (props.openright ? '10px 30px;':'17px 30px')}
+    }
+    .cstalk-left + div {
+        width: ${props => (props.openright ? '49%' : '0%')}; 
     }
     .col-1 {
         width: 85px;
