@@ -240,23 +240,21 @@ ul.pagination li {
     margin: 0 5px;
 }
 
-ul.pagination li:first-child{
-    border-radius: 5px 0 0 5px;
-}
-
-ul.pagination li:last-child{
-    border-radius: 0 5px 5px 0;
+ul.pagination li{
+    border-radius: 5px;
 }
 
 ul.pagination li a {
     text-decoration: none;
-    color: $chart-color-grey;
-    font-size: 1rem;
+    color: #666666;
+    // font-size: 1rem;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 ul.pagination li.active a {
     color: $primary-color-red; 
-    font-weight: 600;
+    // font-weight: 600;
 }
 
 ul.pagination li.active {
@@ -557,6 +555,10 @@ input:focus {
 
             p {
                 height: 35px;
+            }
+
+            .user-info {
+                color: #ADADAD;
             }
 
             .write-input {

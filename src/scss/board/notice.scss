@@ -311,6 +311,7 @@
                     font-size: 14px;
                     line-height: 24px;
                     padding-top: 4px;
+                    color: #5F5F5F;
 
                     span {
                         padding: 0;
@@ -328,12 +329,17 @@
 
                     .notice-attach {
                         margin-left: 4px;
+                        color: #626262;
                     }
 
                     .notice-attach-count {
                         color: #A50035;
                         font-weight: 600;
                         margin-left: -5px;
+                    }
+
+                    .custom-hyphen {
+                        padding: 0 10px 0 5px;
                     }
 
                     .notice-attach-box {
