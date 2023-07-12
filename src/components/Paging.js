@@ -37,6 +37,7 @@ const Paging = ({ pageInfo, setPageInfo, searchData, setSearchData }) => {
       prevPageText={"‹"} // "이전"을 나타낼 텍스트
       nextPageText={"›"} // "다음"을 나타낼 텍스트
       onChange={setPage} // 페이지 변경을 핸들링하는 함수
+      hideFirstLastPages={true}
     />
   );
 };

@@ -156,11 +156,11 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
         <div className="editor-container">
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
-                <div className="right"> <p className="custom-flex-item custom-align-item">{user.name}</p> </div>
+                <div className="right"> <p className="custom-flex-item custom-align-item user-info">{user.name}</p> </div>
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Date</p> </div>
-                <div className="right"> <p className="custom-flex-item custom-align-item">{data ? moment(content?.createdAt).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')}</p> </div>
+                <div className="right"> <p className="custom-flex-item custom-align-item user-info">{data ? moment(content?.createdAt).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')}</p> </div>
 
             </div>
             <div className="write-row">
