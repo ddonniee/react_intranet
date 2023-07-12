@@ -270,7 +270,7 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
                                                 console.log('input file type ============', file.type)
                                                 console.log('input file size ============', file.size)
 
-                                                if(file.size > 1024 * 1024 * 100) {
+                                                if(file.size > 1024 * 1024 * 100) { // 104,857,600
                                                     setAlertTxt('Only files of 100MB or less can be attached.')
                                                     return false;
                                                 }
