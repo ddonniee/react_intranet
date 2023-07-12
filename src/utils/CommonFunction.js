@@ -6,6 +6,7 @@ import CryptoJS from 'crypto-js';
 /** axios instance */
 export const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
+    // baseURL: 'http://localhost:8090',
     maxBodyLength: Infinity,
     headers: {
         'Content-Type': 'multipart/form-data',

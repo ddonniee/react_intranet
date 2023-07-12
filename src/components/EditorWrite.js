@@ -314,8 +314,8 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
                 </div>
             </div>
 
-            <div className="btn-row">
-                <button className={`btn-white ${(!data || !isWriter || content?.deleteAt) && 'custom-hidden'}`} onClick={onDelete}>Delete</button>
+            <div className="btn-row" style={{justifyContent: "center"}}>
+                <button className={`btn-white ${(!data || !isWriter || content?.deleteAt) ? 'custom-hide-item' : ''}`} onClick={onDelete}>Delete</button>
                 <div>
                     <button className="btn-black" onClick={() => onClose(false)}>Cancel</button>
                     { (isWriter && !content?.deleteAt) ? 
