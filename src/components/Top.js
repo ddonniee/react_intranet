@@ -75,7 +75,7 @@ const Top = props =>{
                     <div className="title-nav">
                         <div className="title-nav-box custom-flex-item custom-align-item">
                             <p>· Subsidiary</p>
-                            <SelectBox options={options} handleChange={handleChange} placeholder="Select" />
+                            <SelectBox options={options} handleChange={handleChange} placeholder="Select" minHeight />
                         </div>
                         <div className="custom-flex-item custom-align-item">
                             <p>· Search</p>
