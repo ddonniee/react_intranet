@@ -49,15 +49,9 @@ function Faq() {
         {value:'LGEKR',label:'LGEKR'},
         {value:'LGEMC',label:'LGEMC'},
     ])
-    const [faqTab, setFaqTab] = useState([
-        {
-            value : 'All',
-            label : 'All'
-        },
-        {
-            value : 'System Guide',
-            label : 'System Guide'
-        }]) 
+    // 하위 tab
+    const [faqTab, setFaqTab] = useState([]) 
+    const [selectedCategory,setSelectedCategory] = useState()
      /** 페이징 관련 ▼ ============================================================= */
      const [activePage, setActivePage] = useState(1); // 현재 페이지
      const [itemsPerPage] = useState(16); // 페이지당 아이템 갯수
@@ -286,11 +280,22 @@ function Faq() {
         tab : '',
     })
 
-    const handleClickTab=(item)=>{
-        console.log(item)
+    const handleClickTab=(item,iconList)=>{
+        console.log('handleClickTab',item)
         setReqData({...reqData, categoryId:item.categoryId})
-        // setSubCategory(item)
+        let copy = [
+            {
+                categoryId:'',
+                categoryNm:'All'
+            }
+        ];
+        copy = copy.concat(item)
+        setFaqTab(copy)
     }
+
+    useEffect(()=>{
+        console.log('fffffffffffffffffffffffffffffffffff',faqTab)
+    },[faqTab])
     const getList = () =>{
 
         console.log('검색한다', reqData)
@@ -531,6 +536,7 @@ function Faq() {
             iconList = items.items;
         }
         console.log('icon list : ',iconList)
+        // setFaqTab(iconList)
         return (
             <div className='icon-modal' ref={iconRef}>
                 <img src={Polygon} alt='polygon' />
@@ -540,7 +546,7 @@ function Faq() {
                         ?
                         iconList.map((item,idx)=>{
                             return(
-                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)} onMo={()=>handleClickTab(item)}>{item.categoryNm}</li>
+                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)} onClick={()=>handleClickTab(item,iconList)}>{item.categoryNm}</li>
                             )
                         })
                         :
@@ -552,6 +558,7 @@ function Faq() {
     }
     const handleMouseEnter = (e,item) => {
         
+        console.log('handle mouse enter', item)
         setCategoryLists((prevLists) => {
             
             const updatedLists = prevLists.map((list) => {
@@ -565,6 +572,9 @@ function Faq() {
           });
     }
 
+    useEffect(()=>{
+        console.log(selectedCategory,'=====')
+    },[selectedCategory])
     const handleMouseLeave = (e,item) => {
         console.log('handleMouseLeave',item)
 
@@ -747,7 +757,7 @@ function Faq() {
                             {
                                 faqTab?.map((item,idx)=>{
                                     return(
-                                        <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${item.value==='All' && `red-selected`}`} onClick={()=>console.log('No function')} key={generateRandomString(idx)}>{item.value}</li>
+                                        <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${item.categoryId===reqData.categoryId  && `red-selected`}`} onClick={()=>setReqData({...reqData, categoryId:item.categoryId})} key={generateRandomString(idx)}>{item.categoryNm}</li>
                                     )
                                 })
                             }
