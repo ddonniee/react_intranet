@@ -1,12 +1,32 @@
 @import '../variables';
 
 .top-nav {
-    background-color: $primary-color-red; display: flex; box-sizing: border-box;
+    background-color: $primary-color-red; 
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+}
+.top-nav-wrapper {
+    display: flex; 
+    box-sizing: border-box;
+    width: 1560px;
+    // width: 100%;
+    * {
+        z-index: 1;
+    }
 }
 .nav-logo {
     height: 100%; font-weight: 600; font-size: 20px;
-    background-color: $primary-color-grey; color: white; align-items: center; display: flex; justify-content: center; 
+    background-color: $primary-color-grey; color: white; align-items: center; display: flex; justify-content: flex-end; 
     cursor: pointer;
+    padding-right: 27px;
+}
+.nav-logo-background {
+    background-color: $primary-color-grey;
+    width: 700px;
+    height: 54px;
+    position: absolute;
+    left: 0;
 } 
 .division {
     width: 1px; background-color: rgba(255, 255, 255, 0.15);
@@ -19,7 +39,12 @@ ul, li {
 }
 .nav-lists,
 .more-lists {
-    display: flex; align-items: center; height: 100%; 
+    // display: flex; align-items: center; height: 100%; 
+    display: flex;
+    align-items: center;
+    height: 100%;
+    justify-content: center;
+    margin-right: 85px;
 }
 .nav-lists  > li {
     color: white; height: 100%;
@@ -27,15 +52,17 @@ ul, li {
     align-items: center;
     justify-content: center; position: relative;
     cursor: pointer;
+    background-color: $primary-color-red; 
 }
 .nav-division {
     position: absolute; right: 0;
 }
 .nav-info {
     margin-left: auto; display: flex;
+    justify-content: flex-end;
 }
 .nav-info > div:first-child {
-    width : 50%;
+    width : 40%;
 }
 .nav-info .profile {
     align-self: center;
@@ -54,14 +81,12 @@ ul, li {
     vertical-align: -webkit-baseline-middle;
 }
 .nav-info .search {
-    width: 50%; align-self: center; text-align: center; cursor: pointer;
+    width: 30%; align-self: center; text-align: center; cursor: pointer;
+    margin-top: 5px;
 }
 .lower-tab {
     background-color: $secondary-color-gery;
     width: 100%; border-bottom: 1px solid $border-color-gery; position: relative;
-}
-.more-lists {
-    position: absolute; 
 }
 .more-lists > li {
     text-align: center;  font-weight: 600;
@@ -106,10 +131,11 @@ ul, li {
 @media all and (min-width:1024px) {
     .top-nav {
         // height: 81px; 
-        height: 64px;
+        height: 54px;
     }
     .nav-logo {
         width: 257px; 
+        // width: 30%;
     } 
     .division {
         height: 24px; margin: 0 14px;
@@ -133,7 +159,7 @@ ul, li {
     }
     .lower-tab {
         // height: 73px;
-        height: 54px;
+        height: 64px;
     }
     .more-lists {
         left: 256px;
