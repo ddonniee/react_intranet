@@ -68,7 +68,7 @@ function Notice() {
     /* 페이징 영역 ****************************************************************/
     const [pageInfo, setPageInfo] = useState({
         activePage: 1,     // 현재 페이지
-        itemsPerPage: 10,  // 페이지 당 아이템 갯수
+        itemsPerPage: 16,  // 페이지 당 아이템 갯수
         totalCount: 0,     // 전체 목록 수
     });
 
