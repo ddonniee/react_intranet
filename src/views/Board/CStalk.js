@@ -1225,7 +1225,7 @@ const Style = styled.div`
         padding : ${props => (props.openright ? '10px 30px;':'17px 30px')}
     }
     .cstalk-left + div {
-        width: ${props => (props.openright ? '49%' : '0%')}; 
+        width: ${props => (props.openright ? '49%' : '0%')};   margin-top: 19px !important;
     }
     .col-1 {
         width: 85px;

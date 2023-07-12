@@ -108,7 +108,7 @@
     }
     .pagination {
         margin: 0 !important;
-        padding-top: 9px;
+        padding-top: 15px;
     }
 }
 .cstalk-right .ck-sticky-panel {
@@ -248,7 +248,9 @@
 .cstalk-left {
     position: relative;     display: flex;
     flex-direction: column; overflow: hidden;
-    
+    .editor-wrapper {
+        margin-top: 19px !important;
+    }
 }
 
 .editor-container,
@@ -433,7 +435,7 @@ line-height: 24px; padding: 0 3px;
   }  
 .cstalk-contents {
     .pagination {
-        margin-top: auto;
+        margin-top: auto; 
     }
     .pagination li{
         margin: 0 5px;
