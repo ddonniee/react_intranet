@@ -292,7 +292,7 @@ function FaqSetting() {
             setOpenFaqCreator(false)
             clearState(1)
         }
-    },[openCategory])
+    },[openCategory, openFaqCreator])
 
     useEffect(()=>{
         if(boardData.length===0) {
@@ -522,7 +522,7 @@ function FaqSetting() {
         }else {
             setOpenRight(false)
         }
-      },[selectedList.faqId])
+      },[selectedList.faqId,openCategory,openFaqCreator ])
 
     
     useEffect(()=>{
@@ -662,19 +662,6 @@ function FaqSetting() {
                             })
                         }
                 </div>
-
-
-                    {/* <ul className="faq-custom-board" >
-                        {
-                            boardData && boardData.length > 0 && boardData.map((item,idx)=>{
-                                return(
-                                    <li className="cursor-btn" key={generateRandomString(idx)} id={`list-item-${item.faqId}`} onClick={(e)=>handleClickRow(e,item)}>
-                                        <span>{String((activePage-1)*10+(idx+1)).padStart(3, '0')}</span><span className="board-max-length">{item.subject?.slice(0,82)}{item.subject?.length > 82 && '...'}</span><img src={moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} /><span>{moment(item.createdAt).format('YY.MM.DD')}</span>
-                                    </li>
-                                )
-                            })
-                        }
-                    </ul> */}
                     {
                         boardData &&
                         <Pagination 
@@ -687,7 +674,7 @@ function FaqSetting() {
                             onChange={(e)=>setPage(e,1)} // 페이지 변경을 핸들링하는 함수
                         />
                     }
-                     <div className="write-btn" onClick={()=>setOpenFaqCreator(true)}><span>Write</span></div>
+                     <div className="write-btn" onClick={()=>openFaqCreator ? setOpenFaqCreator(false) : setOpenFaqCreator(true)}><span>Write</span></div>
                     </div>
                     {
                     selectedList.faqId !== '' && !openFaqCreator ?

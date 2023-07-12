@@ -43,7 +43,7 @@
         position: absolute; 
         background-color: white;  width: 227px; min-height: 170px; 
         border-radius: 20px; border: 1px solid $primary-color-red;
-        padding-bottom: 10px;
+        padding-bottom: 10px; z-index: 9999;
         img {
             position: relative;
             top: -13px; left: 50%;

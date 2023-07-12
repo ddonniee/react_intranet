@@ -213,11 +213,14 @@ function CStalk() {
         btnTxt : 'Close',
         confirmTxt : ''
     })
+
     const onConfirmHandler = (num,id) =>{
 
-        console.log(id,'"btn-row"')
-        // leave editor 
+        console.log(id,'"btn-row"')   
+        console.log('onConfirmHandler',isWrite)
+
         if(num===1 || num===7) {
+           
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: ' Click confirm to leave write mode.',
@@ -1011,7 +1014,7 @@ function CStalk() {
                         />
                     }
                     {/* <AgGrid data={boardData} column={column} paging={true} /> */}
-                    <div className="write-btn" onClick={()=> isWrite ? onConfirmHandler(1) : isModify ? onConfirmHandler(7,selectedList.csTalkId) : setIsWrite(!isWrite)}><span>Write</span></div>
+                    <div className="write-btn" onClick={()=> isWrite ? setIsWrite(!isWrite) : isModify ? onConfirmHandler(7,selectedList.csTalkId) : !isWrite ? onConfirmHandler(1):null}><span>Write</span></div>
                 </div>
                 {
                     isWrite

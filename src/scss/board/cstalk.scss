@@ -108,7 +108,7 @@
     }
     .pagination {
         margin: 0 !important;
-        padding-top: 15px;
+        padding-top: 15px; 
     }
 }
 .cstalk-right .ck-sticky-panel {
@@ -236,6 +236,9 @@
                 color: #5F5F5F; font-size: 15px; font-weight: 400;
             }
         }
+    }
+    .board-list:last-child {
+        border-bottom: 1px solid #E8E8E8;
     }
     .board-list:hover {
         background-color: $hover-color-pink; 

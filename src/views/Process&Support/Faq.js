@@ -735,7 +735,7 @@ function Faq() {
             {/** Top Area */}
             <div className="faq-nav">
                 <div className="faq-lists-wrapper" ref={listRef}>
-                    <ul className="faq-lists">
+                    <ul className="faq-lists custom-justify-between">
                         { frequentList && frequentList.length > 0 && frequentList.map((item, idx)=>{
                             return (
                                 <li key={generateRandomString(idx)}>
@@ -746,7 +746,7 @@ function Faq() {
                                     <div className="faq-summary">{item.subject.slice(0,70)}</div>
                                 </li>
                             )
-                        })}
+                        })} 
                     </ul>
                 </div>
                 <div className="faq-category">
