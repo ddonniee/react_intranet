@@ -28,14 +28,34 @@ function Header() {
     ]
     const [thirdMenuList, setThirdMenuList] = useState([])
 
-    const [thirdMenuList2, setThirdMenuList2] = useState([
-        {group: 'dashboard', name : 'KPI performance', id:'kpi-performance', path : '/dashboard/kpiperformance'},
-        {group: 'dashboard', name : 'Asc Holding Status', id:'asc-holding-status', path : '/dashboard/ascholdingstatus'},
-        {group: 'dashboard', name : 'Evaluation/Incentive', id:'evaluation-incentive', path : '/dashboard/evaluation'},
-        {group: 'dashboard', name : 'Parts Delivery Time', id:'part-delivery-time', path : '/dashboard/partsdeliverytime'},
-        {group: 'dashboard', name : 'Training Status', id:'training-status', path : '/dashboard/trainingstatus'},
-        {group: 'dashboard', name : 'Work In Process', id:'work-in-process', path : '/dashboard/wip'},
-    ])
+    /* ======================================================================================== */
+    const dashboardMenuList = [
+        {name : 'KPI performance', id:'kpi-performance', path : '/dashboard/kpiperformance'},
+        {name : 'Asc Holding Status', id:'asc-holding-status', path : '/dashboard/ascholdingstatus'},
+        {name : 'Evaluation/Incentive', id:'evaluation-incentive', path : '/dashboard/evaluation'},
+        {name : 'Parts Delivery Time', id:'part-delivery-time', path : '/dashboard/partsdeliverytime'},
+        {name : 'Training Status', id:'training-status', path : '/dashboard/trainingstatus'},
+        {name : 'Work In Process', id:'work-in-process', path : '/dashboard/wip'},
+    ];
+    const processMenuList = [
+        {name : 'Process & FAQ', path : '/process&support/faq'},
+        {name : 'Request & Q&A', path : '/process&support/raq'},
+    ];
+    const boardMenuList = [
+        {name : 'Notice', path : '/board/notice'},
+        {name : 'CS Talk', path : '/board/cstalk'},
+    ];
+    const settingMenuList = [
+        {name : 'KPI Performance Setting', path : '/setting/kpiperformance'},
+        {name : 'Evaluation/Incentive Setting', path : '/setting/evaluation'},
+        {name : 'FAQ Setting', path : '/setting/faq'},
+        {name : 'Notice Setting', path : '/setting/notice'},
+        {name : 'Statistics', path : '/setting/statistics'},
+        {name : 'User Management', path : '/setting/userManagement'},
+        {name : 'Common Code Management', path : '/setting/commonCodeManagement'},
+    ];
+    const [showThirdMenu, setShowThirdMenu] = useState(false);
+    /* ======================================================================================== */
 
     const handleClickTab = e => {
        
@@ -87,10 +107,12 @@ function Header() {
     const handleClickLogo = e => {
         window.location.assign(process.env.REACT_APP_FRONT_URL+'/')
     }
+
+    /* ======================================================================================== */
     const ThirdMenu = () => {
         return (
-            // <div className='nav-third' ref={headerRef}>
-            //     <div className='third-tab'>
+            // <div className='nav-modal' ref={headerRef}>
+            //     <img src={Polygon} alt='polygon' />
             //     <ul>
             //         {
             //             thirdMenuList?.map((list,idx)=>{
@@ -100,23 +122,47 @@ function Header() {
             //             })
             //         }
             //     </ul>
-            //     </div>
             // </div>
 
-            <div className='nav-modal' ref={headerRef}>
-                <img src={Polygon} alt='polygon' />
-                <ul>
-                    {
-                        thirdMenuList?.map((list,idx)=>{
-                            return(
-                                <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
-                            )
-                        })
-                    }
-                </ul>
+            <div className='nav-third' ref={headerRef}>
+                <div className='third-tab'>
+                    <ul>
+                        { dashboardMenuList?.map((list,idx)=>{
+                                return (
+                                    <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
+                                )
+                            })}
+                    </ul>
+                    <ul>
+                        { processMenuList?.map((list,idx)=>{
+                                return (
+                                    <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
+                                )
+                            })}
+                    </ul>
+                    <ul>
+                        { boardMenuList?.map((list,idx)=>{
+                                return (
+                                    <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
+                                )
+                            })}
+                    </ul>
+                    <ul>
+                        { settingMenuList?.map((list,idx)=>{
+                                return (
+                                    <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
+                                )
+                            })}
+                    </ul>
+                </div>
             </div>
         )
     }
+
+    const toggleThirdMenu = () => {
+        setShowThirdMenu(!showThirdMenu);
+    };
+    /* ======================================================================================== */
 
     const handleClickProfile = () => {
         let loginCheck = 0;
@@ -144,8 +190,9 @@ function Header() {
 
         const clickOutside = (e) => {
           // 모달이 열려 있고 모달의 바깥쪽을 눌렀을 때 창 닫기
-          if (currentTab.lowerTab!==''  && headerRef.current && !headerRef.current.contains(e.target)) {
+          if (headerRef.current && !headerRef.current.contains(e.target)) {
             clearState();
+            setShowThirdMenu(false);
           }
         };
         document.addEventListener("mousedown", clickOutside);
@@ -155,40 +202,40 @@ function Header() {
         };
       }, [currentTab.lowerTab]);
 
-    useEffect(()=>{
-            if(currentTab.lowerTab==='dashboard') {
-            setThirdMenuList(
-                [
-                {name : 'KPI performance', id:'kpi-performance', path : '/dashboard/kpiperformance'},
-                {name : 'Asc Holding Status', id:'asc-holding-status', path : '/dashboard/ascholdingstatus'},
-                {name : 'Evaluation/Incentive', id:'evaluation-incentive', path : '/dashboard/evaluation'},
-                {name : 'Parts Delivery Time', id:'part-delivery-time', path : '/dashboard/partsdeliverytime'},
-                {name : 'Training Status', id:'training-status', path : '/dashboard/trainingstatus'},
-                {name : 'Work In Process', id:'work-in-process', path : '/dashboard/wip'},
-            ])
-            }else if(currentTab.lowerTab==='process-support') {
-            setThirdMenuList(
-                [
-                {name : 'Process & FAQ', path : '/process&support/faq'},
-                {name : 'Request & Q&A', path : '/process&support/raq'},
-            ])
-            }else if(currentTab.lowerTab==='board') {
-                setThirdMenuList([
-                    {name : 'Notice', path : '/board/notice'},
-                    {name : 'CS Talk', path : '/board/cstalk'},
-                ])
-            }else if(currentTab.lowerTab==='setting') {
-                setThirdMenuList([
-                    {name : 'KPI Performance Setting', path : '/setting/kpiperformance'},
-                    {name : 'Evaluation/Incentive Setting', path : '/setting/evaluation'},
-                    {name : 'FAQ Setting', path : '/setting/faq'},
-                    {name : 'Notice Setting', path : '/setting/notice'},
-                    {name : 'Statistics', path : '/setting/statistics'},
-                    {name : 'User Management', path : '/setting/userManagement'},
-                    {name : 'Common Code Management', path : '/setting/commonCodeManagement'},
-                ])
-            }
-        },[currentTab.lowerTab])
+    // useEffect(()=>{
+    //     if(currentTab.lowerTab==='dashboard') {
+    //     setThirdMenuList(
+    //         [
+    //         {name : 'KPI performance', id:'kpi-performance', path : '/dashboard/kpiperformance'},
+    //         {name : 'Asc Holding Status', id:'asc-holding-status', path : '/dashboard/ascholdingstatus'},
+    //         {name : 'Evaluation/Incentive', id:'evaluation-incentive', path : '/dashboard/evaluation'},
+    //         {name : 'Parts Delivery Time', id:'part-delivery-time', path : '/dashboard/partsdeliverytime'},
+    //         {name : 'Training Status', id:'training-status', path : '/dashboard/trainingstatus'},
+    //         {name : 'Work In Process', id:'work-in-process', path : '/dashboard/wip'},
+    //     ])
+    //     }else if(currentTab.lowerTab==='process-support') {
+    //     setThirdMenuList(
+    //         [
+    //         {name : 'Process & FAQ', path : '/process&support/faq'},
+    //         {name : 'Request & Q&A', path : '/process&support/raq'},
+    //     ])
+    //     }else if(currentTab.lowerTab==='board') {
+    //         setThirdMenuList([
+    //             {name : 'Notice', path : '/board/notice'},
+    //             {name : 'CS Talk', path : '/board/cstalk'},
+    //         ])
+    //     }else if(currentTab.lowerTab==='setting') {
+    //         setThirdMenuList([
+    //             {name : 'KPI Performance Setting', path : '/setting/kpiperformance'},
+    //             {name : 'Evaluation/Incentive Setting', path : '/setting/evaluation'},
+    //             {name : 'FAQ Setting', path : '/setting/faq'},
+    //             {name : 'Notice Setting', path : '/setting/notice'},
+    //             {name : 'Statistics', path : '/setting/statistics'},
+    //             {name : 'User Management', path : '/setting/userManagement'},
+    //             {name : 'Common Code Management', path : '/setting/commonCodeManagement'},
+    //         ])
+    //     }
+    // }, [currentTab.lowerTab])
     
         useEffect(()=>{
             console.log(thirdMenuList)
@@ -247,20 +294,22 @@ function Header() {
                 <ul className='more-lists'>
                     {secondMenuList.map((item,idx)=>{
                         return (
-                        <li id={item.id} onClick={handleClickLowerTab} key={generateRandomString(idx+3)} ><p title={item.id}>{item.name}</p>
-                        {
-                            currentTab.lowerTab === item.id
-                            ?
-                            <>
-                            <ThirdMenu />
-                            </>
-                            :
-                            null
-                        }
-                        </li>
-                        
+                            <li id={item.id} onClick={toggleThirdMenu /*handleClickLowerTab*/} key={generateRandomString(idx+3)} ><p title={item.id}>{item.name}</p>
+                            {
+                                // currentTab.lowerTab === item.id
+                                // ?
+                                // <>
+                                // <ThirdMenu />
+                                // </>
+                                // :
+                                // null
+                            }
+                            </li>
                         )
                     })}
+                    {
+                        showThirdMenu && (<ThirdMenu />)
+                    }
                 </ul>
             </div>
             :
@@ -274,10 +323,13 @@ function Header() {
 export default Header
 
 const Nav = styled.div`
-    #${props=>props.upperdepth} {
-        background-color: white; color: #BB0841; 
+    #${props => props.upperdepth} {
+        background-color: white; 
+        color: #BB0841; 
     }
-    ${props => props.lowerdepth !== '' && `#${props.lowerdepth} > p { background : #FAF1F4; border-radius: 100px;}`}
-    }
+
+    ${props => props.lowerdepth !== '' && `#${props.lowerdepth} > p { 
+        background : #FAF1F4; border-radius: 100px;
+    }`}
 `
 

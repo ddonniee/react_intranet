@@ -71,8 +71,7 @@ const chartOptions = {
             boxWidth: 12,
             padding: 12,
             // usePointStyle: true,
-            // 범례 도형 모양과 관련된 속성으로, false일 경우엔 기본 직사각형 도형으로 표시됩니다.
-            // 범례 간 가로 간격을 조정할 수 있습니다. 범례의 상하 padding을 지정하는 기능은 따로 지원되지 않아요. ㅠㅠ
+            useBorderRadius: true,
           }
         },
         title: {
