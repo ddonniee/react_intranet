@@ -100,12 +100,12 @@ function FormEditor(props) {
     const updateFile = (idx, file) => {
         console.log('########## updateFile ###########', idx, file)
 
-        // const copyFiles = [...attachments];
-        // const updateFile = copyFiles[idx];
-        // updateFile.fileName = file.fileName;
-        // updateFile.uploadPath = file.uploadPath;
+        const copyFiles = [...attachments];
+        const updateFile = copyFiles[idx];
+        updateFile.fileName = file.fileName;
+        updateFile.uploadPath = file.uploadPath;
 
-        // setContent({ ...content, attachments: JSON.stringify(copyFiles)})
+        setContent({ ...content, attachments: JSON.stringify(copyFiles)})
     };
 
  
