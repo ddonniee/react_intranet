@@ -206,7 +206,7 @@ function FaqSetting() {
     const [openCategory, setOpenCategory] = useState(false)
   
     const addNewItem = (num,id)=>{
-        console.log('add category',num,id)
+        
         if(num===1) {
             setOpenCategory(true)
             setOpenFaqCreator(false)
@@ -331,7 +331,6 @@ function FaqSetting() {
         console.log('handleClickIcon', selectedItem);
         
         const subCategories = selectedItem.subCategory;
-        console.log('selectedItem',selectedItem.subCategory)
         setSubCategory(subCategories);
        
         if(selectedCategory.categoryId!==selectedItem.categoryId) {
@@ -363,7 +362,6 @@ function FaqSetting() {
         parentCategoryNm : '',
     })
     const handleClickTab=(item)=>{
-        console.log('handleClickTab',item)
         setReqData({...reqData, categoryId:item.categoryId})
         setSelectedTab(item)
     }
@@ -479,7 +477,6 @@ function FaqSetting() {
             // faq 등록/수정faqTopId
             axiosInstance2.post(url, formData,config).then(res => {
                 let resData = res.data;
-                console.log(resData.code == 200,'===========================================================')
                 if(resData.code == 200) {
                     console.log('res', resData)
                     // onConfirmHandler(6)
@@ -498,7 +495,6 @@ function FaqSetting() {
     }
     const handleClickRow = (e,item) => {
         let id = item.faqId;
-        console.log('faq id ==> ',id)
         getDetail(id)
     }
 
