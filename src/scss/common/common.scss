@@ -309,8 +309,10 @@ body .modal {
 
 .custom-hyphen {
     padding: 0 5px;
+    & + span {
+        padding: 0 5px;
+    }
 }
-
 .custom-justify-start {
     justify-content: flex-start;
 }

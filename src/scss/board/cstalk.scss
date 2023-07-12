@@ -108,7 +108,7 @@
     }
     .pagination {
         margin: 0 !important;
-        padding-top: 15px;
+        padding-top: 15px; 
     }
 }
 .cstalk-right .ck-sticky-panel {
@@ -237,6 +237,9 @@
             }
         }
     }
+    .board-list:last-child {
+        border-bottom: 1px solid #E8E8E8;
+    }
     .board-list:hover {
         background-color: $hover-color-pink; 
         span {
@@ -248,9 +251,7 @@
 .cstalk-left {
     position: relative;     display: flex;
     flex-direction: column; overflow: hidden;
-    .editor-wrapper {
-        margin-top: 19px !important;
-    }
+
 }
 
 .editor-container,

@@ -213,11 +213,14 @@ function CStalk() {
         btnTxt : 'Close',
         confirmTxt : ''
     })
+
     const onConfirmHandler = (num,id) =>{
 
-        console.log(id,'"btn-row"')
-        // leave editor 
+        console.log(id,'"btn-row"')   
+        console.log('onConfirmHandler',isWrite)
+
         if(num===1 || num===7) {
+           
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: ' Click confirm to leave write mode.',
@@ -909,7 +912,7 @@ function CStalk() {
     
 
     return (
-        <Style openright={(openRight || isWrite || isModify) ? 1 : 0} iswrite={isWrite || isModify}>
+        <Style openright={openRight? true : false} iswrite={isWrite || isModify}>
         <div className="notice-container cstalk-container">
         <Header />
         <div className="inner-container">
@@ -954,7 +957,7 @@ function CStalk() {
                                         <ul className="col-3" >
                                             <li id={`list-item-${idx+1}`}>
                                                 {
-                                                    item.commentCount!==0
+                                                    item.parentCsId!==null
                                                     &&
                                                     <span className="custom-stress-txt">[RE]</span>
                                                 }
@@ -1011,13 +1014,13 @@ function CStalk() {
                         />
                     }
                     {/* <AgGrid data={boardData} column={column} paging={true} /> */}
-                    <div className="write-btn" onClick={()=> isWrite ? onConfirmHandler(1) : isModify ? onConfirmHandler(7,selectedList.csTalkId) : setIsWrite(!isWrite)}><span>Write</span></div>
+                    <div className="write-btn" onClick={()=> isWrite ? setIsWrite(!isWrite) : isModify ? onConfirmHandler(7,selectedList.csTalkId) : !isWrite ? onConfirmHandler(1):null}><span>Write</span></div>
                 </div>
                 {
                     isWrite
                     ?
                     <div className="editor-wrapper">
-                    <EditorModify data={content} isWriter={isWrite} setData={setContent} onSave={onSaveContent} onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : setIsWrite(false)} range />
+                    <EditorModify data={content} isWriter={isWrite} setData={setContent} onSave={onSaveContent} onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : (setIsWrite(false), setOpenRight(false))} range />
                     </div>
                     :
                     !isWrite && selectedList.csTalkId!=='' && !isModify
@@ -1069,7 +1072,7 @@ function CStalk() {
                                 <div><button className="custom-flex-item custom-align-item" onClick={onEditMode}>Modify</button></div>
                             }
                            {
-                            selectedList.writerID!=='ID_LK' &&
+                            selectedList.writerID!==user.id &&
                             <div><button className="custom-flex-item custom-align-item" onClick={onAddAnswer}>Answer</button></div>
                            }
                         </div>
@@ -1190,7 +1193,7 @@ function CStalk() {
                     :
                     isModify
                     ?
-                    <EditorModify data={content} setData={setContent} range onSave={onEditContent}  onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : setIsModify(false)} onDelete={()=>onConfirmHandler(3)}/>
+                    <EditorModify data={content} setData={setContent} range onSave={onEditContent}  onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : setIsModify(false)} onDelete={()=>onConfirmHandler(3)} key={selectedList.csTalkId}/>
                     :
                     null
                 }
