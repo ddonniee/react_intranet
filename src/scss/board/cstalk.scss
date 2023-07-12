@@ -78,7 +78,7 @@
 .setting-viewer {
     padding: 10px 20px; justify-content: end;
 }
-.setting-viewer button  {
+.setting-viewer button {
     height: 30px;
     border-radius: 100px;
     border: 1px solid #D5D5D5;
@@ -394,10 +394,23 @@ line-height: 24px; letter-spacing: 0.01em;
 font-size: 12px;
 line-height: 24px; padding: 0 3px;
 }
-.cstalk-comment-list > ul > li .comment-top span p {
-    font-weight: 400;
+.cstalk-comment-list > ul > li .comment-top .comment-btn {
+    height: 30px;
+    border-radius: 100px;
+    border: 1px solid #D5D5D5;
+    justify-content: center;
+    border-radius: 3px;
+    border: 1px solid $primary-color-red;
+    background: #FCF8F9;
     font-size: 13px;
-    color: $txt-color-edit;
+    font-style: normal;
+    font-weight: 400;
+    color: $primary-color-red;
+    margin: 0 5px;
+    width: 58px;
+    text-align: center;
+    display: flex;
+    align-items: center;
 }
 .cstalk-comment-list > ul > li span:last-child  p:nth-child(2) {
     padding: 0 10px;
