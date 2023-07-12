@@ -304,7 +304,7 @@ function NewCategory(props) {
                 <div className="left"> <p>· Icon</p> </div>
                 <div className="right file-upload custom-flex-item"> 
                    <div className="icon-wrapper custom-flex-item custom-justify-center">{reqData.categoryIconPath !== '' ? <img src={process.env.REACT_APP_DOWN_URL+'/'+reqData.categoryIconPath} alt="icon_img"/>:null}</div>
-                   <div className="custom-flex-item"> 
+                   <div className="custom-flex-item custom-self-align"> 
                    <button id="file-add-icon" style={{display:'none'}} onClick={()=>reqData.categoryIcon===''? setOpenIcon(true):onDeleteIcon()}></button>
                     <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-add-icon" >{`${reqData.categoryIcon===''? 'Select':'Delete'}`}</label>
                     <button id="file-upload-icon" style={{display:'none'}} onClick={()=>setInsertIcon(!insertIcon)}></button>

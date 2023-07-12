@@ -944,10 +944,9 @@ function CStalk() {
                     <div className="custom-scroll-area">
                     <ul className="board-table custom-align-item custom-flex-item">
                         <li className="col-1">No.</li>
-                        <li className={`col-2 ${openRight && 'custom-hide-item'}`}>Category</li>
                         <li className="col-3">Title</li>
-                        <li className={`col-4 ${openRight && 'custom-hide-item'}`}>Writer</li>
-                        <li className={`col-5 ${openRight && 'custom-hide-item'}`}>Recommand</li>
+                        <li className={`col-4 ${openRight ? 'custom-hide-item' : ''}`}>Writer</li>
+                        <li className={`col-5 ${openRight ? 'custom-hide-item' : ''}`}>Recommand</li>
                         <li className="col-6">Count</li>
                         <li className="col-7">Date</li>
                     </ul>
@@ -960,11 +959,7 @@ function CStalk() {
                                                 <span>{String((activePage-1)*16+(idx+1)).padStart(3, '0')}</span>
                                             </li>
                                         </ul>
-                                        <ul className={`col-2 ${openRight && 'custom-hide-item'}`}>
-                                            <li  id={`list-item-${idx+1}`}>
-                                                <span>{item.categoryTree?.slice(0,15)} {item?.categoryTree?.length>10 && '....'}</span>
-                                            </li>
-                                        </ul>
+                                       
                                         <ul className="col-3" >
                                             <li id={`list-item-${idx+1}`}>
                                                 <span className="board-max-length">{!openRight ? item?.subject.slice(0,82) : item?.subject.slice(0,60)}{!openRight ? item.subject?.length > 82 && '...' : item.subject?.length >60 && '...'}</span><img src={moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
@@ -1228,16 +1223,13 @@ const Style = styled.div`
         padding : ${props => (props.openright ? '10px 30px;':'17px 30px')}
     }
     .col-1 {
-        width: 75px;
-    }
-    .col-2 {
-        min-width: 160px;
+        width: 85px;
     }
     .col-3 {
-        width: 734px; 
+        min-width: 884px;
     }
     .col-4 {
-        width: 194px;
+        width: 194px; 
     }
     .col-5 {
         width: 122px;

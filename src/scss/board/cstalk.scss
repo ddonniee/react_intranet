@@ -207,7 +207,7 @@
     .board-list {
         border-top: 1px solid #E8E8E8;
         font-size: 15px; font-weight: 400; justify-self: end; 
-        ul:not(:nth-child(3)) {
+        ul:not(.col-3) {
             text-align: center;
         }
         li > *{
