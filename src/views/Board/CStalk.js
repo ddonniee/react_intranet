@@ -227,7 +227,7 @@ function CStalk() {
                         csTalkId : ''
                     })
                     clearState()
-                    num===7 && setIsWrite(true)
+                    num===7 && setIsWrite(false)
                     num===1 && getDetail(id)
                 },
                 isDoubleBtn : true,
