@@ -18,7 +18,7 @@ import Reload from '../../assets/svgs/icon_reload.svg'
 import Link from '../../assets/svgs/icon_more.svg'
 import Check from '../../assets/svgs/icon_check.svg'
 // functions
-import { axiosInstance, detectUserAgent, encryptData, generateRandomString, userinfoDecrypt } from "../../utils/CommonFunction";
+import { axiosInstance, decryptData, detectUserAgent, encryptData, generateRandomString, userinfoDecrypt } from "../../utils/CommonFunction";
 import axios from "axios";
 
 
@@ -60,8 +60,9 @@ const Login = () =>{
                 setFailModal(true);
                 getCaptcha();
             } else {  // 성공
+                const userInfoStr = JSON.stringify(resData.result.userInfo);
                 sessionStorage.setItem("cstkn", resData.result.token);
-                sessionStorage.setItem("userInfo", JSON.stringify(resData.result.userInfo));
+                sessionStorage.setItem("userInfo", encryptData(userInfoStr));
                 window.location.href = "/";
             }
         })

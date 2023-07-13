@@ -115,9 +115,11 @@ export const decryptData = (plaindata) => {
 // 로그인 정보 암호화한 데이터 복호화 하기
 export const userinfoDecrypt = () => {
   try {
-    return decryptData(sessionStorage.getItem('userInfo'))
+    const userinfoStr = decryptData(sessionStorage.getItem('userInfo'));
+    return JSON.parse(userinfoStr)
   } catch (error) {
-    document.location.href = '/login';
+    console.log(error);
+    // document.location.href = '/login';
   }
 }
 
