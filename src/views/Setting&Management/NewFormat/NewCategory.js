@@ -111,6 +111,14 @@ function NewCategory(props) {
         setOpenIcon(false)
     },[reqData])
 
+    useEffect(()=>{
+        setReqData({
+            ...reqData,
+            parentCategoryId : parentCategory.categoryId
+        })
+       
+    },[])
+
         const addNewCategory = () =>{
             
         if(reqData.categoryIcon==='' && reqData.categoryIconFileNM==='') {
@@ -130,9 +138,9 @@ function NewCategory(props) {
         var config = {
             method: 'post',
             maxBodyLength: Infinity,
-            headers: { 
-            'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
-            },
+                headers: { 
+                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+                },
             };
 
         let formdata = new FormData();
@@ -143,11 +151,9 @@ function NewCategory(props) {
                 }
         }
         }
-        if(isLower) {
-            console.log(isLower,'======+++++++++++++++++++++++++++++')
-            formdata.append('parentCategoryId', parentCategory.categoryId);
-        }
-        console.log(Object.fromEntries(formdata))
+        // if(isLower) {
+        //     formdata.append('parentCategoryId', parentCategory.categoryId);
+        // }
         axiosJsonInstance.post('/faqCa/insert', formdata, config).then(res => {
         let resData = res.data;
         if (resData.code === 500) {
