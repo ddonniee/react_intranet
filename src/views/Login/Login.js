@@ -52,7 +52,7 @@ const Login = () =>{
             withCredentials: true,
         }
 
-        axiosInstance.post("login/doLogin", jsonToFormData(loginInfo), config)
+        axiosInstance.post("/login/doLogin", jsonToFormData(loginInfo), config)
         .then(res => {
             let resData = res.data;
             if (resData.code !== 200) {  // 로그인 실패
