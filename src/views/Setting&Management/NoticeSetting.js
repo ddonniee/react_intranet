@@ -568,7 +568,7 @@ function NoticeSetting() {
                                                 <span className={`title ${item.deleteAt ? 'title-del' : ''}`}>
                                                     { (!item.deleteAt && item.postEndDate) && item.isTodayInRange === 1 ? <SpeakerIcon /> : null } 
                                                     { !isWrite && !isModify && item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
-                                                    (isWrite || isModify) && item.title.length > 60 ? (item.title).substr(0, 60) + '...' : item.title } 
+                                                    (isWrite || isModify) && item.title.length > 55 ? (item.title).substr(0, 55) + '...' : item.title } 
                                                     { (!item.deleteAt && item.new) ? <NewIcon /> : null }
                                                 </span>
                                                 {

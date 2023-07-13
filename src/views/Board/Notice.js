@@ -329,7 +329,7 @@ function Notice() {
                             <p className="notice-title">{detail?.title}</p>
                             <p className="notice-title-detail">
                                 <span>Writer</span> : {detail?.writerName} &nbsp;
-                                <span>Date</span> : {moment(detail?.createdAt).format('YY.M.DD')} &nbsp;
+                                <span>Date</span> : {moment(detail?.createdAt).format('YYYY-MM-DD')} &nbsp;
                                 <span>Type</span> : {detail?.view}
                             </p>
                             <div className="notice-title-attach">

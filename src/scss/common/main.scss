@@ -58,6 +58,10 @@
         align-items: center;
         justify-content: space-between;
         padding: 17px 26px;
+
+        .moreicon {
+            cursor: pointer;
+        }
     }
 
     .card-faq, .card-cstalk {
@@ -107,6 +111,7 @@
             .list-slider {
                 display: flex;
                 flex-direction: column;
+                position: relative;
             }
 
             .top {
@@ -165,6 +170,7 @@
                 // flex-grow: 1;
                 word-break: keep-all;
                 margin-bottom: 20px;
+                cursor: pointer;
 
                 .bold {
                     font-weight: 600;
@@ -186,6 +192,8 @@
             }
 
             .sublist {
+                cursor: pointer;
+                
                 li {
                     border-top: 1px solid #D9D9D9;
                     display: flex;
