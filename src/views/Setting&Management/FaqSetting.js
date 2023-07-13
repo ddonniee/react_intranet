@@ -155,6 +155,8 @@ function FaqSetting() {
             if(resData.code===200) {
                 let data = resData.result
                 setBoardData(data.list)
+                console.log('=============================================================')
+                console.log(data.list)
             }else {
                 console.log(resData)
             }
