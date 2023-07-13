@@ -696,7 +696,16 @@ function FaqSetting() {
                                         </ul>
                                         <ul className="col-3" >
                                             <li id={`list-item-${idx+1}`}>
-                                                <span className="board-max-length">{!openRight ? item?.subject.slice(0,82) : item?.subject.slice(0,60)}{!openRight ? item.subject?.length > 82 && '...' : item.subject?.length >60 && '...'}</span><img src={moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
+                                                <span className="board-max-length">
+                                                    {!openRight ? item?.subject.slice(0,82) : item?.subject.slice(0,60)}
+                                                    {!openRight ? item.subject?.length > 82 && '...' : item.subject?.length >60 && '...'}
+                                                </span>
+                                                <img src={moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
+                                                {
+                                                    item.top5ListId !== null 
+                                                    &&
+                                                    <span className="custom-stress-txt">{item.top5ListId}</span>
+                                                }
                                                  <div className={`small-detail custom-flex-item ${!openRight ? 'custom-hide-item' : ''}`}>
                                                  <span>{item?.writerName}</span>
                                                     <img src={Like} alt="like-img"/><span className="custom-self-align">{item?.likeCount}</span>
