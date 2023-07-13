@@ -223,6 +223,19 @@ function Notice() {
 
     const [popup, setPopup] = useState(false);
 
+    const convertFileSize = (sizeInBytes) => {
+        const kilobyte = 1024;
+        const megabyte = kilobyte * 1024;
+    
+        if (sizeInBytes >= megabyte) {
+          return `${(sizeInBytes / megabyte).toFixed(2)}MB`;
+        } else if (sizeInBytes >= kilobyte) {
+          return `${(sizeInBytes / kilobyte).toFixed(2)}KB`;
+        } else {
+          return `${sizeInBytes}B`;
+        }
+    };
+
     return (
         <div className="notice-container">
         <Header />
@@ -250,19 +263,19 @@ function Notice() {
                         {/* Total <span>{boardData.length}</span> */}
                         Total <span>{pageInfo?.totalCount}</span>
                     </div>
+                    <div className="notice-menu">
+                        <span style={selectedList?.noticeId ? {width: "10%"} : null}>No.</span>
+                        <span>Title</span>
+                        {
+                            selectedList?.noticeId 
+                            ? null
+                            : <span>Writer</span>
+                        }
+                        {/* <span>Writer</span> */}
+                        <span style={selectedList?.noticeId ? {width: "15%"} : null}>Count</span>
+                        <span style={selectedList?.noticeId ? {width: "15%"} : null}>Date</span>
+                    </div>
                     <ul className="notice-custom-board">
-                        <li className="notice-menu">
-                            <span style={selectedList?.noticeId ? {width: "10%"} : null}>No.</span>
-                            <span>Title</span>
-                            {
-                                selectedList?.noticeId 
-                                ? null
-                                : <span>Writer</span>
-                            }
-                            {/* <span>Writer</span> */}
-                            <span style={selectedList?.noticeId ? {width: "15%"} : null}>Count</span>
-                            <span style={selectedList?.noticeId ? {width: "15%"} : null}>Date</span>
-                        </li>
                         {
                             boardData.length > 0 ? (
                                 boardData?.map((item, idx) => {
@@ -333,18 +346,18 @@ function Notice() {
                                 <span>Type</span> : {detail?.view}
                             </p>
                             <div className="notice-title-attach">
-                                <AttachmentIcon /> 
-                                <span className="notice-attach">Attachment</span>
+                                {/* <AttachmentIcon />  */}
+                                {/* <span className="notice-attach">Attachment</span> */}
                                 <span className="custom-flex-item custom-align-item">
-                                    <span className="notice-attach-count">{!attachments ? '' : ` (${attachments.length})`}</span>
-                                    <p className="custom-hyphen custom-self-align">{!attachments ? '' : '-'}</p>
+                                    {/* <span className="notice-attach-count">{!attachments ? '' : ` (${attachments.length})`}</span> */}
+                                    {/* <p className="custom-hyphen custom-self-align">{!attachments ? '' : '-'}</p> */}
                                     <div className="custom-flex-item custom-align-item custom-flex-wrap">
                                     {
                                         attachments ?
                                         attachments.map((file, idx) => {
                                             return (
                                                 <span className="notice-attach-box" key={generateRandomString(idx)}> 
-                                                    <p>{file.fileName}</p>
+                                                    <AttachmentIcon className="attach-icon" /><p>{file.fileName}</p>
                                                     <span className="notice-attach-down" onClick={() => downloadAttachment(file.uploadPath)}> <DownloadIcon /> </span>
                                                 </span>
                                             )

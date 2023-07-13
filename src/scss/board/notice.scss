@@ -82,35 +82,34 @@
             }
         }
   
-        .notice-custom-board {
-            // margin-bottom: 40px;
-            max-height: 755px;
-            // height: 755px;
-            overflow: auto;
+        .notice-menu {
+            width: 100%;
+            display: flex;
+            border-top: 2px solid #BB0841;
+            background: #FBFBFB;
+            // border-bottom: 1px solid #E8E8E8;
+            
+            span {
+                text-align: center;
+                width: 10%;
+                padding: 6px 0;
 
-            .notice-menu {
-                width: 100%;
-                display: flex;
-                border-top: 2px solid #BB0841;
-                background: #FBFBFB;
-                border-bottom: 1px solid #E8E8E8;
-                
-                span {
-                    text-align: center;
-                    width: 10%;
-                    padding: 6px 0;
-
-                    font-size: 16px;
-                    color: #333333;
-                }
-
-                span:first-child {
-                    width: 7%;
-                }
-                span:nth-child(2) {
-                    width: 63%;
-                }
+                font-size: 16px;
+                color: #333333;
             }
+
+            span:first-child {
+                width: 7%;
+            }
+            span:nth-child(2) {
+                width: 63%;
+            }
+        }
+
+        .notice-custom-board {
+            // max-height: 755px;
+            max-height: 721px;
+            overflow: auto;
 
             .notice-list {
                 width: 100%;
@@ -310,7 +309,7 @@
                 .notice-title-detail {
                     font-size: 14px;
                     line-height: 24px;
-                    padding-top: 4px;
+                    padding: 5px 0;
                     color: #5F5F5F;
 
                     span {
@@ -322,10 +321,6 @@
                 .notice-title-attach {
                     display: flex;
                     align-items: center;
-
-                    span {
-                        padding: 4px;
-                    }
 
                     .notice-attach {
                         margin-left: 4px;
@@ -346,14 +341,19 @@
                         border: 1px solid $border-color-gery; 
                         border-radius: 5px; 
                         font-weight: 600;
-                        font-size: 13px;
-                        padding: 4px 10px;
+                        font-size: 14px;
+                        padding: 4px 9px;
                         display: flex;
                         align-items: center;
                         margin-top: 3px;
 
+                        .attach-icon {
+                            width: 10px;
+                            margin-right: 5px;
+                        }
+
                         p {
-                            margin-right: 8px
+                            margin-right: 6px;
                         }
 
                         .notice-attach-down {
