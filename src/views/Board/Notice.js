@@ -177,7 +177,7 @@ function Notice() {
             setDetail(data);
             if(data.attachments) { // 첨부파일 있을 시 추가
                 const files = JSON.parse(data.attachments).map((file, idx) => ({
-                    ...file, fileName: file.fileName, uploadPath: file.uploadPath
+                    ...file, fileName: file.fileName, uploadPath: file.uploadPath, fileSize: file.fileSize
                 }))
                 setAttachments(files)
             }
@@ -228,9 +228,9 @@ function Notice() {
         const megabyte = kilobyte * 1024;
     
         if (sizeInBytes >= megabyte) {
-          return `${(sizeInBytes / megabyte).toFixed(2)}MB`;
+          return `${(sizeInBytes / megabyte).toFixed(0)}MB`;
         } else if (sizeInBytes >= kilobyte) {
-          return `${(sizeInBytes / kilobyte).toFixed(2)}KB`;
+          return `${(sizeInBytes / kilobyte).toFixed(0)}KB`;
         } else {
           return `${sizeInBytes}B`;
         }
@@ -357,7 +357,7 @@ function Notice() {
                                         attachments.map((file, idx) => {
                                             return (
                                                 <span className="notice-attach-box" key={generateRandomString(idx)}> 
-                                                    <AttachmentIcon className="attach-icon" /><p>{file.fileName}</p>
+                                                    <AttachmentIcon className="attach-icon" /><p>{`${file.fileName} ${file?.fileSize ? `(${convertFileSize(file.fileSize)})` : ''}`}</p>
                                                     <span className="notice-attach-down" onClick={() => downloadAttachment(file.uploadPath)}> <DownloadIcon /> </span>
                                                 </span>
                                             )
