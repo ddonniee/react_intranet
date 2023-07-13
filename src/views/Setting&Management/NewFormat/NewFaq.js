@@ -16,12 +16,22 @@ function NewFaq(props) {
 
     const { data, setData, onSave, onClose, onAttach} = props
 
+    // acios header
+    var config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        headers: { 
+           'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+        },
+        };
+    const [categoryLists, setCategoryLists] = useState([]) 
+    const [subCategory, setSubCategory] = useState([])
     const [content, setContent] = useState({
         title : '',
         content : '',
         isPublic : '',
         attachments : null,
-        categoryId : ''
+        categoryId : '',
     });
     
     const [attachments, setAttachments] = useState([
@@ -70,51 +80,56 @@ function NewFaq(props) {
         }
     }
     const onStopInput = () => {
-        console.log('onStopInput')
-        setData(content)
+        // console.log('onStopInput')
+        // setData(content)
     }
-    const addRow = () =>{
 
-        if(attachments.length < 5) {
-            const newObj = {
-                fileName: '',
-                filePath : '',
+    const getCategory = () =>{
+
+        console.log('getCAegrogffgosd')
+        axiosInstance('/faqCa/list', config)
+        .then(function (response){
+            let resData = response.data;
+            if(resData.code===200) {
+                let data = resData.result
+                console.log('getCategory',resData)
+                let temp = []
+                let subTemp = [];
+                temp = data.map(d => ({ 
+                    value: d.categoryId, 
+                    label: d.categoryNm 
+                }));
+                data.forEach(d => {
+                    if (d.subCategory.length !== 0) {
+                        d.subCategory.map(item=>{
+                            subTemp.push({ value: item.categoryId, label: item.categoryNm });
+                        })
+                   
+                    }
+                  });
+                setCategoryLists(temp)
+                setSubCategory(subTemp)
+            }else {
+                console.log(resData)
             }
-            const arr = [...attachments,newObj]
-            setAttachments(arr)
-        }else {
-            setAlertSetting({
-                ...alertSetting,
-                alertTxt: 'Up to 5 file attachments are allowed.'
-            })
-        }
-        
+        })
+        .catch(function(error) {
+            console.log('error',error)
+        })
     }
-    const deleteRow = (idx) => {
-        if(attachments.length > 1) {
-            setAttachments(prevArray => {
-                const newArray = [...prevArray];
-                newArray.splice(idx, 1);
-                return newArray;
-            })
-        } 
-        else {
-            setAlertSetting({
-                ...alertSetting,
-                alertTxt : 'At least one attachment is required.'
-            })
-        }
-    }
-    const updateFile = (idx, file) => {
-        console.log('########## updateFile ###########', idx, file)
 
-        const copyFiles = [...attachments];
-        const updateFile = copyFiles[idx];
-        updateFile.fileName = file.fileName;
-        updateFile.uploadPath = file.uploadPath;
+    useEffect(()=>{
+        getCategory();
+    },[])
+    useEffect(()=>{
+        setData(content)
+        console.log(content,'===============')
+    },[content])
+    useEffect(()=>{
+        console.log(categoryLists)
+        console.log(subCategory)
+    },[categoryLists, subCategory])
 
-        setContent({ ...content, attachments: JSON.stringify(copyFiles)})
-    };
     useEffect(()=>{
         if(!alertModal) {
             setAlertSetting({
@@ -153,8 +168,10 @@ function NewFaq(props) {
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Category</p> </div>
-                <div className="right"> 
-                    <input 
+                <div className="right custom-flex-item custom-align-item"> 
+                <SelectBox options={categoryLists} placeholder='Select' handleChange={(e)=>setContent({...content,categoryId:e.value})}/>
+                <SelectBox options={subCategory} placeholder='Select' handleChange={(e)=>setContent({...content,subCategory:e.target.value})}/>
+                    {/* <input 
                     type="text" 
                     className="category-subject" 
                     name="category" 
@@ -170,7 +187,8 @@ function NewFaq(props) {
                     value='Hold Codes'
                     readOnly
                     >
-                    </input> 
+                    </input>  */}
+                    
                 </div>
 
             </div>

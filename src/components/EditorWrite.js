@@ -30,6 +30,7 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
         {
             fileName: '',
             uploadPath: '',
+            fileSize: '',
         },
      ])
     const [attachLength, setAttachLength] = useState(1);
@@ -104,6 +105,7 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
             const newObj = {
                 fileName: '',
                 uploadPath : '',
+                fileSize: '',
             }
             const arr = [...attachments, newObj]
             setAttachments(arr)
@@ -131,6 +133,7 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
         const updateFile = copyFiles[idx];
         updateFile.fileName = file.fileName;
         updateFile.uploadPath = file.uploadPath;
+        updateFile.fileSize = file.fileSize;
 
         setContent({ ...content, attachments: JSON.stringify(copyFiles)})
     };
@@ -156,11 +159,11 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
         <div className="editor-container">
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Writer</p> </div>
-                <div className="right"> <p className="custom-flex-item custom-align-item">{user.name}</p> </div>
+                <div className="right"> <p className="custom-flex-item custom-align-item user-info">{user.name}</p> </div>
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Date</p> </div>
-                <div className="right"> <p className="custom-flex-item custom-align-item">{data ? moment(content?.createdAt).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')}</p> </div>
+                <div className="right"> <p className="custom-flex-item custom-align-item user-info">{data ? moment(content?.createdAt).format(`'DD.MM.YY`) : moment().format(`'DD.MM.YY`)}</p> </div>
 
             </div>
             <div className="write-row">
@@ -270,7 +273,7 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
                                                 console.log('input file type ============', file.type)
                                                 console.log('input file size ============', file.size)
 
-                                                if(file.size > 1024 * 1024 * 100) {
+                                                if(file.size > 1024 * 1024 * 100) { // 104,857,600
                                                     setAlertTxt('Only files of 100MB or less can be attached.')
                                                     return false;
                                                 }

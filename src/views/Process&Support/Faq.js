@@ -11,7 +11,9 @@ import Viewer from "../../components/Viewer"
 import Alert from "../../components/Alert";
 import Tab from "../../components/Tab";
 // Utils
-import { generateRandomString,axiosInstance2, downloadAttachment } from "../../utils/CommonFunction"
+import { generateRandomString,axiosInstance2, downloadAttachment,} from "../../utils/CommonFunction"
+// hooks
+import { useHorizontalScroll } from "../../hooks/useSideScroll";
 // View
 import MaximalView from "../Common/MaximalView";
 // Icons 
@@ -31,6 +33,7 @@ import Maximize from '../../assets/svgs/icon_screen.svg'
 
 import moment from "moment";
 import { max } from "date-fns";
+import { left } from "@popperjs/core";
 
 function Faq() {
 
@@ -121,6 +124,7 @@ function Faq() {
             },
             data : formData
             };
+        console.log(Object.fromEntries(formData))
         axiosInstance2('/faq/reaction', config)
         .then(function (response){
             let resData = response.data;
@@ -145,6 +149,9 @@ function Faq() {
             console.log('error',error)
         })
     }
+
+    useEffect(()=>{
+    },[selectedList])
     const handleSelectBox = e => {
         let value = e.value;
         setReqData({
@@ -529,24 +536,26 @@ function Faq() {
     const [maximizing, setMaxmizing] = useState(false)
     /** Icon list */
     const iconRef = useRef();
-    const IconModal = (items) =>{
-        
+    
+    const IconModal = ({items, position, onMouseLeave, isSubCategory}) =>{
+        let {x, y} = position;
         let  iconList = [];
-        if(items) {
-            iconList = items.items;
+        if(items?.length!==0) {
+            iconList = items;
         }
+        x = x -70
         console.log('icon list : ',iconList)
         // setFaqTab(iconList)
         return (
-            <div className='icon-modal' ref={iconRef}>
+            <div className='icon-modal' ref={iconRef} style={{top:y, left:x}}>
                 <img src={Polygon} alt='polygon' />
-                <ul>
+                <ul className={!isSubCategory ? 'no-list':''}>
                     {
                         iconList.length!==0
                         ?
                         iconList.map((item,idx)=>{
                             return(
-                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)} onClick={()=>handleClickTab(item,iconList)}>{item.categoryNm}</li>
+                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)} onClick={()=>handleClickTab(item,iconList)} onMouseLeave={onMouseLeave}>{item.categoryNm}</li>
                             )
                         })
                         :
@@ -556,9 +565,10 @@ function Faq() {
             </div>
         )
     }
+    const [hoveredItemPosition, setHoveredItemPosition] = useState(null);
     const handleMouseEnter = (e,item) => {
-        
-        console.log('handle mouse enter', item)
+        const rect = e.target.getBoundingClientRect();
+        setHoveredItemPosition({ x: rect.left });
         setCategoryLists((prevLists) => {
             
             const updatedLists = prevLists.map((list) => {
@@ -570,16 +580,20 @@ function Faq() {
             });
             return updatedLists;
           });
+          
     }
 
     useEffect(()=>{
         console.log(selectedCategory,'=====')
     },[selectedCategory])
     const handleMouseLeave = (e,item) => {
-        console.log('handleMouseLeave',item)
-
+        if(item?.categoryId===undefined) {
+            return false
+        }
+        setHoveredItemPosition(null);
         setCategoryLists((prevLists) => {
             
+           
             const updatedLists = prevLists.map((list) => {
               if (list.categoryId === item.categoryId) {
                 return { ...list, iconModal: false };
@@ -597,7 +611,8 @@ function Faq() {
             page: activePage
         })
     },[activePage])
-
+    /** mouse scroll */
+    const categoryRef = useHorizontalScroll();
     /** detail loading animation */
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingComment, setIsLoadingComment] = useState(false)
@@ -702,6 +717,15 @@ function Faq() {
             setOpenRight(true)
         }
       },[selectedList.faqId])
+
+      const listRef = useRef(null)
+      useEffect(()=>{
+        const refElement = listRef.current;
+        if(refElement) {
+            let top = refElement.getBoundingClientRect();
+            setHoveredItemPosition({ y : top})
+        }
+      },[])
     return (
         <>
         
@@ -711,8 +735,8 @@ function Faq() {
             <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Top Area */}
             <div className="faq-nav">
-                <div className="faq-lists-wrapper">
-                    <ul className="faq-lists">
+                <div className="faq-lists-wrapper" ref={listRef}>
+                    <ul className="faq-lists custom-justify-between">
                         { frequentList && frequentList.length > 0 && frequentList.map((item, idx)=>{
                             return (
                                 <li key={generateRandomString(idx)}>
@@ -723,27 +747,30 @@ function Faq() {
                                     <div className="faq-summary">{item.subject.slice(0,70)}</div>
                                 </li>
                             )
-                        })}
+                        })} 
                     </ul>
                 </div>
                 <div className="faq-category">
-                    <ul className="faq-category-lists">
+                    <ul className="faq-category-lists custom-justify-center" ref={categoryRef}>
                         {
                             categoryLists?.map((item,idx)=>{
                                 return(
-                                    <li key={generateRandomString(idx+1)} onMouseEnter={(e)=>handleMouseEnter(e,item)} onMouseLeave={(e)=>handleMouseLeave(e,item)}>
+                                    <li key={generateRandomString(idx+1)} onMouseEnter={(e)=>handleMouseEnter(e,item)}>
                                         <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+'/'+item.categoryIconPath} alt='category-icon'/></div>
                                         <p>{item.categoryNm}</p>
-                                        {
+                                        {/* {
                                         item.iconModal
                                         &&
                                         <IconModal items={item.subCategory}/>
-                                        }
+                                        } */}
                                     </li>
                                 )
                             })
                         }
                     </ul>
+                        {categoryLists?.map(item => {
+                            return item.iconModal && <IconModal items={item.subCategory} position={hoveredItemPosition} onMouseLeave={()=>handleMouseLeave(item)} isSubCategory={item.subCategory.length!==0 ? true : false}/>;
+                        })}
                 </div>
             </div>
 
@@ -869,7 +896,7 @@ function Faq() {
                     }  
                     
                 </div>
-                <div className="faq-right-middle"><Viewer content={selectedList.content}/></div>
+                <div className="faq-right-middle"><Viewer content={selectedList.content} key={selectedList.faqId}/></div>
                 <div className="faq-right-bottom">
                     <div className="user-action custom-flex-item ">
                             <span className="faq-like custom-flex-item cursor-btn" onClick={(e)=>onClickAction(e,selectedList.faqId,'LIKE')}><img src={selectedList.reactionState==='LIKE' ? Liked : Like} alt="btn_like"/><p>{selectedList.likeCount}</p></span>   
@@ -927,7 +954,7 @@ function Faq() {
                                                                        {
                                                                          comment.subComment.map((sub,idx)=>{
                                                                             return(
-                                                                                <li>
+                                                                                <li key={generateRandomString(idx)}>
                                                                                     <div className="comment-top custom-flex-item custom-justify-between">
                                                                                         <div>
                                                                                             <span>{sub.writerName}</span>

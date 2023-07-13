@@ -121,36 +121,35 @@ function CStalk() {
         writerName : '',
     });
 
+    // 유저 정보로 권한 체크 추가
     useEffect(()=>{
         console.log(user)
         let role = user.role;
-        if(role==='LK') {
-          setAuth({
-            ...auth,
-            isViewer : true
-          })
-        }else if(role==='SA') {
-          setAuth({
+        setAuth({
             ...auth,
             isViewer : true,
-            isWriter : selectedList.writerID === user.id ? true : false
-          })
-        }else {
-          alert('No right to Access')
-          document.location.href='/login';
-        }
+            isWriter : true
+        })
+        // if(role==='LK') {
+        //   setAuth({
+        //     ...auth,
+        //     isViewer : true
+        //   })
+        // }else if(role==='SA') {
+        //   setAuth({
+        //     ...auth,
+        //     isViewer : true,
+        //     isWriter : selectedList.writerID === user.id ? true : false
+        //   })
+        // }else {
+        //   alert('No right to Access')
+        //   document.location.href='/login';
+        // }
       },[selectedList.csTalkId])
 
       const [openRight, setOpenRight] = useState(false);
 
-      useEffect(()=>{
-        if(selectedList.csTalkId!=='' || isWrite) {
-            // if(selectedList.csTalkId!=='' || openCategory || openFaqCreator) {
-            setOpenRight(true)
-        }else {
-            setOpenRight(false)
-        }
-      },[selectedList.csTalkId])
+      
 
     const centerOptions = [
         { value: '', label: 'All' },
@@ -207,11 +206,14 @@ function CStalk() {
         btnTxt : 'Close',
         confirmTxt : ''
     })
+
     const onConfirmHandler = (num,id) =>{
 
-        console.log(id,'"btn-row"')
-        // leave editor 
+        console.log(id,'"btn-row"')   
+        console.log('onConfirmHandler',isWrite)
+
         if(num===1 || num===7) {
+           
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: ' Click confirm to leave write mode.',
@@ -227,7 +229,7 @@ function CStalk() {
                         csTalkId : ''
                     })
                     clearState()
-                    num===7 && setIsWrite(true)
+                    num===7 && setIsWrite(false)
                     num===1 && getDetail(id)
                 },
                 isDoubleBtn : true,
@@ -879,6 +881,15 @@ function CStalk() {
     },[commentPage]) 
 
     useEffect(()=>{
+        if(selectedList.csTalkId!=='' || isWrite || isModify) {
+            // if(selectedList.csTalkId!=='' || openCategory || openFaqCreator) {
+            setOpenRight(true)
+        }else {
+            setOpenRight(false)
+        }
+      },[selectedList.csTalkId,isWrite,isModify])
+
+    useEffect(()=>{
         if(isWrite) {
             setSelectedList({
                 attachments : '',
@@ -903,36 +914,21 @@ function CStalk() {
     
 
     return (
-        <Style openright={(openRight || isWrite || isModify) ? 1 : 0} iswrite={isWrite}>
+        <Style openright={openRight} iswrite={isWrite || isModify}>
         <div className="notice-container cstalk-container">
         <Header />
         <div className="inner-container">
             {/** auth 권한체크로 수정 필요 */}
-            <Top auth={1} searchArea={false}/>
+            <Top searchArea={true} auth={auth.isWriter} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Search Nav */}
             <div>
-            <div className="cstalk-nav custom-flex-item custom-justify-between" style={user.role!=='LK' ? {justifyContent :'flex-start'} : null}>
-                 {/* Subsidiary는 본사 staff만 */}
-                 {
-                    user.role === 'LK'
-                    &&
-                    <div className="cstalk-nav-box custom-flex-item custom-align-item">
-                        <p>· Subsidiary</p>
-                        <SelectBox options={subsidiary} handleChange={handleSelectSubsidiary} />
-                    </div>
-                }
-{/*                 
-                <div className="custom-flex-item custom-align-item">
-                    <p>· View</p>
-                    <SelectBox options={centerOptions} handleChange={handleSelectBox} defaultValue={centerOptions[0]}/>
-                </div> */}
+            {/* <div className="cstalk-nav custom-flex-item custom-justify-between" style={user.role!=='LK' ? {justifyContent :'flex-start'} : null}>
                 <div className="custom-flex-item custom-align-item">
                     <p>· Search</p>
                     <input type="text" className="cstalk-nav-input" onChange={(e)=>setReqData({...reqData, search:e.target.value})}></input>
                     <div className="search-wrapper" onClick={getList}><img src={Search} alt='search-btn'/></div>
                 </div>
-                {/* </div> */}
-            </div>
+            </div> */}
 
             {/** Content Area */}
             <div className="cstalk-contents ">
@@ -944,10 +940,9 @@ function CStalk() {
                     <div className="custom-scroll-area">
                     <ul className="board-table custom-align-item custom-flex-item">
                         <li className="col-1">No.</li>
-                        <li className={`col-2 ${openRight && 'custom-hide-item'}`}>Category</li>
                         <li className="col-3">Title</li>
-                        <li className={`col-4 ${openRight && 'custom-hide-item'}`}>Writer</li>
-                        <li className={`col-5 ${openRight && 'custom-hide-item'}`}>Recommand</li>
+                        <li className={`col-4 ${openRight ? 'custom-hide-item' : ''}`}>Writer</li>
+                        <li className={`col-5 ${openRight ? 'custom-hide-item' : ''}`}>Recommand</li>
                         <li className="col-6">Count</li>
                         <li className="col-7">Date</li>
                     </ul>
@@ -960,14 +955,21 @@ function CStalk() {
                                                 <span>{String((activePage-1)*16+(idx+1)).padStart(3, '0')}</span>
                                             </li>
                                         </ul>
-                                        <ul className={`col-2 ${openRight && 'custom-hide-item'}`}>
-                                            <li  id={`list-item-${idx+1}`}>
-                                                <span>{item.categoryTree?.slice(0,15)} {item?.categoryTree?.length>10 && '....'}</span>
-                                            </li>
-                                        </ul>
+                                       
                                         <ul className="col-3" >
                                             <li id={`list-item-${idx+1}`}>
+                                                {
+                                                    item.parentCsId!==null
+                                                    &&
+                                                    <span className="custom-stress-txt">[RE]</span>
+                                                }
                                                 <span className="board-max-length">{!openRight ? item?.subject.slice(0,82) : item?.subject.slice(0,60)}{!openRight ? item.subject?.length > 82 && '...' : item.subject?.length >60 && '...'}</span><img src={moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
+                                                {
+                                                    item.commentCount!==0
+                                                    &&
+                                                    <span className="custom-stress-txt">{`(${item.commentCount})`}</span>
+                                                }
+                                                
                                                  <div className={`small-detail custom-flex-item ${!openRight ? 'custom-hide-item' : ''}`}>
                                                  <span>{item?.writerName}</span>
                                                     <img src={Like} alt="like-img"/><span className="custom-self-align">{item?.likeCount}</span>
@@ -1013,14 +1015,13 @@ function CStalk() {
                             onChange={setPage} // 페이지 변경을 핸들링하는 함수
                         />
                     }
-                    {/* <AgGrid data={boardData} column={column} paging={true} /> */}
-                    <div className="write-btn" onClick={()=> isWrite ? onConfirmHandler(1) : isModify ? onConfirmHandler(7,selectedList.csTalkId) : setIsWrite(!isWrite)}><span>Write</span></div>
+                    <div className="write-btn" onClick={()=> !isWrite ? setIsWrite(true) : isModify ? onConfirmHandler(7,selectedList.csTalkId) : isWrite ? onConfirmHandler(1):null}><span>Write</span></div>
                 </div>
                 {
                     isWrite
                     ?
                     <div className="editor-wrapper">
-                    <EditorModify data={content} isWriter={isWrite} setData={setContent} onSave={onSaveContent} onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : setIsWrite(false)} range />
+                    <EditorModify data={content} isWriter={isWrite} setData={setContent} onSave={onSaveContent} onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : (setIsWrite(false), setOpenRight(false))} range />
                     </div>
                     :
                     !isWrite && selectedList.csTalkId!=='' && !isModify
@@ -1046,7 +1047,7 @@ function CStalk() {
                                     <div className="custom-flex-item" key={generateRandomString(idx)}>
                                         <img src={Attachment} alt="attachment"/> 
                                         <span className="custom-self-align">Attachment</span>
-                                        <span className="custom-flex-item cstalk-attach-down" onClick={()=>downloadAttachment(file.uploadPath)}>
+                                        <span className="custom-flex-item cstalk-attach-down cursor-btn" onClick={()=>downloadAttachment(file.uploadPath)}>
                                             <span className="custom-self-align">{` (${idx+1}) `}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{file.fileName}</p><img src={Download} alt='download_attachment'/></span>
                                         </span>
                                     </div> 
@@ -1072,7 +1073,7 @@ function CStalk() {
                                 <div><button className="custom-flex-item custom-align-item" onClick={onEditMode}>Modify</button></div>
                             }
                            {
-                            selectedList.writerID!=='ID_LK' &&
+                            selectedList.writerID!==user.id &&
                             <div><button className="custom-flex-item custom-align-item" onClick={onAddAnswer}>Answer</button></div>
                            }
                         </div>
@@ -1106,9 +1107,9 @@ function CStalk() {
                                                     <span className="custom-flex-item">
                                                         {
                                                             comment.writerID===user.id &&
-                                                            <p className="cursor-btn" onClick={()=>onConfirmHandler(4,comment.commentId)}>Delete</p>
+                                                            <p className="cursor-btn comment-btn" onClick={()=>onConfirmHandler(4,comment.commentId)}>Delete</p>
                                                         }
-                                                         <p className="cursor-btn" onClick={()=>{openCommentInput(idx); setSubComment('')}}>Answer</p>
+                                                         <p className="cursor-btn comment-btn" onClick={()=>{openCommentInput(idx); setSubComment('')}}>Answer</p>
                                                     </span>
                                                 </div>
                                                 <div className="comment-middle">{comment.content?.slice(0,250)}{comment.content?.length>250 && <span className="custom-stress-txt">...More</span>}</div>
@@ -1193,7 +1194,7 @@ function CStalk() {
                     :
                     isModify
                     ?
-                    <EditorModify data={content} setData={setContent} range onSave={onEditContent}  onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : setIsModify(false)} onDelete={()=>onConfirmHandler(3)}/>
+                    <EditorModify data={content} setData={setContent} range onSave={onEditContent}  onClose={()=>(content.title !=='' || content.content !=='')? onConfirmHandler(1) : setIsModify(false)} onDelete={()=>onConfirmHandler(3)} key={selectedList.csTalkId}/>
                     :
                     null
                 }
@@ -1227,17 +1228,15 @@ const Style = styled.div`
     .cstalk-left .cstalk-custom-board li {
         padding : ${props => (props.openright ? '10px 30px;':'17px 30px')}
     }
+
     .col-1 {
-        width: 75px;
-    }
-    .col-2 {
-        min-width: 160px;
+        width: 85px;
     }
     .col-3 {
-        width: 734px; 
+        width: 884px;
     }
     .col-4 {
-        width: 194px;
+        width: 194px; 
     }
     .col-5 {
         width: 122px;
@@ -1275,5 +1274,6 @@ const Style = styled.div`
           .cstalk-editor::-webkit-scrollbar-track {
             background-color: #f1f1f1;
           }  
+          
     }
 `

@@ -214,7 +214,7 @@ align-items: center;
     justify-content: center;
     margin-top: 47px;
     li {
-        cursor: pointer;
+        cursor: pointer; color: white !important;
     }
 }
 .loadingOpacity {
@@ -240,23 +240,21 @@ ul.pagination li {
     margin: 0 5px;
 }
 
-ul.pagination li:first-child{
-    border-radius: 5px 0 0 5px;
-}
-
-ul.pagination li:last-child{
-    border-radius: 0 5px 5px 0;
+ul.pagination li{
+    border-radius: 5px;
 }
 
 ul.pagination li a {
     text-decoration: none;
-    color: $chart-color-grey;
-    font-size: 1rem;
+    color: #666666 !important;
+    // font-size: 1rem;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 ul.pagination li.active a {
-    color: $primary-color-red; 
-    font-weight: 600;
+    color: $primary-color-red !important; 
+    // font-weight: 600;
 }
 
 ul.pagination li.active {
@@ -284,7 +282,7 @@ body .modal {
 
 /* 공통 CSS */
 .custom-stress-txt {
-    color: $primary-color-red;
+    color: $primary-color-red !important;
 }
 
 .comment-cnt{
@@ -311,8 +309,10 @@ body .modal {
 
 .custom-hyphen {
     padding: 0 5px;
+    & + span {
+        padding: 0 5px;
+    }
 }
-
 .custom-justify-start {
     justify-content: flex-start;
 }
@@ -323,6 +323,10 @@ body .modal {
 
 .custom-justify-center {
     justify-content: center;
+}
+
+.custom-flex-wrap {
+    flex-wrap: wrap;
 }
 
 .custom-txt-align {
@@ -410,6 +414,29 @@ background-color: #f1f1f1;
         padding: 30px 0 5px 0;
     }
 }
+/* hover text*/ 
+.hover-container {
+    position: relative;
+  }
+  
+  .hover-target {
+    /* hover 했을 때 스타일링을 적용할 요소에 마우스 이벤트를 설정합니다. */
+  }
+  
+  .hover-text {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    padding: 5px;
+    display: none;
+  }
+  
+  .hover-target:hover .hover-text {
+    /* hover 했을 때 텍스트를 보여줄 스타일을 설정합니다. */
+    display: block;
+  }
+  
 /* Fav tab */
 .user-action{
     padding: 18px 30px; border-top: 1px solid $border-color-gery; background-color: white;
@@ -559,6 +586,10 @@ input:focus {
                 height: 35px;
             }
 
+            .user-info {
+                color: #ADADAD;
+            }
+
             .write-input {
                 width: 100%;
                 height: 32px;
@@ -685,7 +716,7 @@ input:focus {
     width: 100%;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
+    z-index: 9999;
 
     .window {
         position: relative;
@@ -700,6 +731,7 @@ input:focus {
         transform: translate(-50%, -50%);
         background-color: #ffffff;
         border-radius: 10px;
+        z-index: 1000;
     }
 
     /* 상세페이지 */

@@ -35,23 +35,31 @@
         height: 648px;
     }
     .pagination {
-        padding-top: 9px !important;
+        padding-top: 36px !important;
     }
     .write-btn {
         bottom: 0px !important;
     }
-        .faq-setting-right::-webkit-scrollbar {
-        width: 8px;
+    .right {
+        .custom-select:nth-child(2) {
+            margin-left: 10px !important;
         }
-        
-        .faq-setting-right::-webkit-scrollbar-thumb {
-        background-color: #888;
-        border-radius: 4px;
+        .ck-dropdown__arrow {
+            z-index: 0;
         }
-        
-        .faq-setting-right::-webkit-scrollbar-track {
-        background-color: #f1f1f1;
-        } 
+    }
+    .faq-setting-right::-webkit-scrollbar {
+    width: 8px;
+    }
+    
+    .faq-setting-right::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+    }
+    
+    .faq-setting-right::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    } 
    }
    & + .faq-contents .faq-left {
     flex-direction: column;
@@ -62,6 +70,9 @@
     }
     .write-btn {
         margin-top: 9px;
+    }
+    .custom-stress-txt {
+        padding: 4px 8px; border-radius: 3px; background-color: $hover-color-pink; font-size: 13px; font-weight: 400; border: 1px solid;
     }
 }
 }

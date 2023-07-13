@@ -13,7 +13,7 @@ import SelectBox from "../../../../components/SelectBox";
 import Arrow from '../../../../assets/svgs/icon_arrow.svg'
 function FormEditor(props) {
 
-    const { data, setData, onSave, onClose, onDelete, onAttach} = props
+    const { data, setData, onSave, onClose, isDelete, onDelete, onAttach} = props
     const [content, setContent] = useState(data)
     const [attachments, setAttachments] = useState([
         {
@@ -97,6 +97,18 @@ function FormEditor(props) {
             })
         }
     }
+    const resetRowFile = (idx) =>{
+        setAttachments(prevArray => {
+            const newArray = [...prevArray];
+            newArray[idx] = {
+                fileName: '',
+                filePath : '',
+               }
+            return newArray;
+        })
+    }
+
+
     const updateFile = (idx, file) => {
         console.log('########## updateFile ###########', idx, file)
 
@@ -173,8 +185,8 @@ function FormEditor(props) {
                     attachments?.map((item,idx)=>{
                         return (
                             <div className="custom-flex-item custom-align-item" key={generateRandomString(idx)}>
-                            <input type="text" className="write-input attach-input" name="filename" readOnly defaultValue={item.fileName}></input> 
-                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor={`file-select-btn-${idx}`}>Select</label>
+                           <input type="text" className="write-input attach-input" name="filename" readOnly defaultValue={item.fileName}></input> 
+                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor={attachments[idx].fileName===''? `file-select-btn-${idx}`:`file-reset-btn-${idx}`}>{attachments[idx].fileName===''?'Select':'Delete'}</label>
                             <input 
                                 type="file" 
                                 className="file-select-btn" 
@@ -230,8 +242,9 @@ function FormEditor(props) {
                                     
                             }}
                             />   
-                            <button id="file-delete-btn" style={{display:'none'}} onClick={()=>deleteRow(idx)}></button>
-                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-delete-btn" >Delete</label>
+                            <button id={`file-reset-btn-${idx}`} style={{display:'none'}} onClick={()=>resetRowFile(idx)}></button>
+                            <button id={`file-delete-btn-${idx}`} style={{display:'none'}} onClick={()=>deleteRow(idx)}></button>
+                            <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor={`file-delete-btn-${idx}`} >Delete</label>
                         </div>
                         )
                     })
@@ -241,6 +254,10 @@ function FormEditor(props) {
                 </div>
             </div>
             <div className="btn-row" >
+                    {
+                        isDelete &&
+                        <button onClick={onDelete} style={{marginRight:'auto'}}>Delete</button>
+                    }
                     <button className="btn-black" onClick={onClose}>Cancel</button>
                     <button type="submit" className="btn-red" onClick={onSave}>Save</button>
             </div>

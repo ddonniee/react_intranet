@@ -27,6 +27,7 @@ const Top = props =>{
     
     const [pagePath, setPagePath] = useState('');
 
+    // console.log(props, 'TOP')
     useEffect(() => {
         const currentPath = location.pathname;
         const matchingPath = _paths.find((path) => path.path === currentPath);

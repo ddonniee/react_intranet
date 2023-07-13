@@ -300,6 +300,7 @@ function NoticeSetting() {
                     setAlertModal(false);
                     setIsWrite(false)
                     setIsModify(false)
+                    setSelctedList()
                     setDetail()
                     getList()
                 },
@@ -319,6 +320,7 @@ function NoticeSetting() {
                     setAlertModal(false);
                     setIsWrite(false)
                     setIsModify(false)
+                    setSelctedList()
                     setDetail()
                     getList()
                 },
@@ -495,6 +497,10 @@ function NoticeSetting() {
     }, [writeData])
 
     useEffect(() => {
+        !isModify && setSelctedList()
+    }, [isModify])
+
+    useEffect(() => {
         if(!alertModal) {
            setAlertSetting({
             alertTxt : '',
@@ -543,19 +549,19 @@ function NoticeSetting() {
                     <div className="notice-total notice-left-fold">
                         Total <span>{pageInfo?.totalCount}</span>
                     </div>
+                    <div className="notice-menu">
+                        <span style={ isWrite || isModify ? {width: "10%"} : null }>No.</span>
+                        <span>Title</span>
+                        {
+                            isWrite || isModify
+                            ? null
+                            : <span>Writer</span>
+                        }
+                        {/* <span>Writer</span> */}
+                        <span style={ isWrite || isModify ? {width: "15%"} : null}>Count</span>
+                        <span style={ isWrite || isModify ? {width: "15%"} : null}>Date</span>
+                    </div>
                     <ul className="notice-custom-board">
-                        <li className="notice-menu">
-                            <span style={ isWrite || isModify ? {width: "10%"} : null }>No.</span>
-                            <span>Title</span>
-                            {
-                                isWrite || isModify
-                                ? null
-                                : <span>Writer</span>
-                            }
-                            {/* <span>Writer</span> */}
-                            <span style={ isWrite || isModify ? {width: "15%"} : null}>Count</span>
-                            <span style={ isWrite || isModify ? {width: "15%"} : null}>Date</span>
-                        </li>
                         {
                             boardData.length > 0 ? (
                                 boardData?.map((item, idx) => {
@@ -568,7 +574,7 @@ function NoticeSetting() {
                                                 <span className={`title ${item.deleteAt ? 'title-del' : ''}`}>
                                                     { (!item.deleteAt && item.postEndDate) && item.isTodayInRange === 1 ? <SpeakerIcon /> : null } 
                                                     { !isWrite && !isModify && item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
-                                                    (isWrite || isModify) && item.title.length > 60 ? (item.title).substr(0, 60) + '...' : item.title } 
+                                                    (isWrite || isModify) && item.title.length > 55 ? (item.title).substr(0, 55) + '...' : item.title } 
                                                     { (!item.deleteAt && item.new) ? <NewIcon /> : null }
                                                 </span>
                                                 {
@@ -583,7 +589,7 @@ function NoticeSetting() {
                                                 : <span className="notice-writer">{item.writerName}</span>
                                             }
                                             <span className="notice-count" style={isWrite || isModify ? {width: "15%"} : null}>{item.hits}</span>
-                                            <span className="notice-date" style={isWrite || isModify ? {width: "15%"} : null}>{moment(item.createdAt).format('YYYY-MM-DD')}</span>
+                                            <span className="notice-date" style={isWrite || isModify ? {width: "15%"} : null}>{moment(item.createdAt).format(`'DD.MM.YY`)}</span>
 
                                             {/* <div className={`title ${item.deleteAt ? 'title-del' : ''}`}>
                                                 <span className="custom-flex-item custom-align-item">

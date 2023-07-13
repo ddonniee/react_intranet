@@ -108,9 +108,9 @@ function MaximalView(props) {
                 </div>
                 <p className="maximal-title">{detail.subject}</p>
                 <p className="maximal-title-detail">
-                    <span>Category</span> : {detail?.categoryId} &nbsp;
-                    <span>Writer</span> : {detail?.WriterName}
-                    <span>Date</span> : {moment(detail?.createdAt).format('YY.M.DD')} &nbsp;
+                    <span>Category</span> : {detail.categoryTree} &nbsp;
+                    <span>Writer</span> : {detail.writerName}
+                    <span>Date</span> : {moment(detail?.createdAt).format('YYYY-MM-DD')} &nbsp;
                 </p>
                 {
                     fileStore.length!==0 &&

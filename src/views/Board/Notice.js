@@ -177,7 +177,7 @@ function Notice() {
             setDetail(data);
             if(data.attachments) { // 첨부파일 있을 시 추가
                 const files = JSON.parse(data.attachments).map((file, idx) => ({
-                    ...file, fileName: file.fileName, uploadPath: file.uploadPath
+                    ...file, fileName: file.fileName, uploadPath: file.uploadPath, fileSize: file.fileSize
                 }))
                 setAttachments(files)
             }
@@ -223,6 +223,19 @@ function Notice() {
 
     const [popup, setPopup] = useState(false);
 
+    const convertFileSize = (sizeInBytes) => {
+        const kilobyte = 1024;
+        const megabyte = kilobyte * 1024;
+    
+        if (sizeInBytes >= megabyte) {
+          return `${(sizeInBytes / megabyte).toFixed(0)}MB`;
+        } else if (sizeInBytes >= kilobyte) {
+          return `${(sizeInBytes / kilobyte).toFixed(0)}KB`;
+        } else {
+          return `${sizeInBytes}B`;
+        }
+    };
+
     return (
         <div className="notice-container">
         <Header />
@@ -250,19 +263,19 @@ function Notice() {
                         {/* Total <span>{boardData.length}</span> */}
                         Total <span>{pageInfo?.totalCount}</span>
                     </div>
+                    <div className="notice-menu">
+                        <span style={selectedList?.noticeId ? {width: "10%"} : null}>No.</span>
+                        <span>Title</span>
+                        {
+                            selectedList?.noticeId 
+                            ? null
+                            : <span>Writer</span>
+                        }
+                        {/* <span>Writer</span> */}
+                        <span style={selectedList?.noticeId ? {width: "15%"} : null}>Count</span>
+                        <span style={selectedList?.noticeId ? {width: "15%"} : null}>Date</span>
+                    </div>
                     <ul className="notice-custom-board">
-                        <li className="notice-menu">
-                            <span style={selectedList?.noticeId ? {width: "10%"} : null}>No.</span>
-                            <span>Title</span>
-                            {
-                                selectedList?.noticeId 
-                                ? null
-                                : <span>Writer</span>
-                            }
-                            {/* <span>Writer</span> */}
-                            <span style={selectedList?.noticeId ? {width: "15%"} : null}>Count</span>
-                            <span style={selectedList?.noticeId ? {width: "15%"} : null}>Date</span>
-                        </li>
                         {
                             boardData.length > 0 ? (
                                 boardData?.map((item, idx) => {
@@ -271,7 +284,7 @@ function Notice() {
                                             <span className="notice-no" style={selectedList?.noticeId ? {width: "10%"} : null}>{item.rn}</span>
                                             <span className="notice-title">
                                                 <span className="title">
-                                                    { item.postEndDate && new Date(moment(item.postEndDate).format('YYYY-MM-DD')) > new Date() ? <SpeakerIcon /> : null } 
+                                                    { item.postEndDate && item.isTodayInRange === 1 ? <SpeakerIcon /> : null } 
                                                     { item.tableName !== 'CS' ? <p>{`[${item.tableName}]`}</p> : null }
                                                     { !selectedList?.noticeId && item.title.length > 100 ? (item.title).substr(0, 100) + '...' : 
                                                     selectedList?.noticeId && item.title.length > 50 ? (item.title).substr(0, 50) + '...' : item.title } 
@@ -289,7 +302,7 @@ function Notice() {
                                                 : <span className="notice-writer">{item.writerName}</span>
                                             }
                                             <span className="notice-count" style={selectedList?.noticeId ? {width: "15%"} : null}>{item.hits}</span>
-                                            <span className="notice-date" style={selectedList?.noticeId ? {width: "15%"} : null}>{moment(item.createdAt).format('YYYY-MM-DD')}</span>
+                                            <span className="notice-date" style={selectedList?.noticeId ? {width: "15%"} : null}>{moment(item.createdAt).format(`'DD.MM.YY`)}</span>
 
                                             {/* <div className="title">
                                                 // 게시기간 종료일이 현재 날짜 이전이면 확성기 아이콘 출력
@@ -329,27 +342,29 @@ function Notice() {
                             <p className="notice-title">{detail?.title}</p>
                             <p className="notice-title-detail">
                                 <span>Writer</span> : {detail?.writerName} &nbsp;
-                                <span>Date</span> : {moment(detail?.createdAt).format('YY.M.DD')} &nbsp;
+                                <span>Date</span> : {moment(detail?.createdAt).format(`'DD.MM.YY`)} &nbsp;
                                 <span>Type</span> : {detail?.view}
                             </p>
                             <div className="notice-title-attach">
-                                <AttachmentIcon /> 
-                                <span className="notice-attach">Attachment</span>
+                                {/* <AttachmentIcon />  */}
+                                {/* <span className="notice-attach">Attachment</span> */}
                                 <span className="custom-flex-item custom-align-item">
-                                    <span className="notice-attach-count">{!attachments ? '' : ` (${attachments.length})`}</span>
-                                    <p className="custom-hyphen custom-self-align">{!attachments ? '' : '-'}</p>
+                                    {/* <span className="notice-attach-count">{!attachments ? '' : ` (${attachments.length})`}</span> */}
+                                    {/* <p className="custom-hyphen custom-self-align">{!attachments ? '' : '-'}</p> */}
+                                    <div className="custom-flex-item custom-align-item custom-flex-wrap">
                                     {
                                         attachments ?
                                         attachments.map((file, idx) => {
                                             return (
                                                 <span className="notice-attach-box" key={generateRandomString(idx)}> 
-                                                    <p>{file.fileName}</p>
+                                                    <AttachmentIcon className="attach-icon" /><p>{`${file.fileName} ${file?.fileSize ? `(${convertFileSize(file.fileSize)})` : ''}`}</p>
                                                     <span className="notice-attach-down" onClick={() => downloadAttachment(file.uploadPath)}> <DownloadIcon /> </span>
                                                 </span>
                                             )
                                         })
                                         : null
                                     }
+                                    </div>
                                 </span>
                             </div>
                         </div>

@@ -6,7 +6,7 @@ import MoreIcon from '../../../assets/svgs/icon_more.svg';
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Alert from "../../../components/Alert";
-import { generateRandomString, axiosInstance, axiosIconInstance } from "../../../utils/CommonFunction";
+import { generateRandomString, axiosInstance, axiosJsonInstance } from "../../../utils/CommonFunction";
 import SelectBox from "../../../components/SelectBox";
 
 import Arrow from '../../../assets/svgs/icon_arrow.svg'
@@ -14,8 +14,9 @@ import FormEditor from "./Editor/FormEditor";
 function NewCategory(props) {
 
 
-    const { item, data, setData, onSave, onClose} = props
+    const { item,parentCategory, data, setData, onSave, onClose,isLower} = props
 
+    console.log('parent category : ',parentCategory)
     const [content, setContent] = useState(data);
     const [attachments, setAttachments] = useState([
         {
@@ -86,13 +87,10 @@ function NewCategory(props) {
         }
     }
     const onStopInput = () => {
-        console.log('onStopInput')
         setData(content)
     }
 
-   
     const onSelectIcon = (item) => {
-        console.log('onSelectIcon',item)
         setReqData({
             ...reqData,
             categoryIcon :item.categoryIconId,
@@ -113,60 +111,65 @@ function NewCategory(props) {
         setOpenIcon(false)
     },[reqData])
 
-    const addNewCategory = () =>{
-        
-    if(reqData.categoryIcon==='' && reqData.categoryIconFileNM==='') {
-        setAlertSetting({
-            ...alertSetting,
-        alertTxt:'Please select or attach icon file.'
+    useEffect(()=>{
+        setReqData({
+            ...reqData,
+            parentCategoryId : parentCategory.categoryId
         })
-        return false
-    }else if( reqData.categoryNm==='') {
-        setAlertSetting({
-            ...alertSetting,
-        alertTxt:'You should input all the information.'
-        })
-        return false
-    }
+       
+    },[])
 
-    var config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        headers: { 
-           'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
-        },
-        };
+        const addNewCategory = () =>{
+            
+        if(reqData.categoryIcon==='' && reqData.categoryIconFileNM==='') {
+            setAlertSetting({
+                ...alertSetting,
+            alertTxt:'Please select or attach icon file.'
+            })
+            return false
+        }else if( reqData.categoryNm==='') {
+            setAlertSetting({
+                ...alertSetting,
+            alertTxt:'You should input all the information.'
+            })
+            return false
+        }
 
-    let formdata = new FormData();
-    for (let key in reqData) {
-        if (reqData.hasOwnProperty(key)) {
-            if(key !== 'categoryIconPath' && key!=='categoryIconFileNM') {
-                formdata.append(key, reqData[key]);
-            }
-    }
-    }
-    console.log(Object.fromEntries(formdata,'new icon'))
-    axiosIconInstance.post('/faqCa/insert', formdata).then(res => {
-    let resData = res.data;
-    if (resData.code === 500) {
-        setAlertSetting({
-            ...alertSetting,
-            alertTxt : resData.msg
-        })
-    } else if(resData.code === 200 ){
-        clearState()
-    } 
-}).catch(error => {
-        setAlertSetting({
-            ...alertSetting,
-        alertTxt : 'Fail to upload file.'
-        })
-    console.log(error);
-})
-    }
+        var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+                headers: { 
+                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+                },
+            };
+
+        let formdata = new FormData();
+        for (let key in reqData) {
+            if (reqData.hasOwnProperty(key)) {
+                if(key !== 'categoryIconPath' && key!=='categoryIconFileNM') {
+                    formdata.append(key, reqData[key]);
+                }
+        }
+        }
+        axiosInstance.post('/faqCa/insert', formdata, config).then(res => {
+        let resData = res.data;
+        if (resData.code === 500) {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt : resData.msg
+            })
+        } else if(resData.code === 200 ){
+            clearState()
+        } 
+    }).catch(error => {
+            setAlertSetting({
+                ...alertSetting,
+            alertTxt : 'Fail to upload file.'
+            })
+        console.log(error);
+    })
+        }
     const updateFile = (idx, file) => {
-        console.log('########## updateFile ###########', idx, file)
-
         const copyFiles = [...attachments];
         const updateFile = copyFiles[idx];
         updateFile.fileName = file.fileName;
@@ -207,13 +210,12 @@ function NewCategory(props) {
                 method: 'post',
                 maxBodyLength: Infinity,
                 headers: { 
-                   'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+                   'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
                 },
                 };
             axiosInstance('/faqCa/iconList', config)
             .then(function (response){
                 let resData = response.data;
-                console.log(resData,'dddd')
                 if(resData.code===200) {
                     let data = resData.result
                     setIconList(data);
@@ -270,7 +272,7 @@ function NewCategory(props) {
             <div className="content-middle setting-middle">
 
             {
-                 item.categoryNm !== '' && 
+                 isLower && parentCategory.categoryNm !== '' && 
                  <div className="write-row custom-flex-item">
                  <div className="left"> <p>· Parent categoryName</p> </div>
                  <div className="right"> 
@@ -278,7 +280,7 @@ function NewCategory(props) {
                  type="text" 
                  className="category-subject custom-invalid-input" 
                  name="category" 
-                 value={item?.categoryNm}
+                 value={parentCategory.categoryNm}
                  readOnly
                  />
                  </div>
@@ -304,7 +306,7 @@ function NewCategory(props) {
                 <div className="left"> <p>· Icon</p> </div>
                 <div className="right file-upload custom-flex-item"> 
                    <div className="icon-wrapper custom-flex-item custom-justify-center">{reqData.categoryIconPath !== '' ? <img src={process.env.REACT_APP_DOWN_URL+'/'+reqData.categoryIconPath} alt="icon_img"/>:null}</div>
-                   <div className="custom-flex-item"> 
+                   <div className="custom-flex-item custom-self-align"> 
                    <button id="file-add-icon" style={{display:'none'}} onClick={()=>reqData.categoryIcon===''? setOpenIcon(true):onDeleteIcon()}></button>
                     <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor="file-add-icon" >{`${reqData.categoryIcon===''? 'Select':'Delete'}`}</label>
                     <button id="file-upload-icon" style={{display:'none'}} onClick={()=>setInsertIcon(!insertIcon)}></button>
@@ -354,7 +356,6 @@ function NewCategory(props) {
                                 })
                                 return false;
                             }
-                            console.log(file.name,'didi')
                             let formdata = new FormData();
                             formdata.append("uploadFile", file);
                             // 아이콘 업로드 API 호출
@@ -369,7 +370,6 @@ function NewCategory(props) {
                                 let resData = res.data;
                                 
                                 if (resData.code === 200) {
-                                    console.log(res,'icon insert')
                                     setReqData({
                                         ...reqData,
                                         categoryIconFileNM : file.name,

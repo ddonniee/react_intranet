@@ -29,21 +29,38 @@
 }
 .faq-category-lists {
     display: flex; justify-content: space-between; position: relative; 
-    pointer-events: auto; 
+    pointer-events: auto; overflow-x: auto;
     li {
         align-self: center; position: relative; min-width: 115px;
         div {
-            text-align: center;     padding-bottom: 10px; min-height: 59px;
+            text-align: center;     padding-bottom: 10px;
         }
     }
-    .icon-modal {
-        position: absolute; width: 146px; left: -10px; z-index: 999;
+    
+}
+.icon-modal {
+    // width: 146px; left: -10px; z-index: 999;
+        position: absolute; 
+        background-color: white;  width: 227px; min-height: 170px; 
+        border-radius: 20px; border: 1px solid $primary-color-red;
+        padding-bottom: 10px; z-index: 9999;
         img {
             position: relative;
-            top: 5px;
+            top: -13px; left: 50%;
+        }
+        li {
+            padding: 10px 15px;
+        }
+        .custom-hover {
+            border-radius: 10px;
+        }
+        .no-list{
+            display: flex; 
+            justify-content: center;
+            top: 50px;
+            position: relative;
         }
     }
-}
 .faq-category-lists::-webkit-scrollbar {
     width: 1px; height: 8px;
 }
