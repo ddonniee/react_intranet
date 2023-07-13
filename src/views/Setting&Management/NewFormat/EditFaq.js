@@ -4,12 +4,13 @@ import FormEditor from "./Editor/FormEditor";
 import SelectBox from "../../../components/SelectBox";
 
 import Close from '../../../assets/svgs/icon_close.svg'
-import Frame from '../../../assets/svgs/icon_editor_frame.svg'
 import Arrow from '../../../assets/svgs/icon_arrow.svg'
 
 function EditFaq(props) {
-    const { data, setData, onSave, onClose} = props;
+    const { data, setData, onSave, onClose, onDelete, category} = props;
     const [content, setContent] = useState(data)
+
+    console.log(content)
 
     const options = [
         {value:'TOP1',label:'TOP1'}, 
@@ -91,7 +92,7 @@ function EditFaq(props) {
             </div>
 
             <div className="content-middle setting-middle">
-                <FormEditor data={data} setData={setData} onSave={onSave} onClose={onClose}/>
+                <FormEditor data={data} setData={setData} onSave={onSave} onClose={onClose} isDelete onDelete={onDelete}/>
             </div>
             </div>
         </>

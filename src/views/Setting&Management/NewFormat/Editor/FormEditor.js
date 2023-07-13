@@ -13,7 +13,7 @@ import SelectBox from "../../../../components/SelectBox";
 import Arrow from '../../../../assets/svgs/icon_arrow.svg'
 function FormEditor(props) {
 
-    const { data, setData, onSave, onClose, onDelete, onAttach} = props
+    const { data, setData, onSave, onClose, isDelete, onDelete, onAttach} = props
     const [content, setContent] = useState(data)
     const [attachments, setAttachments] = useState([
         {
@@ -254,6 +254,10 @@ function FormEditor(props) {
                 </div>
             </div>
             <div className="btn-row" >
+                    {
+                        isDelete &&
+                        <button onClick={onDelete} style={{marginRight:'auto'}}>Delete</button>
+                    }
                     <button className="btn-black" onClick={onClose}>Cancel</button>
                     <button type="submit" className="btn-red" onClick={onSave}>Save</button>
             </div>

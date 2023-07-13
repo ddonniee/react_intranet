@@ -124,6 +124,7 @@ function Faq() {
             },
             data : formData
             };
+        console.log(Object.fromEntries(formData))
         axiosInstance2('/faq/reaction', config)
         .then(function (response){
             let resData = response.data;
