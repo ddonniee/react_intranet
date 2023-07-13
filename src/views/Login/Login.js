@@ -61,7 +61,7 @@ const Login = () =>{
                 getCaptcha();
             } else {  // 성공
                 sessionStorage.setItem("cstkn", resData.result.token);
-                sessionStorage.setItem("userInfo", encryptData(resData.result.userInfo));
+                sessionStorage.setItem("userInfo", resData.result.userInfo);
                 window.location.href = "/";
             }
         })
