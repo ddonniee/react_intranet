@@ -206,7 +206,7 @@ function KpiPerformance() {
         },
         {
             center: 'Total',
-            kpi: 'Long Pending rate > 7D (%)',
+            kpi: 'LPR (%) > 7D',
             lastYear: '100.1', 
             lastYear2Mon: '100.1',
             target: '100.1',
@@ -225,7 +225,7 @@ function KpiPerformance() {
         },
         {
             center: 'Total',
-            kpi: 'Input Lead Time (S)',
+            kpi: 'LT',
             lastYear: '100.1', 
             lastYear2Mon: '100.1',
             target: '100.1',
@@ -320,7 +320,7 @@ function KpiPerformance() {
         },
         {
             center: 'ASC #1',
-            kpi: 'Long Pending rate > 7D (%)',
+            kpi: 'LPR (%) > 7D',
             lastYear: '100.1', 
             lastYear2Mon: '100.1',
             target: '100.1',
@@ -339,7 +339,7 @@ function KpiPerformance() {
         },
         {
             center: 'ASC #1',
-            kpi: 'Input Lead Time (S)',
+            kpi: 'LT',
             lastYear: '100.1', 
             lastYear2Mon: '100.1',
             target: '100.1',
@@ -434,7 +434,7 @@ function KpiPerformance() {
         },
         {
             center: 'ASC #2',
-            kpi: 'Long Pending rate > 7D (%)',
+            kpi: 'LPR (%) > 7D',
             lastYear: '100.1', 
             lastYear2Mon: '100.1',
             target: '100.1',
@@ -453,7 +453,7 @@ function KpiPerformance() {
         },
         {
             center: 'ASC #2',
-            kpi: 'Input Lead Time (S)',
+            kpi: 'LT',
             lastYear: '100.1', 
             lastYear2Mon: '100.1',
             target: '100.1',

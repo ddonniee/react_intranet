@@ -58,7 +58,6 @@ function Header() {
     /* ======================================================================================== */
 
     const handleClickTab = e => {
-       
         let tabID = e.target.id;
         
         if(tabID==='support') {
@@ -68,11 +67,10 @@ function Header() {
             upperTab: tabID,
             lowerTab: ''
         });
-        }else {
+        } else {
             setIsOpenMenu(false);
             clearState()
         }
-
         e.stopPropagation();
     }
 
@@ -80,7 +78,7 @@ function Header() {
         let thirdTab = '';
         if(e.target.tagName ==='P') {
             thirdTab = e.target.title
-        }else {
+        } else {
             thirdTab = e.target.id;;
         }
         console.log(thirdTab)
@@ -89,7 +87,7 @@ function Header() {
                 ...currentTab,
                 lowerTab:thirdTab
             })
-        }else {
+        } else {
             setCurrentTab({
                 ...currentTab,
                 lowerTab:''
@@ -111,48 +109,35 @@ function Header() {
     /* ======================================================================================== */
     const ThirdMenu = () => {
         return (
-            // <div className='nav-modal' ref={headerRef}>
-            //     <img src={Polygon} alt='polygon' />
-            //     <ul>
-            //         {
-            //             thirdMenuList?.map((list,idx)=>{
-            //                 return(
-            //                     <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
-            //                 )
-            //             })
-            //         }
-            //     </ul>
-            // </div>
-
             <div className='nav-third' ref={headerRef}>
                 <div className='third-tab'>
                     <ul>
                         { dashboardMenuList?.map((list,idx)=>{
-                                return (
-                                    <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
-                                )
-                            })}
+                            return (
+                                <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
+                            )
+                        })}
                     </ul>
                     <ul>
                         { processMenuList?.map((list,idx)=>{
-                                return (
-                                    <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
-                                )
-                            })}
+                            return (
+                                <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
+                            )
+                        })}
                     </ul>
                     <ul>
                         { boardMenuList?.map((list,idx)=>{
-                                return (
-                                    <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
-                                )
-                            })}
+                            return (
+                                <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
+                            )
+                        })}
                     </ul>
                     <ul>
                         { settingMenuList?.map((list,idx)=>{
-                                return (
-                                    <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
-                                )
-                            })}
+                            return (
+                                <li id={list.id} title={list.path} onClick={handleClickLink} key={generateRandomString(idx)}>{list.name}</li>
+                            )
+                        })}
                     </ul>
                 </div>
             </div>
@@ -167,11 +152,11 @@ function Header() {
     const handleClickProfile = () => {
         let loginCheck = 0;
 
-    if(loginCheck===0) {
-        document.location.href='/login';
+        if(loginCheck===0) {
+            document.location.href='/login';
+        }
     }
 
-    }
     const clearState=()=>{
         setCurrentTab({
             ...currentTab,
@@ -184,71 +169,36 @@ function Header() {
     const handleClickHamburger = e => {
         console.log('handleClickHamburger')
     }
-    
 
     useEffect(() => {
-
         const clickOutside = (e) => {
-          // 모달이 열려 있고 모달의 바깥쪽을 눌렀을 때 창 닫기
-          if (headerRef.current && !headerRef.current.contains(e.target)) {
+            // 모달이 열려 있고 모달의 바깥쪽을 눌렀을 때 창 닫기
+            if (headerRef.current && !headerRef.current.contains(e.target)) {
             clearState();
             setShowThirdMenu(false);
-          }
+            }
         };
         document.addEventListener("mousedown", clickOutside);
         return () => {
-          // Cleanup the event listener
-          document.removeEventListener("mousedown", clickOutside);
+            // Cleanup the event listener
+            document.removeEventListener("mousedown", clickOutside);
         };
-      }, [currentTab.lowerTab]);
+    }, [currentTab.lowerTab]);
 
-    // useEffect(()=>{
-    //     if(currentTab.lowerTab==='dashboard') {
-    //     setThirdMenuList(
-    //         [
-    //         {name : 'KPI performance', id:'kpi-performance', path : '/dashboard/kpiperformance'},
-    //         {name : 'Asc Holding Status', id:'asc-holding-status', path : '/dashboard/ascholdingstatus'},
-    //         {name : 'Evaluation/Incentive', id:'evaluation-incentive', path : '/dashboard/evaluation'},
-    //         {name : 'Parts Delivery Time', id:'part-delivery-time', path : '/dashboard/partsdeliverytime'},
-    //         {name : 'Training Status', id:'training-status', path : '/dashboard/trainingstatus'},
-    //         {name : 'Work In Process', id:'work-in-process', path : '/dashboard/wip'},
-    //     ])
-    //     }else if(currentTab.lowerTab==='process-support') {
-    //     setThirdMenuList(
-    //         [
-    //         {name : 'Process & FAQ', path : '/process&support/faq'},
-    //         {name : 'Request & Q&A', path : '/process&support/raq'},
-    //     ])
-    //     }else if(currentTab.lowerTab==='board') {
-    //         setThirdMenuList([
-    //             {name : 'Notice', path : '/board/notice'},
-    //             {name : 'CS Talk', path : '/board/cstalk'},
-    //         ])
-    //     }else if(currentTab.lowerTab==='setting') {
-    //         setThirdMenuList([
-    //             {name : 'KPI Performance Setting', path : '/setting/kpiperformance'},
-    //             {name : 'Evaluation/Incentive Setting', path : '/setting/evaluation'},
-    //             {name : 'FAQ Setting', path : '/setting/faq'},
-    //             {name : 'Notice Setting', path : '/setting/notice'},
-    //             {name : 'Statistics', path : '/setting/statistics'},
-    //             {name : 'User Management', path : '/setting/userManagement'},
-    //             {name : 'Common Code Management', path : '/setting/commonCodeManagement'},
-    //         ])
-    //     }
-    // }, [currentTab.lowerTab])
+    useEffect(()=>{
+        console.log(thirdMenuList)
+    }, [thirdMenuList])
+
+    const [isMobile, setIsMobile] = useState();
     
-        useEffect(()=>{
-            console.log(thirdMenuList)
-        },[thirdMenuList])
+    const checkUserAgent = () => {
+        let agent = detectUserAgent();
+        setIsMobile(agent==='pc'?false:true)
+    }
 
-        const [isMobile, setIsMobile] = useState();
-        const checkUserAgent = () => {
-            let agent = detectUserAgent();
-            setIsMobile(agent==='pc'?false:true)
-        }
-        useEffect(()=>{
-            checkUserAgent()
-        },[])
+    useEffect(()=>{
+        checkUserAgent()
+    }, [])
 
         
     return (
@@ -256,7 +206,11 @@ function Header() {
         <div className="top-nav" >
             <div className='nav-logo-background'></div>
             <div className='top-nav-wrapper'>
-                <div className="nav-logo"><img src={Logo} alt='logo' onClick={handleClickLogo}/><div className='division'></div><p>CS PORTAL</p></div>
+                <div className="nav-logo" onClick={handleClickLogo}>
+                    <img src={Logo} alt='logo'/>
+                    <div className='division'></div>
+                    <p>CS PORTAL</p>
+                </div>
             
                 {
                     !isMobile
@@ -294,16 +248,7 @@ function Header() {
                 <ul className='more-lists'>
                     {secondMenuList.map((item,idx)=>{
                         return (
-                            <li id={item.id} onClick={toggleThirdMenu /*handleClickLowerTab*/} key={generateRandomString(idx+3)} ><p title={item.id}>{item.name}</p>
-                            {
-                                // currentTab.lowerTab === item.id
-                                // ?
-                                // <>
-                                // <ThirdMenu />
-                                // </>
-                                // :
-                                // null
-                            }
+                            <li id={item.id} onClick={toggleThirdMenu} key={generateRandomString(idx+3)} ><p title={item.id}>{item.name}</p>
                             </li>
                         )
                     })}

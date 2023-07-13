@@ -329,7 +329,7 @@ function Notice() {
                             <p className="notice-title">{detail?.title}</p>
                             <p className="notice-title-detail">
                                 <span>Writer</span> : {detail?.writerName} &nbsp;
-                                <span>Date</span> : {moment(detail?.createdAt).format('YY.M.DD')} &nbsp;
+                                <span>Date</span> : {moment(detail?.createdAt).format('YYYY-MM-DD')} &nbsp;
                                 <span>Type</span> : {detail?.view}
                             </p>
                             <div className="notice-title-attach">
@@ -338,6 +338,7 @@ function Notice() {
                                 <span className="custom-flex-item custom-align-item">
                                     <span className="notice-attach-count">{!attachments ? '' : ` (${attachments.length})`}</span>
                                     <p className="custom-hyphen custom-self-align">{!attachments ? '' : '-'}</p>
+                                    <div className="custom-flex-item custom-align-item custom-flex-wrap">
                                     {
                                         attachments ?
                                         attachments.map((file, idx) => {
@@ -350,6 +351,7 @@ function Notice() {
                                         })
                                         : null
                                     }
+                                    </div>
                                 </span>
                             </div>
                         </div>
