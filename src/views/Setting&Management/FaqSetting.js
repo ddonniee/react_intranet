@@ -84,7 +84,6 @@ function FaqSetting() {
         faqTopId : '',
         attachments : null,
         categoryId : '',
-        categoryId : '',
         // subCategory : ''
     });
 
@@ -745,7 +744,7 @@ function FaqSetting() {
                     {
                     selectedList.faqId !== '' && !openFaqCreator ?
                     <div className="faq-setting-right" ref={detailRef}>
-                        <EditFaq data={content} setData={setContent} key={selectedList.faqId} onSave={()=>onSaveContent('edit')} onClose={()=>clearState(1)} onDelete={()=>onConfirmHandler(3)}/>
+                        <EditFaq data={content} detail={selectedList} setData={setContent} key={selectedList.faqId} onSave={()=>onSaveContent('edit')} onClose={()=>clearState(1)} onDelete={()=>onConfirmHandler(3)}/>
                     </div>
                     :
                     selectedList.faqId === '' && openFaqCreator 

@@ -32,8 +32,6 @@ function NewFaq(props) {
         isPublic : '',
         attachments : null,
         categoryId : '',
-        parentCategory : '',
-        subCategory : ''
     });
     
     const [attachments, setAttachments] = useState([

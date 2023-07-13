@@ -7,11 +7,12 @@ import Close from '../../../assets/svgs/icon_close.svg'
 import Arrow from '../../../assets/svgs/icon_arrow.svg'
 
 function EditFaq(props) {
-    const { data, setData, onSave, onClose, onDelete, category} = props;
+    const { data, setData,detail, onSave, onClose, onDelete} = props;
     const [content, setContent] = useState(data)
 
-    console.log(content)
+    console.log(detail)
 
+    const [category, setCategory] = useState([])
     const options = [
         {value:'TOP1',label:'TOP1'}, 
         {value:'TOP2',label:'TOP2'}, 
@@ -36,6 +37,15 @@ function EditFaq(props) {
         })
     }
 
+    useEffect(()=>{
+        const parts = detail?.categoryTree?.split('>');
+        setCategory(parts)
+    },[])
+
+    useEffect(()=>{
+        console.log(category,'-----------------------------')
+    },[category])
+
     return(
         <>
          <div className="faq-setting-new custom-flex-item">
@@ -59,7 +69,7 @@ function EditFaq(props) {
                     type="text" 
                     className="category-subject custom-invalid-input" 
                     name="category" 
-                    value='Hold'
+                    value={category && category[0]}
                     readOnly
                     >
                     </input> 
@@ -68,7 +78,7 @@ function EditFaq(props) {
                     type="text" 
                     className="category-subject custom-invalid-input" 
                     name="category" 
-                    value='Hold Codes'
+                    value={category && category[1]}
                     readOnly
                     >
                     </input> 
