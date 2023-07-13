@@ -151,10 +151,7 @@ function NewCategory(props) {
                 }
         }
         }
-        // if(isLower) {
-        //     formdata.append('parentCategoryId', parentCategory.categoryId);
-        // }
-        axiosJsonInstance.post('/faqCa/insert', formdata, config).then(res => {
+        axiosInstance.post('/faqCa/insert', formdata, config).then(res => {
         let resData = res.data;
         if (resData.code === 500) {
             setAlertSetting({

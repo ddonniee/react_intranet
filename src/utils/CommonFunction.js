@@ -22,7 +22,7 @@ export const axiosInstance2 = axios.create({
 });
 
 export const axiosJsonInstance = axios.create({
-    baseURL: 'http://192.168.0.19:8090',
+    baseURL: process.env.REACT_APP_SERVER_URL,
     maxBodyLength: Infinity,
     headers: {
         'Content-Type': 'application/json; charset=utf-8',
