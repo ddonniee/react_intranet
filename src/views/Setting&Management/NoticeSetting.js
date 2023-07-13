@@ -585,7 +585,7 @@ function NoticeSetting() {
                                                 : <span className="notice-writer">{item.writerName}</span>
                                             }
                                             <span className="notice-count" style={isWrite || isModify ? {width: "15%"} : null}>{item.hits}</span>
-                                            <span className="notice-date" style={isWrite || isModify ? {width: "15%"} : null}>{moment(item.createdAt).format('YYYY-MM-DD')}</span>
+                                            <span className="notice-date" style={isWrite || isModify ? {width: "15%"} : null}>{moment(item.createdAt).format(`'DD.MM.YY`)}</span>
 
                                             {/* <div className={`title ${item.deleteAt ? 'title-del' : ''}`}>
                                                 <span className="custom-flex-item custom-align-item">
