@@ -315,7 +315,7 @@ function Main() {
                                                 noticeData.slice(1, noticeData.length).map((list, idx) => (
                                                     <li key={list.noticeId} onClick={() => handleClickLink('/board/notice')}>
                                                         <p><ListIcon/> { list.title.length > 75 ? (list.title).substr(0, 75) + '...' : list.title }</p> 
-                                                        <p>{moment(list.createdAt).format('YYYY.M.DD')}</p>
+                                                        <p>{moment(list.createdAt).format(`'DD.MM.YY`)}</p>
                                                     </li>
                                                 ))
                                             }

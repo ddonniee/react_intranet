@@ -51,7 +51,21 @@ const chartData = {
         fill: true,
         borderColor: "rgba(225, 206, 192, 0.5)",
         backgroundColor: "rgba(225, 206, 192, 0.5)",
-      }
+      },
+      {
+        label: 'LPR (%) > 7D',
+        data: [1, 3.2, 3.7, 2.9, 4.2, 3.2, 2.2, 2.1, 2.3, 3, 4, 5],
+        fill: true,
+        borderColor: "rgba(197, 225, 192, 0.5)",
+        backgroundColor: "rgba(197, 225, 192, 0.5)",
+      },
+      {
+        label: 'LT',
+        data: [2.5, 2.2, 0.9, 1.9, 1.5, 2.2, 3.2, 1.5, 0.8, 1.7, 1.3, 4.2],
+        fill: true,
+        borderColor: "rgba(214, 192, 225, 0.5)",
+        backgroundColor: "rgba(214, 192, 225, 0.5)",
+      },
     ]
 };
 
@@ -64,6 +78,7 @@ const chartOptions = {
     maxBarThickness: 15,
     maintainAspectRatio :false,
     spanGaps: true,
+    tension: 0.4,
     plugins: {
         legend: { // 범례 스타일링
           position: 'top',
