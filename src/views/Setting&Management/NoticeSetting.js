@@ -300,6 +300,7 @@ function NoticeSetting() {
                     setAlertModal(false);
                     setIsWrite(false)
                     setIsModify(false)
+                    setSelctedList()
                     setDetail()
                     getList()
                 },
@@ -319,6 +320,7 @@ function NoticeSetting() {
                     setAlertModal(false);
                     setIsWrite(false)
                     setIsModify(false)
+                    setSelctedList()
                     setDetail()
                     getList()
                 },

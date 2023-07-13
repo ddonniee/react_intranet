@@ -338,6 +338,7 @@ function Notice() {
                                 <span className="custom-flex-item custom-align-item">
                                     <span className="notice-attach-count">{!attachments ? '' : ` (${attachments.length})`}</span>
                                     <p className="custom-hyphen custom-self-align">{!attachments ? '' : '-'}</p>
+                                    <div className="custom-flex-item custom-align-item custom-flex-wrap">
                                     {
                                         attachments ?
                                         attachments.map((file, idx) => {
@@ -350,6 +351,7 @@ function Notice() {
                                         })
                                         : null
                                     }
+                                    </div>
                                 </span>
                             </div>
                         </div>
