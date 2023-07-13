@@ -210,7 +210,7 @@ function NewCategory(props) {
                 method: 'post',
                 maxBodyLength: Infinity,
                 headers: { 
-                   'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+                   'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
                 },
                 };
             axiosInstance('/faqCa/iconList', config)
