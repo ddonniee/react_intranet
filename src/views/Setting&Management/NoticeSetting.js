@@ -579,7 +579,9 @@ function NoticeSetting() {
                                         <li className={`notice-list ${item.deleteAt ? 'notice-del-list' : ''}`} key={generateRandomString(idx)} 
                                             id={`list${item.deleteAt ? '-del' : ''}-item${isModify ? `-${item.noticeId}` : ''}`} onClick={(e) => handleClickRow(e, item)}>
 
-                                            <span className="notice-no" style={isWrite || isModify ? {width: "10%"} : null}>{item.rn}</span>
+                                            <span className="notice-no" style={isWrite || isModify ? {width: "10%"} : null}>
+                                                { String((pageInfo.activePage-1)*16+(idx+1)).padStart(3, '0') }
+                                            </span>
                                             <span className="notice-title">
                                                 <span className={`title ${item.deleteAt ? 'title-del' : ''}`}>
                                                     { (!item.deleteAt && item.postEndDate) && item.isTodayInRange === 1 ? <SpeakerIcon /> : null } 

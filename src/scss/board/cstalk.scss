@@ -97,19 +97,21 @@
 }
 .cstalk-left {
     .cstalk-count {
-        padding: 10px 0;
+        // padding: 10px 0;
+        margin-bottom: 10px;
+
         span {
             font-size: 14px; font-weight: 400; line-height: 19px; letter-spacing: 0.14px;
         }
     }
     .custom-scroll-area {
-        min-height: 735px;
-        max-height: 735px;
+        max-height: 727px;
+        // max-height: 735px;
     }
-    .pagination {
-        margin: 0 !important;
-        padding-top: 25px; 
-    }
+    // .pagination {
+    //     margin: 0 !important;
+    //     padding-top: 25px; 
+    // }
 }
 .cstalk-right .ck-sticky-panel {
     display: none !important;
@@ -207,8 +209,11 @@
     .board-list {
         border-top: 1px solid #E8E8E8;
         font-size: 15px; font-weight: 400; justify-self: end; 
-        ul:not(.col-3) {
+        width: 100%;
+        
+        ul {
             text-align: center;
+            width: 10%;
         }
         li > *{
             padding: 0 5px;
@@ -216,7 +221,13 @@
         span {
             color: $board-color-txt;
         }
+        .col-1 {
+            width: 7%;
+        }
         .col-3  {
+            width: 63%;
+            text-align: left;
+            
            span {
             font-size: 16px; font-style: normal; font-weight: 600; line-height: normal; color: #333333;
            }
@@ -285,8 +296,8 @@
     }
 }
 .cstalk-right {
-    border-radius: 14px; overflow: auto; width: 100%; transition: transform 0.3s ease; 
-    border: 1px solid $border-color-gery; flex-direction: column;
+    border-radius: 14px; overflow: hidden; width: 49%; transition: transform 0.3s ease; 
+    border: 1px solid $border-color-gery; flex-direction: column; height: 865px;
     
 }
 .cstalk-right .ck-sticky-panel {
@@ -448,9 +459,9 @@ line-height: 24px; padding: 0 3px;
     background-color: #f1f1f1;
   }  
 .cstalk-contents {
-    .pagination {
-        margin-top: auto; 
-    }
+    // .pagination {
+    //     margin-top: auto; 
+    // }
     .pagination li{
         margin: 0 5px;
     }
@@ -458,13 +469,14 @@ line-height: 24px; padding: 0 3px;
     .pagination  .disabled {
     color: $chart-color-grey;
     
-}
-.ck-content,
-.ck-viewer {
-    min-height: 705px;
-}
-.write-btn {
-    bottom: 0px !important;
+    }
+    .ck-content,
+    .ck-viewer {
+        // min-height: 705px;
+        min-height: 480px;
+    }
+    .write-btn {
+        bottom: 0px !important;
     }
     // .cstalk-subject span {
     //     padding-left: 5px;

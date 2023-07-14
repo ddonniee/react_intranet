@@ -22,7 +22,7 @@ import Viewer from "../../components/Viewer";
 
 function MaximalView(props) {
 
-    const { data, onClose, onMinimizing} = props;
+    const { data, onClose, onMinimizing } = props;
 
     console.log('Maximal props :::::: ' ,props)
     const [detail, setDetail] = useState(data)
@@ -94,35 +94,45 @@ function MaximalView(props) {
    },[detail])
 
 
-    return(
+    return (
         <div className="modal">
            <div className="maximal-content">
-             <div className="content-top">
+             <div className="board-view-top">
                 <div className="board-btn-area custom-flex-item custom-align-item custom-justify-between">
-                    <button className="maximizing-btn" onClick={onMinimizing}>
-                    <img src={Minimize} alt="minimize-btn"/> Exit Full Screen
+                    <button className="board-minimize-btn" onClick={onMinimizing}>
+                        <img src={Minimize} alt="minimize-btn" className="screen-icon"/> Exit Full Screen
                     </button>
                     <img src={Close} alt="minimize-btn" onClick={onClose} />
                 </div>
-                <p className="maximal-title">{detail.subject}</p>
-                <p className="maximal-title-detail">
+                <p className="board-title">{detail.subject}</p>
+                <p className="board-title-detail">
                     <span>Category</span> : {detail.categoryTree} &nbsp;
-                    <span>Writer</span> : {detail.writerName}
-                    <span>Date</span> : {moment(detail?.createdAt).format('YYYY-MM-DD')} &nbsp;
+                    <span>Writer</span> : {detail.writerName} &nbsp;
+                    <span>Date</span> : {moment(detail?.createdAt).format(`'DD.MM.YY`)}
                 </p>
-                <div className="custom-flex-item custom-align-item custom-flex-wrap">
-                {
-                    fileStore.length!==0 &&
-                    fileStore.map((file,idx)=>{
-                        return(
-                            <div className="custom-flex-item attach-box" key={generateRandomString(idx)} onClick={()=>downloadAttachment(file.uploadPath)}>
-                            <img src={Attachment} alt="attachment"/> 
-                            <span className="custom-flex-item cstalk-attach-down cursor-btn download-file">{`${file.fileName} ${file?.fileSize ? `(${convertFileSize(file.fileSize)})` : ''}`}</span>
-                            <img src={Download} alt="attachment-download"/>
-                        </div> 
-                        )
-                    })
-                }  
+                <div className="board-title-attach">
+                    <span className="custom-flex-item custom-align-item">
+                        <div className="custom-flex-item custom-align-item custom-flex-wrap">
+                        {
+                            fileStore.length!==0 &&
+                            fileStore.map((file,idx)=>{
+                                return(
+                                    <span className="board-attach-box" key={generateRandomString(idx)} onClick={()=>downloadAttachment(file.uploadPath)}> 
+                                        <img src={Attachment} alt="attachment" className="attach-icon"/>
+                                        <p>{`${file.fileName} ${file?.fileSize ? `(${convertFileSize(file.fileSize)})` : ''}`}</p>
+                                        <span className="board-attach-down" onClick={() => downloadAttachment(file.uploadPath)}> <img src={Download} alt="attachment-download"/> </span>
+                                    </span>
+
+                                    // <div className="custom-flex-item attach-box" key={generateRandomString(idx)} onClick={()=>downloadAttachment(file.uploadPath)}>
+                                    // <img src={Attachment} alt="attachment"/> 
+                                    // <span className="custom-flex-item cstalk-attach-down cursor-btn download-file">{`${file.fileName} ${file?.fileSize ? `(${convertFileSize(file.fileSize)})` : ''}`}</span>
+                                    // <img src={Download} alt="attachment-download"/>
+                                    // </div> 
+                                )
+                            })
+                        }  
+                        </div>
+                    </span>
                 </div>
              </div>
             

@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect, useLayoutEffect } from "react"
 import { styled } from "styled-components"
-import { axiosInstance, axiosJsonInstance, axiosInstance2 } from '../../utils/CommonFunction';
+import { axiosInstance, axiosInstance2, convertFileSize } from '../../utils/CommonFunction';
 import moment from "moment/moment";
 
 import Header from "../../components/Header"
@@ -234,18 +234,18 @@ function Notice() {
 
     const [popup, setPopup] = useState(false);
 
-    const convertFileSize = (sizeInBytes) => {
-        const kilobyte = 1024;
-        const megabyte = kilobyte * 1024;
+    // const convertFileSize = (sizeInBytes) => {
+    //     const kilobyte = 1024;
+    //     const megabyte = kilobyte * 1024;
     
-        if (sizeInBytes >= megabyte) {
-          return `${(sizeInBytes / megabyte).toFixed(0)}MB`;
-        } else if (sizeInBytes >= kilobyte) {
-          return `${(sizeInBytes / kilobyte).toFixed(0)}KB`;
-        } else {
-          return `${sizeInBytes}B`;
-        }
-    };
+    //     if (sizeInBytes >= megabyte) {
+    //       return `${(sizeInBytes / megabyte).toFixed(0)}MB`;
+    //     } else if (sizeInBytes >= kilobyte) {
+    //       return `${(sizeInBytes / kilobyte).toFixed(0)}KB`;
+    //     } else {
+    //       return `${sizeInBytes}B`;
+    //     }
+    // };
 
     return (
         <div className="notice-container">
@@ -292,7 +292,9 @@ function Notice() {
                                 boardData?.map((item, idx) => {
                                     return(
                                         <li className="notice-list" key={generateRandomString(idx)} id={`list-item-${item.noticeId}`} onClick={(e)=>handleClickRow(e, item)}>
-                                            <span className="notice-no" style={selectedList?.noticeId ? {width: "10%"} : null}>{item.rn}</span>
+                                            <span className="notice-no" style={selectedList?.noticeId ? {width: "10%"} : null}>
+                                                { String((pageInfo.activePage-1)*16+(idx+1)).padStart(3, '0') }
+                                            </span>
                                             <span className="notice-title">
                                                 <span className="title">
                                                     { item.postEndDate && item.isTodayInRange === 1 ? <SpeakerIcon /> : null } 
