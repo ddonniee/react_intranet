@@ -14,7 +14,7 @@ import EditorModify from "../../components/EditorModify"
 import Tab from "../../components/Tab"
 import Alert from "../../components/Alert"
 
-import { axiosInstance2, generateRandomString,downloadAttachment } from "../../utils/CommonFunction"
+import { axiosInstance2, generateRandomString,downloadAttachment, convertFileSize } from "../../utils/CommonFunction"
 
 // Icons 
 import Search from '../../assets/svgs/icon_seeking.svg'
@@ -1039,20 +1039,23 @@ function CStalk() {
                             <span>Writer : {selectedList.writerName}</span>
                             <span>Date : {moment(selectedList.createdAt).format('MM.DD.YY')}</span>
                         </div>
+                        <div className="custom-flex-item custom-align-item custom-flex-wrap">
                         {
-                            fileStore.length !== 0 &&
+                            fileStore ?
                             fileStore.map((file,idx)=>{
                                 return (
-                                    <div className="custom-flex-item" key={generateRandomString(idx)}>
+                                    <div className="custom-flex-item attach-box" key={generateRandomString(idx)} onClick={()=>downloadAttachment(file.uploadPath)}>
                                         <img src={Attachment} alt="attachment"/> 
-                                        <span className="custom-self-align">Attachment</span>
-                                        <span className="custom-flex-item cstalk-attach-down cursor-btn" onClick={()=>downloadAttachment(file.uploadPath)}>
-                                            <span className="custom-self-align">{` (${idx+1}) `}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{file.fileName}</p><img src={Download} alt='download_attachment'/></span>
-                                        </span>
+                                        <span className="custom-flex-item cstalk-attach-down cursor-btn download-file">{`${file.fileName} ${file?.fileSize ? `(${convertFileSize(file.fileSize)})` : ''}`}</span>
+                                        {/* <span className="custom-self-align">Attachment</span> */}
+                                        <img src={Download} alt="attachment-download"/>
                                     </div> 
                                 )
                             })
+                            :
+                            null
                         }  
+                        </div>
                     </div>
                     <div className="cstalk-right-middle">
                        <div className="ck-viewer"> <Viewer content={selectedList.content}/></div>

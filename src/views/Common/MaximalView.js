@@ -15,7 +15,7 @@ import Dislike from '../../assets/svgs/icon_dislike.svg'
 import Disliked from '../../assets/svgs/icon_disliked.svg'
 
 // utrils
-import { downloadAttachment,generateRandomString } from "../../utils/CommonFunction";
+import { downloadAttachment,generateRandomString, convertFileSize } from "../../utils/CommonFunction";
 import moment from "moment";
 //compomnent
 import Viewer from "../../components/Viewer";
@@ -110,20 +110,20 @@ function MaximalView(props) {
                     <span>Writer</span> : {detail.writerName}
                     <span>Date</span> : {moment(detail?.createdAt).format('YYYY-MM-DD')} &nbsp;
                 </p>
+                <div className="custom-flex-item custom-align-item custom-flex-wrap">
                 {
                     fileStore.length!==0 &&
                     fileStore.map((file,idx)=>{
                         return(
-                            <div className="custom-flex-item maximal-attachment" key={generateRandomString(idx)}>
-                                <img src={Attachment} alt="attachment"/> 
-                                <span>Attachment</span>
-                                <span className="custom-flex-item faq-attach-down">
-                                    <span >{`(${idx+1})`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="faq-attach custom-flex-item" onClick={()=>downloadAttachment(file.uploadPath)}><p>{file.fileName}</p><img src={Download} alt='download_attachment'/></span>
-                                </span>
-                            </div> 
+                            <div className="custom-flex-item attach-box" key={generateRandomString(idx)} onClick={()=>downloadAttachment(file.uploadPath)}>
+                            <img src={Attachment} alt="attachment"/> 
+                            <span className="custom-flex-item cstalk-attach-down cursor-btn download-file">{`${file.fileName} ${file?.fileSize ? `(${convertFileSize(file.fileSize)})` : ''}`}</span>
+                            <img src={Download} alt="attachment-download"/>
+                        </div> 
                         )
                     })
                 }  
+                </div>
              </div>
             
              <div className="content-middle">
