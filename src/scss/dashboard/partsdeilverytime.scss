@@ -5,23 +5,33 @@
         border: 1px solid  $chart-color-grey;
         border-radius: 10px;
         .left {
-            padding: 10px 58px;
-            input {
+            padding: 10px 58px; width: 87%;
+            border-right: 1px solid  $chart-color-grey;
+            .first-layer input {
                 border-radius: 5px; border: 1px solid #CCC;
-                width: 179px; padding: 12px 14px;  font-size: 18px; font-weight: 400;
+                width: 179px; padding: 8px 14px;  font-size: 18px; font-weight: 400;
                 margin-left: 35px;
             }
             ul:last-child {
                 margin-top: 5px;
             }
-            li > div:first-child {
+            li > div {
                 margin-left: 35px;
             }
+            .second-layer {
+                li:last-child {
+                    margin-right: 75px;
+                }
+               input {
+                border-radius: 5px; border: 1px solid #CCC;
+                width: 179px; padding: 8px 14px;  font-size: 18px; font-weight: 400;
+               }
+            }
+           
         }
         .right {
             align-self: center;
             padding: 26px 58px;
-            border-left: 1px solid  $chart-color-grey;
             button {
                 width: 88px;
                 height: 42px;
@@ -34,4 +44,25 @@
             }
         }
     }
+    .contents {
+        margin-top: 10px; border: 1px solid $border-color-gery; border-radius: 14px; text-align: center;
+        .custom-sticky-area {
+            background: #FBFBFB; border-top-left-radius: 14px; border-top-right-radius: 14px;  border-bottom: 1px solid $border-color-gery;
+        }
+        div:not(:last-child) {
+            border-bottom: 1px solid $border-color-gery;
+        }
+        li {
+            font-size: 16px; font-weight: 600; padding: 20px 0; min-height: 58px;
+        }
+        li:not(:last-child) {
+            border-right: 1px solid $border-color-gery;
+        }
+        .board-list {
+            ul:not(:last-child) {
+                border-right: 1px solid $border-color-gery;
+            }
+        } 
+    }
+    
 }
