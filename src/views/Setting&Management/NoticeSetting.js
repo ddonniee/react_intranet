@@ -241,10 +241,22 @@ function NoticeSetting() {
         }
     }
 
+    /* loading 시 animation */
+    const [isLoading, setIsLoading] = useState(false)
+
     useEffect(() => {
-        selectedList && getDetail();
-        console.log('select list ---->', selectedList)
+        if(selectedList) {
+            setIsLoading(true)
+            getDetail();
+            const timeoutId = setTimeout(() => {
+                setIsLoading(false);
+            }, 500); // 3초 후에 isVisible 값을 false로 변경
+          
+            return () => clearTimeout(timeoutId) 
+        }
     }, [selectedList])
+
+    
 
     const [alertModal, setAlertModal] = useState(false)
     const [alertSetting, setAlertSetting] = useState({
@@ -465,8 +477,6 @@ function NoticeSetting() {
         }).catch(error => {
             console.log('error', error)
         })
-        // if(alertConfirm) {
-        // }
     }
 
     const onRestoreContent = () => {
