@@ -712,6 +712,8 @@ function Faq() {
       const [openRight, setOpenRight] = useState(false);
 
       useEffect(()=>{
+
+        console.log(selectedList,'=========================================')
         if(selectedList.faqId==='') {
             setOpenRight(false)
         }else if(selectedList.faqId!=='' && !isFrequent){
@@ -728,6 +730,8 @@ function Faq() {
         }
       },[])
 
+      console.log('frewunerwesdfmvlsdmfklsdmklf',frequentList)
+      console.log('consoleconsoleconsole',boardData)
     return (
         <>
         
@@ -810,7 +814,7 @@ function Faq() {
                                    <div className="board-list custom-flex-item custom-align-item cursor-btn" key={generateRandomString(idx)} onClick={(e)=>handleClickRow(e,item)} >
                                         <ul className="col-1">
                                             <li  id={`list-item-${idx+1}`}>
-                                                <span>{String((activePage-1)*16+(idx+1)).padStart(3, '0')}</span>
+                                                <span>{String(item.rn).padStart(3, '0')}</span>
                                             </li>
                                         </ul>
                                         <ul className={`col-2 ${openRight && 'custom-hide-item'}`}>

@@ -26,9 +26,13 @@ function MaximalView(props) {
     const user = useContext(UserContext)
 
     const { data, onClose, onMinimizing, page} = props;
+    console.log('dddddddddddddddddddddddd',data)
     let id =`${page}Id`;
     const [detail, setDetail] = useState(data)
 
+    useEffect(()=>{
+        setDetail(data)
+    },[data])
     /** Comment handling */
     const [commentPage, setCommentPage] = useState(1)
     const [commentList, setCommentList] = useState([]);
@@ -281,9 +285,9 @@ function MaximalView(props) {
        getComment()
    },[detail])
 
-   useEffect(()=>{
-        setDetail(data)
-   },[data])
+//    useEffect(()=>{
+//         setDetail(data)
+//    },[data])
 
    useEffect(()=>{
     if(!alertModal) {
