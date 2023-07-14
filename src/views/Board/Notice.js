@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect, useLayoutEffect } from "react"
 import { styled } from "styled-components"
-import { axiosInstance, axiosJsonInstance, axiosInstance2 } from '../../utils/CommonFunction';
+import { axiosInstance, axiosInstance2, convertFileSize } from '../../utils/CommonFunction';
 import moment from "moment/moment";
 
 import Header from "../../components/Header"
@@ -120,13 +120,13 @@ function Notice() {
         console.log('search result --->', Object.fromEntries(sdata))
 
         // 공지사항 목록 조회 API
-        axiosInstance2.post('/notice/list', sdata, config).then(res => {
+        axiosInstance.post('/notice/list', sdata, config).then(res => {
             const data = res?.data.result;
             console.log('공지사항 목록 ---->', data)
             
             const newArray = data.map((obj, index) => ({
                 ...obj,
-                new: isWithin7Days(data.createdAt),
+                new: isWithin7Days(obj.createdAt),
             }));
             setBoardData(newArray);
 
@@ -215,26 +215,37 @@ function Notice() {
         }
     }
 
+    /* loading 시 animation */
+    const [isLoading, setIsLoading] = useState(false)
+
     useEffect(() => {
-        selectedList && getDetail();
-        // setDetail()
+        if(selectedList) {
+            setIsLoading(true)
+            getDetail();
+            const timeoutId = setTimeout(() => {
+                setIsLoading(false);
+            }, 500); // 3초 후에 isVisible 값을 false로 변경
+          
+            return () => clearTimeout(timeoutId) 
+        }
+        // selectedList && getDetail();
         setAttachments()
     }, [selectedList])
 
     const [popup, setPopup] = useState(false);
 
-    const convertFileSize = (sizeInBytes) => {
-        const kilobyte = 1024;
-        const megabyte = kilobyte * 1024;
+    // const convertFileSize = (sizeInBytes) => {
+    //     const kilobyte = 1024;
+    //     const megabyte = kilobyte * 1024;
     
-        if (sizeInBytes >= megabyte) {
-          return `${(sizeInBytes / megabyte).toFixed(0)}MB`;
-        } else if (sizeInBytes >= kilobyte) {
-          return `${(sizeInBytes / kilobyte).toFixed(0)}KB`;
-        } else {
-          return `${sizeInBytes}B`;
-        }
-    };
+    //     if (sizeInBytes >= megabyte) {
+    //       return `${(sizeInBytes / megabyte).toFixed(0)}MB`;
+    //     } else if (sizeInBytes >= kilobyte) {
+    //       return `${(sizeInBytes / kilobyte).toFixed(0)}KB`;
+    //     } else {
+    //       return `${sizeInBytes}B`;
+    //     }
+    // };
 
     return (
         <div className="notice-container">
@@ -281,7 +292,9 @@ function Notice() {
                                 boardData?.map((item, idx) => {
                                     return(
                                         <li className="notice-list" key={generateRandomString(idx)} id={`list-item-${item.noticeId}`} onClick={(e)=>handleClickRow(e, item)}>
-                                            <span className="notice-no" style={selectedList?.noticeId ? {width: "10%"} : null}>{item.rn}</span>
+                                            <span className="notice-no" style={selectedList?.noticeId ? {width: "10%"} : null}>
+                                                { String((pageInfo.activePage-1)*16+(idx+1)).padStart(3, '0') }
+                                            </span>
                                             <span className="notice-title">
                                                 <span className="title">
                                                     { item.postEndDate && item.isTodayInRange === 1 ? <SpeakerIcon /> : null } 
@@ -328,7 +341,7 @@ function Notice() {
                         <Paging pageInfo={pageInfo} setPageInfo={setPageInfo} searchData={searchData} setSearchData={setSearchData} />
                     }
                 </div>
-                <div className="notice-right">
+                <div className={`notice-right ${isLoading ? 'loadingOpacity' : ''}`}>
                     {
                         detail ?
                         <>

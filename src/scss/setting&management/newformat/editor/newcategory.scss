@@ -35,6 +35,11 @@
             font-size: 16px;
             line-height: 19px;
             cursor: pointer;
+            
+        }
+        .delete-btn{
+            border: 1px solid $border-color-gery;
+            background: #FFF;
         }
     }
     .write-row  > div {

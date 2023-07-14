@@ -56,7 +56,7 @@
         justify-content: space-between;
 
         .notice-left, .notice-right {
-            width: 49%; transition: flex 0.3s, width 0.3s, padding 0.3s;
+            width: 49%;
 
             ::-webkit-scrollbar {
                 width: 8px;
@@ -258,8 +258,7 @@
         .notice-right {
             border: 1px solid $border-color-gery; 
             border-radius: 14px;
-            // overflow: hidden;
-            overflow: auto;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             // height: 800px;
@@ -273,7 +272,7 @@
             .notice-view-top {
                 position: relative;
                 padding: 16px 25px;
-                border-bottom: 1px solid $border-color-gery; 
+                border-bottom: 1px solid $border-color-gery;
 
                 .notice-btn-area {
                     width: 100%;
@@ -370,7 +369,8 @@
             }
 
             .notice-view-middle {
-                flex: 1;
+                height: 700px;
+                overflow: auto;
 
                 .ck.ck-editor,
                 .ck.ck-editor__main,
@@ -391,7 +391,6 @@
                 }
 
                 h2, p {
-                    // margin-left: 10px;
                     margin: 0 5px;
                 }
 

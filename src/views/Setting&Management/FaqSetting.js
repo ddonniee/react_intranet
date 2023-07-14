@@ -84,7 +84,7 @@ function FaqSetting() {
         faqTopId : '',
         attachments : null,
         categoryId : '',
-        // subCategory : ''
+        subCategoryId : ''
     });
 
     // 게시판 글 중 선택된 항목
@@ -155,7 +155,6 @@ function FaqSetting() {
             if(resData.code===200) {
                 let data = resData.result
                 setBoardData(data.list)
-                console.log('=============================================================')
                 console.log(data.list)
             }else {
                 console.log(resData)
@@ -186,10 +185,7 @@ function FaqSetting() {
         })
     }
 
-    useEffect(()=>{
-        console.log('categoryLists : ',categoryLists)
-    },[categoryLists])
-    
+ 
     const getDetail = (id) =>{
 
         const formData = new FormData();
@@ -300,7 +296,8 @@ function FaqSetting() {
                 title:'',
                 content:'',
                 attachments: null,
-                categoryId: ''
+                categoryId: '',
+                subCategoryId : ''
             })
             setOpenFaqCreator(false)
             getList()
@@ -348,6 +345,8 @@ function FaqSetting() {
         rn : 0,
         subCategory :  []
     });
+
+
     const handleClickIcon = (e, selectedItem) => {
         
         if(selectedTab.categoryId!=='') {
@@ -502,12 +501,18 @@ function FaqSetting() {
             const url = mode==='edit' ? '/faq/update' : '/faq/insert'
             for (let key in content) {
                 if (content.hasOwnProperty(key)) {
-                    formData.append(key, content[key]);
+                    key!=='subCategoryId' && formData.append(key, content[key]);
                 }
             }
            
             if(mode==='edit') {
                 formData.append('faqId',selectedList.faqId)
+            }
+            if(content.subCategoryId !== '') {
+                formData.set('categoryId',content.subCategoryId)
+            }
+            if(content.top5ListId==='') {
+                formData.set('faqTopId',null)
             }
             // faq 등록/수정faqTopId
             axiosInstance2.post(url, formData,config).then(res => {
@@ -671,7 +676,7 @@ function FaqSetting() {
                 </div>
 
                 <div className="custom-scroll-area">
-                    <ul className="board-table custom-align-item custom-flex-item">
+                    <ul className="board-table custom-align-item custom-flex-item custom-sticky-area">
                         <li className="col-1">No.</li>
                         <li className={`col-2 ${openRight && 'custom-hide-item'}`}>Category</li>
                         <li className="col-3">Title</li>
@@ -686,7 +691,7 @@ function FaqSetting() {
                                    <div className="board-list custom-flex-item custom-align-item cursor-btn" key={generateRandomString(idx)} onClick={(e)=>handleClickRow(e,item)} >
                                         <ul className="col-1">
                                             <li  id={`list-item-${idx+1}`}>
-                                                <span>{String((activePage-1)*16+(idx+1)).padStart(3, '0')}</span>
+                                                <span>{String(item.rn).padStart(3, '0')}</span>
                                             </li>
                                         </ul>
                                         <ul className={`col-2 ${openRight && 'custom-hide-item'}`}>
@@ -702,7 +707,7 @@ function FaqSetting() {
                                                 </span>
                                                 <img src={moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
                                                 {
-                                                    item.top5ListId !== null 
+                                                    (item.top5ListId !== null && item.top5ListId !== '')
                                                     &&
                                                     <span className="custom-stress-txt">{item.top5ListId}</span>
                                                 }
@@ -730,7 +735,7 @@ function FaqSetting() {
                                         </ul>
                                         <ul className="col-7">
                                             <li  id={`list-item-${idx+1}`}>
-                                                <span>{moment(item?.createdAt).format('YYYY-MM-DD')}</span>
+                                                <span>{moment(item?.createdAt).format('MM.DD.YY')}</span>
                                             </li>
                                         </ul>
                                    </div>
@@ -767,7 +772,7 @@ function FaqSetting() {
                     openCategory 
                     ?
                     <div className="faq-setting-right" ref={openRef}>
-                        <NewCategory item={selectedTab} parentCategory={selectedCategory} data={content} setData={setContent} onSave={()=>console.log('e')} onClose={()=>setOpenCategory(false)} isLower/>
+                        <NewCategory item={selectedTab} parentCategory={selectedCategory} data={content} setData={setContent} onSave={()=>console.log('e')} onClose={()=>(setOpenCategory(false), setIsLower(false))} isLower={isLower}/>
                     </div>
                     :
                     null

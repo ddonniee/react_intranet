@@ -146,3 +146,17 @@ export const jsonToFormData = (json) => {
 
   return formData;
 }
+
+  /** conver file size */
+export const convertFileSize = (sizeInBytes) => {
+    const kilobyte = 1024;
+    const megabyte = kilobyte * 1024;
+
+    if (sizeInBytes >= megabyte) {
+      return `${(sizeInBytes / megabyte).toFixed(0)}MB`;
+    } else if (sizeInBytes >= kilobyte) {
+      return `${(sizeInBytes / kilobyte).toFixed(0)}KB`;
+    } else {
+      return `${sizeInBytes}B`;
+    }
+};

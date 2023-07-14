@@ -14,7 +14,7 @@ import EditorModify from "../../components/EditorModify"
 import Tab from "../../components/Tab"
 import Alert from "../../components/Alert"
 
-import { axiosInstance2, generateRandomString,downloadAttachment } from "../../utils/CommonFunction"
+import { axiosInstance2, generateRandomString,downloadAttachment, convertFileSize } from "../../utils/CommonFunction"
 
 // Icons 
 import Search from '../../assets/svgs/icon_seeking.svg'
@@ -847,7 +847,6 @@ function CStalk() {
         if(selectedList?.attachments!=='') {
           
             const jsonString = JSON.parse(selectedList.attachments);
-            console.log('실행이 안돼 ?,',jsonString)
             if(jsonString!==null) {
                 let copy = [...jsonString]
                 setFileStore(copy)
@@ -936,21 +935,29 @@ function CStalk() {
                 <div className="cstalk-count">
                         Total <span className="custom-stress-txt">{boardLength}</span>
                     </div>
+                    <div className="board-menu">
+                        <span className="col-1" style={selectedList?.csTalkId ? {width: "10%"} : null}>No.</span>
+                        <span className="col-3">Title</span>
+                        <span className={`col-4 ${openRight ? 'custom-hide-item' : ''}`}>Writer</span>
+                        <span className={`col-5 ${openRight ? 'custom-hide-item' : ''}`}>Recommand</span>
+                        <span className="col-6" style={selectedList?.csTalkId ? {width: "15%"} : null}>Count</span>
+                        <span className="col-7" style={selectedList?.csTalkId ? {width: "15%"} : null}>Date</span>
+                    </div>
 
                     <div className="custom-scroll-area">
-                    <ul className="board-table custom-align-item custom-flex-item">
+                    {/* <ul className="board-table custom-align-item custom-flex-item custom-sticky-area">
                         <li className="col-1">No.</li>
                         <li className="col-3">Title</li>
                         <li className={`col-4 ${openRight ? 'custom-hide-item' : ''}`}>Writer</li>
                         <li className={`col-5 ${openRight ? 'custom-hide-item' : ''}`}>Recommand</li>
                         <li className="col-6">Count</li>
                         <li className="col-7">Date</li>
-                    </ul>
+                    </ul> */}
                     {
                             boardData && boardData.length > 0 && boardData.map((item,idx)=>{
                                 return(
                                    <div className="board-list custom-flex-item custom-align-item cursor-btn" key={generateRandomString(idx)} onClick={(e)=>handleClickRow(e,item)} >
-                                        <ul className="col-1">
+                                        <ul className="col-1" style={selectedList?.csTalkId ? {width: "10%"} : null}>
                                             <li  id={`list-item-${idx+1}`}>
                                                 <span>{String((activePage-1)*16+(idx+1)).padStart(3, '0')}</span>
                                             </li>
@@ -987,14 +994,14 @@ function CStalk() {
                                                 <img src={Like} alt="like-img"/><span>{item?.likeCount}</span>
                                             </li>
                                         </ul>
-                                        <ul className="col-6">
+                                        <ul className="col-6" style={selectedList?.csTalkId ? {width: "15%"} : null}>
                                             <li  id={`list-item-${idx+1}`}>
                                                 <span>{item?.hits}</span>
                                             </li>
                                         </ul>
-                                        <ul className="col-7">
+                                        <ul className="col-7" style={selectedList?.csTalkId ? {width: "15%"} : null}>
                                             <li  id={`list-item-${idx+1}`}>
-                                                <span>{moment(item?.createdAt).format('YYYY-MM-DD')}</span>
+                                                <span>{moment(item?.createdAt).format('MM.DD.YY')}</span>
                                             </li>
                                         </ul>
                                    </div>
@@ -1013,6 +1020,7 @@ function CStalk() {
                             prevPageText={"‹"} // "이전"을 나타낼 텍스트
                             nextPageText={"›"} // "다음"을 나타낼 텍스트
                             onChange={setPage} // 페이지 변경을 핸들링하는 함수
+                            hideFirstLastPages={true}
                         />
                     }
                     <div className="write-btn" onClick={()=> !isWrite ? setIsWrite(true) : isModify ? onConfirmHandler(7,selectedList.csTalkId) : isWrite ? onConfirmHandler(1):null}><span>Write</span></div>
@@ -1026,35 +1034,44 @@ function CStalk() {
                     :
                     !isWrite && selectedList.csTalkId!=='' && !isModify
                     ?
-                    <div className="editor-wrapper">
-                        <div className={`cstalk-right custom-flex-item ${isLoading ? 'loadingOpacity':''}`}>
-                    <div className="cstalk-right-top">
-                    <div className="custom-flex-item custom-justify-between">
-                        <button className="maximizing-btn" onClick={()=>{setMaxmizing(true)}}>
-                        <img src={Maximize} alt="minimize-btn"/> Full Screen
-                        </button> 
-                        <img src={Close} alt="close-btn" onClick={clearState} />
-                    </div>
-                        <p>{selectedList.subject}</p>
-                        <div className="custom-flex-item selected-info">
-                            <span>Writer : {selectedList.writerName}</span>
-                            <span>Date : {moment(selectedList.createdAt).format('YYYY-M-DD')}</span>
+                    // <div className="editor-wrapper">
+                    <div className={`cstalk-right custom-flex-item ${isLoading ? 'loadingOpacity':''}`}>
+                    
+                    <div className="board-view-top">
+                            <div className="board-btn-area custom-flex-item custom-align-item custom-justify-between">
+                            <button className="board-minimize-btn" onClick={()=>{setMaxmizing(true)}}>
+                                <img src={Maximize} alt="minimize-btn" className="screen-icon"/> Full Screen
+                            </button> 
+                            <img src={Close} alt="close-btn" onClick={clearState} />
                         </div>
-                        {
-                            fileStore.length !== 0 &&
-                            fileStore.map((file,idx)=>{
-                                return (
-                                    <div className="custom-flex-item" key={generateRandomString(idx)}>
-                                        <img src={Attachment} alt="attachment"/> 
-                                        <span className="custom-self-align">Attachment</span>
-                                        <span className="custom-flex-item cstalk-attach-down cursor-btn" onClick={()=>downloadAttachment(file.uploadPath)}>
-                                            <span className="custom-self-align">{` (${idx+1}) `}</span><p className="custom-hyphen custom-self-align ">-</p><span className="cstalk-attach custom-flex-item"><p>{file.fileName}</p><img src={Download} alt='download_attachment'/></span>
-                                        </span>
-                                    </div> 
-                                )
-                            })
-                        }  
+                        <p className="board-title">{selectedList.subject}</p>
+                        <p className="board-title-detail">
+                            <span>Writer</span> : {selectedList.writerName} &nbsp;
+                            <span>Date</span> : {moment(selectedList.createdAt).format(`'DD.MM.YY`)}
+                        </p>
+                        <div className="board-title-attach">
+                            <span className="custom-flex-item custom-align-item">
+                                <div className="custom-flex-item custom-align-item custom-flex-wrap">
+                                {
+                                    fileStore.length!==0 &&
+                                    fileStore.map((file,idx)=>{
+                                        return(
+                                            <span className="board-attach-box" key={generateRandomString(idx)} onClick={()=>downloadAttachment(file.uploadPath)}> 
+                                                <img src={Attachment} alt="attachment" className="attach-icon"/>
+                                                <p>{`${file.fileName} ${file?.fileSize ? `(${convertFileSize(file.fileSize)})` : ''}`}</p>
+                                                <span className="board-attach-down" onClick={() => downloadAttachment(file.uploadPath)}> 
+                                                <img src={Download} alt="attachment-download"/> </span>
+                                            </span>
+                                        )
+                                    })
+                                }  
+                                </div>
+                            </span>
+                        </div>
                     </div>
+
+                    <div className="board-view-middle">
+
                     <div className="cstalk-right-middle">
                        <div className="ck-viewer"> <Viewer content={selectedList.content}/></div>
                         <div className="setting-viewer custom-flex-item">
@@ -1102,7 +1119,7 @@ function CStalk() {
                                                 <div className="comment-top custom-flex-item custom-justify-between">
                                                     <div>
                                                         <span>{comment.writerName}</span>
-                                                        <span>{moment(comment.createdAt).format('YYYY-MM-DD')}</span>
+                                                        <span>{moment(comment.createdAt).format('MM.DD.YY')}</span>
                                                     </div>
                                                     <span className="custom-flex-item">
                                                         {
@@ -1185,12 +1202,15 @@ function CStalk() {
                                 prevPageText={"‹"} // "이전"을 나타낼 텍스트
                                 nextPageText={"›"} // "다음"을 나타낼 텍스트
                                 onChange={setPages} // 페이지 변경을 핸들링하는 함수
-                            />
+                                hideFirstLastPages={true}
+                                />
                             }
                         </div>
                     </div>
-                </div>
+                    
                     </div>
+                </div>
+                    // {/* </div> */}
                     :
                     isModify
                     ?
@@ -1223,32 +1243,14 @@ export default CStalk
 
 const Style = styled.div`
     .cstalk-left {
-        width: ${props => (props.openright ? '49%' : '100%')}; 
+        width: ${props => (props.openright ? '49%' : '100%')} !important; 
     }
     .cstalk-left .cstalk-custom-board li {
         padding : ${props => (props.openright ? '10px 30px;':'17px 30px')}
     }
 
-    .col-1 {
-        width: 85px;
-    }
-    .col-3 {
-        width: 884px;
-    }
-    .col-4 {
-        width: 194px; 
-    }
-    .col-5 {
-        width: 122px;
-    }
-    .col-6 {
-        width: 115px;
-    }
-    .col-7 {
-        width: 160px;
-    }
     .board-list {
-        padding : ${props => (props.openright ? '17px 30px;':'10px 30px;')}
+        // padding : ${props => (props.openright ? '17px 30px;':'10px 30px;')}
         max-height :  ${props => (props.openright ? '64px;':'42px;')}
         height :  ${props => (props.openright ? '64px;':'42px;')}
     }
