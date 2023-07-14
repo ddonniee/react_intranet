@@ -18,7 +18,7 @@ import Reload from '../../assets/svgs/icon_reload.svg'
 import Link from '../../assets/svgs/icon_more.svg'
 import Check from '../../assets/svgs/icon_check.svg'
 // functions
-import { axiosInstance, detectUserAgent, encryptData, generateRandomString, userinfoDecrypt } from "../../utils/CommonFunction";
+import { axiosInstance, decryptData, detectUserAgent, encryptData, generateRandomString, userinfoDecrypt } from "../../utils/CommonFunction";
 import axios from "axios";
 
 
@@ -51,6 +51,7 @@ const Login = () =>{
         let config = {
             withCredentials: true,
         }
+
         axiosInstance.post("/login/doLogin", jsonToFormData(loginInfo), config)
         .then(res => {
             let resData = res.data;
@@ -59,15 +60,14 @@ const Login = () =>{
                 setFailModal(true);
                 getCaptcha();
             } else {  // 성공
+                const userInfoStr = JSON.stringify(resData.result.userInfo);
                 sessionStorage.setItem("cstkn", resData.result.token);
-                sessionStorage.setItem("userInfo", encryptData(resData.result.userInfo));
-                rememberId();
+                sessionStorage.setItem("userInfo", encryptData(userInfoStr));
                 window.location.href = "/";
             }
         })
         .catch(error => {
-            console.log("ERROR>>>", error.response)
-            // setFailModal(true);
+            console.log("ERROR>>>", error)
         })
     }
 
@@ -140,9 +140,10 @@ const Login = () =>{
     };
 
     // 아이디 저장
-    const rememberId =()=> {
-        let checked = document.getElementById("login-checkbox").value;
+    const rememberId =(e)=> {
+        let checked = e.target.checked;
         let id =  document.getElementById("login-id").value;
+
         if(checked) localStorage.setItem("csportalId", id);
         else localStorage.removeItem("csportalId");
     }
@@ -155,7 +156,8 @@ const Login = () =>{
     }
 
     useEffect(()=>{
-        checkUserAgent()
+        checkUserAgent();
+        getCaptcha();
     },[])
 
     // 로그아웃
@@ -178,7 +180,7 @@ const Login = () =>{
                         <div className="login-top"><span className="welcome-title">{isMobile ? 'Login' : 'Welcome to LG CS portal' } </span></div>
                         <div className="login-middle" >
                             <div className="login-info-left">
-                                <input type="text" id="login-id" placeholder="USER ID" value={loginInfo.userId} onChange={handleChangeInput}/>
+                                <input type="text" id="login-id" placeholder="USER ID" value={loginInfo.userId} autoComplete="new-password" onChange={handleChangeInput}/>
                                 <input type="password" id="login-pw" placeholder="PASSWORD" value={loginInfo.password} autoComplete="new-password" onChange={handleChangeInput}/>
                                 <div className="login-check-area">
                                     <label htmlFor="login-checkbox" className="custom-checkbox-label">
@@ -202,7 +204,7 @@ const Login = () =>{
                                     :
                                     <div className="login-security-txt custom-justify-between">
                                         <div>
-                                            <img src={process.env.REACT_APP_SERVER_URL + "/login/getCaptcha"} className="security-num" id="captchaImage" />
+                                            <img className="security-num" id="captchaImage" />
                                             <img src={Reload} alt='reload-security-num' className="security-reload" onClick={getCaptcha}/>
                                         </div>
                                         <input className="secutiry-txt" type="text" onChange={e => setLoginInfo({ ...loginInfo, authKey: e.target.value })}/>

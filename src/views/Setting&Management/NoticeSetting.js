@@ -497,6 +497,10 @@ function NoticeSetting() {
     }, [writeData])
 
     useEffect(() => {
+        !isModify && setSelctedList()
+    }, [isModify])
+
+    useEffect(() => {
         if(!alertModal) {
            setAlertSetting({
             alertTxt : '',
@@ -545,19 +549,19 @@ function NoticeSetting() {
                     <div className="notice-total notice-left-fold">
                         Total <span>{pageInfo?.totalCount}</span>
                     </div>
+                    <div className="notice-menu">
+                        <span style={ isWrite || isModify ? {width: "10%"} : null }>No.</span>
+                        <span>Title</span>
+                        {
+                            isWrite || isModify
+                            ? null
+                            : <span>Writer</span>
+                        }
+                        {/* <span>Writer</span> */}
+                        <span style={ isWrite || isModify ? {width: "15%"} : null}>Count</span>
+                        <span style={ isWrite || isModify ? {width: "15%"} : null}>Date</span>
+                    </div>
                     <ul className="notice-custom-board">
-                        <li className="notice-menu">
-                            <span style={ isWrite || isModify ? {width: "10%"} : null }>No.</span>
-                            <span>Title</span>
-                            {
-                                isWrite || isModify
-                                ? null
-                                : <span>Writer</span>
-                            }
-                            {/* <span>Writer</span> */}
-                            <span style={ isWrite || isModify ? {width: "15%"} : null}>Count</span>
-                            <span style={ isWrite || isModify ? {width: "15%"} : null}>Date</span>
-                        </li>
                         {
                             boardData.length > 0 ? (
                                 boardData?.map((item, idx) => {

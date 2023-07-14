@@ -30,6 +30,7 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
         {
             fileName: '',
             uploadPath: '',
+            fileSize: '',
         },
      ])
     const [attachLength, setAttachLength] = useState(1);
@@ -104,6 +105,7 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
             const newObj = {
                 fileName: '',
                 uploadPath : '',
+                fileSize: '',
             }
             const arr = [...attachments, newObj]
             setAttachments(arr)
@@ -131,6 +133,7 @@ function EditorWrite({ period, data, setData, range, isChange, isWriter, onSave,
         const updateFile = copyFiles[idx];
         updateFile.fileName = file.fileName;
         updateFile.uploadPath = file.uploadPath;
+        updateFile.fileSize = file.fileSize;
 
         setContent({ ...content, attachments: JSON.stringify(copyFiles)})
     };
