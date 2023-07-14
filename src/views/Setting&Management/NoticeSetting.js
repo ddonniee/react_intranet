@@ -137,7 +137,7 @@ function NoticeSetting() {
             
             const newArray = data.map((obj, index) => ({
                 ...obj,
-                new: isWithin7Days(data.createdAt),
+                new: isWithin7Days(obj.createdAt),
             }));
             setBoardData(newArray);
 
