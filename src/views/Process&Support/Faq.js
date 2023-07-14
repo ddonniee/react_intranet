@@ -545,8 +545,7 @@ function Faq() {
             iconList = items;
         }
         x = x - 60
-        console.log('icon list : ',iconList)
-        // setFaqTab(iconList)
+
         return (
             <div className='icon-modal' ref={iconRef} style={{top:y, left:x}}>
                 <img src={Polygon} alt='polygon' />
@@ -566,9 +565,12 @@ function Faq() {
             </div>
         )
     }
+    
     const [hoveredItemPosition, setHoveredItemPosition] = useState(null);
+
     const handleMouseEnter = (e,item) => {
         const rect = e.target.getBoundingClientRect();
+        console.log(categoryRef.current.getBoundingClientRect())
         setHoveredItemPosition({ x: rect.left });
         setCategoryLists((prevLists) => {
             
@@ -584,9 +586,6 @@ function Faq() {
           
     }
 
-    useEffect(()=>{
-        console.log(selectedCategory,'=====')
-    },[selectedCategory])
     const handleMouseLeave = (e,item) => {
         if(item?.categoryId===undefined) {
             return false
@@ -665,7 +664,9 @@ function Faq() {
           });
         }
       }; 
-        
+    
+    // icon hover 적용
+
     useEffect(() => {
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
@@ -756,7 +757,7 @@ function Faq() {
                         {
                             categoryLists?.map((item,idx)=>{
                                 return(
-                                    <li key={generateRandomString(idx+1)} onMouseEnter={(e)=>handleMouseEnter(e,item)}>
+                                    <li className="scroll-lists" key={generateRandomString(idx+1)} onMouseEnter={(e)=> handleMouseEnter(e,item)}>
                                         <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+'/'+item.categoryIconPath} alt='category-icon'/></div>
                                         <p>{item.categoryNm}</p>
                                         {/* {
