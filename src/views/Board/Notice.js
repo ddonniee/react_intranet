@@ -215,9 +215,20 @@ function Notice() {
         }
     }
 
+    /* loading 시 animation */
+    const [isLoading, setIsLoading] = useState(false)
+
     useEffect(() => {
-        selectedList && getDetail();
-        // setDetail()
+        if(selectedList) {
+            setIsLoading(true)
+            getDetail();
+            const timeoutId = setTimeout(() => {
+                setIsLoading(false);
+            }, 500); // 3초 후에 isVisible 값을 false로 변경
+          
+            return () => clearTimeout(timeoutId) 
+        }
+        // selectedList && getDetail();
         setAttachments()
     }, [selectedList])
 
@@ -328,7 +339,7 @@ function Notice() {
                         <Paging pageInfo={pageInfo} setPageInfo={setPageInfo} searchData={searchData} setSearchData={setSearchData} />
                     }
                 </div>
-                <div className="notice-right">
+                <div className={`notice-right ${isLoading ? 'loadingOpacity' : ''}`}>
                     {
                         detail ?
                         <>
