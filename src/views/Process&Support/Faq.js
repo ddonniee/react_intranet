@@ -1029,7 +1029,7 @@ function Faq() {
             {
                 maximizing 
                 &&
-                <MaximalView data={selectedList} onClose={()=>{setMaxmizing(false); clearState(); setIsFrequent(false)}} onMinimizing={()=> isFrequent ? (setMaxmizing(false), setIsFrequent(!false)) : setMaxmizing(false)}/>
+                <MaximalView data={selectedList} onClose={()=>{setMaxmizing(false); clearState(); setIsFrequent(false)}} onMinimizing={()=> isFrequent ? (setMaxmizing(false), setIsFrequent(!false)) : setMaxmizing(false)} page='faq'/>
             }
             <Zendesk />
 
