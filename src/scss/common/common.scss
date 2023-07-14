@@ -32,21 +32,8 @@
 
 html, body, #root{
     height: 100vh;
-    overflow: auto;
 }
 
-#root::-webkit-scrollbar {
-    width: 8px;
-}
-  
-#root::-webkit-scrollbar-thumb {
-    background-color: $border-color-gery;
-    border-radius: 4px;
-}
-  
-#root::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-}  
 
 button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-select, select {
     cursor: pointer;
@@ -54,6 +41,9 @@ button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-selec
 
 .custom-select {
     width: 179px; border-color: #D8D8D8 !important;
+    & > div {
+        align-content: space-around;
+    }
 }
 .custom-white-btn {
     border-radius: 5px;
