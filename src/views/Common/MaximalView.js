@@ -23,6 +23,8 @@ import Viewer from "../../components/Viewer";
 function MaximalView(props) {
 
     const { data, onClose, onMinimizing} = props;
+
+    console.log('Maximal props :::::: ' ,props)
     const [detail, setDetail] = useState(data)
 
     const [commentList, setCommentList] = useState([]);
@@ -75,8 +77,9 @@ function MaximalView(props) {
 
     useEffect(()=>{
 
-    if(detail.faqId==='') {
-        return false
+        console.log('use Effect',detail.faqId)
+    if(detail?.faqId==='') {
+        return 
         }
        setFileStore([])
        if(detail?.attachments!=='') {
@@ -87,15 +90,10 @@ function MaximalView(props) {
                setFileStore(copy)
            }
        }
-      
        getComment()
    },[detail])
 
-   useEffect(()=>{
-    console.log('file : ', fileStore)
-   },[fileStore])
-    
-   console.log(detail,'detailsidmasldmaslkdmsalkdmsalkdmsalkmd')
+
     return(
         <div className="modal">
            <div className="maximal-content">

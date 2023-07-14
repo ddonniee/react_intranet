@@ -140,7 +140,7 @@ function NewCategory(props) {
             method: 'post',
             maxBodyLength: Infinity,
                 headers: { 
-                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
                 },
             };
 
@@ -153,7 +153,6 @@ function NewCategory(props) {
         }
         }
         axiosInstance.post('/faqCa/insert', formdata, config).then(res => {
-            console.log(res,'=================================================')
         let resData = res.data;
         if (resData.code === 500) {
             setAlertSetting({
