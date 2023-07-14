@@ -56,7 +56,7 @@
         justify-content: space-between;
 
         .notice-left, .notice-right {
-            width: 49%; transition: flex 0.3s, width 0.3s, padding 0.3s;
+            width: 49%;
 
             ::-webkit-scrollbar {
                 width: 8px;

@@ -847,7 +847,6 @@ function CStalk() {
         if(selectedList?.attachments!=='') {
           
             const jsonString = JSON.parse(selectedList.attachments);
-            console.log('실행이 안돼 ?,',jsonString)
             if(jsonString!==null) {
                 let copy = [...jsonString]
                 setFileStore(copy)
