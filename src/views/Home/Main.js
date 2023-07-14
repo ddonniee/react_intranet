@@ -122,7 +122,7 @@ function Main() {
         for(const key in noticeSearchData) {
             sdata.append(key, noticeSearchData[key])
         }
-        console.log('search result --->', Object.fromEntries(sdata))
+        // console.log('search result --->', Object.fromEntries(sdata))
 
         // 공지사항 목록 조회 API
         axiosInstance.post('/notice/list', sdata, config).then(res => {
@@ -152,7 +152,7 @@ function Main() {
         for(const key in faqSearchData) {
             sdata.append(key, faqSearchData[key])
         }
-        console.log('search result --->', Object.fromEntries(sdata))
+        // console.log('search result --->', Object.fromEntries(sdata))
 
         // FAQ 목록 조회 API
         axiosInstance.post('/notice/list', sdata, config).then(res => {
@@ -181,7 +181,7 @@ function Main() {
         for(const key in csSearchData) {
             sdata.append(key, csSearchData[key])
         }
-        console.log('search result --->', Object.fromEntries(sdata))
+        // console.log('search result --->', Object.fromEntries(sdata))
 
         // FAQ 목록 조회 API
         axiosInstance.post('/csTalk/list', sdata, config).then(res => {
