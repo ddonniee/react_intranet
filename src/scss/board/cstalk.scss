@@ -293,7 +293,7 @@
     display: none !important;
 }
 .cstalk-right-top {
-    position: relative; z-index: 100;  border-bottom: 1px solid $border-color-gery; 
+    position: relative; border-bottom: 1px solid $border-color-gery; 
 
     // & > div:not(:nth-child(2)) {
     //     padding: 5px 0;
@@ -499,7 +499,7 @@ line-height: 24px; padding: 0 3px;
     }
     .cstalk-right-top {
         // z-index: 300;min-height: 100px; 
-        padding: 15px 30px; position: sticky; top: 0;
+        padding: 15px 30px; top: 0;
         background: white;
     }
     .cstalk-right-top > p {

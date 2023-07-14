@@ -284,7 +284,9 @@ body .modal {
 .custom-stress-txt {
     color: $primary-color-red !important;
 }
-
+.custom-sticky-area {
+    position: sticky; top: 0;
+}
 .comment-cnt{
     display: contents;
 }
@@ -415,28 +417,7 @@ background-color: #f1f1f1;
     }
 }
 /* hover text*/ 
-.hover-container {
-    position: relative;
-  }
-  
-  .hover-target {
-    /* hover 했을 때 스타일링을 적용할 요소에 마우스 이벤트를 설정합니다. */
-  }
-  
-  .hover-text {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #ffffff;
-    padding: 5px;
-    display: none;
-  }
-  
-  .hover-target:hover .hover-text {
-    /* hover 했을 때 텍스트를 보여줄 스타일을 설정합니다. */
-    display: block;
-  }
-  
+
 /* Fav tab */
 .user-action{
     padding: 18px 30px; border-top: 1px solid $border-color-gery; background-color: white;

@@ -168,7 +168,7 @@ function EditorModify(props) {
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Date</p> </div>
-                <div className="right"> <input type="text" className="write-input" name="date" readOnly value={moment().format('YYYY-MM-DD')}></input> </div>
+                <div className="right"> <input type="text" className="write-input" name="date" readOnly value={moment().format('MM.DD.YY')}></input> </div>
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Release to</p> </div>

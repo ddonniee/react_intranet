@@ -71,6 +71,7 @@ function Faq() {
 
     const [boardData, setBoardData] = useState([])
     const [frequentList, setFrequentList] = useState([])
+    const [isFrequent, setIsFrequent] = useState(false)
     const [selectedList, setSelectedList] = useState({
         attachments: '',
         reactionState: "",
@@ -150,8 +151,7 @@ function Faq() {
         })
     }
 
-    useEffect(()=>{
-    },[selectedList])
+
     const handleSelectBox = e => {
         let value = e.value;
         setReqData({
@@ -161,6 +161,7 @@ function Faq() {
     }
 
     const handleClickRow = (e,item) => {
+        console.log('handleCLick',item.faqId)
         getDetail(item.faqId)
       
     }
@@ -700,7 +701,6 @@ function Faq() {
       },[boardData])
       
       useEffect(()=>{
-        console.log('page ==> ',boardLength)
       },[boardLength])
       useEffect(()=>{
         if(selectedList) {
@@ -713,7 +713,7 @@ function Faq() {
       useEffect(()=>{
         if(selectedList.faqId==='') {
             setOpenRight(false)
-        }else {
+        }else if(selectedList.faqId!=='' && !isFrequent){
             setOpenRight(true)
         }
       },[selectedList.faqId])
@@ -726,6 +726,7 @@ function Faq() {
             setHoveredItemPosition({ y : top})
         }
       },[])
+
     return (
         <>
         
@@ -739,7 +740,7 @@ function Faq() {
                     <ul className="faq-lists custom-justify-between">
                         { frequentList && frequentList.length > 0 && frequentList.map((item, idx)=>{
                             return (
-                                <li key={generateRandomString(idx)}>
+                                <li key={generateRandomString(idx)} onClick={(e)=>(handleClickRow(e,item), setIsFrequent(true), setMaxmizing(true))}>
                                     <div className="faq-top">
                                         <p className="faq-number" style={item.num !== 0 ? {marginRight:'10px'} : null}>{item.num!==0 && `Q.${String(idx+1).padStart(3, '0')}`}</p>
                                         <p className="faq-title">{`[${item.categoryName}]`}</p>
@@ -793,7 +794,7 @@ function Faq() {
                 </div>
 
                     <div className="custom-scroll-area">
-                    <ul className="board-table custom-align-item custom-flex-item">
+                    <ul className="board-table custom-align-item custom-flex-item custom-sticky-area">
                         <li className="col-1">No.</li>
                         <li className={`col-2 ${openRight && 'custom-hide-item'}`}>Category</li>
                         <li className="col-3">Title</li>
@@ -843,7 +844,7 @@ function Faq() {
                                         </ul>
                                         <ul className="col-7">
                                             <li  id={`list-item-${idx+1}`}>
-                                                <span>{moment(item?.createdAt).format('YYYY-MM-DD')}</span>
+                                                <span>{moment(item?.createdAt).format('MM.DD.YY')}</span>
                                             </li>
                                         </ul>
                                    </div>
@@ -867,7 +868,7 @@ function Faq() {
                 </div>
                 
                {
-                selectedList.faqId!=='' ?
+                (selectedList.faqId!=='' && !isFrequent) ?
 
                 <div className="editor-wrapper">
                 <div className={`faq-right ${isLoading ? 'loadingOpacity':''}`} >
@@ -923,7 +924,7 @@ function Faq() {
                                             <div className="comment-top custom-flex-item custom-justify-between">
                                                 <div>
                                                     <span>{comment.writerName}</span>
-                                                    <span>{moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+                                                    <span>{moment(comment.createdAt).format('MM.DD.YY HH:mm:ss')}</span>
                                                 </div>
                                                 <span className="custom-flex-item">
                                                 {
@@ -958,7 +959,7 @@ function Faq() {
                                                                                     <div className="comment-top custom-flex-item custom-justify-between">
                                                                                         <div>
                                                                                             <span>{sub.writerName}</span>
-                                                                                            <span>{moment(sub.createdAt).format('YYYY-MM-DD')}</span>
+                                                                                            <span>{moment(sub.createdAt).format('MM.DD.YY')}</span>
                                                                                         </div>
                                                                                         <span className="custom-flex-item cursor-btn">
                                                                                             {sub.writerID===user.id && <p onClick={()=>onConfirmHandler(4,sub.commentId)}>Delete</p>}
@@ -1027,7 +1028,7 @@ function Faq() {
             {
                 maximizing 
                 &&
-                <MaximalView data={selectedList} onClose={()=>(setMaxmizing(false), clearState())} onMinimizing={()=>setMaxmizing(false)}/>
+                <MaximalView data={selectedList} onClose={()=>(setMaxmizing(false), clearState())} onMinimizing={()=> setMaxmizing(false)}/>
             }
             <Zendesk />
 

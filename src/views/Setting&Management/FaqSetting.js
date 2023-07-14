@@ -186,10 +186,7 @@ function FaqSetting() {
         })
     }
 
-    useEffect(()=>{
-        console.log('categoryLists : ',categoryLists)
-    },[categoryLists])
-    
+ 
     const getDetail = (id) =>{
 
         const formData = new FormData();
@@ -348,6 +345,8 @@ function FaqSetting() {
         rn : 0,
         subCategory :  []
     });
+
+
     const handleClickIcon = (e, selectedItem) => {
         
         if(selectedTab.categoryId!=='') {
@@ -671,7 +670,7 @@ function FaqSetting() {
                 </div>
 
                 <div className="custom-scroll-area">
-                    <ul className="board-table custom-align-item custom-flex-item">
+                    <ul className="board-table custom-align-item custom-flex-item custom-sticky-area">
                         <li className="col-1">No.</li>
                         <li className={`col-2 ${openRight && 'custom-hide-item'}`}>Category</li>
                         <li className="col-3">Title</li>
@@ -730,7 +729,7 @@ function FaqSetting() {
                                         </ul>
                                         <ul className="col-7">
                                             <li  id={`list-item-${idx+1}`}>
-                                                <span>{moment(item?.createdAt).format('YYYY-MM-DD')}</span>
+                                                <span>{moment(item?.createdAt).format('MM.DD.YY')}</span>
                                             </li>
                                         </ul>
                                    </div>
@@ -767,7 +766,7 @@ function FaqSetting() {
                     openCategory 
                     ?
                     <div className="faq-setting-right" ref={openRef}>
-                        <NewCategory item={selectedTab} parentCategory={selectedCategory} data={content} setData={setContent} onSave={()=>console.log('e')} onClose={()=>setOpenCategory(false)} isLower/>
+                        <NewCategory item={selectedTab} parentCategory={selectedCategory} data={content} setData={setContent} onSave={()=>console.log('e')} onClose={()=>(setOpenCategory(false), setIsLower(false))} isLower={isLower}/>
                     </div>
                     :
                     null

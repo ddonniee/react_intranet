@@ -24,7 +24,7 @@ function NewCategory(props) {
             filePath : '',
         }
     ])
-
+    console.log(isLower,'----------------------------------------------')
     const [openIcon, setOpenIcon] = useState(false)       // load icon from server
     const [insertIcon, setInsertIcon] = useState(false)   // upload icon from user pc
     const handleChange = (event) => {
@@ -121,7 +121,8 @@ function NewCategory(props) {
 
         const addNewCategory = () =>{
             
-        if(reqData.categoryIcon==='' && reqData.categoryIconFileNM==='') {
+        console.log('add new category')
+        if(!isLower && reqData.categoryIcon==='' && reqData.categoryIconFileNM==='') {
             setAlertSetting({
                 ...alertSetting,
             alertTxt:'Please select or attach icon file.'
@@ -139,7 +140,7 @@ function NewCategory(props) {
             method: 'post',
             maxBodyLength: Infinity,
                 headers: { 
-                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
                 },
             };
 
@@ -152,6 +153,7 @@ function NewCategory(props) {
         }
         }
         axiosInstance.post('/faqCa/insert', formdata, config).then(res => {
+            console.log(res,'=================================================')
         let resData = res.data;
         if (resData.code === 500) {
             setAlertSetting({
@@ -302,7 +304,10 @@ function NewCategory(props) {
                 </div> 
             </div>
 
-            <div className="write-row custom-flex-item">
+            {
+                !isLower
+                &&
+                <div className="write-row custom-flex-item">
                 <div className="left"> <p>· Icon</p> </div>
                 <div className="right file-upload custom-flex-item"> 
                    <div className="icon-wrapper custom-flex-item custom-justify-center">{reqData.categoryIconPath !== '' ? <img src={process.env.REACT_APP_DOWN_URL+'/'+reqData.categoryIconPath} alt="icon_img"/>:null}</div>
@@ -322,10 +327,11 @@ function NewCategory(props) {
                    
                 </div>
                 
-            </div>
+            </div>}
             
                 {
-                    insertIcon &&
+                    insertIcon
+                    &&
                     <div className="write-row custom-flex-item">
                     <div className="left"><p>· Add Icon</p></div>
                     <div className="right custom-flex-item">

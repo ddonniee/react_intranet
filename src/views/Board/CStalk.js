@@ -938,7 +938,7 @@ function CStalk() {
                     </div>
 
                     <div className="custom-scroll-area">
-                    <ul className="board-table custom-align-item custom-flex-item">
+                    <ul className="board-table custom-align-item custom-flex-item custom-sticky-area">
                         <li className="col-1">No.</li>
                         <li className="col-3">Title</li>
                         <li className={`col-4 ${openRight ? 'custom-hide-item' : ''}`}>Writer</li>
@@ -994,7 +994,7 @@ function CStalk() {
                                         </ul>
                                         <ul className="col-7">
                                             <li  id={`list-item-${idx+1}`}>
-                                                <span>{moment(item?.createdAt).format('YYYY-MM-DD')}</span>
+                                                <span>{moment(item?.createdAt).format('MM.DD.YY')}</span>
                                             </li>
                                         </ul>
                                    </div>
@@ -1038,7 +1038,7 @@ function CStalk() {
                         <p>{selectedList.subject}</p>
                         <div className="custom-flex-item selected-info">
                             <span>Writer : {selectedList.writerName}</span>
-                            <span>Date : {moment(selectedList.createdAt).format('YYYY-M-DD')}</span>
+                            <span>Date : {moment(selectedList.createdAt).format('MM.DD.YY')}</span>
                         </div>
                         {
                             fileStore.length !== 0 &&
@@ -1102,7 +1102,7 @@ function CStalk() {
                                                 <div className="comment-top custom-flex-item custom-justify-between">
                                                     <div>
                                                         <span>{comment.writerName}</span>
-                                                        <span>{moment(comment.createdAt).format('YYYY-MM-DD')}</span>
+                                                        <span>{moment(comment.createdAt).format('MM.DD.YY')}</span>
                                                     </div>
                                                     <span className="custom-flex-item">
                                                         {
