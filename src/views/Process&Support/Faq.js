@@ -740,7 +740,7 @@ function Faq() {
                     <ul className="faq-lists custom-justify-between">
                         { frequentList && frequentList.length > 0 && frequentList.map((item, idx)=>{
                             return (
-                                <li key={generateRandomString(idx)} onClick={(e)=>(handleClickRow(e,item), setIsFrequent(true), setMaxmizing(true))}>
+                                <li key={generateRandomString(idx)} onClick={(e)=>(handleClickRow(e,item), setMaxmizing(true), setIsFrequent(true))}>
                                     <div className="faq-top">
                                         <p className="faq-number" style={item.num !== 0 ? {marginRight:'10px'} : null}>{item.num!==0 && `Q.${String(idx+1).padStart(3, '0')}`}</p>
                                         <p className="faq-title">{`[${item.categoryName}]`}</p>
@@ -1028,7 +1028,7 @@ function Faq() {
             {
                 maximizing 
                 &&
-                <MaximalView data={selectedList} onClose={()=>(setMaxmizing(false), clearState())} onMinimizing={()=> setMaxmizing(false)}/>
+                <MaximalView data={selectedList} onClose={()=>{setMaxmizing(false); clearState(); setIsFrequent(false)}} onMinimizing={()=> isFrequent ? (setMaxmizing(false), setIsFrequent(!false)) : setMaxmizing(false)}/>
             }
             <Zendesk />
 
