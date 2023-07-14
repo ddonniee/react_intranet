@@ -120,13 +120,13 @@ function Notice() {
         console.log('search result --->', Object.fromEntries(sdata))
 
         // 공지사항 목록 조회 API
-        axiosInstance2.post('/notice/list', sdata, config).then(res => {
+        axiosInstance.post('/notice/list', sdata, config).then(res => {
             const data = res?.data.result;
             console.log('공지사항 목록 ---->', data)
             
             const newArray = data.map((obj, index) => ({
                 ...obj,
-                new: isWithin7Days(data.createdAt),
+                new: isWithin7Days(obj.createdAt),
             }));
             setBoardData(newArray);
 
