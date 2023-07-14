@@ -545,8 +545,7 @@ function Faq() {
             iconList = items;
         }
         x = x - 60
-        console.log('icon list : ',iconList)
-        // setFaqTab(iconList)
+
         return (
             <div className='icon-modal' ref={iconRef} style={{top:y, left:x}}>
                 <img src={Polygon} alt='polygon' />
@@ -566,9 +565,12 @@ function Faq() {
             </div>
         )
     }
+    
     const [hoveredItemPosition, setHoveredItemPosition] = useState(null);
+
     const handleMouseEnter = (e,item) => {
         const rect = e.target.getBoundingClientRect();
+        console.log(categoryRef.current.getBoundingClientRect())
         setHoveredItemPosition({ x: rect.left });
         setCategoryLists((prevLists) => {
             
@@ -584,9 +586,6 @@ function Faq() {
           
     }
 
-    useEffect(()=>{
-        console.log(selectedCategory,'=====')
-    },[selectedCategory])
     const handleMouseLeave = (e,item) => {
         if(item?.categoryId===undefined) {
             return false
@@ -665,7 +664,9 @@ function Faq() {
           });
         }
       }; 
-        
+    
+    // icon hover 적용
+
     useEffect(() => {
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
@@ -711,6 +712,8 @@ function Faq() {
       const [openRight, setOpenRight] = useState(false);
 
       useEffect(()=>{
+
+        console.log(selectedList,'=========================================')
         if(selectedList.faqId==='') {
             setOpenRight(false)
         }else if(selectedList.faqId!=='' && !isFrequent){
@@ -727,6 +730,8 @@ function Faq() {
         }
       },[])
 
+      console.log('frewunerwesdfmvlsdmfklsdmklf',frequentList)
+      console.log('consoleconsoleconsole',boardData)
     return (
         <>
         
@@ -756,7 +761,7 @@ function Faq() {
                         {
                             categoryLists?.map((item,idx)=>{
                                 return(
-                                    <li key={generateRandomString(idx+1)} onMouseEnter={(e)=>handleMouseEnter(e,item)}>
+                                    <li className="scroll-lists" key={generateRandomString(idx+1)} onMouseEnter={(e)=> handleMouseEnter(e,item)}>
                                         <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+'/'+item.categoryIconPath} alt='category-icon'/></div>
                                         <p>{item.categoryNm}</p>
                                         {/* {
@@ -809,7 +814,7 @@ function Faq() {
                                    <div className="board-list custom-flex-item custom-align-item cursor-btn" key={generateRandomString(idx)} onClick={(e)=>handleClickRow(e,item)} >
                                         <ul className="col-1">
                                             <li  id={`list-item-${idx+1}`}>
-                                                <span>{String((activePage-1)*16+(idx+1)).padStart(3, '0')}</span>
+                                                <span>{String(item.rn).padStart(3, '0')}</span>
                                             </li>
                                         </ul>
                                         <ul className={`col-2 ${openRight && 'custom-hide-item'}`}>
@@ -1028,7 +1033,7 @@ function Faq() {
             {
                 maximizing 
                 &&
-                <MaximalView data={selectedList} onClose={()=>{setMaxmizing(false); clearState(); setIsFrequent(false)}} onMinimizing={()=> isFrequent ? (setMaxmizing(false), setIsFrequent(!false)) : setMaxmizing(false)}/>
+                <MaximalView data={selectedList} onClose={()=>{setMaxmizing(false); clearState(); setIsFrequent(false)}} onMinimizing={()=> isFrequent ? (setMaxmizing(false), setIsFrequent(!false)) : setMaxmizing(false)} page='faq'/>
             }
             <Zendesk />
 

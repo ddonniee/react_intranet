@@ -32,7 +32,6 @@
 
 html, body, #root{
     height: 100vh;
-    overflow: auto;
 }
 
 ::-webkit-scrollbar {
@@ -54,6 +53,9 @@ button, label, textarea, .write-btn, .cursor-btn, .search-wrapper, .custom-selec
 
 .custom-select {
     width: 179px; border-color: #D8D8D8 !important;
+    & > div {
+        align-content: space-around;
+    }
 }
 .custom-white-btn {
     border-radius: 5px;

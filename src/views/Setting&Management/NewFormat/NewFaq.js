@@ -29,9 +29,10 @@ function NewFaq(props) {
     const [content, setContent] = useState({
         title : '',
         content : '',
-        isPublic : '',
+        faqTopId : '',
         attachments : null,
         categoryId : '',
+        subCategoryId : ''
     });
     
     const [attachments, setAttachments] = useState([
@@ -163,14 +164,14 @@ function NewFaq(props) {
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Top 5 Setting</p> </div>
                 <div className="right"> 
-                <SelectBox options={options} handleChange={handleChange} placeholder='Select'/>
+                <SelectBox options={options} handleChange={(e)=>setContent({...content,faqTopId:e.value})} placeholder='Select'/>
                 </div>
             </div>
             <div className="write-row">
                 <div className="left custom-flex-item custom-align-item"> <p>· Category</p> </div>
                 <div className="right custom-flex-item custom-align-item"> 
                 <SelectBox options={categoryLists} placeholder='Select' handleChange={(e)=>setContent({...content,categoryId:e.value})}/>
-                <SelectBox options={subCategory} placeholder='Select' handleChange={(e)=>setContent({...content,subCategory:e.target.value})}/>
+                <SelectBox options={subCategory} placeholder='Select' handleChange={(e)=>setContent({...content,subCategoryId:e.value})}/>
                     {/* <input 
                     type="text" 
                     className="category-subject" 
