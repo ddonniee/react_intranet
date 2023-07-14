@@ -18,7 +18,7 @@ import Reload from '../../assets/svgs/icon_reload.svg'
 import Link from '../../assets/svgs/icon_more.svg'
 import Check from '../../assets/svgs/icon_check.svg'
 // functions
-import { axiosInstance, decryptData, detectUserAgent, encryptData, generateRandomString, userinfoDecrypt } from "../../utils/CommonFunction";
+import { axiosInstance, decryptData, detectUserAgent, encryptData, generateRandomString, tokenDecrypt, userinfoDecrypt } from "../../utils/CommonFunction";
 import axios from "axios";
 
 
@@ -61,8 +61,8 @@ const Login = () =>{
                 getCaptcha();
             } else {  // 성공
                 const userInfoStr = JSON.stringify(resData.result.userInfo);
-                sessionStorage.setItem("cstkn", resData.result.token);
-                sessionStorage.setItem("userInfo", encryptData(userInfoStr));
+                sessionStorage.setItem(process.env.REACT_APP_TOKEN_KEY, encryptData(resData.result.token));
+                sessionStorage.setItem(process.env.REACT_APP_USERINFO_KEY, encryptData(userInfoStr));
                 window.location.href = "/";
             }
         })

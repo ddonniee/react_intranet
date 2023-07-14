@@ -113,8 +113,19 @@ export const decryptData = (plaindata) => {
 // 로그인 정보 암호화한 데이터 복호화 하기
 export const userinfoDecrypt = () => {
   try {
-    const userinfoStr = decryptData(sessionStorage.getItem('userInfo'));
+    const userinfoStr = decryptData(sessionStorage.getItem(process.env.REACT_APP_USERINFO_KEY));
     return JSON.parse(userinfoStr)
+  } catch (error) {
+    console.log(error);
+    // document.location.href = '/login';
+  }
+}
+
+// 토큰 가져오기
+export const tokenDecrypt =()=> {
+  try {
+    const userinfoStr = decryptData(sessionStorage.getItem(process.env.REACT_APP_TOKEN_KEY));
+    return userinfoStr
   } catch (error) {
     console.log(error);
     // document.location.href = '/login';
