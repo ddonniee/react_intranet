@@ -544,7 +544,7 @@ function Faq() {
         if(items?.length!==0) {
             iconList = items;
         }
-        x = x -70
+        x = x - 60
         console.log('icon list : ',iconList)
         // setFaqTab(iconList)
         return (
