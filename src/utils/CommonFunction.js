@@ -1,5 +1,4 @@
-import { elements } from "chart.js";
-import React, {useRef, useEffect} from "react";
+import React, { useRef, useEffect } from "react";
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 
@@ -28,6 +27,7 @@ export const axiosJsonInstance = axios.create({
         'Content-Type': 'application/json; charset=utf-8',
     }
 });
+
 export const axiosIconInstance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
   maxBodyLength: Infinity,
@@ -35,6 +35,7 @@ export const axiosIconInstance = axios.create({
     'Authorization': 'Bearer '+process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN, 
   },
 });
+
 /** key값 추가를 위한 랜덤문자열 생성 함수 */
 export const generateRandomString = (num) => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -49,26 +50,25 @@ export const generateRandomString = (num) => {
 
 /** Browser 언어 설정 읽어오는 함수 */
 export const getBrowserLanguage = () =>{
-    const browserLanguage = navigator.language;
-    
-    return browserLanguage;
+  const browserLanguage = navigator.language;
+  
+  return browserLanguage;
 };
 
 export const loadCSS =(cssPath)=> {
-    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    var cssFilePath = isMobile ? 'mobile.css' : 'pc.css';
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  var cssFilePath = isMobile ? 'mobile.css' : 'pc.css';
 
-    var cssLink = document.createElement('link');
-    cssLink.rel = 'stylesheet';
-    cssLink.href = cssPath;
+  var cssLink = document.createElement('link');
+  cssLink.rel = 'stylesheet';
+  cssLink.href = cssPath;
 
-    document.head.appendChild(cssLink);
-  }
+  document.head.appendChild(cssLink);
+}
 
-
-  export const detectUserAgent =()=> {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    let agent = '';
+export const detectUserAgent =()=> {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  let agent = '';
     
   if (
     /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
@@ -85,14 +85,12 @@ export const loadCSS =(cssPath)=> {
     agent = 'pc'
   }
   return agent
-  }
+}
 
-  export const downloadAttachment = (path) => {
-      window.location.href = process.env.REACT_APP_DOWN_URL+"/"+path;
-  }
-
-
-
+// 첨부파일 다운로드
+export const downloadAttachment = (path) => {
+    window.location.href = process.env.REACT_APP_DOWN_URL+"/"+path;
+}
 
 // 데이터 암호화 
 export const encryptData = (plaindata) => {
@@ -104,7 +102,7 @@ export const encryptData = (plaindata) => {
   return data;
 }
 
-//데이터 복호화
+// 데이터 복호화
 export const decryptData = (plaindata) => {
   const secretPass = process.env.REACT_APP_ENCRYPT_KEY;
   const bytes = CryptoJS.AES.decrypt(plaindata, secretPass);
@@ -136,7 +134,7 @@ export const jsonToFormData = (json) => {
   return formData;
 }
 
-  /** conver file size */
+/** convert file size */
 export const convertFileSize = (sizeInBytes) => {
     const kilobyte = 1024;
     const megabyte = kilobyte * 1024;
@@ -149,3 +147,9 @@ export const convertFileSize = (sizeInBytes) => {
       return `${sizeInBytes}B`;
     }
 };
+
+// html 문자열에서 태그 제거
+export const removeHTMLTags = (htmlString) => {
+  const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+  return doc.body.textContent || '';
+}

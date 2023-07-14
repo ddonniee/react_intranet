@@ -8,7 +8,7 @@ import Zendesk from '../../components/Zendesk';
 import Tab from '../../components/Tab';
 import Carousel from '../../components/Carousel';
 
-import { generateRandomString, downloadAttachment } from "../../utils/CommonFunction"
+import { generateRandomString, downloadAttachment, removeHTMLTags } from "../../utils/CommonFunction"
 import { UserContext } from "../../hooks/UserContext";
 
 import '../../scss/style.scss';
@@ -119,21 +119,22 @@ function Main() {
 
     const getNoticeList = () => {
         let sdata = new FormData();
-        for(const key in noticeSearchData) {
-            sdata.append(key, noticeSearchData[key])
-        }
+        // for(const key in noticeSearchData) {
+        //     sdata.append(key, noticeSearchData[key])
+        // }
         // console.log('search result --->', Object.fromEntries(sdata))
 
         // 공지사항 목록 조회 API
-        axiosInstance.post('/notice/list', sdata, config).then(res => {
+        axiosInstance.post('/notice/list/main', sdata, config).then(res => {
             const data = res?.data.result;
             console.log('공지사항 목록 ---->', data)
             
             const newArray = data.map((obj, index) => ({
                 ...obj,
-                new: isWithin7Days(data.createdAt),
+                noticeContent: removeHTMLTags(obj.noticeContent),
+                new: isWithin7Days(obj.createdAt),
             }));
-            setNoticeData(newArray.slice(0, 5));
+            setNoticeData(newArray);
             
         }).catch(error => {
             console.error(error);
@@ -149,21 +150,22 @@ function Main() {
 
     const getFaqList = () => {
         let sdata = new FormData();
-        for(const key in faqSearchData) {
-            sdata.append(key, faqSearchData[key])
-        }
+        // for(const key in faqSearchData) {
+        //     sdata.append(key, faqSearchData[key])
+        // }
         // console.log('search result --->', Object.fromEntries(sdata))
 
         // FAQ 목록 조회 API
-        axiosInstance.post('/notice/list', sdata, config).then(res => {
-            const data = res?.data.result;
+        axiosInstance.post('/faq/list/main', sdata, config).then(res => {
+            const data = res?.data.result.list;
             console.log('FAQ 목록 ---->', data)
             
             const newArray = data.map((obj, index) => ({
                 ...obj,
-                new: isWithin7Days(data.createdAt),
+                new: isWithin7Days(obj.createdAt),
             }));
             setFaqData(newArray.slice(0, 5));
+            // setFaqData(newArray)
             
         }).catch(error => {
             console.error(error);
@@ -178,17 +180,22 @@ function Main() {
 
     const getCsList = () => {
         let sdata = new FormData();
-        for(const key in csSearchData) {
-            sdata.append(key, csSearchData[key])
-        }
+        // for(const key in csSearchData) {
+        //     sdata.append(key, csSearchData[key])
+        // }
         // console.log('search result --->', Object.fromEntries(sdata))
 
-        // FAQ 목록 조회 API
-        axiosInstance.post('/csTalk/list', sdata, config).then(res => {
+        // cstalk 목록 조회 API
+        axiosInstance.post('/csTalk/list/main', sdata, config).then(res => {
             const data = res?.data.result;
             console.log('CS Talk 목록 ---->', data)
 
-            setCsData(data.slice(0, 5));
+            const newArray = data.map((obj, index) => ({
+                ...obj,
+                content: removeHTMLTags(obj.content),
+                new: isWithin7Days(obj.createdAt),
+            }));
+            setCsData(newArray);
             
         }).catch(error => {
             console.error(error);
@@ -254,6 +261,7 @@ function Main() {
 
     useLayoutEffect(() => {
         getNoticeList();
+        getFaqList();
         getCsList();
     }, []);
 
@@ -297,9 +305,9 @@ function Main() {
                                     <>
                                     <div className='left'>
                                         <div className='circle'>
-                                            <p className='day'>{moment(noticeData[0].createdAt).format('DD')}</p>
-                                            <p className='month'>{moment(noticeData[0].createdAt).format('YYYY.MM')}</p>
-                                            <IntersectIcon/>
+                                            <p className='day'>{ moment(noticeData[0].createdAt).format('DD') }</p>
+                                            <p className='month'>{ moment(noticeData[0].createdAt).format('YYYY.MM') }</p>
+                                            <IntersectIcon />
                                         </div>
                                     </div>
                                     <div className='right'>
@@ -308,13 +316,19 @@ function Main() {
                                                 { noticeData[0].title.length > 80 ? (noticeData[0].title).substr(0, 80) + '...' : noticeData[0].title }
                                                 { noticeData[0].new ? <NewIcon className='newicon' /> : null }
                                             </p>
-                                            <p className='normal'>GSFS Information – LED Arra Rank Collection time of GSFS Information – LED Arra Rank Collection time of LED Arra Rank Collection time of GSFS Information</p>
+                                            <p className='normal'>
+                                                { noticeData[0].noticeContent.length > 200 ? (noticeData[0].noticeContent).substr(0, 200) + '...' : noticeData[0].noticeContent }
+                                            </p>
                                         </div>
                                         <ul className='sublist'>
                                             {
                                                 noticeData.slice(1, noticeData.length).map((list, idx) => (
                                                     <li key={list.noticeId} onClick={() => handleClickLink('/board/notice')}>
-                                                        <p><ListIcon/> { list.title.length > 75 ? (list.title).substr(0, 75) + '...' : list.title }</p> 
+                                                        <p>
+                                                            <ListIcon />
+                                                            { list.title.length > 75 ? (list.title).substr(0, 75) + '...' : list.title }
+                                                            { list.new ? <NewIcon className='newicon' /> : null }
+                                                        </p> 
                                                         <p>{moment(list.createdAt).format(`'DD.MM.YY`)}</p>
                                                     </li>
                                                 ))
@@ -323,32 +337,6 @@ function Main() {
                                     </div>
                                     </>
                             }
-
-                            {/* <div className='left'>
-                                <div className='circle'>
-                                    <p className='day'>17</p>
-                                    <p className='month'>2023.05</p>
-                                    <IntersectIcon/>
-                                </div>
-                            </div>
-                            <div className='right'>
-                                <div className='mainlist'>
-                                    <p className='bold'>Weekly Report of AC AS Back Order a September HE – OK55 Main Defect <NewIcon className='newicon'/></p>
-                                    <p className='normal'>GSFS Information – LED Arra Rank Collection time of GSFS Information – LED Arra Rank Collection time of LED Arra Rank Collection time of GSFS Information</p>
-                                </div>
-                                <ul className='sublist'>
-                                    {
-                                        ['Weekly Report of AS Back Order a September',
-                                        'Back Order a September Weekly Report of AC',
-                                        'HE - OK55 Main Defect Back Order a September',
-                                        'GSFS Information - LED Arra'].map((row, i) => (
-                                            <li key={i}>
-                                                <p><ListIcon/> {row}</p> <p>2023.1.29</p>
-                                            </li>
-                                        ))
-                                    }
-                                </ul>
-                            </div> */}
                         </div>
                     </div>
                     {/** FAQ */}
@@ -358,22 +346,29 @@ function Main() {
                             <MoreIcon className="moreicon" onClick={() => handleClickLink('/process&support/faq')} />
                         </div>
                         <div className='list'>
-                            <div className='mainlist' onClick={() => handleClickLink('/process&support/faq')}>
-                                <p className='bold'>Weekly Report of AC AS Back Order a September <NewIcon className='newicon'/></p>
-                            </div>
-                            <ul className='sublist'>
-                                {
-                                    ['Weekly Report of AS Back Order a September',
-                                    'Back Order a September Weekly Report of AC',
-                                    'HE - OK55 Main Defect Back Order a September',
-                                    'GSFS Information - LED Arra'].map((row, i) => (
-                                        <li key={i} onClick={() => handleClickLink('/process&support/faq')}>
-                                            <span className='qst-no'> Q 0{i+1} </span>
-                                            <p> {row} </p> 
-                                        </li>
-                                    ))
-                                }
-                            </ul>
+                            {
+                                faqData.length > 0 &&
+                                <>
+                                <div className='mainlist' onClick={() => handleClickLink('/process&support/faq')}>
+                                    <p className='bold'>
+                                        { faqData[0].subject.length > 80 ? (faqData[0].subject).substr(0, 80) + '...' : faqData[0].subject }
+                                        { faqData[0].new ? <NewIcon className='newicon' /> : null }
+                                        {/* <NewIcon className='newicon'/> */}
+                                    </p>
+                                </div>
+                                <ul className='sublist'>
+                                    {
+                                        faqData.slice(1, faqData.length).map((list, idx) => (
+                                            <li key={list.faqId} onClick={() => handleClickLink('/process&support/faq')}>
+                                                <span className='qst-no'> Q 0{idx + 1} </span>
+                                                <p> {list.subject.length > 70 ? (list.subject).substr(0, 70) + '...' : list.subject} </p> 
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                                </>
+                            }
+
                         </div>
                     </div>
                     {/** CS Talk */}
