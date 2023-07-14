@@ -48,3 +48,37 @@ ExportExcel.js    // 배열전달시 엑셀로 추출
 ## hooks 설명
 TestContext.js    // 전역으로 user 정보 관리하는 hooks 
 FileUpload.js     // 대용량 파일 첨부
+
+
+## 로그인 후 사용자 정보 및 토큰 가져오기
+### `사용자 정보 가져오기`
+```js
+import { userinfoDecrypt } from "../../utils/CommonFunction";
+
+// 사용자 정보 가져오기
+userinfoDecrypt();
+
+// userinfoDecrypt() 결과에서 필요한 내용 꺼내서 사용
+let userInfo = {
+    "userId": "CSPORTAL",                     // 아이디
+    "userName": "Joseph",                     // 사용자명
+    "corporationCode": "LGEKR",               // 법인코드
+    "billToCustomerCode": "LGEKR007194H",     // 센터코드
+    "billToCustomerName": "LGEKR_ELECTRIC",   // 센터명
+    "branchCode": "LGEKR_BRANCH_8736U",       // 브랜치코드
+    "branchName": "Alexander electric shop",  // 브랜치명
+    "jobType": "Subsidiary Admin",  // 잡타입
+    "authzCode": "SA",              // 권한코드
+    "language": "kr",               // 언어
+    "centerType": "LGC",            // 센터타입
+};
+
+// 사용 예
+const userInfo = userinfoDecrypt();
+console.log(userInfo?.userId);
+```
+
+### `토큰 가져오기`
+```js
+const token = tokenDecrypt();
+```
