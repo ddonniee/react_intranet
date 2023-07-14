@@ -242,7 +242,7 @@ function FormEditor(props) {
                                     
                             }}
                             />   
-                            <button id={`file-reset-btn-${idx}`} style={{display:'none'}} onClick={()=>resetRowFile(idx)}></button>
+                            <button id={`file-reset-btn-${idx} `} style={{display:'none'}} onClick={()=>resetRowFile(idx)}></button>
                             <button id={`file-delete-btn-${idx}`} style={{display:'none'}} onClick={()=>deleteRow(idx)}></button>
                             <label className="custom-flex-item custom-justify-center custom-align-item custom-stress-txt" htmlFor={`file-delete-btn-${idx}`} >Delete</label>
                         </div>
@@ -256,7 +256,7 @@ function FormEditor(props) {
             <div className="btn-row" >
                     {
                         isDelete &&
-                        <button onClick={onDelete} style={{marginRight:'auto'}}>Delete</button>
+                        <button className="delete-btn" onClick={onDelete} style={{marginRight:'auto'}}>Delete</button>
                     }
                     <button className="btn-black" onClick={onClose}>Cancel</button>
                     <button type="submit" className="btn-red" onClick={onSave}>Save</button>
