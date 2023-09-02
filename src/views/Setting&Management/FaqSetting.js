@@ -798,26 +798,27 @@ const Style = styled.div`
     .faq-left {
         width: ${props => (props.openright ? '49%' : '100%')};
     }
+    
     .col-1 {
-        width: 75px;
+        width: ${props => (props.openright ? '10%' : '5%')};
     }
     .col-2 {
-        min-width: 160px;
+        width: 10%;
     }
     .col-3 {
-        width: 734px; 
+        width :${props => (props.openright ? '60%' : '50%')};
     }
     .col-4 {
-        width: 194px;
+        width: 10%;
     }
     .col-5 {
-        width: 122px;
+        width: 10%;
     }
     .col-6 {
-        width: 115px;
+        width: ${props => (props.openright ? '15%' : '5%')};
     }
     .col-7 {
-        width: 160px;
+        width: ${props => (props.openright ? '15%' : '10%')};
     }
     .board-list {
         padding : ${props => (props.openright ? '17px 30px;':'10px 30px;')}

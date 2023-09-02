@@ -762,7 +762,7 @@ function Faq() {
         }else {
             elem.style.overflow='';
         }
-    },[])
+    },[maximizing])
 
     return (
         <>

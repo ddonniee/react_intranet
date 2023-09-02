@@ -225,7 +225,6 @@ function Header() {
                         &&
                         <div className='profile' onClick={handleClickProfile}><div className='profile-circle'><img src={Profile} alt='user-profile'/></div></div>
                     }
-                    <div className='search'><img src={Seeker} alt='whole-search'/></div>
                     {
                         isMobile
                         &&

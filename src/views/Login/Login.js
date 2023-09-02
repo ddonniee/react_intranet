@@ -172,7 +172,7 @@ const Login = () =>{
             <div className="inner-container">
                 <div className="login-background">
                     <div className="login-area">
-                        <div className="login-top"><span className="welcome-title">{isMobile ? 'Login' : 'Welcome to LG CS portal' } </span></div>
+                        <div className="login-top"><span className="welcome-title">{isMobile ? 'Login' : 'Welcome to Portal site' } </span></div>
                         <div className="login-middle" >
                             <div className="login-info-left">
                                 <input type="text" id="login-id" placeholder="USER ID" value={loginInfo.userId} autoComplete="new-password" onChange={handleChangeInput}/>
@@ -180,12 +180,12 @@ const Login = () =>{
                                 <div className="login-check-area">
                                     <label htmlFor="login-checkbox" className="custom-checkbox-label">
                                         <input type="checkbox" id="login-checkbox" className="custom-checkbox" onClick={rememberId} defaultChecked={localStorage.getItem("csportalId") ? true: false}/>
-                                        <span className="custom-checkbox-icon"><img src={Check} alt='icon-check'/></span>
+                                        <span className="custom-checkbox-icon cursor-btn"><img src={Check} alt='icon-check'/></span>
                                         <span className="custom-checkbox-text">Remember my ID</span>
                                     </label>
                                     <label id="otp-check" htmlFor="otp-checkbox" className="custom-checkbox-label" onClick={handleChangeCheck}>
                                         <input type="checkbox" id="otp-checkbox" className="custom-checkbox" />
-                                        <span className="custom-checkbox-icon"><img src={Check} alt='icon-check'/></span>
+                                        <span className="custom-checkbox-icon cursor-btn"><img src={Check} alt='icon-check'/></span>
                                         <span className="custom-checkbox-text">OTP Login</span>
                                     </label>
                                 </div>
@@ -200,7 +200,7 @@ const Login = () =>{
                                     <div className="login-security-txt custom-justify-between">
                                         <div>
                                             <img className="security-num" id="captchaImage" />
-                                            <img src={Reload} alt='reload-security-num' className="security-reload" onClick={getCaptcha}/>
+                                            <img src={Reload} alt='reload-security-num cursor-btn' className="security-reload" onClick={getCaptcha}/>
                                         </div>
                                         <input className="secutiry-txt" type="text" onChange={e => setLoginInfo({ ...loginInfo, authKey: e.target.value })}/>
                                     </div>
@@ -209,18 +209,18 @@ const Login = () =>{
                             </div>
                             <div className="login-info-right">
                                 <ul>
-                                        <li title={"join"} className="custom-justify-between" onClick={handleClickLink}><span title={"join"}>REQUEST NEW ACCOUNT</span><img title={"join"} src={Link} alt='login-link' /></li>
-                                        <li title={"find-pw"} className="custom-justify-between" onClick={handleClickLink}><span title={"find-pw"}>FORGET PASSWORD</span><img title={"find-pw"} src={Link} alt='login-link' /></li>
+                                        <li title={"join"} className="custom-justify-between" onClick={handleClickLink}><span title={"join"}>REQUEST NEW ACCOUNT</span><img className="cursor-btn" title={"join"} src={Link} alt='login-link' /></li>
+                                        <li title={"find-pw"} className="custom-justify-between" onClick={handleClickLink}><span title={"find-pw"}>FORGET PASSWORD</span><img  className="cursor-btn"title={"find-pw"} src={Link} alt='login-link' /></li>
                                         {// loginInfo.authType === "otp" && 
-                                            <li title={"req-otp"} className="custom-justify-between" onClick={handleClickLink}><span title={"req-otp"}>OTP KEY REQUEST</span><img title={"req-otp"} src={Link} alt='login-link' /></li>}
+                                            <li title={"req-otp"} className="custom-justify-between" onClick={handleClickLink}><span title={"req-otp"}>OTP KEY REQUEST</span><img className="cursor-btn" title={"req-otp"} src={Link} alt='login-link' /></li>}
                                         {// loginInfo.authType === "otp" && 
-                                            <li title={"req-tmp-otp"} className="custom-justify-between" onClick={handleClickLink}><span title={"req-tmp-otp"}>OTP TEMPORARY PASSWORD</span><img title={"req-tmp-otp"} src={Link} alt='login-link' /></li>}
+                                            <li title={"req-tmp-otp"} className="custom-justify-between" onClick={handleClickLink}><span title={"req-tmp-otp"}>OTP TEMPORARY PASSWORD</span><img className="cursor-btn" title={"req-tmp-otp"} src={Link} alt='login-link' /></li>}
                                 </ul>
                             </div>
                         </div>
                         <div className="login-bottom">
                             <span>Notice</span>
-                            <span>{`This Web site is strictly restricted to only employees or business parrtners of LG Electronics \n Any illegal access will be punished according to related laws.`}</span>
+                            <span>{`This Web site is strictly restricted to only employees or business parrtners of EX company \n Any illegal access will be punished according to related laws.`}</span>
                         </div>
                     </div>
                    
