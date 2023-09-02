@@ -278,9 +278,11 @@ function Faq() {
     const getList = () =>{
 
 
-        if(reqData.search!=='') {
+        if(reqData.search!=='') {            
             const updatedData = boardData.filter(item => {
-                if (item.subject.includes(reqData.search)) {
+                const lowercaseText = reqData.search.toLowerCase();
+                const lowercaseKeyword = item.subject.toLowerCase();
+                if (lowercaseKeyword.includes(lowercaseText)) {
                   return item
                 } 
               });

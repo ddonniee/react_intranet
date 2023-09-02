@@ -30,29 +30,29 @@ function Header() {
 
     /* ======================================================================================== */
     const dashboardMenuList = [
-        {name : 'KPI performance', id:'kpi-performance', path : '/dashboard/kpiperformance'},
+        // {name : 'KPI performance', id:'kpi-performance', path : '/dashboard/kpiperformance'},
         {name : 'Asc Holding Status', id:'asc-holding-status', path : '/dashboard/ascholdingstatus'},
-        {name : 'Evaluation/Incentive', id:'evaluation-incentive', path : '/dashboard/evaluation'},
-        {name : 'Parts Delivery Time', id:'part-delivery-time', path : '/dashboard/partsdeliverytime'},
-        {name : 'Training Status', id:'training-status', path : '/dashboard/trainingstatus'},
-        {name : 'Work In Process', id:'work-in-process', path : '/dashboard/wip'},
+        // {name : 'Evaluation/Incentive', id:'evaluation-incentive', path : '/dashboard/evaluation'},
+        // {name : 'Parts Delivery Time', id:'part-delivery-time', path : '/dashboard/partsdeliverytime'},
+        // {name : 'Training Status', id:'training-status', path : '/dashboard/trainingstatus'},
+        // {name : 'Work In Process', id:'work-in-process', path : '/dashboard/wip'},
     ];
     const processMenuList = [
         {name : 'Process & FAQ', path : '/process&support/faq'},
-        {name : 'Request & Q&A', path : '/process&support/raq'},
+        // {name : 'Request & Q&A', path : '/process&support/raq'},
     ];
     const boardMenuList = [
-        {name : 'Notice', path : '/board/notice'},
+        // {name : 'Notice', path : '/board/notice'},
         {name : 'CS Talk', path : '/board/cstalk'},
     ];
     const settingMenuList = [
-        {name : 'KPI Performance Setting', path : '/setting/kpiperformance'},
-        {name : 'Evaluation/Incentive Setting', path : '/setting/evaluation'},
+        // {name : 'KPI Performance Setting', path : '/setting/kpiperformance'},
+        // {name : 'Evaluation/Incentive Setting', path : '/setting/evaluation'},
         {name : 'FAQ Setting', path : '/setting/faq'},
-        {name : 'Notice Setting', path : '/setting/notice'},
-        {name : 'Statistics', path : '/setting/statistics'},
-        {name : 'User Management', path : '/setting/userManagement'},
-        {name : 'Common Code Management', path : '/setting/commonCodeManagement'},
+        // {name : 'Notice Setting', path : '/setting/notice'},
+        // {name : 'Statistics', path : '/setting/statistics'},
+        // {name : 'User Management', path : '/setting/userManagement'},
+        // {name : 'Common Code Management', path : '/setting/commonCodeManagement'},
     ];
     const [showThirdMenu, setShowThirdMenu] = useState(false);
     /* ======================================================================================== */
@@ -202,7 +202,7 @@ function Header() {
 
         
     return (
-        <Nav upperdepth={currentTab.upperTab} lowerdepth={currentTab.lowerTab} thirdDepth={thirdMenuList?.thirdMenuList}>
+        <Nav upperdepth={currentTab.upperTab} lowerdepth={currentTab.lowerTab} thirdDepth={thirdMenuList?.thirdMenuList} style={{position:'relative'}}>
         <div className="top-nav">
             <div className='top-nav-wrapper'>
                 <div className="nav-logo" onClick={handleClickLogo}>
@@ -238,19 +238,7 @@ function Header() {
         {
             isOpenMenu 
             ?
-            <div className='lower-tab'>
-                <ul className='more-lists'>
-                    {secondMenuList.map((item,idx)=>{
-                        return (
-                            <li id={item.id} onClick={toggleThirdMenu} key={generateRandomString(idx+3)} ><p title={item.id}>{item.name}</p>
-                            </li>
-                        )
-                    })}
-                    {
-                        showThirdMenu && (<ThirdMenu />)
-                    }
-                </ul>
-            </div>
+            <ThirdMenu />
             :
             null
         }

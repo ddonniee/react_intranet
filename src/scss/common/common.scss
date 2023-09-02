@@ -79,7 +79,10 @@ align-items: center;
     height: 100%;
     align-items: center;
 }
-
+.no-data {
+    padding-top: 30px;
+    text-align: center;
+}
 .red-selected {
     color: white;  background: $primary-color-red; 
 }
