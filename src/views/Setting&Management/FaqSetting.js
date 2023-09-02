@@ -11,7 +11,6 @@ import Pagination from "react-js-pagination";
 // Components
 import Header from "../../components/Header"
 import Top from "../../components/Top"
-import Zendesk from "../../components/Zendesk"
 import Tab from "../../components/Tab";
 import NewFaq from "./NewFormat/NewFaq";
 import NewCategory from "./NewFormat/NewCategory";

@@ -11,7 +11,6 @@ import Password from "./Modal/Password";
 import Otp from "./Modal/Otp";
 import TempOtp from "./Modal/TempOtp";
 // components
-import Zendesk from "../../components/Zendesk";
 import Alert from "../../components/Alert";
 // icons
 import Reload from '../../assets/svgs/icon_reload.svg'

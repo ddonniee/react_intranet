@@ -4,7 +4,6 @@ import moment from "moment/moment";
 
 import Header from '../../components/Header';
 import Top from '../../components/Top';
-import Zendesk from '../../components/Zendesk';
 import Tab from '../../components/Tab';
 import Carousel from '../../components/Carousel';
 
@@ -267,7 +266,6 @@ function Main() {
 
     return (
         <div className="main-container">
-            <Header />
             <div className="inner-container">
                 {/** auth 권한체크로 수정 필요 */}
                 <Top auth={1} searchArea={false}/>

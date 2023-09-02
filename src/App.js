@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes,useLocation } from "react-router-dom";
 import routes from "./routes";
 import NotFound from "./views/Pages/NotFound";
 
-import {detectUserAgent} from '../src/utils/CommonFunction'
 // test useContext
 import { UserContext } from "./hooks/UserContext";
 import Footer from "./components/Footer";

@@ -6,7 +6,6 @@ import Pagination from "react-js-pagination"
 
 import Header from "../../components/Header"
 import Top from "../../components/Top"
-import Zendesk from "../../components/Zendesk"
 import SelectBox from '../../components/SelectBox'
 import Viewer from "../../components/Viewer"
 import MaximalView from "../Common/MaximalView"
