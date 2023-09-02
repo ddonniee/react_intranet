@@ -538,7 +538,6 @@ function CommonCodeMangement() {
    
     return (
         <>
-        <Header />
         <div className="inner-container">
         {/** Top Area */}
         <Top auth={ auth.isViewer === 1 ? true : false} searchArea={false}/>

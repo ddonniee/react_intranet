@@ -43,21 +43,7 @@ const Top = props =>{
 
         <div className={`title-wrapper${ title === 'Main' ? ' title-main-wrapper' : searchArea ? ' title-board-wrapper' : ''}`}>
             <div className="title-inner">
-            {/* {
-                (auth && searchArea ) 
-                ?
-                <div className="search-area">
-                <div>· Subsidiary</div>
-                <SelectBox options={options} handleChange={handleChange} placeholder='Select'/>
-                <div>· Search</div>
-                <input className="top-input" onChange={onChange}/>
-                <div className="search-wrapper" onClick={onClick}><img src={Search} alt='search-btn'/></div>
-                </div>
-                : 
-                null
-                // <div className="empty_area">
-                // </div>
-            } */}
+            
             {
                 title === 'Main'
                 ? null
@@ -74,10 +60,6 @@ const Top = props =>{
                     ( auth && searchArea ) 
                     ?
                     <div className="title-nav">
-                        <div className="title-nav-box custom-flex-item custom-align-item">
-                            <p>· Subsidiary</p>
-                            <SelectBox options={options} handleChange={handleChange} placeholder="Select" minHeight />
-                        </div>
                         <div className="custom-flex-item custom-align-item">
                             <p>· Search</p>
                             <input type="text" className="title-nav-input" id="title-nav-input" onChange={onChange}></input>

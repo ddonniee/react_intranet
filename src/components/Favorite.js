@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 
-import { generateRandomString, axiosJsonInstance } from "../utils/CommonFunction";
+import { generateRandomString, fetchInstance } from "../utils/CommonFunction";
 import Close from '../assets/svgs/icon_close.svg'
 import Fav from '../assets/svgs/icon_fav.svg';
 import NonFav from '../assets/svgs/icon_non_fav.svg';
@@ -52,7 +52,7 @@ const Favorite = props => {
             data : formData
             };
     
-        axiosJsonInstance('/userManagement/updateMyFavorite',config)
+        fetchInstance('/userManagement/updateMyFavorite',config)
         .then(function (response) {
             let resData = response.data;
             if(resData.code===200) {

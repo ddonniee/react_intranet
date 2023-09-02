@@ -1,7 +1,7 @@
 import React,{Fragment, useEffect, useRef, useState} from "react";
 import { styled } from "styled-components";
 
-import {axiosJsonInstance, generateRandomString} from '../utils/CommonFunction'
+import {fetchInstance, generateRandomString} from '../utils/CommonFunction'
 import Close from '../assets/svgs/icon_closetab.svg'
 import Setting from '../assets/svgs/icon_setting.svg'
 
@@ -143,27 +143,27 @@ const Tab = () => {
 
     const getFavList = () =>{
 
-    var config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        headers: {
-            'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
-            },
-        };
+    // var config = {
+    //     method: 'post',
+    //     maxBodyLength: Infinity,
+    //     headers: {
+    //         'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_SUBSIDIARY_ADMIN,
+    //         },
+    //     };
 
-    axiosJsonInstance('/userManagement/myFavorite',config)
-    .then(function (response) {
-        let resData = response.data;
-        if(resData.code===200) {
-            console.log(resData)
-            setUserPreference(resData.result)
-        }else {
-            console.log(resData)
-        }
-    })
-    .catch(function (error) {
-            console.log('error',error);
-    });
+    // fetchInstance('/userManagement/myFavorite',config)
+    // .then(function (response) {
+    //     let resData = response.data;
+    //     if(resData.code===200) {
+    //         console.log(resData)
+    //         setUserPreference(resData.result)
+    //     }else {
+    //         console.log(resData)
+    //     }
+    // })
+    // .catch(function (error) {
+    //         console.log('error',error);
+    // });
     }
 
     const onClickLink = (path) =>{
@@ -257,7 +257,7 @@ export default Tab
 
 const Style = styled.div`
 .tab-container {
-    background: ${(props)=> props.open? 'white' :'#BB0841'};
-    box-shadow: ${(props)=> props.open? 'none' :'1px 1px 10px 0px rgba(187, 8, 65, 0.36);'}; 
+    background: ${(props)=> props.open? 'white' :'#323232'};
+    box-shadow: ${(props)=> props.open? 'none' :'1px 1px 10px 0px rgba(0, 0, 0, 0.5);'}; 
 }
 `

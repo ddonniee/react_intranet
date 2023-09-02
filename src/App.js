@@ -6,6 +6,8 @@ import NotFound from "./views/Pages/NotFound";
 import {detectUserAgent} from '../src/utils/CommonFunction'
 // test useContext
 import { UserContext } from "./hooks/UserContext";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
 
 function App({}) {
 
@@ -13,19 +15,12 @@ function App({}) {
   // function App({isMobile}) {
     
   const [user, setUser] = useState({
-    id: 'ID_LK',
-    name : 'LGEKR 본사스태프(한국고객가치혁실ㄴ)',
-    role : 'LK',
-    branch :  "LGEAI_BRANCH_7650T",
-    center :  "LGEAI009062C",
-    subsidiary : "LGEKR",
-    // token : sessionStorage.getItem('UserInfo'); // 직급에 따라 토큰 값 받아오기
-    // id: 'ID_SA',
-    // name : '법인 Admin',
-    // role : 'SA',
+    id: 'donnie_lee',
+    name : 'donnie',
+    role : 'front-developer',
+    eMail :  "m__ma@naver.com",
   })
 
-  let loginCheck = 1;
   
   // 모바일로 화면 분기시에 활성화
   // useEffect(() => {
@@ -50,6 +45,7 @@ function App({}) {
     <>
     <UserContext.Provider value={user}>
       <BrowserRouter>
+      <Header />
         <Routes>
           {routes.map((route, index) => (
             <Route
@@ -62,6 +58,7 @@ function App({}) {
           ))}
            <Route path="*" element={<NotFound />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
       </UserContext.Provider>
     </>

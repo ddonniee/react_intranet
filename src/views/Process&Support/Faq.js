@@ -6,12 +6,12 @@ import Pagination from "react-js-pagination";
 // Components
 import Header from "../../components/Header"
 import Top from "../../components/Top"
-import Zendesk from "../../components/Zendesk"
+import Warning from "../../components/Warning"
 import Viewer from "../../components/Viewer"
 import Alert from "../../components/Alert";
 import Tab from "../../components/Tab";
 // Utils
-import { generateRandomString,axiosInstance2, downloadAttachment,} from "../../utils/CommonFunction"
+import { generateRandomString,fetchInstance, downloadAttachment,} from "../../utils/CommonFunction"
 // hooks
 import { useHorizontalScroll } from "../../hooks/useSideScroll";
 // View
@@ -32,16 +32,12 @@ import Close from '../../assets/svgs/icon_close2.svg'
 import Maximize from '../../assets/svgs/icon_screen.svg'
 
 import moment from "moment";
-import { max } from "date-fns";
-import { left } from "@popperjs/core";
 
 function Faq() {
 
     let auth = 1;
     const user = useContext(UserContext)
     let now = moment().subtract(24,'hours').format('YYYY-MM-DD HH:mm:ss');
-
-   
 
     const [subsidiary, setSubsidiary ] = useState([
         {value:'',label:'All'}, 
@@ -58,7 +54,6 @@ function Faq() {
      /** 페이징 관련 ▼ ============================================================= */
      const [activePage, setActivePage] = useState(1); // 현재 페이지
      const [itemsPerPage] = useState(16); // 페이지당 아이템 갯수
-     const [boardLength, setBoardLength] = useState(0)
      const setPage = (e,num) => {
         if(num===1) {
             setActivePage(e);
@@ -66,9 +61,9 @@ function Faq() {
             setCommentPage(e)
         }
      };
+    /** 페이징 관련 ▲ ============================================================= */
 
-     /** 페이징 관련 ▲ ============================================================= */
-
+    const [boardLength, setBoardLength] = useState(0)
     const [boardData, setBoardData] = useState([])
     const [frequentList, setFrequentList] = useState([])
     const [isFrequent, setIsFrequent] = useState(false)
@@ -82,12 +77,13 @@ function Faq() {
         subsidiary:'',
         writerName:'',
         commentCount : 0,
-        hits: 16,
+        hits: 0,
         createdAt: '',
         faqId: '',
         categoryId: '',
         writerID: ''
     })
+    const [openRight, setOpenRight] = useState(false);       // 상세페이지, 작성페이지 open 관리 state
     const clearState =()=> {
         setSelectedList({
             attachments: '',
@@ -105,9 +101,30 @@ function Faq() {
             categoryId: '',
             writerID: ''
            })
-      }
+    }
 
-    
+    /** 공통 요청폼 ▼ ============================================================= */
+    const [reqData, setReqData] = useState({
+        categoryId: '',
+        subsidiary: '',
+        search : '',
+        type : 'F',
+        page : activePage, // page 전달
+        tab : '',
+    })
+    // 공통헤더
+    var config = {
+        method: 'GET',
+        maxBodyLength: Infinity,
+        headers: { 
+        //    'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+        // 'Content-Type': 'multipart/form-data'
+        },
+        data : null
+    };
+
+    /** 공통 요청폼 ▲ ============================================================= */
+
     const onClickAction = (e,id,reaction) => {
         const formData = new FormData();
 
@@ -117,21 +134,12 @@ function Faq() {
         formData.append('faqId', id);
         formData.append('reaction',reaction )
 
-        var config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            headers: { 
-               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-            },
-            data : formData
-            };
-        console.log(Object.fromEntries(formData))
-        axiosInstance2('/faq/reaction', config)
+        config.data = formData
+        fetchInstance('/faqData', config)
         .then(function (response){
             let resData = response.data;
-            if(resData.code===200) {
+            if(resData) {
                 let data = resData.result
-                console.log(data)
                 setSelectedList({
                     ...selectedList,
                     reactionState : selectedList.reactionState === reaction ? "NONE" : reaction,
@@ -166,7 +174,8 @@ function Faq() {
       
     }
 
-    /** Alert Handler */
+    /** 알림창 ▼ ============================================================= */
+
     const [alertModal, setAlertModal] = useState(false)
     const [alertSetting, setAlertSetting] = useState({
         alertTxt : '',
@@ -176,6 +185,8 @@ function Faq() {
         confirmTxt : ''
     })
 
+    /** 알림창 ▲ ============================================================= */
+
     const onConfirmHandler = (num,id) =>{
 
         // leave editor 
@@ -183,18 +194,7 @@ function Faq() {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: ' Click confirm to leave write mode.',
-                onConfirm : ()=>{ 
-                    setAlertModal(false)
-                    // setContent({
-                    //     title : '',
-                    //     content : '',
-                    //     isPublic : '',
-                    //     attachments : '',
-                    //     csTalkId : ''
-                    // })
-                    // clearState()
-                    // num===1 && getDetail(id)
-                },
+                onConfirm : ()=>{ setAlertModal(false)},
                 isDoubleBtn : true,
                 btnTxt : 'Confirm',
                 confirmTxt : ""
@@ -259,34 +259,7 @@ function Faq() {
         }
     }
 
-    useEffect(()=>{
-        if(!alertModal) {
-           setAlertSetting({
-            alertTxt : '',
-            onConfirm : function() {},
-            isDoubleBtn : false,
-            btnTxt : 'Close',
-            confirmTxt : ''
-           })
-        }
-    },[alertModal])
-    useEffect(()=>{
-        if(alertSetting.alertTxt!==''){
-            setAlertModal(true)
-        }else {
-            setAlertModal(false)
-        }
-    },[alertSetting])
-
- 
-    const [reqData, setReqData] = useState({
-        categoryId: '',
-        subsidiary: '',
-        search : '',
-        type : 'F',
-        page : activePage,
-        tab : '',
-    })
+    
 
     const handleClickTab=(item,iconList)=>{
         console.log('handleClickTab',item)
@@ -301,44 +274,46 @@ function Faq() {
         setFaqTab(copy)
     }
 
-    useEffect(()=>{
-        console.log('fffffffffffffffffffffffffffffffffff',faqTab)
-    },[faqTab])
+
     const getList = () =>{
 
-        console.log('검색한다', reqData)
 
-        const formData = new FormData();
-
-        for (let key in reqData) {
-            if (reqData.hasOwnProperty(key)) {
-              formData.append(key, reqData[key]);
-            }
+        if(reqData.search!=='') {
+            const updatedData = boardData.filter(item => {
+                if (item.subject.includes(reqData.search)) {
+                  return item
+                } 
+              });
+              console.log(updatedData);
+              setBoardData(updatedData)
+              
+            return false
         }
-        var config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            headers: { 
-               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-            },
-            data : formData
-            };
-        axiosInstance2('/faq/list', config)
-        .then(function (response){
+        fetchInstance('/faqData')
+        .then(function (response) {
+        if(response) {
             let resData = response.data;
-            console.log(resData,'dddd')
-            if(resData.code===200) {
-                let data = resData.result
-             
-                setBoardData(data.list)
-                setFrequentList(data.top5list)
-            }else {
-                console.log(resData)
+            setBoardData(response);
+            if (resData) {
+                let data = resData.result;
+                setFrequentList(data.top5list);
+            } else {
+                console.log(resData);
             }
+        }else {
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: "Client Error"
+            })
+        }
         })
-        .catch(function(error) {
-            console.log('error',error)
-        })
+        .catch(function (error) {
+            console.log('error', error);
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: "Server Error"
+            })
+        }); 
     }
 
     const getDetail = (id) =>{
@@ -346,24 +321,23 @@ function Faq() {
         const formData = new FormData();
 
         formData.append('faqId',id)
-
-        var config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            headers: { 
-               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-            },
-            data : formData
-            };
-        axiosInstance2('/faq/detail', config)
+        console.log(boardData)
+       
+        
+        fetchInstance('/faqDetail')
         .then(function (response){
-            let resData = response.data;
-            if(resData.code===200) {
-                let data = resData.result
-                setSelectedList(data)
-            }else {
-                console.log(resData)
+            for(let i=0; i<response.length; i++) {
+                if(id===response[i].faqId) {
+                    console.log(response,id)
+                    setSelectedList(response[i])
+                }
             }
+            // if(resData.code===200) {
+            //     let data = resData.result
+            //     setSelectedList(data)
+            // }else {
+            //     console.log(resData)
+            // }
         })
         .catch(function(error) {
             console.log('error',error)
@@ -372,33 +346,27 @@ function Faq() {
 
     const [categoryLists, setCategoryLists] = useState([])
     const getCategory = () =>{
-
      
-        var config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            headers: { 
-               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-            },
-            };
-        axiosInstance2('/faqCa/list', config)
-        .then(function (response){
-            let resData = response.data;
-            if(resData.code===200) {
-                let data = resData.result
-                console.log('getCategory',resData)
-                data.map(d=>{
-                    d.iconModal = false
-                })
-                setCategoryLists(data)
-            }else {
-                console.log(resData)
-            }
-        })
-        .catch(function(error) {
-            console.log('error',error)
-        })
+        // fetchInstance('/faqCa/list', config)
+        // .then(function (response){
+        //     let resData = response.data;
+        //     if(resData.code===200) {
+        //         let data = resData.result
+        //         console.log('getCategory',resData)
+        //         data.map(d=>{
+        //             d.iconModal = false
+        //         })
+        //         setCategoryLists(data)
+        //     }else {
+        //         console.log(resData)
+        //     }
+        // })
+        // .catch(function(error) {
+        //     console.log('error',error)
+        // })
     }
+
+    console.log(selectedList)
 
     /** Comment handling */
     const [commentPage, setCommentPage] = useState(1)
@@ -412,32 +380,42 @@ function Faq() {
         formData.append('page', commentPage);
         formData.append('faqId', selectedList.faqId);
 
-        var config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            headers: { 
-               'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-            },
-            data : formData
-            };
-        axiosInstance2('/faq/commentList', config)
+        // config.data = formData
+
+        if(selectedList.faqId==='') {
+            return false
+        }
+        fetchInstance('/faqComment')
         .then(function (response){
-            let resData = response.data;
-            
-            if(resData.code===200) {
-                let data = resData.result
-                data.map(d=>{
-                    d.openSubComment = false
-                    d.isInput = false
+            if(response) {
+                let data = [];
+                for (let i = 0; i < response.length; i++) {
+                    if (response[i].faqId === selectedList.faqId) {
+                      data = response[i].commentList;
+                      break; 
+                    }
+                  }
+                if(data) {
+                    data.map(d=>{
+                        d.openSubComment = false
+                        d.isInput = false
+                    }
+                    )
+                    setCommentList(data)
                 }
-                )
-                setCommentList(data)
             }else {
-                console.log(resData)
+                setAlertSetting({
+                    ...alertSetting,
+                    alertTxt: "Client Error"
+                   })
             }
         })
         .catch(function(error) {
-           
+           console.log(error)
+           setAlertSetting({
+            ...alertSetting,
+            alertTxt: "Server Error"
+           })
         })
     }
     const openCommentInput = (idx) =>{
@@ -465,35 +443,45 @@ function Faq() {
         return false
     }
 
-    const formData = new FormData();
+    let newObj = {};
 
-    formData.append('faqId', id);
+    newObj.faqId =id;
     if(num===1) {
-        formData.append('content', comment);
+        newObj.commentList = [
+            {
+                commentId: 'new_comment_id', // 새 댓글의 고유 ID
+                writerID: user.id,   // 작성자 ID
+                writerName: user.name, // 작성자 이름
+                createdAt: moment().format('YYYY.MM.DD HH:mm:ss'), // 작성 시간
+                content: comment, // 댓글 내용
+                subComment: [], 
+            }
+        ];
     }
     if(num===2) {
-        formData.append('commentId', id);
-        formData.append('content', subComment);
+        newObj.commentId = id;
+        newObj.content = subComment;
     }
+    console.log(newObj)
         var config = {
             method: 'post',
-            maxBodyLength: Infinity,
             headers: { 
-                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+                "Content-Type": "application/json"
+                // 'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
             },
-            data : formData
+            body: JSON.stringify(newObj)
             };
-        axiosInstance2('/faq/commentInsert', config)
+
+        fetchInstance('/faqComment', config)
         .then(function (response){
-            let resData = response.data;
-            if(resData.code===200) {
+            if(response) {
                 // onConfirmHandler(6)
                 num === 1 ? setComment('') : setSubComment('')
                 getDetail(id);
                 getComment()
                 
             }else {
-                console.log(resData,'comment list')
+                console.log(response,'comment list')
             }
         })
         .catch(function(error) {
@@ -505,34 +493,28 @@ function Faq() {
         const formData = new FormData();
 
         formData.append('commentId', id);
-        var config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            headers: { 
-                'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
-            },
-            data : formData
-            };
-        axiosInstance2('/faq/commentDelete', config)
-        .then(function (response){
-            let resData = response.data;
-            if(resData.code===200) {
-                setAlertSetting({
-                    ...alertSetting,
-                    alertTxt : "You've deleted comment.",
-                    isDoubleBtn : false,
-                    btnTxt : 'Close',
-                })
-                getDetail(selectedList.faqId);
-                getComment()
-                getList()
-            }else {
-                console.log(resData,'resData')
-            }
-        })
-        .catch(function(error) {
-            console.log('error',error)
-        })                  
+        
+        config.data=formData
+        // fetchInstance('/faq/commentDelete', config)
+        // .then(function (response){
+        //     let resData = response.data;
+        //     if(resData.code===200) {
+        //         setAlertSetting({
+        //             ...alertSetting,
+        //             alertTxt : "You've deleted comment.",
+        //             isDoubleBtn : false,
+        //             btnTxt : 'Close',
+        //         })
+        //         getDetail(selectedList.faqId);
+        //         getComment()
+        //         getList()
+        //     }else {
+        //         console.log(resData,'resData')
+        //     }
+        // })
+        // .catch(function(error) {
+        //     console.log('error',error)
+        // })                  
     }
     const [maximizing, setMaxmizing] = useState(false)
     /** Icon list */
@@ -622,10 +604,9 @@ function Faq() {
      useEffect(()=>{
 
         setFileStore([])
-        if(selectedList?.attachments!=='') {
+        if(selectedList.attachments!=='' && selectedList.attachments!==undefined) {
           
             const jsonString = JSON.parse(selectedList.attachments);
-            console.log('실행이 안돼 ?,',jsonString)
             if(jsonString!==null) {
                 let copy = [...jsonString]
                 setFileStore(copy)
@@ -674,71 +655,120 @@ function Faq() {
     };
     }, []);
 
-      useEffect(()=>{
-        getCategory()
-      },[])
+    useEffect(()=>{
+    getCategory()
+    },[])
 
-      useEffect(()=>{
-        getList()
-      },[reqData.page, reqData.categoryId])
+    useEffect(()=>{
+    getList()
+    },[reqData.page, reqData.categoryId])
 
-      useEffect(()=>{
-        if(boardData.length===0) {
-            setBoardLength(0)
-       }
-       else {
-        let max = boardLength;
-        if(activePage===1) {
-         max = 0
-         boardData.map((item) =>{
-             if(item.rn>max) {
-                 max = item.rn;
-             }
-             setBoardLength(max)
-          })
+    useEffect(()=>{
+    if(boardData.length===0) {
+        setBoardLength(0)
+    }
+    else {
+    let max = boardLength;
+    if(activePage===1) {
+        max = 0
+        boardData.map((item) =>{
+            if(item.rn>max) {
+                max = item.rn;
+            }
+            setBoardLength(max)
+        })
+    }
+    }
+    
+    },[boardData])
+    
+    useEffect(()=>{
+    },[boardLength])
+    useEffect(()=>{
+    if(selectedList) {
+        getComment()
+    }
+    },[commentPage])
+
+     /** 알림창 ▼ ============================================================= */
+
+     useEffect(()=>{
+        if(!alertModal) {
+           setAlertSetting({
+            alertTxt : '',
+            onConfirm : function() {},
+            isDoubleBtn : false,
+            btnTxt : 'Close',
+            confirmTxt : ''
+           })
         }
-       }
-     
-      },[boardData])
-      
-      useEffect(()=>{
-      },[boardLength])
-      useEffect(()=>{
-        if(selectedList) {
-            getComment()
+    },[alertModal])
+    
+    useEffect(()=>{
+        if(alertSetting.alertTxt!==''){
+            setAlertModal(true)
+        }else {
+            setAlertModal(false)
         }
-      },[commentPage])
+    },[alertSetting])
 
-      const [openRight, setOpenRight] = useState(false);
+    /** 알림창 ▲ ============================================================= */
 
-      useEffect(()=>{
+     /** 경고창 ▼ ============================================================= */
+     const [warningModal, setWarningModal] = useState(false)
+     const [warningTxt, setWarningTxt] = useState('')
 
-        console.log(selectedList,'=========================================')
-        if(selectedList.faqId==='') {
-            setOpenRight(false)
-        }else if(selectedList.faqId!=='' && !isFrequent){
-            setOpenRight(true)
+     useEffect(()=>{
+         if(warningTxt!=='') {
+             setWarningModal(true)
+         }
+     },[warningTxt])
+
+     useEffect(()=>{
+         if(!warningModal) {
+             setWarningTxt('')
+         }
+     },[warningModal])
+
+      /** 경고창 ▲ ============================================================= */
+
+    useEffect(()=>{
+
+    if(selectedList.faqId==='') {
+        setOpenRight(false)
+    }else if(selectedList.faqId!=='' && !isFrequent){
+        setOpenRight(true)
+    }
+    },[selectedList.faqId])
+
+    const listRef = useRef(null)
+    useEffect(()=>{
+    const refElement = listRef.current;
+    if(refElement) {
+        let top = refElement.getBoundingClientRect();
+        setHoveredItemPosition({ y : top})
+    }
+    },[])
+
+    /** 모달창 실행시 외부 스크롤 방지 */
+
+    useEffect(()=>{
+        const elem = document.querySelector('html')
+        console.log(elem)
+        if(maximizing) {
+            elem.style.overflow='hidden';
+        }else {
+            elem.style.overflow='';
         }
-      },[selectedList.faqId])
+    },[])
 
-      const listRef = useRef(null)
-      useEffect(()=>{
-        const refElement = listRef.current;
-        if(refElement) {
-            let top = refElement.getBoundingClientRect();
-            setHoveredItemPosition({ y : top})
-        }
-      },[])
-
-      console.log('frewunerwesdfmvlsdmfklsdmklf',frequentList)
-      console.log('consoleconsoleconsole',boardData)
     return (
         <>
         
-        <Header />
-        <Style selectId={selectedList?.faqId} openRight={openRight}>
+       
+        <Style detail={selectedList?.faqId} openright={openRight}>
         <div className="inner-container">
-            <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
+            <Top searchArea={true} auth={ auth=== 1 ? true : false} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Top Area */}
             <div className="faq-nav">
                 <div className="faq-lists-wrapper" ref={listRef}>
@@ -869,7 +899,6 @@ function Faq() {
                             onChange={(e)=>setPage(e,1)} // 페이지 변경을 핸들링하는 함수
                         />
                     }
-                    {/* <AgGrid data={boardData} column={column} paging={true} /> */}
                 </div>
                 
                {
@@ -883,7 +912,7 @@ function Faq() {
                         <button className="maximizing-btn" onClick={()=>{setMaxmizing(true)}}>
                         <img src={Maximize} alt="minimize-btn"/> Full Screen
                         </button> 
-                        <img src={Close} alt="close-btn" onClick={clearState} />
+                        <img className="cursor-btn" src={Close} alt="close-btn" onClick={clearState} />
                     </div>
                     <p>{selectedList.subject}</p>
                     {
@@ -894,7 +923,7 @@ function Faq() {
                                     <img src={Attachment} alt="attachment"/> 
                                     <span>Attachment</span>
                                     <span className="custom-flex-item faq-attach-down">
-                                        <span >{`(${idx+1})`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="faq-attach custom-flex-item" onClick={()=>downloadAttachment(file.uploadPath)}><p>{file.fileName}</p><img src={Download} alt='download_attachment'/></span>
+                                        <span >{`(${idx+1})`}</span><p className="custom-hyphen custom-self-align ">-</p><span className="faq-attach custom-flex-item cursor-btn" onClick={()=>setWarningTxt('no download path.')}><p>{file.fileName}</p><img src={Download} alt='download_attachment'/></span>
                                     </span>
                                 </div> 
                             )
@@ -922,7 +951,7 @@ function Faq() {
                     <div className={`faq-comment-list ${isLoadingComment ? 'halfOpacity':''}`}>
                         <ul>
                             {
-                                commentList.length !==0 &&
+                                // commentList.length !==0 &&
                                  commentList.map((comment,idx)=>{
                                     return(
                                         <li key={generateRandomString(idx)}>
@@ -1035,8 +1064,10 @@ function Faq() {
                 &&
                 <MaximalView data={selectedList} onClose={()=>{setMaxmizing(false); clearState(); setIsFrequent(false)}} onMinimizing={()=> isFrequent ? (setMaxmizing(false), setIsFrequent(!false)) : setMaxmizing(false)} page='faq'/>
             }
-            <Zendesk />
-
+            {
+                warningModal &&
+                <Warning text={warningTxt} onClose={()=>setWarningModal(false)} />
+            }
             <Tab />
         </Style>
         </>
@@ -1046,37 +1077,37 @@ function Faq() {
 export default Faq
 
 const Style = styled.div`
-    #list-item-${props=>props.selectId} {
+    #list-item-${props=>props.detail} {
         background : #FAF1F4; color : #BB0841; 
     }
     .faq-left {
-        width: ${props => (props.openRight ? '49%' : '100%')};
+        width: ${props => (props.openright ? '49%' : '100%')};
     }
    
     .col-1 {
-        width: 75px;
+        width: ${props => (props.openright ? '10%' : '5%')};
     }
     .col-2 {
-        min-width: 160px;
+        width: 10%;
     }
     .col-3 {
-        width: 734px; 
+        width :${props => (props.openright ? '60%' : '50%')};
     }
     .col-4 {
-        width: 194px;
+        width: 10%;
     }
     .col-5 {
-        width: 122px;
+        width: 10%;
     }
     .col-6 {
-        width: 115px;
+        width: ${props => (props.openright ? '15%' : '5%')};
     }
     .col-7 {
-        width: 160px;
+        width: ${props => (props.openright ? '15%' : '10%')};
     }
     .board-list {
-        padding : ${props => (props.openRight ? '17px 30px;':'10px 30px;')}
-        max-height :  ${props => (props.openRight ? '64px;':'42px;')}
-        height :  ${props => (props.openRight ? '64px;':'42px;')}
+        padding : ${props => (props.openright ? '17px 30px;':'10px 30px;')}
+        max-height :  ${props => (props.openright ? '64px;':'42px;')}
+        height :  ${props => (props.openright ? '64px;':'42px;')}
     }
 `

@@ -12,7 +12,7 @@ import { styled } from "styled-components";
 import {UserContext} from '../hooks/UserContext'
 import moment from "moment";
 import Alert from "./Alert";
-import { generateRandomString, axiosInstance } from "../utils/CommonFunction";
+import { generateRandomString, fetchInstance } from "../utils/CommonFunction";
 
 /**
  * 작성자 : 이은정
@@ -352,7 +352,7 @@ function Editor({ period, data, setData, range, isChange, isWriter, onSave, onCl
                                                 formdata.append("directoryType", 'notice');
                                     
                                                 // 파일업로드 API 호출
-                                                axiosInstance.post('/fileUpload', formdata).then(res => {
+                                                fetchInstance.post('/fileUpload', formdata).then(res => {
                                                     let resData = res.data;
                                                     // console.log('idx ---->', idx)
 

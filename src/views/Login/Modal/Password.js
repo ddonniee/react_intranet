@@ -3,7 +3,7 @@ import React, {useState, useEffect} from "react";
 import { styled } from "styled-components";
 import Close from '../../../assets/svgs/icon_close.svg'
 import SelectBox from "../../../components/SelectBox";
-import { axiosInstance, generateRandomString } from "../../../utils/CommonFunction";
+import { fetchInstance, generateRandomString } from "../../../utils/CommonFunction";
 
 const Password = props => {
 
@@ -50,7 +50,7 @@ const Password = props => {
         
         console.log(Object.fromEntries(formData));
         
-        axiosInstance.post("/login/findPassword", formData)
+        fetchInstance.post("/login/findPassword", formData)
         .then(res => {
             setResultMsg(res.data.msg);
         })

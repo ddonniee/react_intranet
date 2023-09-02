@@ -1,7 +1,7 @@
 @import '../variables';
 
 .top-nav {
-    background-color: $primary-color-red; 
+    background-color: $primary-color-grey; 
     display: flex;
     box-sizing: border-box;
     justify-content: center;
@@ -11,28 +11,27 @@
 .top-nav-wrapper {
     display: flex; 
     box-sizing: border-box;
-    width: 1560px;
-
+    width: 100%;
+    padding: 0 5%;
     * {
         z-index: 1;
     }
 }
 
 .nav-logo {
-    height: 100%; font-weight: 600; font-size: 20px;
-    background-color: $primary-color-grey; color: white; 
-    align-items: center; display: flex; justify-content: flex-end; 
+    height: 100%; font-weight: 600; font-size: 1.2rem;
+    color: white; justify-content: space-between;
+    align-items: center; display: flex; 
     cursor: pointer;
-    padding-right: 27px;
+    padding-right: 3rem;
+    p {
+        white-space: nowrap;
+        font-size: 0.9rem; padding-top: 0.3rem;
+    }
+    img {
+        width: 33%; padding: 5%;
+    }
 }
-
-.nav-logo-background {
-    background-color: $primary-color-grey;
-    width: 700px;
-    height: 54px;
-    position: absolute;
-    left: 0;
-} 
 
 .division {
     width: 1px; background-color: rgba(255, 255, 255, 0.15);
@@ -43,26 +42,25 @@ ul, li {
 }
 
 .nav-category {
-    align-self: center; height: 100%;
+    align-self: center; height: 100%; width: 100%;
 }
 
 .nav-lists,
 .more-lists {
     display: flex;
-    align-items: center;
     height: 100%;
-    justify-content: center;
     // margin-right: 85px;
-    margin-right: 163px;
 }
-
+.more-lists {
+    justify-content: center;
+    margin-right: 15rem;
+}
 .nav-lists  > li {
     color: white; height: 100%;
     display: flex;
     align-items: center;
     justify-content: center; position: relative;
     cursor: pointer;
-    background-color: $primary-color-red; 
 }
 
 .nav-division {
@@ -104,14 +102,14 @@ ul, li {
 }
 
 .lower-tab {
-    background-color: $secondary-color-gery;
+    background-color: $secondary-color-gery; padding: 0 5%;
     width: 100%; border-bottom: 1px solid $border-color-gery; position: relative;
 }
 
 .more-lists > li {
     text-align: center;  font-weight: 600;
     font-size: 21px; position: relative;
-
+    width: 15.5%;
     height: 100%;
     display: flex;
     align-items: center;
@@ -214,11 +212,10 @@ ul, li {
         height: 24px; margin: 0 14px;
     }
     .nav-lists  > li {
-        width: 240px; font-weight: 600; font-size: 21px; line-height: 24px;
+        width: 20%; font-weight: 600; font-size: 21px; line-height: 24px;
     }
     .more-lists > li {
-        // width: 246px; 
-        width: 240px;
+        width: 15%;
     }
     .nav-division {
         width: 1px; height: 40px; background-color:  rgba(255, 255, 255, 0.2);
@@ -262,43 +259,31 @@ ul, li {
 } 
 
 /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/ 
-@media all and (min-width:768px) and (max-width:1023px) {
+@media all and (max-width:1023px) {
     .top-nav {
         height: 50px; 
-    }
-    .top-nav-wrapper {
-        width: 880px;
-    }
-    .nav-logo-background {
-        width: 500px;
-        height: 50px;
-    } 
-    .nav-logo {
-        width: 157px; 
-        padding-right: 5px;
-        margin-right: -30px;
-    } 
-    .nav-logo img{
-        width : 57px;
-    }
-    .nav-logo > p {
-        font-size: 15px;  padding: 0 8px;
-    }
-    .division {
-        height: 16px; margin: 0 4px;
-    }
-    .nav-category {
-        height: 50px; flex-grow: 1;
-    }
-    .nav-lists  > li {
-        width: 120px; font-weight: 600; font-size: 15px; line-height: 24px;
+        .top-nav-wrapper {
+            width: 880px;
+            .nav-logo {
+            } 
+            .division {
+                height: 16px; margin: 0 4px;
+            }
+            .nav-category {
+                height: 50px; flex-grow: 1;
+                .nav-lists  > li {
+                    width: 120px; font-weight: 600; font-size: 15px; line-height: 24px;
+                }
+                .nav-division {
+                    width: 1px; height: 40px; background-color:  rgba(255, 255, 255, 0.2);
+                }
+            }
+        }
     }
     .more-lists > li {
         width: 120px; font-size: 12px; 
     }
-    .nav-division {
-        width: 1px; height: 40px; background-color:  rgba(255, 255, 255, 0.2);
-    }
+    
     .nav-info {
         min-width: 15%;
     }
@@ -321,7 +306,7 @@ ul, li {
         position: absolute;
         width: 74px;
         bottom: 0px;
-        background: $primary-color-red;
+        background: $primary-color-grey;
         z-index: 100;
     }
     .link-icon {
@@ -344,7 +329,7 @@ ul, li {
         top: 102%;
     
         .third-tab {
-            padding-right: 85px;
+            padding-right: 238px;
             
             ul {
                 width: 120px;
@@ -376,66 +361,3 @@ ul, li {
         }
     }
 } 
-
-/* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/ 
-@media all and (max-width:767px) {
-    .top-nav {
-        height: 50px; 
-    }
-    .nav-logo img{
-        width : 57px;
-    }
-    .nav-logo > p {
-        font-size: 10px;  padding: 0 8px;
-    }
-    .division {
-        height: 16px; margin: 0 4px;
-    }
-    .nav-category {
-        height: 50px; flex-grow: 1;
-    }
-    .nav-lists  > li {
-        width: 108px; font-weight: 600; font-size: 11px; line-height: 24px;
-    }
-    .more-lists > li {
-        width: 110px; font-size: 11px; 
-    }
-    .nav-division {
-        width: 1px; height: 40px; background-color:  rgba(255, 255, 255, 0.2);
-    }
-    .nav-info {
-        min-width: 15%;
-    }
-    .nav-info .profile-circle {
-        height: 30px;
-        width: 30px;
-    }
-    .lower-tab {
-        height: 37px;
-    }
-    .more-lists {
-        left: 154px;
-    }
-    .nav-underline {
-        height: 2px;
-        position: absolute;
-        width: 74px;
-        bottom: 0px;
-        background: $primary-color-red;
-        z-index: 100;
-    }
-    .link-icon {
-        position: absolute;
-    top: 20px;
-    right: 10px;
-    }
-    .nav-modal{
-        width: 103px;  top: 54px;  left: -14px;  padding: 12px 12px 0 12px;
-    }
-    .nav-modal > img {
-        left: 58px;
-    }
-    .nav-modal li {
-        padding-bottom: 19px; font-size: 11px;
-    }
-}

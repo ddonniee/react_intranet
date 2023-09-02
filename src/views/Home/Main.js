@@ -23,10 +23,6 @@ import Banner_1 from '../../assets/svgs/banner_1.svg';
 import Banner_2 from '../../assets/svgs/banner_2.svg';
 import Prev from '../../assets/svgs/icon_mainprev.svg';
 import Next from '../../assets/svgs/icon_mainnext.svg';
-import Pause from '../../assets/svgs/icon_bannerpause.svg';
-import Play from '../../assets/svgs/icon_bannerplay.svg';
-import B_Prev from '../../assets/svgs/icon_bannerprev.svg';
-import B_Next from '../../assets/svgs/icon_bannernext.svg';
 
 function Main() {
 
@@ -277,7 +273,7 @@ function Main() {
                 <Top auth={1} searchArea={false}/>
                 {/** Banner */}
                 <div className="banner">
-                    <Carousel images={bannerList} setting={bannerSettings} setRef={setRef} setIdx={setCurrentSlide} />
+                    {/* <Carousel images={bannerList} setting={bannerSettings} setRef={setRef} setIdx={setCurrentSlide} />
                     <div className='banner-btn'>
                         <p className='banner-index'><span>{`0${currentSlide}`}</span>{` / 0${bannerList.length}`}</p>
                         <img src={B_Prev} alt="prev" onClick={prev}/> 
@@ -288,19 +284,18 @@ function Main() {
                             <img src={Play} alt="play" onClick={play}/> 
                         }
                         <img src={B_Next} alt="next" onClick={next}/> 
-                    </div>
+                    </div> */}
                 </div>
 
                 {/** Notice, FAQ, CS Talk */}
                 <div className="card">
-                    {/** Notice */}
                     <div className="card-notice">
                         <div className='title'>
                             <p className='sub-title'><NoticeIcon /> Notice</p>
                             <MoreIcon className="moreicon" onClick={() => handleClickLink('/board/notice')} />
                         </div>
                         <div className='list'>
-                            {
+                            {/* {
                                 noticeData.length > 0 && 
                                     <>
                                     <div className='left'>
@@ -336,7 +331,7 @@ function Main() {
                                         </ul>
                                     </div>
                                     </>
-                            }
+                            } */}
                         </div>
                     </div>
                     {/** FAQ */}
@@ -346,14 +341,13 @@ function Main() {
                             <MoreIcon className="moreicon" onClick={() => handleClickLink('/process&support/faq')} />
                         </div>
                         <div className='list'>
-                            {
+                            {/* {
                                 faqData.length > 0 &&
                                 <>
                                 <div className='mainlist' onClick={() => handleClickLink('/process&support/faq')}>
                                     <p className='bold'>
                                         { faqData[0].subject.length > 80 ? (faqData[0].subject).substr(0, 80) + '...' : faqData[0].subject }
                                         { faqData[0].new ? <NewIcon className='newicon' /> : null }
-                                        {/* <NewIcon className='newicon'/> */}
                                     </p>
                                 </div>
                                 <ul className='sublist'>
@@ -367,7 +361,7 @@ function Main() {
                                     }
                                 </ul>
                                 </>
-                            }
+                            } */}
 
                         </div>
                     </div>
@@ -382,7 +376,6 @@ function Main() {
                         </div>
                     </div>
                 </div>
-                <Zendesk />
             </div>
             <Tab />
         </div>
@@ -390,3 +383,13 @@ function Main() {
 }
 
 export default Main;
+
+// function Main() {
+//     return(
+//         <div>
+//             Main
+//         </div>
+//     )
+// }
+
+// export default Main

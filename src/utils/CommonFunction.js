@@ -164,3 +164,30 @@ export const removeHTMLTags = (htmlString) => {
   const doc = new DOMParser().parseFromString(htmlString, 'text/html');
   return doc.body.textContent || '';
 }
+
+/** fetch instance */
+export const fetchInstance = (url, formData) => {
+  
+  console.log(formData)
+  console.log(url)
+  var config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            headers: { 
+              "Content-Type": "application/json"
+            },
+            body : JSON.stringify(formData)
+            };
+
+  return fetch(process.env.REACT_APP_SERVER_URL+url, formData && config)
+    .then((response) => {
+      console.log(response)
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+};

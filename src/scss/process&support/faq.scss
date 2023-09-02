@@ -85,7 +85,7 @@
     line-height: 30px;
 }
 .faq-contents {
-    display: flex; justify-content: space-between; overflow: hidden;
+    display: flex; justify-content: space-between; overflow: hidden; width: 100%;
     .board-table {
         border-top: 2px solid $primary-color-red;  background: #FBFBFB; 
         padding: 10px 30px; text-align: center;
@@ -99,14 +99,18 @@
         ul:not(:nth-child(3)) {
             text-align: center;
         }
-        li > *{
-            padding: 0 5px;
+        li {
+            text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+            & > *{
+                padding: 0 5px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+            }
         }
         span {
             color: $board-color-txt;
         }
         .col-3  {
            span {
+            
             font-size: 16px; font-style: normal; font-weight: 600; line-height: normal; color: #333333;
            }
            img {
@@ -221,7 +225,8 @@
 }
 .faq-right-top {
      border-bottom: 1px solid $border-color-gery;
-    min-height: 100px; z-index: 300;
+    min-height: 100px; 
+    // z-index: 300;
     padding: 15px 30px;
     // position: sticky;
     top: 0;  display: inline-table;

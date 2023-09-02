@@ -16,7 +16,7 @@ import Tab from "../../components/Tab";
 import NewFaq from "./NewFormat/NewFaq";
 import NewCategory from "./NewFormat/NewCategory";
 // Utils
-import { generateRandomString,axiosInstance2, axiosInstance } from "../../utils/CommonFunction";
+import { generateRandomString,axiosInstance2, axiosInstance, fetchInstance } from "../../utils/CommonFunction";
 // hooks
 import {useHorizontalScroll} from '../../hooks/useSideScroll'
 // Icons 
@@ -141,7 +141,6 @@ function FaqSetting() {
         type : 'S',
     })
     const getList = () =>{
-
         const formData = new FormData();
 
         for (let key in reqData) {
@@ -149,20 +148,26 @@ function FaqSetting() {
               formData.append(key, reqData[key]);
             }
         }
-        axiosInstance2.post('/faq/list', formData,config)
-        .then(function (response){
-            let resData = response.data;
-            if(resData.code===200) {
-                let data = resData.result
-                setBoardData(data.list)
-                console.log(data.list)
-            }else {
-                console.log(resData)
-            }
+      
+        config.data = formData
+        fetchInstance('/faqData')
+        
+        .then(function (response) {
+        let resData = response.data;
+        setBoardData(response);
+        console.log(boardData[9].createdAt,now)
+        let date = moment(boardData[9].createdAt).format('YYYY-MM-DD HH:mm:ss')
+        console.log(date,now)
+        console.log(date>now)
+        if (resData.code === 200) {
+            let data = resData.result;
+        } else {
+            console.log(resData);
+        }
         })
-        .catch(function(error) {
-            console.log('error',error)
-        })
+        .catch(function (error) {
+        console.log('error', error);
+        }); 
     }
     
     const getCategory = () =>{
@@ -192,22 +197,20 @@ function FaqSetting() {
 
         formData.append('faqId',id)
 
-        axiosInstance2.post('/faq/detail',formData,config)
-        .then(function (res){
-            let resData = res.data;
-            console.log('detail : ',res)
-            if(resData.code===200) {
-                let data = resData.result
-                setSelectedList(data)
-                setContent({
-                    ...content,
-                    title : data.subject,
-                    content : data.content,
-                    attachments : data.attachments,
-                    categoryId : data.categoryId,
-                })
-            }else {
-                console.log(resData)
+        fetchInstance('/faqDetail', config)
+        .then(function (response){
+            for(let i=0; i<response.length; i++) {
+                if(id===response[i].faqId) {
+                    console.log(response,id)
+                    setSelectedList(response[i])
+                    setContent({
+                        ...content,
+                        title : response[i].subject,
+                        content : response[i].content,
+                        attachments : response[i].attachments,
+                        categoryId : response[i].categoryId,
+                    })
+                }
             }
         })
         .catch(function(error) {
@@ -498,13 +501,16 @@ function FaqSetting() {
         } else {
 
             const formData = new FormData();
-            const url = mode==='edit' ? '/faq/update' : '/faq/insert'
+            // const url = mode==='edit' ? '/faq/update' : '/faq/insert'
+            const url = mode = '/faqData'
             for (let key in content) {
                 if (content.hasOwnProperty(key)) {
                     key!=='subCategoryId' && formData.append(key, content[key]);
                 }
+                formData.append("id",content[key])
             }
-           
+        
+           console.log(Object.fromEntries(formData))
             if(mode==='edit') {
                 formData.append('faqId',selectedList.faqId)
             }
@@ -514,17 +520,10 @@ function FaqSetting() {
             if(content.top5ListId==='') {
                 formData.set('faqTopId',null)
             }
-            // faq 등록/수정faqTopId
-            axiosInstance2.post(url, formData,config).then(res => {
-                let resData = res.data;
-                if(resData.code == 200) {
-                    clearState(3)
-                } else {
-                    onConfirmHandler(7,resData.msg)
-                }
-            }).catch(error => {
-                console.log('error', error)
-            })  
+            fetchInstance(url,formData).then(response=>{
+                console.log(response)
+            })
+         
         }
     }
 
@@ -620,10 +619,12 @@ function FaqSetting() {
     //   }, []);
 
 
+    useEffect(()=>{
+        console.log('cccccccccc')
+        console.log(content)
+    },[content])
     return (
         <>
-        
-        <Header />
         <Style selectid={selectedList.faqId} openright={(openRight || openFaqCreator || openCategory )? 1 : 0}>
         <div className="inner-container">
         <Top searchArea={true} auth={ auth=== 1 ? true : false} options={subsidiary} handleChange={handleSelectBox} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
@@ -783,7 +784,6 @@ function FaqSetting() {
                 alertModal &&
                 <Alert alertTxt={alertSetting.alertTxt} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt} onClose={()=>alertSetting.onClose()} />
             }
-            <Zendesk />
             <Tab />
         </div>
         </Style>

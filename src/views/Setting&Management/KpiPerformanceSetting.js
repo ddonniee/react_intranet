@@ -344,8 +344,6 @@ function KpiPerformanceSetting() {
                         </button>
                     </div>
                 </div>
-
-                <Zendesk />
             </div>
             {
                 alertModal

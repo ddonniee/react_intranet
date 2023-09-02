@@ -144,7 +144,6 @@ const [boardData, setBoardData] = useState([
 ])
       return (
         <>
-        <Header />
         <Style>
         <div className="inner-container pdt-container">
             <Top auth={1} searchArea={false}/>

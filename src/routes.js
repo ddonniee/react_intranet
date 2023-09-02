@@ -31,7 +31,7 @@ const CommonCodeManagement =  React.lazy(()=>import('./views/Setting&Management/
  * 컴포넌트명 : routes.js
  * 컴포넌트기능 : 라우팅
  * 작성자 : 이은정
- * 작성일 : 2023.05.18
+ * 작성일 : 2023.07.15
  */
 const routes = [
     { path:'/', exact: true, name:'Main', element: Main}, 

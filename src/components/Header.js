@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components';
 
-import Logo from '../assets/svgs/icon_logo.svg'
+import Logo from '../assets/svgs/icon_logo.png'
 import Profile from '../assets/svgs/icon_profile.svg'
 import Seeker from '../assets/svgs/icon_seeking.svg'
 import Link from '../assets/svgs/icon_link.svg'
@@ -203,19 +203,13 @@ function Header() {
         
     return (
         <Nav upperdepth={currentTab.upperTab} lowerdepth={currentTab.lowerTab} thirdDepth={thirdMenuList?.thirdMenuList}>
-        <div className="top-nav" >
-            <div className='nav-logo-background'></div>
+        <div className="top-nav">
             <div className='top-nav-wrapper'>
                 <div className="nav-logo" onClick={handleClickLogo}>
                     <img src={Logo} alt='logo'/>
-                    <div className='division'></div>
-                    <p>CS PORTAL</p>
+                    <p>PORTAL SITE</p>
                 </div>
-            
-                {
-                    !isMobile
-                    &&
-                    <div className="nav-category">
+                <div className="nav-category">
                     <ul className='nav-lists'>
                     <li id='support'  onClick={handleClickTab}>Support{currentTab.upperTab==='support' && <div className='nav-underline'></div>}</li>
                     <li id='business' onClick={handleClickTab}>Business<img className='link-icon' src={Link} alt='link' /><div className='nav-division'></div></li>
@@ -223,7 +217,7 @@ function Header() {
                     <li id='training' onClick={handleClickTab}>Training<img className='link-icon' src={Link} alt='link' /><div className='nav-division'></div></li>
                 </ul>
                 </div>
-                }
+                
                 
                 <div className="nav-info">
                     {
@@ -270,7 +264,7 @@ export default Header
 const Nav = styled.div`
     #${props => props.upperdepth} {
         background-color: white; 
-        color: #BB0841; 
+        color: #323232; 
     }
 
     ${props => props.lowerdepth !== '' && `#${props.lowerdepth} > p { 

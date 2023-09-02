@@ -15,11 +15,12 @@ import Dislike from '../../assets/svgs/icon_dislike.svg'
 import Disliked from '../../assets/svgs/icon_disliked.svg'
 
 // utrils
-import { downloadAttachment,generateRandomString, convertFileSize, axiosInstance2 } from "../../utils/CommonFunction";
+import { downloadAttachment,generateRandomString, convertFileSize, axiosInstance2,fetchInstance } from "../../utils/CommonFunction";
 import moment from "moment";
 //compomnent
 import Viewer from "../../components/Viewer";
 import Alert from "../../components/Alert";
+import Warning from "../../components/Warning";
 
 function MaximalView(props) {
 
@@ -58,7 +59,7 @@ function MaximalView(props) {
             },
             data : formData
             };
-        axiosInstance2(`/${page}/detail`, config)
+        fetchInstance(`/${page}detail`, config)
         .then(function (response){
             let resData = response.data;
             if(resData.code===200) {
@@ -238,7 +239,23 @@ function MaximalView(props) {
             btnTxt : 'Close',
             confirmTxt : ''
         })
-    
+
+        /** Warning Handler */
+        const [warningModal, setWarningModal] = useState(false)
+        const [warningTxt, setWarningTxt] = useState('')
+
+        useEffect(()=>{
+            if(warningTxt!=='') {
+                setWarningModal(true)
+            }
+        },[warningTxt])
+
+        useEffect(()=>{
+            if(!warningModal) {
+                setWarningTxt('')
+            }
+        },[warningModal])
+
     const onConfirmHandler=(id)=>{
             setAlertSetting({
                 ...alertSetting,
@@ -320,9 +337,9 @@ function MaximalView(props) {
              <div className="board-view-top">
                 <div className="board-btn-area custom-flex-item custom-align-item custom-justify-between">
                     <button className="board-minimize-btn" onClick={onMinimizing}>
-                        <img src={Minimize} alt="minimize-btn" className="screen-icon"/> Exit Full Screen
+                        <img className="cursor-btn" src={Minimize} alt="minimize-btn" className="screen-icon"/> Exit Full Screen
                     </button>
-                    <img src={Close} alt="minimize-btn" onClick={onClose} />
+                    <img className="cursor-btn" src={Close} alt="minimize-btn" onClick={onClose} />
                 </div>
                 <p className="board-title">{detail.subject}</p>
                 <p className="board-title-detail">
@@ -337,7 +354,7 @@ function MaximalView(props) {
                             fileStore.length!==0 &&
                             fileStore.map((file,idx)=>{
                                 return(
-                                    <span className="board-attach-box" key={generateRandomString(idx)} onClick={()=>downloadAttachment(file.uploadPath)}> 
+                                    <span className="board-attach-box" key={generateRandomString(idx)} onClick={()=>setWarningTxt('no download path.')}> 
                                         <img src={Attachment} alt="attachment" className="attach-icon"/>
                                         <p>{`${file.fileName} ${file?.fileSize ? `(${convertFileSize(file.fileSize)})` : ''}`}</p>
                                         <span className="board-attach-down" onClick={() => downloadAttachment(file.uploadPath)}> <img src={Download} alt="attachment-download"/> </span>
@@ -482,8 +499,13 @@ function MaximalView(props) {
                 &&
                 <Alert alertTxt={alertSetting.alertTxt} onClose={()=>setAlertModal(false)} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt}/>
             }
+            {
+                warningModal &&
+                <Warning text={warningTxt} onClose={()=>setWarningModal(false)} />
+            }
 
         </div>
     )
 }
 export default MaximalView;
+

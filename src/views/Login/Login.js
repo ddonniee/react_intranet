@@ -18,7 +18,7 @@ import Reload from '../../assets/svgs/icon_reload.svg'
 import Link from '../../assets/svgs/icon_more.svg'
 import Check from '../../assets/svgs/icon_check.svg'
 // functions
-import { axiosInstance, decryptData, detectUserAgent, encryptData, generateRandomString, tokenDecrypt, userinfoDecrypt } from "../../utils/CommonFunction";
+import { fetchInstance, decryptData, detectUserAgent, encryptData, generateRandomString, tokenDecrypt, userinfoDecrypt } from "../../utils/CommonFunction";
 import axios from "axios";
 
 
@@ -52,7 +52,7 @@ const Login = () =>{
             withCredentials: true,
         }
 
-        axiosInstance.post("/login/doLogin", jsonToFormData(loginInfo), config)
+        fetchInstance.post("/login/doLogin", jsonToFormData(loginInfo), config)
         .then(res => {
             let resData = res.data;
             if (resData.code !== 200) {  // 로그인 실패
@@ -170,10 +170,6 @@ const Login = () =>{
     return (
         <>
         <Style disabled={(loginInfo.id === '' || loginInfo.pw ==='') && true} >
-            {
-                isMobile &&
-                <Header />
-            }
             <div className="inner-container">
                 <div className="login-background">
                     <div className="login-area">
@@ -230,11 +226,6 @@ const Login = () =>{
                     </div>
                    
                 </div>
-                {
-                    !isMobile
-                    &&
-                    <Zendesk />
-                }
                     {
                         failModal
                         &&

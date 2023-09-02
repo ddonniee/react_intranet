@@ -354,7 +354,6 @@ function UserManagement() {
 
     return (
         <div className='user-container'>
-            <Header />
             <div className='inner-container'>
                 {/** auth 권한체크로 수정 필요 */}
                 <Top auth={1} searchArea={false}/>
@@ -389,7 +388,6 @@ function UserManagement() {
                         <AgGrid data={rowData} column={column} paging={false} changeValue={setRowData} />
                     </div>
                 </div>
-                <Zendesk />
             </div>
             <Tab />
         </div>
