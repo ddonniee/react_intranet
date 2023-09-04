@@ -103,7 +103,7 @@
             }
         }
         .card-faq, .card-cstalk {
-            width: 22.5%;
+            width: 49%;
         }
 
         .card-cstalk {
@@ -213,6 +213,7 @@
                         font-weight: 600;
                         font-size: 16px;
                         line-height: 19px;
+                        text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
                     }
                     svg { 
                         margin-right: 5px;

@@ -1,11 +1,11 @@
 import { useContext, useState, useEffect, useLayoutEffect } from "react"
-import { axiosInstance, axiosJsonInstance, axiosInstance2 } from '../../utils/CommonFunction';
+import { axiosInstance, axiosJsonInstance, axiosInstance2, fetchInstance } from '../../utils/CommonFunction';
 import moment from "moment/moment";
 
-import Header from '../../components/Header';
 import Top from '../../components/Top';
 import Tab from '../../components/Tab';
 import Carousel from '../../components/Carousel';
+import Alert from "../../components/Alert";
 
 import { generateRandomString, downloadAttachment, removeHTMLTags } from "../../utils/CommonFunction"
 import { UserContext } from "../../hooks/UserContext";
@@ -45,10 +45,9 @@ function Main() {
     const USER_CENTER_TYPE = 'ASC' // 로그인유저 센터타입
 
     const config = { // axios header
-        maxBodyLength: Infinity,
+        method: 'post',
         headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + process.env.REACT_APP_TEMP_JWT_LGEKR,
+            "Content-Type": "application/json"
         }
     }
 
@@ -112,37 +111,12 @@ function Main() {
         return dayDifference < 7 ? true : false;
     }
 
-    const getNoticeList = () => {
-        let sdata = new FormData();
-        // for(const key in noticeSearchData) {
-        //     sdata.append(key, noticeSearchData[key])
-        // }
-        // console.log('search result --->', Object.fromEntries(sdata))
-
-        // 공지사항 목록 조회 API
-        axiosInstance.post('/notice/list/main', sdata, config).then(res => {
-            const data = res?.data.result;
-            console.log('공지사항 목록 ---->', data)
-            
-            const newArray = data.map((obj, index) => ({
-                ...obj,
-                noticeContent: removeHTMLTags(obj.noticeContent),
-                new: isWithin7Days(obj.createdAt),
-            }));
-            setNoticeData(newArray);
-            
-        }).catch(error => {
-            console.error(error);
-        });
-    }
-
     /* 하단 FAQ 리스트 */
     const [faqSearchData, setFaqSearchData] = useState({ // 검색데이터
         page: 1,
         type: 'F',
     });
     const [faqData, setFaqData] = useState([]); // faq 목록
-
     const getFaqList = () => {
         let sdata = new FormData();
         // for(const key in faqSearchData) {
@@ -151,19 +125,24 @@ function Main() {
         // console.log('search result --->', Object.fromEntries(sdata))
 
         // FAQ 목록 조회 API
-        axiosInstance.post('/faq/list/main', sdata, config).then(res => {
-            const data = res?.data.result.list;
-            console.log('FAQ 목록 ---->', data)
-            
-            const newArray = data.map((obj, index) => ({
-                ...obj,
-                new: isWithin7Days(obj.createdAt),
-            }));
-            setFaqData(newArray.slice(0, 5));
-            // setFaqData(newArray)
-            
+        fetchInstance('/faqData')
+        .then(res => {
+            console.log('FAQ 목록 ---->', res)
+            // 실제 API 통신시 status로 연결 상태 확인
+            if(res) {
+                setFaqData(res)
+            }else {
+                setAlertSetting({
+                    ...alertSetting,
+                    alertTxt : 'Client Error'
+                })
+            }
         }).catch(error => {
             console.error(error);
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt : 'Server Error'
+            })
         });
     }
 
@@ -181,16 +160,10 @@ function Main() {
         // console.log('search result --->', Object.fromEntries(sdata))
 
         // cstalk 목록 조회 API
-        axiosInstance.post('/csTalk/list/main', sdata, config).then(res => {
-            const data = res?.data.result;
-            console.log('CS Talk 목록 ---->', data)
-
-            const newArray = data.map((obj, index) => ({
-                ...obj,
-                content: removeHTMLTags(obj.content),
-                new: isWithin7Days(obj.createdAt),
-            }));
-            setCsData(newArray);
+        fetchInstance('/cstalkData')
+        .then(res => {
+            console.log('CS Talk 목록 ---->', res)
+            setCsData(res);
             
         }).catch(error => {
             console.error(error);
@@ -254,8 +227,38 @@ function Main() {
         nextArrow: <NextIcon />,
     };
 
+    /** 알림창 ▼ ============================================================= */
+
+    const [alertModal, setAlertModal] = useState(false)
+    const [alertSetting, setAlertSetting] = useState({
+        alertTxt : '',
+        onConfirm : function() {},
+        isDoubleBtn : false,
+        btnTxt : 'Close',
+        confirmTxt : ''
+    })
+    useEffect(()=>{
+        if(!alertModal) {
+           setAlertSetting({
+            alertTxt : '',
+            onConfirm : function() {},
+            isDoubleBtn : false,
+            btnTxt : 'Close',
+            confirmTxt : ''
+           })
+        }
+    },[alertModal])
+    
+    useEffect(()=>{
+        if(alertSetting.alertTxt!==''){
+            setAlertModal(true)
+        }else {
+            setAlertModal(false)
+        }
+    },[alertSetting])
+    /** 알림창 ▲ ============================================================= */
+
     useLayoutEffect(() => {
-        getNoticeList();
         getFaqList();
         getCsList();
     }, []);
@@ -287,51 +290,7 @@ function Main() {
 
                 {/** Notice, FAQ, CS Talk */}
                 <div className="card">
-                    <div className="card-notice">
-                        <div className='title'>
-                            <p className='sub-title'><NoticeIcon /> Notice</p>
-                            <MoreIcon className="moreicon" onClick={() => handleClickLink('/board/notice')} />
-                        </div>
-                        <div className='list'>
-                            {/* {
-                                noticeData.length > 0 && 
-                                    <>
-                                    <div className='left'>
-                                        <div className='circle'>
-                                            <p className='day'>{ moment(noticeData[0].createdAt).format('DD') }</p>
-                                            <p className='month'>{ moment(noticeData[0].createdAt).format('YYYY.MM') }</p>
-                                            <IntersectIcon />
-                                        </div>
-                                    </div>
-                                    <div className='right'>
-                                        <div className='mainlist' onClick={() => handleClickLink('/board/notice')}>
-                                            <p className='bold'>
-                                                { noticeData[0].title.length > 80 ? (noticeData[0].title).substr(0, 80) + '...' : noticeData[0].title }
-                                                { noticeData[0].new ? <NewIcon className='newicon' /> : null }
-                                            </p>
-                                            <p className='normal'>
-                                                { noticeData[0].noticeContent.length > 200 ? (noticeData[0].noticeContent).substr(0, 200) + '...' : noticeData[0].noticeContent }
-                                            </p>
-                                        </div>
-                                        <ul className='sublist'>
-                                            {
-                                                noticeData.slice(1, noticeData.length).map((list, idx) => (
-                                                    <li key={list.noticeId} onClick={() => handleClickLink('/board/notice')}>
-                                                        <p>
-                                                            <ListIcon />
-                                                            { list.title.length > 75 ? (list.title).substr(0, 75) + '...' : list.title }
-                                                            { list.new ? <NewIcon className='newicon' /> : null }
-                                                        </p> 
-                                                        <p>{moment(list.createdAt).format(`'DD.MM.YY`)}</p>
-                                                    </li>
-                                                ))
-                                            }
-                                        </ul>
-                                    </div>
-                                    </>
-                            } */}
-                        </div>
-                    </div>
+                    
                     {/** FAQ */}
                     <div className="card-faq">
                         <div className='title'>
@@ -339,7 +298,7 @@ function Main() {
                             <MoreIcon className="moreicon" onClick={() => handleClickLink('/process&support/faq')} />
                         </div>
                         <div className='list'>
-                            {/* {
+                            {
                                 faqData.length > 0 &&
                                 <>
                                 <div className='mainlist' onClick={() => handleClickLink('/process&support/faq')}>
@@ -350,16 +309,21 @@ function Main() {
                                 </div>
                                 <ul className='sublist'>
                                     {
-                                        faqData.slice(1, faqData.length).map((list, idx) => (
-                                            <li key={list.faqId} onClick={() => handleClickLink('/process&support/faq')}>
+                                        faqData.slice(1, faqData.length).map((list, idx) => {
+                                            if(idx<5) {
+                                                return(
+                                                    <li key={list.faqId} onClick={() => handleClickLink('/process&support/faq')}>
                                                 <span className='qst-no'> Q 0{idx + 1} </span>
                                                 <p> {list.subject.length > 70 ? (list.subject).substr(0, 70) + '...' : list.subject} </p> 
                                             </li>
-                                        ))
+                                                )
+                                            }
+                                        }
+                                        )
                                     }
                                 </ul>
                                 </>
-                            } */}
+                            }
 
                         </div>
                     </div>
@@ -376,6 +340,11 @@ function Main() {
                 </div>
             </div>
             <Tab />
+            {
+                alertModal
+                &&
+                <Alert alertTxt={alertSetting.alertTxt} onClose={()=>setAlertModal(false)} onConfirm={alertSetting.onConfirm} twoBtn={alertSetting.isDoubleBtn} btnTxt={alertSetting.btnTxt}/>
+            }
         </div>
     )
 }
