@@ -22,6 +22,11 @@ import Banner_1 from '../../assets/svgs/banner_1.svg';
 import Banner_2 from '../../assets/svgs/banner_2.svg';
 import Prev from '../../assets/svgs/icon_mainprev.svg';
 import Next from '../../assets/svgs/icon_mainnext.svg';
+import Pause from '../../assets/svgs/icon_bannerpause.svg';
+import Play from '../../assets/svgs/icon_bannerplay.svg';
+import B_Prev from '../../assets/svgs/icon_bannerprev.svg';
+import B_Next from '../../assets/svgs/icon_bannernext.svg';
+import Footer from "../../components/Footer";
 
 function Main() {
 
@@ -162,11 +167,22 @@ function Main() {
         // cstalk 목록 조회 API
         fetchInstance('/cstalkData')
         .then(res => {
-            console.log('CS Talk 목록 ---->', res)
-            setCsData(res);
+            if(res) {
+                setCsData(res);
+            }else {
+                setAlertSetting({
+                    ...alertSetting,
+                    alertTxt:'Client Error'
+                })
+            }
             
         }).catch(error => {
             console.error(error);
+            // 실제 API 연동시 내려주는 오류 코드로 분기 
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt:'Server Error'
+            })
         });
     }
 
@@ -274,7 +290,7 @@ function Main() {
                 <Top auth={1} searchArea={false}/>
                 {/** Banner */}
                 <div className="banner">
-                    {/* <Carousel images={bannerList} setting={bannerSettings} setRef={setRef} setIdx={setCurrentSlide} />
+                    <Carousel images={bannerList} setting={bannerSettings} setRef={setRef} setIdx={setCurrentSlide} />
                     <div className='banner-btn'>
                         <p className='banner-index'><span>{`0${currentSlide}`}</span>{` / 0${bannerList.length}`}</p>
                         <img src={B_Prev} alt="prev" onClick={prev}/> 
@@ -285,7 +301,7 @@ function Main() {
                             <img src={Play} alt="play" onClick={play}/> 
                         }
                         <img src={B_Next} alt="next" onClick={next}/> 
-                    </div> */}
+                    </div>
                 </div>
 
                 {/** Notice, FAQ, CS Talk */}

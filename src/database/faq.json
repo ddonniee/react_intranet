@@ -6,9 +6,9 @@
             "subject": " Which reporting convention does LGE use when posting its financial information?", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "Installation",
-            "categoryId" : "1687935618_23f", 
-            "categoryTree" :  "Installation",
+            "categoryName": "Support",
+            "categoryId" : "1687935618_26f", 
+            "categoryTree" :  "Support",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "faqId" : "1687935618_23f",
             "hits" : 42,
@@ -23,9 +23,9 @@
             "subject": "R007 – Used Parts Q’ty larger than available", 
             "orderNum": 2, 
             "likeCount": 2, 
-            "categoryName": "displacement", 
-            "categoryId" : "1687935618_24f", 
-            "categoryTree" :  "Installation",
+            "categoryName": "Support", 
+            "categoryId" : "1687935618_26f", 
+            "categoryTree" :  "Support",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "faqId" : "1687935618_24f",
             "hits" : 42,
@@ -40,9 +40,9 @@
             "subject": "How to deal with the shortage of parts in hollydays.", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "Hold", 
-            "categoryId" : "1687935618_25f", 
-            "categoryTree" :  "Repair",
+            "categoryName": "Delivery", 
+            "categoryId" : "1687935618_28f", 
+            "categoryTree" :  "Delivery",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "faqId" : "1687935618_25f",
             "hits" : 42,
@@ -57,9 +57,9 @@
             "subject": "How to assume your incentive rates for the last quarter.", 
             "orderNum": 2, 
             "likeCount": 1, 
-            "categoryName": "VIDEO - Status",
-            "categoryId" : "1687935618_26f", 
-            "categoryTree" :  "Installation",
+            "categoryName": "Finance",
+            "categoryId" : "1687935618_29f", 
+            "categoryTree" :  "Finance",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "faqId" : "1687935618_26f",
             "hits" : 42,
@@ -74,9 +74,9 @@
             "subject": "If damage found for new parts", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "Installation", 
-            "categoryId" : "1687935618_27f", 
-            "categoryTree" :  "Installation",
+            "categoryName": "Support", 
+            "categoryId" : "1687935618_26f", 
+            "categoryTree" :  "Support",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "faqId" : "1687935618_27f",
             "hits" : 42,
@@ -91,9 +91,9 @@
             "subject": "Easy way to finish hold status job", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "VIDEO - Status", 
-            "categoryId" : "1687935618_28f", 
-            "categoryTree" :  "Installation",
+            "categoryName": "Process", 
+            "categoryId" : "1687935618_27f", 
+            "categoryTree" :  "Process",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "faqId" : "1687935618_28f",
             "hits" : 42,
@@ -109,8 +109,8 @@
             "orderNum" : 2, 
             "likeCount": 0, 
             "categoryName": "Support", 
-            "categoryId" : "1687935618_29f", 
-            "categoryTree" :  "Installation",
+            "categoryId" : "1687935618_26f", 
+            "categoryTree" :  "Support",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "faqId" : "1687935618_29f",
             "hits" : 42,
@@ -125,11 +125,11 @@
             "subject": "R007 – Used Parts Q’ty larger than available", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "Installation",
-            "categoryId" : "1687935618_30f", 
-            "categoryTree" :  "Installation",
+            "categoryName": "Standard",
+            "categoryId" : "1687935618_35f", 
+            "categoryTree" :  "Standard",
             "createdAt" :  "2023-07-29T02:31:44.000+00:00",
-            "faqId" : "1687935618_30f",
+            "faqId" : "1687935618_35f",
             "hits" : 42,
             "rn" : 8,
             "subsidiary" : "EAI",
@@ -142,9 +142,9 @@
             "subject": "Stock options for DN group members.", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "Installation", 
-            "categoryId" : "1687935618_31f", 
-            "categoryTree" :  "Installation",
+            "categoryName": "Standard", 
+            "categoryId" : "1687935618_35f", 
+            "categoryTree" :  "Standard",
             "createdAt" :  "2023-07-29T02:31:44.000+00:00",
             "faqId" : "1687935618_31f",
             "hits" : 42,
@@ -159,9 +159,9 @@
             "subject": "How to handle ETA for the parts", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "Installation", 
-            "categoryId" : "1687935618_32f", 
-            "categoryTree" :  "Installation",
+            "categoryName": "Delivery", 
+            "categoryId" : "1687935618_28f", 
+            "categoryTree" :  "Delivery",
             "createdAt" :  "2023-07-30T02:31:44.000+00:00",
             "faqId" : "1687935618_32f",
             "hits" : 42,
@@ -414,6 +414,145 @@
                     "createdAt" : "2023-06-27T12:31:44.000+00:00",
                     "content" : "When would the test be done ?",
                     "subComment" : []
+                }
+            ]
+        }
+    ],
+    "faqCategory": [
+        {
+            "categoryId" : "1687935618_26f",
+            "categoryNm" : "Support",
+            "categoryIconPath" : "/assets/icon_support.svg",
+            "subCategory" : [
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "By team"
+                },
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "By manager"
+                }
+            ]
+        },
+        {
+            "categoryId" : "1687935618_27f",
+            "categoryNm" : "Process",
+            "categoryIconPath" : "/assets/icon_process.svg",
+            "subCategory" : [
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Create Tickets"
+                },
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Finish jobs"
+                },
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Pending jobs"
+                }
+            ]
+        },
+        {
+            "categoryId" : "1687935618_28f",
+            "categoryNm" : "Delivery",
+            "categoryIconPath" : "/assets/icon_delivery.svg",
+            "subCategory" : [
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "By Truck"
+                },
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "By Train"
+                },
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "By Flight"
+                }
+            ]
+        },
+        {
+            "categoryId" : "1687935618_29f",
+            "categoryNm" : "Finance",
+            "categoryIconPath" : "/assets/icon_finance.svg",
+            "subCategory" : [
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Expenses"
+                },
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Overcharges"
+                },
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Shortage"
+                }
+            ]
+        },
+        {
+            "categoryId" : "1687935618_30f",
+            "categoryNm" : "Communication",
+            "categoryIconPath" : "/assets/icon_talk.svg",
+            "subCategory" : [
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Zendesk"
+                },
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Customer"
+                },
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Head Office"
+                }
+            ]
+        },
+        {
+            "categoryId" : "1687935618_31f",
+            "categoryNm" : "Operation",
+            "categoryIconPath" : "/assets/icon_operation.svg",
+            "subCategory" : []
+        },
+        {
+            "categoryId" : "1687935618_33f",
+            "categoryNm" : "Reset",
+            "categoryIconPath" : "/assets/icon_reset.svg",
+            "subCategory" : [
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Previos jobs"
+                },
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Mischarged"
+                },
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Missing parts"
+                }
+            ]
+        },
+        {
+            "categoryId" : "1687935618_34f",
+            "categoryNm" : "Compile",
+            "categoryIconPath" : "/assets/icon_compile.svg",
+            "subCategory" : []
+        },
+        {
+            "categoryId" : "1687935618_35f",
+            "categoryNm" : "Standard",
+            "categoryIconPath" : "/assets/icon_standard.svg",
+            "subCategory" : [
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Instructions"
+                },
+                {
+                    "categoryId":"1687935618_26f_1",
+                    "categoryNm": "Delivery standard"
                 }
             ]
         }

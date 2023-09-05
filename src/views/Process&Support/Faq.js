@@ -31,6 +31,7 @@ import Close_comment from '../../assets/svgs/icon_co_close.svg'
 import Close from '../../assets/svgs/icon_close2.svg'
 import Maximize from '../../assets/svgs/icon_screen.svg'
 
+
 import moment from "moment";
 
 function Faq() {
@@ -167,15 +168,35 @@ function Faq() {
             subsidiary : value
         })
     }
-
+    // faq list 클릭시 상세 항목 읽어오기
     const handleClickRow = (e,item) => {
         console.log('handleCLick',item.faqId)
         getDetail(item.faqId)
       
     }
 
-    /** 알림창 ▼ ============================================================= */
+     // 1차 아이콘 클릭시 탭 생성
+     const handleClickIcon = (e, selectedItem) => {
+        e.stopPropagation()
+        console.log('selectedItem-->',selectedItem)
+        if(reqData.categoryId===selectedItem.categoryId) {
+            setReqData({
+                ...reqData,
+                categoryId : ''
+            })
+        }else {
+            setReqData({
+                ...reqData,
+                categoryId : selectedItem.categoryId
+            })
+        }
+        // setBoardData((prevLists) => {
+        //     const updatedLists = prevLists.filter((list) => list.categoryId === selectedItem.categoryId);
+        //     return updatedLists;
+        //   });
+        }
 
+       
     const [alertModal, setAlertModal] = useState(false)
     const [alertSetting, setAlertSetting] = useState({
         alertTxt : '',
@@ -277,7 +298,6 @@ function Faq() {
 
     const getList = () =>{
 
-
         if(reqData.search!=='') {            
             const updatedData = boardData.filter(item => {
                 const lowercaseText = reqData.search.toLowerCase();
@@ -294,14 +314,12 @@ function Faq() {
         fetchInstance('/faqData')
         .then(function (response) {
         if(response) {
-            let resData = response.data;
+            if(reqData.categoryId!=='') {
+                const filteredResponse = response.filter(item => item.categoryId === reqData.categoryId);
+                setBoardData(filteredResponse);
+            }else
             setBoardData(response);
-            if (resData) {
-                let data = resData.result;
-                setFrequentList(data.top5list);
-            } else {
-                console.log(resData);
-            }
+           
         }else {
             setAlertSetting({
                 ...alertSetting,
@@ -347,28 +365,31 @@ function Faq() {
     }
 
     const [categoryLists, setCategoryLists] = useState([])
+    useEffect(()=>{
+        console.log('category lists--->', categoryLists)
+    },[categoryLists])
     const getCategory = () =>{
      
-        // fetchInstance('/faqCa/list', config)
-        // .then(function (response){
-        //     let resData = response.data;
-        //     if(resData.code===200) {
-        //         let data = resData.result
-        //         console.log('getCategory',resData)
-        //         data.map(d=>{
-        //             d.iconModal = false
-        //         })
-        //         setCategoryLists(data)
-        //     }else {
-        //         console.log(resData)
-        //     }
-        // })
-        // .catch(function(error) {
-        //     console.log('error',error)
-        // })
+        fetchInstance('/faqCategory')
+        .then(function (response){
+            // 실제 API 연동시 status로 네트워커 연결 상태 확인
+            if(response) {
+                setCategoryLists(response)
+            }else {
+                setAlertSetting({
+                    ...alertSetting,
+                    alertTxt: "Client Error"
+                })
+            }
+        })
+        .catch(function(error) {
+            console.log('error',error)
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: "Server Error"
+            })
+        })
     }
-
-    console.log(selectedList)
 
     /** Comment handling */
     const [commentPage, setCommentPage] = useState(1)
@@ -550,53 +571,15 @@ function Faq() {
         )
     }
     
-    const [hoveredItemPosition, setHoveredItemPosition] = useState(null);
-
-    const handleMouseEnter = (e,item) => {
-        const rect = e.target.getBoundingClientRect();
-        console.log(categoryRef.current.getBoundingClientRect())
-        setHoveredItemPosition({ x: rect.left });
-        setCategoryLists((prevLists) => {
-            
-            const updatedLists = prevLists.map((list) => {
-              if (list.categoryId === item.categoryId) {
-                return { ...list, iconModal: true };
-              } else {
-                return { ...list, iconModal: false };
-              }
-            });
-            return updatedLists;
-          });
-          
-    }
-
-    const handleMouseLeave = (e,item) => {
-        if(item?.categoryId===undefined) {
-            return false
-        }
-        setHoveredItemPosition(null);
-        setCategoryLists((prevLists) => {
-            
-           
-            const updatedLists = prevLists.map((list) => {
-              if (list.categoryId === item.categoryId) {
-                return { ...list, iconModal: false };
-              } else {
-                return { ...list, iconModal: false };
-              }
-            });
-            return updatedLists;
-          });
-      };
-
+   
+    // 페이지 번호 변경시 요청데이터 페이지 변화ㅣ
     useEffect(()=>{
         setReqData({
             ...reqData,
             page: activePage
         })
     },[activePage])
-    /** mouse scroll */
-    const categoryRef = useHorizontalScroll();
+   
     /** detail loading animation */
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingComment, setIsLoadingComment] = useState(false)
@@ -660,7 +643,7 @@ function Faq() {
     useEffect(()=>{
     getCategory()
     },[])
-
+    // page, category클릭시 리스트 재호출
     useEffect(()=>{
     getList()
     },[reqData.page, reqData.categoryId])
@@ -683,9 +666,8 @@ function Faq() {
     }
     
     },[boardData])
-    
-    useEffect(()=>{
-    },[boardLength])
+
+    // 리스트 중 상세보기 클릭시 해당 글에 포함된 댓글 호출 API
     useEffect(()=>{
     if(selectedList) {
         getComment()
@@ -735,7 +717,6 @@ function Faq() {
       /** 경고창 ▲ ============================================================= */
 
     useEffect(()=>{
-
     if(selectedList.faqId==='') {
         setOpenRight(false)
     }else if(selectedList.faqId!=='' && !isFrequent){
@@ -743,17 +724,7 @@ function Faq() {
     }
     },[selectedList.faqId])
 
-    const listRef = useRef(null)
-    useEffect(()=>{
-    const refElement = listRef.current;
-    if(refElement) {
-        let top = refElement.getBoundingClientRect();
-        setHoveredItemPosition({ y : top})
-    }
-    },[])
-
     /** 모달창 실행시 외부 스크롤 방지 */
-
     useEffect(()=>{
         const elem = document.querySelector('html')
         console.log(elem)
@@ -773,9 +744,9 @@ function Faq() {
             <Top searchArea={true} auth={ auth=== 1 ? true : false} onChange={(e)=>setReqData({...reqData, search:e.target.value})} onClick={getList}/>
             {/** Top Area */}
             <div className="faq-nav">
-                <div className="faq-lists-wrapper" ref={listRef}>
+                <div className="faq-lists-wrapper">
                     <ul className="faq-lists custom-justify-between">
-                        { frequentList && frequentList.length > 0 && frequentList.map((item, idx)=>{
+                        { frequentList && frequentList.length > 0 && frequentList .map((item, idx)=>{
                             return (
                                 <li key={generateRandomString(idx)} onClick={(e)=>(handleClickRow(e,item), setMaxmizing(true), setIsFrequent(true))}>
                                     <div className="faq-top">
@@ -789,26 +760,23 @@ function Faq() {
                     </ul>
                 </div>
                 <div className="faq-category">
-                    <ul className="faq-category-lists custom-justify-center" ref={categoryRef}>
+                    <ul className="faq-category-lists custom-justify-center">
                         {
                             categoryLists?.map((item,idx)=>{
                                 return(
-                                    <li className="scroll-lists" key={generateRandomString(idx+1)} onMouseEnter={(e)=> handleMouseEnter(e,item)}>
-                                        <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+'/'+item.categoryIconPath} alt='category-icon'/></div>
+                                    <li className={`scroll-lists cursor-btn ${reqData.categoryId===item.categoryId?'hover-selected':''}`} key={generateRandomString(idx+1)} onClick={(e) => handleClickIcon(e, item)} >
+                                        {/* 서버로 이미지 호출시 하기처럼
+                                         <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+'/'+item.categoryIconPath} alt='category-icon'/></div> */}
+                                         <div className="faq-img-wrapper"><img src={item.categoryIconPath} alt='category-icon'/></div>
                                         <p>{item.categoryNm}</p>
-                                        {/* {
-                                        item.iconModal
-                                        &&
-                                        <IconModal items={item.subCategory}/>
-                                        } */}
                                     </li>
                                 )
                             })
                         }
                     </ul>
-                        {categoryLists?.map(item => {
+                        {/* {categoryLists.map(item => {
                             return item.iconModal && <IconModal items={item.subCategory} position={hoveredItemPosition} onMouseLeave={()=>handleMouseLeave(item)} isSubCategory={item.subCategory.length!==0 ? true : false}/>;
-                        })}
+                        })} */}
                 </div>
             </div>
 
@@ -816,19 +784,7 @@ function Faq() {
             <div className="faq-contents">
                 <div className="faq-left">
 
-                <div className="faq-setting-tab custom-flex-item custom-justify-between">
-                    <div >
-                        <ul className="custom-flex-item">
-                            {
-                                faqTab?.map((item,idx)=>{
-                                    return(
-                                        <li className={`custom-flex-item custom-align-item custom-justify-center cursor-btn ${item.categoryId===reqData.categoryId  && `red-selected`}`} onClick={()=>setReqData({...reqData, categoryId:item.categoryId})} key={generateRandomString(idx)}>{item.categoryNm}</li>
-                                    )
-                                })
-                            }
-                        </ul>
-                    </div>
-                </div>
+               
 
                     <div className="custom-scroll-area">
                     <ul className="board-table custom-align-item custom-flex-item custom-sticky-area">
