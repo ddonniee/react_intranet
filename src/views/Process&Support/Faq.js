@@ -4,16 +4,13 @@ import { styled } from "styled-components";
 import { UserContext } from "../../hooks/UserContext"
 import Pagination from "react-js-pagination";
 // Components
-import Header from "../../components/Header"
 import Top from "../../components/Top"
 import Warning from "../../components/Warning"
 import Viewer from "../../components/Viewer"
 import Alert from "../../components/Alert";
 import Tab from "../../components/Tab";
 // Utils
-import { generateRandomString,fetchInstance, downloadAttachment,} from "../../utils/CommonFunction"
-// hooks
-import { useHorizontalScroll } from "../../hooks/useSideScroll";
+import { generateRandomString,fetchInstance,} from "../../utils/CommonFunction"
 // View
 import MaximalView from "../Common/MaximalView";
 // Icons 
@@ -40,18 +37,6 @@ function Faq() {
     const user = useContext(UserContext)
     let now = moment().subtract(24,'hours').format('YYYY-MM-DD HH:mm:ss');
 
-    const [subsidiary, setSubsidiary ] = useState([
-        {value:'',label:'All'}, 
-        {value:'LGEAI',label:'LGEAI'}, 
-        {value:'LGECI',label:'LGECI'}, 
-        {value:'LGEES',label:'LGEES'}, 
-        {value:'LGEJP',label:'LGEJP'}, 
-        {value:'LGEKR',label:'LGEKR'},
-        {value:'LGEMC',label:'LGEMC'},
-    ])
-    // 하위 tab
-    const [faqTab, setFaqTab] = useState([]) 
-    const [selectedCategory,setSelectedCategory] = useState()
      /** 페이징 관련 ▼ ============================================================= */
      const [activePage, setActivePage] = useState(1); // 현재 페이지
      const [itemsPerPage] = useState(16); // 페이지당 아이템 갯수
@@ -182,7 +167,8 @@ function Faq() {
         if(reqData.categoryId===selectedItem.categoryId) {
             setReqData({
                 ...reqData,
-                categoryId : ''
+                categoryId : '',
+                search: ''
             })
         }else {
             setReqData({
@@ -280,25 +266,11 @@ function Faq() {
         }
     }
 
-    
-
-    const handleClickTab=(item,iconList)=>{
-        console.log('handleClickTab',item)
-        setReqData({...reqData, categoryId:item.categoryId})
-        let copy = [
-            {
-                categoryId:'',
-                categoryNm:'All'
-            }
-        ];
-        copy = copy.concat(item)
-        setFaqTab(copy)
-    }
-
 
     const getList = () =>{
 
-        if(reqData.search!=='') {            
+        if(reqData.search!=='') {   
+            clearState()         
             const updatedData = boardData.filter(item => {
                 const lowercaseText = reqData.search.toLowerCase();
                 const lowercaseKeyword = item.subject.toLowerCase();
@@ -540,36 +512,7 @@ function Faq() {
         // })                  
     }
     const [maximizing, setMaxmizing] = useState(false)
-    /** Icon list */
-    const iconRef = useRef();
-    
-    const IconModal = ({items, position, onMouseLeave, isSubCategory}) =>{
-        let {x, y} = position;
-        let  iconList = [];
-        if(items?.length!==0) {
-            iconList = items;
-        }
-        x = x - 60
-
-        return (
-            <div className='icon-modal' ref={iconRef} style={{top:y, left:x}}>
-                <img src={Polygon} alt='polygon' />
-                <ul className={!isSubCategory ? 'no-list':''}>
-                    {
-                        iconList.length!==0
-                        ?
-                        iconList.map((item,idx)=>{
-                            return(
-                                <li className='custom-hover' id={`icon-list-${idx+1}`} key={generateRandomString(idx+3)} onClick={()=>handleClickTab(item,iconList)} onMouseLeave={onMouseLeave}>{item.categoryNm}</li>
-                            )
-                        })
-                        :
-                        <div className="custom-flex-item custom-align-item custom-justify-center">No subcategory</div>
-                    }
-                </ul>
-            </div>
-        )
-    }
+   
     
    
     // 페이지 번호 변경시 요청데이터 페이지 변화ㅣ
@@ -618,27 +561,6 @@ function Faq() {
             return () => clearTimeout(timeoutId)
     },[commentPage])
     
-    /** click outside */
-    const handleOutsideClick = (e) => {
-        if (iconRef.current && !iconRef.current.contains(e.target)) {
-          setCategoryLists((prevLists) => {
-            const updatedLists = prevLists.map((list) => ({
-              ...list,
-              iconModal: false,
-            }));
-            return updatedLists;
-          });
-        }
-      }; 
-    
-    // icon hover 적용
-
-    useEffect(() => {
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-        document.removeEventListener("mousedown", handleOutsideClick);
-    };
-    }, []);
 
     useEffect(()=>{
     getCategory()
@@ -783,10 +705,7 @@ function Faq() {
             {/** Content Area */}
             <div className="faq-contents">
                 <div className="faq-left">
-
-               
-
-                    <div className="custom-scroll-area">
+                    <div>
                     <ul className="board-table custom-align-item custom-flex-item custom-sticky-area">
                         <li className="col-1">No.</li>
                         <li className={`col-2 ${openRight && 'custom-hide-item'}`}>Category</li>

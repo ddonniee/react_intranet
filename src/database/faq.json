@@ -429,7 +429,7 @@
                     "categoryNm": "By team"
                 },
                 {
-                    "categoryId":"1687935618_26f_1",
+                    "categoryId":"1687935618_26f_2",
                     "categoryNm": "By manager"
                 }
             ]
@@ -444,11 +444,11 @@
                     "categoryNm": "Create Tickets"
                 },
                 {
-                    "categoryId":"1687935618_26f_1",
+                    "categoryId":"1687935618_26f_2",
                     "categoryNm": "Finish jobs"
                 },
                 {
-                    "categoryId":"1687935618_26f_1",
+                    "categoryId":"1687935618_26f_3",
                     "categoryNm": "Pending jobs"
                 }
             ]
@@ -463,11 +463,11 @@
                     "categoryNm": "By Truck"
                 },
                 {
-                    "categoryId":"1687935618_26f_1",
+                    "categoryId":"1687935618_26f_2",
                     "categoryNm": "By Train"
                 },
                 {
-                    "categoryId":"1687935618_26f_1",
+                    "categoryId":"1687935618_26f_3",
                     "categoryNm": "By Flight"
                 }
             ]
@@ -482,11 +482,11 @@
                     "categoryNm": "Expenses"
                 },
                 {
-                    "categoryId":"1687935618_26f_1",
+                    "categoryId":"1687935618_26f_2",
                     "categoryNm": "Overcharges"
                 },
                 {
-                    "categoryId":"1687935618_26f_1",
+                    "categoryId":"1687935618_26f_3",
                     "categoryNm": "Shortage"
                 }
             ]
@@ -501,11 +501,11 @@
                     "categoryNm": "Zendesk"
                 },
                 {
-                    "categoryId":"1687935618_26f_1",
+                    "categoryId":"1687935618_26f_2",
                     "categoryNm": "Customer"
                 },
                 {
-                    "categoryId":"1687935618_26f_1",
+                    "categoryId":"1687935618_26f_3",
                     "categoryNm": "Head Office"
                 }
             ]
@@ -526,11 +526,11 @@
                     "categoryNm": "Previos jobs"
                 },
                 {
-                    "categoryId":"1687935618_26f_1",
+                    "categoryId":"1687935618_26f_2",
                     "categoryNm": "Mischarged"
                 },
                 {
-                    "categoryId":"1687935618_26f_1",
+                    "categoryId":"1687935618_26f_3",
                     "categoryNm": "Missing parts"
                 }
             ]
@@ -551,7 +551,7 @@
                     "categoryNm": "Instructions"
                 },
                 {
-                    "categoryId":"1687935618_26f_1",
+                    "categoryId":"1687935618_26f_2",
                     "categoryNm": "Delivery standard"
                 }
             ]

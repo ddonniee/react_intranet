@@ -171,21 +171,23 @@ function FaqSetting() {
     
     const getCategory = () =>{
 
-        axiosInstance('/faqCa/list', config)
+        fetchInstance('/faqCategory')
         .then(function (response){
-            let resData = response.data;
-            if(resData.code===200) {
-                let data = resData.result
-                data.map(d=>{
-                    d.iconModal = false
-                })
-                setCategoryLists(data)
+            if(response) {
+                setCategoryLists(response)
             }else {
-                console.log(resData)
+                setAlertSetting({
+                    ...alertSetting,
+                    alertTxt:'Client Error'
+                })
             }
         })
         .catch(function(error) {
             console.log('error',error)
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt:'Server Error'
+            })
         })
     }
 
@@ -351,6 +353,10 @@ function FaqSetting() {
 
     const handleClickIcon = (e, selectedItem) => {
         
+        setReqData({
+            ...reqData,
+            categoryId:''
+        })
         if(selectedTab.categoryId!=='') {
             setSelectedTab({
                 categoryIconFileNM : '',
@@ -633,14 +639,11 @@ function FaqSetting() {
                     <ul className="faq-category-lists"  ref={categoryRef}>
                     {
                     categoryLists?.map((list, idx) => {
-                        if (list.parentCategoryId === null) {
                         return (
                             <li key={generateRandomString(idx + 1)} onClick={(e) => handleClickIcon(e, list)} className={`cursor-btn ${selectedCategory.categoryId===list.categoryId && `hover-selected`}`}>
-                            <div className="faq-img-wrapper"><img src={process.env.REACT_APP_DOWN_URL+'/' + list.categoryIconPath} alt='category-icon' /></div>
+                            <div className="faq-img-wrapper"><img src={list.categoryIconPath} alt='category-icon' /></div>
                             <p>{list.categoryNm}</p> </li>
                         );
-                        }
-                        return null;
                     })
                     }
 
