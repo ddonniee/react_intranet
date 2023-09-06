@@ -13,7 +13,7 @@ import EditorModify from "../../components/EditorModify"
 import Tab from "../../components/Tab"
 import Alert from "../../components/Alert"
 
-import { axiosInstance2, generateRandomString,downloadAttachment, convertFileSize } from "../../utils/CommonFunction"
+import { axiosInstance2, generateRandomString,downloadAttachment, convertFileSize, fetchInstance } from "../../utils/CommonFunction"
 
 // Icons 
 import Search from '../../assets/svgs/icon_seeking.svg'
@@ -169,6 +169,9 @@ function CStalk() {
 
 
     const getDetail = (id) =>{
+
+        setIsFetching(true) 
+
         const formData = new FormData();
         formData.append('csTalkId', id);
 
@@ -181,19 +184,26 @@ function CStalk() {
             },
             data : formData
             };
-        axiosInstance2('/csTalk/detail', config)
+        fetchInstance('/cstalkDetail')
         .then(function (response){
-            let resData = response.data;
-            if(resData.code===200) {
-                let data = resData.result
-                setSelectedList(data)
-                console.log(data,'detail')
+            if(response) {
+                // setSelectedList(response)
+                console.log(response,'detail')
             }else {
-                console.log(response)
+                setAlertSetting({
+                    ...alertSetting,
+                    alertTxt: "Client Error"
+                })
             }
+            setIsFetching(false) 
         })
         .catch(function(error) {
             console.log('error',error)
+            setIsFetching(false) 
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: "Server Error"
+            })
         })
     }
 
@@ -303,7 +313,8 @@ function CStalk() {
             return false
         }else {
             isWrite ? setIsWrite(false) : setIsModify(false)
-            getDetail(item.csTalkId)
+            // getDetail(item.csTalkId) // API 연동시 디테일 항목 새로 받아옴
+            setSelectedList(item)
         }
     }
     
@@ -369,7 +380,9 @@ function CStalk() {
     )
     const [boardLength, setBoardLength] = useState(0)
 
+    const [isFetching, setIsFetching] = useState(false)
     const getList = () =>{ 
+        setIsFetching(true)
         const formData = new FormData();
         
         for (let key in reqData) {
@@ -386,20 +399,25 @@ function CStalk() {
             },
             data : formData
             };
-        axiosInstance2('/csTalk/list', config)
-        .then(function (res){
-            let resData = res.data;
-            console.log('cs',res)
-            if(resData.code===200) {
-                let data = resData.result
-                setBoardData(data)
-               
+        fetchInstance('/cstalkData')
+        .then(function (response){
+            // API 연동시 status객체에 내려오는 코드로 통신확인
+            if(response) {
+                setBoardData(response)
             }else {
-                console.log(resData)
+                console.log(response)
+                setAlertSetting({
+                    ...alertSetting,
+                    alertTxt: "Client Error"
+                })
             }
         })
         .catch(function(error) {
             console.log('error',error)
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: "Server Error"
+            })
         })
     }
     const setPages = (e) => {
@@ -838,31 +856,31 @@ function CStalk() {
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingComment, setIsLoadingComment] = useState(false)
     
-    useEffect(()=>{
-        setComment('');
-        setCommentPage(1)
+    // useEffect(()=>{
+    //     setComment('');
+    //     setCommentPage(1)
 
-        setFileStore([])
-        if(selectedList?.attachments!=='') {
+    //     setFileStore([])
+    //     if(selectedList?.attachments!=='') {
           
-            const jsonString = JSON.parse(selectedList.attachments);
-            if(jsonString!==null) {
-                let copy = [...jsonString]
-                setFileStore(copy)
-            }
-        }
-        if(selectedList) {
-            setIsLoading(true)
-            getComment();
-            const timeoutId = setTimeout(() => {
-                setIsLoading(false);
-              }, 500); // 3초 후에 isVisible 값을 false로 변경
+    //         const jsonString = JSON.parse(selectedList.attachments);
+    //         if(jsonString!==null) {
+    //             let copy = [...jsonString]
+    //             setFileStore(copy)
+    //         }
+    //     }
+    //     if(selectedList) {
+    //         setIsLoading(true)
+    //         getComment();
+    //         const timeoutId = setTimeout(() => {
+    //             setIsLoading(false);
+    //           }, 500); // 3초 후에 isVisible 값을 false로 변경
           
-              return () => clearTimeout(timeoutId) 
-        }
+    //           return () => clearTimeout(timeoutId) 
+    //     }
        
        
-    },[selectedList.csTalkId])
+    // },[selectedList.csTalkId])
 
     useEffect(()=>{
         console.log('file', fileStore[0]?.fileName)
@@ -887,6 +905,9 @@ function CStalk() {
         }
       },[selectedList.csTalkId,isWrite,isModify])
 
+      useEffect(()=>{
+        console.log('selected item--->', selectedList)
+      },[selectedList])
     useEffect(()=>{
         if(isWrite) {
             setSelectedList({
@@ -934,13 +955,14 @@ function CStalk() {
                         <span className="col-7" style={selectedList?.csTalkId ? {width: "15%"} : null}>Date</span>
                     </div>
 
-                    <div className="custom-scroll-area">
+                    <div>
                     {
                             boardData.length !== 0
                             ? boardData.length > 0 && boardData.map((item,idx)=>{
+                                console.log(item.cstalkId)
                                 return(
-                                   <div className="board-list custom-flex-item custom-align-item cursor-btn" key={generateRandomString(idx)} onClick={(e)=>handleClickRow(e,item)} >
-                                        <ul className="col-1" style={selectedList?.csTalkId ? {width: "10%"} : null}>
+                                   <div className={`board-list custom-flex-item custom-align-item cursor-btn ${selectedList.cstalkId===item.cstalkId ?'hover-selected':''}`} key={generateRandomString(idx)} onClick={(e)=>handleClickRow(e,item)} >
+                                        <ul className="col-1" style={selectedList?.cstalkId ? {width: "10%"} : null}>
                                             <li  id={`list-item-${idx+1}`}>
                                                 <span>{String((activePage-1)*16+(idx+1)).padStart(3, '0')}</span>
                                             </li>
@@ -948,11 +970,6 @@ function CStalk() {
                                        
                                         <ul className="col-3" >
                                             <li id={`list-item-${idx+1}`}>
-                                                {
-                                                    item.parentCsId!==null
-                                                    &&
-                                                    <span className="custom-stress-txt">[RE]</span>
-                                                }
                                                 <span className="board-max-length">{!openRight ? item?.subject.slice(0,82) : item?.subject.slice(0,60)}{!openRight ? item.subject?.length > 82 && '...' : item.subject?.length >60 && '...'}</span><img src={moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
                                                 {
                                                     item.commentCount!==0
@@ -960,11 +977,6 @@ function CStalk() {
                                                     <span className="custom-stress-txt">{`(${item.commentCount})`}</span>
                                                 }
                                                 
-                                                 <div className={`small-detail custom-flex-item ${!openRight ? 'custom-hide-item' : ''}`}>
-                                                 <span>{item?.writerName}</span>
-                                                    <img src={Like} alt="like-img"/><span className="custom-self-align">{item?.likeCount}</span>
-                                                 </div>
-                                                    
                                             </li>
                                         </ul>
                                         <ul className={`col-4 ${openRight && 'custom-hide-item'}`}>
@@ -1216,7 +1228,6 @@ function CStalk() {
             }
             </div>
         </div>
-        <Tab />
         </div>
         </Style>
     )
@@ -1229,13 +1240,12 @@ const Style = styled.div`
         width: ${props => (props.openright ? '49%' : '100%')} !important; 
     }
     .cstalk-left .cstalk-custom-board li {
-        padding : ${props => (props.openright ? '10px 30px;':'17px 30px')}
+        padding : ${props => (props.openright ? '10px 0px;':'17px 0px')}
     }
 
     .board-list {
-        // padding : ${props => (props.openright ? '17px 30px;':'10px 30px;')}
-        max-height :  ${props => (props.openright ? '64px;':'42px;')}
-        height :  ${props => (props.openright ? '64px;':'42px;')}
+        padding : ${props => (props.openright ? '10px 0px;':'10px 0px;')}
+     
     }
     .cstalk-contents{
         .editor-border {
@@ -1243,7 +1253,6 @@ const Style = styled.div`
         }
         .cstalk-editor {
           overflow: auto;
-          padding-top: 39px !important;
         max-height: 812px;
         }
     

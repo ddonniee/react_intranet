@@ -297,7 +297,7 @@
 }
 .cstalk-right {
     border-radius: 14px; overflow: hidden; width: 49%; transition: transform 0.3s ease; 
-    border: 1px solid $border-color-gery; flex-direction: column; height: 865px;
+    border: 1px solid $border-color-gery; flex-direction: column; height: 700px;
     
 }
 .cstalk-right .ck-sticky-panel {
@@ -341,7 +341,7 @@
 
 .comment-middle {
     color: #626262; text-overflow: ellipsis; font-size: 14px;  font-weight: 400;
-   line-height: normal;
+   line-height: normal; padding-bottom: 5px; border-bottom: 1px solid $line-color-grey;
    .toggle-sub-btn {
     padding: 0 3px;
     }

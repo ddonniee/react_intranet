@@ -7,6 +7,7 @@ import NotFound from "./views/Pages/NotFound";
 import { UserContext } from "./hooks/UserContext";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import Tab from "./components/Tab";
 
 function App({}) {
 
@@ -57,6 +58,7 @@ function App({}) {
           ))}
            <Route path="*" element={<NotFound />} />
         </Routes>
+        <Tab />
         <Footer />
       </BrowserRouter>
       </UserContext.Provider>

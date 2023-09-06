@@ -285,22 +285,22 @@ function MaximalView(props) {
     
     const [fileStore, setFileStore] = useState([])
 
-    useEffect(()=>{
+//     useEffect(()=>{
 
-    if(detail[id]==='') {
-        return 
-        }
-       setFileStore([])
-       if(detail?.attachments!=='') {
+//     if(detail[id]==='') {
+//         return 
+//         }
+//        setFileStore([])
+//        if(detail?.attachments!=='') {
          
-           const jsonString = JSON.parse(detail.attachments);
-           if(jsonString!==null) {
-               let copy = [...jsonString]
-               setFileStore(copy)
-           }
-       }
-       getComment()
-   },[detail])
+//            const jsonString = JSON.parse(detail.attachments);
+//            if(jsonString!==null) {
+//                let copy = [...jsonString]
+//                setFileStore(copy)
+//            }
+//        }
+//        getComment()
+//    },[detail])
 
 //    useEffect(()=>{
 //         setDetail(data)

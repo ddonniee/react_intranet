@@ -31,9 +31,6 @@
     }
    & + .faq-contents {
     margin-top: 30px;
-    .faq-left, .faq-setting-right {
-        height: 760px;
-    }
     .pagination {
         padding-top: 36px !important;
     }
@@ -148,6 +145,6 @@
     background-color: #f1f1f1;
 } 
 .faq-setting-right {
-    width: 49%; 
+    width: 49%;  height: 800px;
     border-radius: 10px; border: 1px solid #E8E8E8; overflow: auto;
 }

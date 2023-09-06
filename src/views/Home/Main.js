@@ -355,7 +355,6 @@ function Main() {
                     </div>
                 </div>
             </div>
-            <Tab />
             {
                 alertModal
                 &&

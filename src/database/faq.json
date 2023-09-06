@@ -561,97 +561,95 @@
     [  
         {
             "parentCategoryName": null, 
-            "subject": "How to create ticekts", 
+            "subject": "Best way to conceive customers", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "Installation",
-            "categoryId" : "1687935618_23f", 
-            "categoryTree" :  "Installation",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "cstalkId" : "1687935618_23f",
-            "hits" : 42,
+            "hits" : 12,
             "rn" : 1,
             "subsidiary" : "EAI",
-            "writerID" : "connie_lee",
-            "writerName" : "connie",
-            "top5ListId" : "top1"
+            "writerID" : "Charie",
+            "writerName" : "Charie",
+            "commentCount" : 0,
+            "content" : "<div><h1>1. Ask your customer to respond for customers' evaluation link.</p></div>",
+            "isPublic" : "All",
+            "attachments" : []
         },
         {
             "parentCategoryName": null, 
-            "subject": "Quality inspection for coffee machine.", 
+            "subject": "Benefits for the staff who worked in holidays.", 
             "orderNum": 2, 
             "likeCount": 2, 
-            "categoryName": "displacement", 
-            "categoryId" : "1687935618_24f", 
-            "categoryTree" :  "Installation",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "cstalkId" : "1687935618_24f",
             "hits" : 42,
             "rn" : 2,
             "subsidiary" : "EAI",
-            "writerID" : "donnie_lee",
-            "writerName" : "donnie",
-            "top5ListId" : "top2"
+            "writerID" : "New York",
+            "writerName" : "New York",
+            "commentCount" : 1,
+             "content" : "<div><h1>1. Ask your customer to respond for customers' evaluation link.</p></div>",
+            "isPublic" : "All",
+            "attachments" : []
         },
         {
             "parentCategoryName": null, 
-            "subject": "Another way to upload your documents.", 
+            "subject": "Are you sure it's unavailable?", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "Hold", 
-            "categoryId" : "1687935618_25f", 
-            "categoryTree" :  "Repair",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "cstalkId" : "1687935618_25f",
             "hits" : 42,
             "rn" : 3,
             "subsidiary" : "EAI",
-            "writerID" : "donnie_lee",
-            "writerName" : "donnie",
-            "top5ListId" : ""
+            "writerID" : "Simson",
+            "writerName" : "Simson",
+            "commentCount" : 0,
+             "content" : "<div><h1>1. Ask your customer to respond for customers' evaluation link.</p></div>",
+            "isPublic" : "All",
+            "attachments" : []
         },
         {
             "parentCategoryName": null, 
-            "subject": "New customer from America.", 
+            "subject": "New option for damaged goods.", 
             "orderNum": 2, 
             "likeCount": 1, 
-            "categoryName": "VIDEO - Status",
-            "categoryId" : "1687935618_26f", 
-            "categoryTree" :  "Installation",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "cstalkId" : "1687935618_26f",
             "hits" : 42,
             "rn" : 4,
             "subsidiary" : "EAI",
-            "writerID" : "fonnie_lee",
-            "writerName" : "fonnie" ,
-            "top5ListId" : "top3"
+            "writerID" : "Anna",
+            "writerName" : "Anna" ,
+            "commentCount" : 1,
+             "content" : "<div><h1>1. Ask your customer to respond for customers' evaluation link.</p></div>",
+            "isPublic" : "All",
+            "attachments" : []
         },
         {
             "parentCategoryName": null, 
-            "subject": "Damage control for shipping parts.", 
+            "subject": "Contorl tower would shut down in holidays.", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "Installation", 
-            "categoryId" : "1687935618_27f", 
-            "categoryTree" :  "Installation",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "cstalkId" : "1687935618_27f",
             "hits" : 42,
             "rn" : 5,
             "subsidiary" : "EAI",
-            "writerID" : "bonnie_lee",
-            "writerName" : "bonnie",
-            "top5ListId" : ""
+            "writerID" : "Jennie",
+            "writerName" : "Jennie",
+            "top5ListId" : "",
+            "commentCount" : 2,
+             "content" : "<div><h1>1. Ask your customer to respond for customers' evaluation link.</p></div>",
+            "isPublic" : "All",
+            "attachments" : []
         },
         {
             "parentCategoryName": null, 
             "subject": "If you can't access your account on mobile.", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "VIDEO - Status", 
-            "categoryId" : "1687935618_28f", 
-            "categoryTree" :  "Installation",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "cstalkId" : "1687935618_28f",
             "hits" : 42,
@@ -659,16 +657,17 @@
             "subsidiary" : "EAI",
             "writerID" : "donnie_lee",
             "writerName" : "donnie",
-            "top5ListId" : ""
+            "top5ListId" : "",
+            "commentCount" : 3,
+             "content" : "<div><h1>1. Ask your customer to respond for customers' evaluation link.</p></div>",
+            "isPublic" : "All",
+            "attachments" : []
         },
         {
             "parentCategoryName": "Hold", 
             "subject": "If you can't get any respond from origin whene there is a shipping issue.", 
             "orderNum" : 2, 
             "likeCount": 0, 
-            "categoryName": "Support", 
-            "categoryId" : "1687935618_29f", 
-            "categoryTree" :  "Installation",
             "createdAt" :  "2023-06-29T02:31:44.000+00:00",
             "cstalkId" : "1687935618_29f",
             "hits" : 42,
@@ -676,16 +675,17 @@
             "subsidiary" : "EAI",
             "writerID" : "donnie_lee",
             "writerName" : "donnie",
-            "top5ListId" : "top4"
+            "top5ListId" : "top4",
+            "commentCount" : 2,
+             "content" : "<div><h1>1. Ask your customer to respond for customers' evaluation link.</p></div>",
+            "isPublic" : "All",
+            "attachments" : []
         },
         {
             "parentCategoryName": null, 
             "subject": "Return or discard damaged parts ?", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "Installation",
-            "categoryId" : "1687935618_30f", 
-            "categoryTree" :  "Installation",
             "createdAt" :  "2023-07-29T02:31:44.000+00:00",
             "cstalkId" : "1687935618_30f",
             "hits" : 42,
@@ -693,16 +693,17 @@
             "subsidiary" : "EAI",
             "writerID" : "donnie_lee",
             "writerName" : "donnie" ,
-            "top5ListId" : "top5"
+            "top5ListId" : "top5",
+            "commentCount" : 2,
+             "content" : "<div><h1>1. Ask your customer to respond for customers' evaluation link.</p></div>",
+            "isPublic" : "All",
+            "attachments" : []
         },
         {
             "parentCategoryName": null, 
             "subject": "Urgent cases handling instrunction.", 
             "orderNum": 2, 
             "likeCount": 0, 
-            "categoryName": "Installation", 
-            "categoryId" : "1687935618_31f", 
-            "categoryTree" :  "Installation",
             "createdAt" :  "2023-07-29T02:31:44.000+00:00",
             "cstalkId" : "1687935618_31f",
             "hits" : 42,
@@ -710,7 +711,11 @@
             "subsidiary" : "EAI",
             "writerID" : "donnie_lee",
             "writerName" : "donnie",
-            "top5ListId" : ""
+            "top5ListId" : "",
+            "commentCount" : 1,
+             "content" : "<div><h1>1. Ask your customer to respond for customers' evaluation link.</p></div>",
+            "isPublic" : "All",
+            "attachments" : []
         },
         {
             "parentCategoryName": null, 
@@ -718,16 +723,169 @@
             "orderNum": 2, 
             "likeCount": 0, 
             "categoryName": "Installation", 
-            "categoryId" : "1687935618_32f", 
-            "categoryTree" :  "Installation",
-            "createdAt" :  "2023-07-30T02:31:44.000+00:00",
             "cstalkId" : "1687935618_32f",
             "hits" : 42,
             "rn" : 10,
             "subsidiary" : "EAI",
             "writerID" : "donnie_lee",
             "writerName" : "donnie",
-            "top5ListId" : ""
+            "top5ListId" : "",
+            "commentCount" : 0,
+             "content" : "<div><h1>1. Ask your customer to respond for customers' evaluation link.</p></div>",
+            "isPublic" : "All",
+            "attachments" : []
+        }
+    ],
+
+    "cstalkDetail" : 
+        {
+            "attachments": "[{\"uploadPath\": \"notice/20230703/vmCubeLauncher.ica\", \"fileName\": \"vmCubeLauncher.ica\" }]",
+            "reactionState": "NONE",
+            "subject": "R007 – Used Parts Q’ty larger than available",
+            "center": "LGEKR007194H",
+            "likeCount": 0,
+            "branch": "LGEKR_BRANCH_4490O",
+            "content": "<div><p>Through the GSFS system, access the SO that is on HOLD and check that the \"Purchase date\", \"Repair start date\" and \"Repair completion date\" are in accordance with the SO signed by the customer.\nCondition:\n1- If the data are correct: \"Purchase date\", Repair start date\" and \"Repair completion date\", just attach the OS signed by the customer to the SO next to the purchase invoice. 2- If the</p></div>\n\n",
+            "subsidiary": "LGEKR",
+            "writerName": "법인 관리자",
+            "commentCount": 0,
+            "hits": 44,
+            "createdAt": "2023-06-20T16:15:08.000+00:00",
+            "csTalkId": "1687310108_bfd",
+            "parentCsId": null,
+            "isPublic": 2,
+            "writerID": "ID_SS"
+          }
+    ,
+    "ascData" : [
+        {
+            "ascId" : "asc-1",
+            "no": 1,
+            "reason" : "Pending Delivery Parts.",
+            "division" : "Supply",
+            "staff" : "Charsons",
+            "dueDate" : "2023-07-11",
+            "pendingDate" : "2 monthes"
+        },
+        {
+            "ascId" : "asc-2",
+            "no": 2,
+            "reason" : "Shortage of supply",
+            "division" : "Supply",
+            "staff" : "whole team",
+            "dueDate" : "2023-07-11",
+            "pendingDate" : "1 day"
+        },
+        {
+            "ascId" : "asc-3",
+            "no": 3,
+            "reason" : "No staff",
+            "division" : "Personal",
+            "staff" : "Simson",
+            "dueDate" : "2023-08-28",
+            "pendingDate" : "2 weeks"
+        },
+        {
+            "ascId" : "asc-4",
+            "no": 4,
+            "reason" : "Customer keeps making complains.",
+            "division" : "Customer Service",
+            "staff" : "Derik",
+            "dueDate" : "2023-08-11",
+            "pendingDate" : "1 month"
+        },
+        {
+            "ascId" : "asc-5",
+            "no": 5,
+            "reason" : "Sugar Free meal for staff",
+            "division" : "Meal",
+            "staff" : "Milly",
+            "dueDate" : "2023-08-28",
+            "pendingDate" : "1 month"
+        },
+        {
+            "ascId" : "asc-6",
+            "no": 6,
+            "reason" : "Missing Close job on system",
+            "division" : "Operation",
+            "staff" : "Chilly",
+            "dueDate" : "2023-09-01",
+            "pendingDate" : "1 week"
+        },
+        {
+            "ascId" : "asc-7",
+            "no": 7,
+            "reason" : "Need confirmation before staring a job",
+            "division" : "Development",
+            "staff" : "Elizabath",
+            "dueDate" : "2023-08-28",
+            "pendingDate" : "2 weeks"
+        },
+
+
+
+        {
+            "ascId" : "asc-8",
+            "no": 8,
+            "reason" : "System Error",
+            "division" : "System",
+            "staff" : "Eric",
+            "dueDate" : "2023-09-06",
+            "pendingDate" : "1 ayd"
+        },
+        {
+            "ascId" : "asc-9",
+            "no": 9,
+            "reason" : "Pending to pay costs.",
+            "division" : "Finance",
+            "staff" : "Lee",
+            "dueDate" : "2023-09-04",
+            "pendingDate" : "2 day"
+        },
+        {
+            "ascId" : "asc-10",
+            "no": 10,
+            "reason" : "Possible to chage due date",
+            "division" : "Sales",
+            "staff" : "Sara",
+            "dueDate" : "2023-09-02",
+            "pendingDate" : "4 days"
+        },
+        {
+            "ascId" : "asc-11",
+            "no": 11,
+            "reason" : "Shortage of supply",
+            "division" : "Supply",
+            "staff" : "Nilson",
+            "dueDate" : "2023-08-11",
+            "pendingDate" : "1 month"
+        },
+        {
+            "ascId" : "asc-12",
+            "no": 12,
+            "reason" : "Sugar Free meal for staff",
+            "division" : "Meal",
+            "staff" : "Milly",
+            "dueDate" : "2023-08-28",
+            "pendingDate" : "1 month"
+        },
+        {
+            "ascId" : "asc-13",
+            "no": 13,
+            "reason" : "Missing Close job on system",
+            "division" : "Operation",
+            "staff" : "Chilly",
+            "dueDate" : "2023-09-01",
+            "pendingDate" : "1 week"
+        },
+        {
+            "ascId" : "asc-14",
+            "no": 14,
+            "reason" : "Need confirmation before staring a job",
+            "division" : "Development",
+            "staff" : "Elizabath",
+            "dueDate" : "2023-08-28",
+            "pendingDate" : "2 weeks"
         }
     ]
 }

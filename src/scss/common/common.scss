@@ -218,7 +218,8 @@ align-items: center;
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 47px;
+    margin-top: auto;
+    padding-top: 47px;
 
     li {
         cursor: pointer; color: white !important;
@@ -565,7 +566,9 @@ input:focus {
             width: 25%;
             border-right: 1px solid $line-color-grey;
             border-bottom: 1px solid $line-color-grey;
-
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
             p {
                 font-weight: 600;
                 font-size: 16px;

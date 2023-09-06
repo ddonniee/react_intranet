@@ -9,6 +9,7 @@ import Warning from "../../components/Warning"
 import Viewer from "../../components/Viewer"
 import Alert from "../../components/Alert";
 import Tab from "../../components/Tab";
+import Loading from "../../components/Loading";
 // Utils
 import { generateRandomString,fetchInstance,} from "../../utils/CommonFunction"
 // View
@@ -162,8 +163,11 @@ function Faq() {
 
      // 1차 아이콘 클릭시 탭 생성
      const handleClickIcon = (e, selectedItem) => {
-        e.stopPropagation()
-        console.log('selectedItem-->',selectedItem)
+        // 상세보기창 열려있을시 초기화
+        if(openRight) {
+            clearState('all')
+        }
+
         if(reqData.categoryId===selectedItem.categoryId) {
             setReqData({
                 ...reqData,
@@ -176,10 +180,7 @@ function Faq() {
                 categoryId : selectedItem.categoryId
             })
         }
-        // setBoardData((prevLists) => {
-        //     const updatedLists = prevLists.filter((list) => list.categoryId === selectedItem.categoryId);
-        //     return updatedLists;
-        //   });
+        
         }
 
        
@@ -194,46 +195,10 @@ function Faq() {
 
     /** 알림창 ▲ ============================================================= */
 
-    const onConfirmHandler = (num,id) =>{
+    const onConfirmHandler = (sorting,id) =>{
 
-        // leave editor 
-        if(num===1 || num===7) {
-            setAlertSetting({
-                ...alertSetting,
-                alertTxt: ' Click confirm to leave write mode.',
-                onConfirm : ()=>{ setAlertModal(false)},
-                isDoubleBtn : true,
-                btnTxt : 'Confirm',
-                confirmTxt : ""
-            })
-                        
-        }
-        // open post to public
-        else if(num===2) {
-            setAlertSetting({
-                ...alertSetting,
-                alertTxt: 'Are you sure to oepn this post to public?',
-                // onConfirm : ()=>{ onChangePublic(); setAlertModal(false); clearState() },
-                isDoubleBtn : true,
-                btnTxt : 'Confirm',
-                confirmTxt : "You've allowed all to show this post."
-            })
-            
-        }
-        // delete post
-        else if(num===3) {
-            setAlertSetting({
-                ...alertSetting,
-                alertTxt: 'Are you sure to delete post?',
-                // onConfirm :  ()=>{onDeletePost(); setAlertModal(false); clearState(); getList()},
-                isDoubleBtn : true,
-                btnTxt : 'Confirm',
-                confirmTxt : "Deleted post."
-            })
-           
-        }
         // delete comment
-        else if(num===4) {
+        if(sorting==='del-comment') {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: 'Are you sure to delete comment?',
@@ -244,8 +209,8 @@ function Faq() {
             })
            
         }
-        // no input data when clicked submit
-        else if(num===5) {
+        // no input data 
+        else if(sorting==='no-input') {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: 'Any content input',
@@ -254,21 +219,13 @@ function Faq() {
                 btnTxt : 'Close',
             })
         }
-        // success alert 
-        else if(num===6) {
-            setAlertSetting({
-                ...alertSetting,
-                alertTxt: 'Success',
-                onConfirm :  ()=>{setAlertModal(false);},
-                isDoubleBtn : false,
-                btnTxt : 'Close',
-            })
-        }
     }
 
+    const [isFetching, setIsFetching] = useState(false);
 
     const getList = () =>{
 
+        setIsFetching(true)
         if(reqData.search!=='') {   
             clearState()         
             const updatedData = boardData.filter(item => {
@@ -291,12 +248,13 @@ function Faq() {
                 setBoardData(filteredResponse);
             }else
             setBoardData(response);
-           
+            setIsFetching(false)
         }else {
             setAlertSetting({
                 ...alertSetting,
                 alertTxt: "Client Error"
             })
+            setIsFetching(false)
         }
         })
         .catch(function (error) {
@@ -337,14 +295,12 @@ function Faq() {
     }
 
     const [categoryLists, setCategoryLists] = useState([])
-    useEffect(()=>{
-        console.log('category lists--->', categoryLists)
-    },[categoryLists])
+
     const getCategory = () =>{
      
         fetchInstance('/faqCategory')
         .then(function (response){
-            // 실제 API 연동시 status로 네트워커 연결 상태 확인
+            // 실제 API 연동시 status로 네트워크 연결 상태 확인
             if(response) {
                 setCategoryLists(response)
             }else {
@@ -427,21 +383,21 @@ function Faq() {
         copyList[idx].openSubComment = !copyList[idx].openSubComment
         setCommentList(copyList)
     }
-    const onAddComment =(num, id) => {
-    // num = 1 댓글, num = 2 대댓글
-    if(num===1 && comment==='') {
-        onConfirmHandler(5)
+    const onAddComment =(depth, id) => {
+    // depth = upper 댓글, num = lower 대댓글
+    if(depth==='upper' && comment==='') {
+        onConfirmHandler('no-input')
         return false
     }
-    else if(num===2 &&subComment==='') {
-        onConfirmHandler(5)
+    else if(depth==='lower' &&subComment==='') {
+        onConfirmHandler('no-input')
         return false
     }
 
     let newObj = {};
 
     newObj.faqId =id;
-    if(num===1) {
+    if(depth==='upper') {
         newObj.commentList = [
             {
                 commentId: 'new_comment_id', // 새 댓글의 고유 ID
@@ -453,7 +409,7 @@ function Faq() {
             }
         ];
     }
-    if(num===2) {
+    if(depth==='lower') {
         newObj.commentId = id;
         newObj.content = subComment;
     }
@@ -471,16 +427,23 @@ function Faq() {
         .then(function (response){
             if(response) {
                 // onConfirmHandler(6)
-                num === 1 ? setComment('') : setSubComment('')
+                depth === 'upper' ? setComment('') : setSubComment('')
                 getDetail(id);
                 getComment()
                 
             }else {
-                console.log(response,'comment list')
+                setAlertSetting({
+                    ...alertSetting,
+                    alertTxt: "Client Error"
+                })
             }
         })
         .catch(function(error) {
             console.log('error',error)
+            setAlertSetting({
+                ...alertSetting,
+                alertTxt: "Server Error"
+            })
         })  
     }
     const onDeleteComment = (id) =>{
@@ -732,10 +695,10 @@ function Faq() {
                                         <ul className="col-3" >
                                             <li id={`list-item-${idx+1}`}>
                                                 <span className="board-max-length">{!openRight ? item?.subject.slice(0,82) : item?.subject.slice(0,60)}{!openRight ? item.subject?.length > 82 && '...' : item.subject?.length >60 && '...'}</span><img src={moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') > now ? New : null} />
-                                                 <div className={`small-detail custom-flex-item ${!openRight ? 'custom-hide-item' : ''}`}>
+                                                 {/* <div className={`small-detail custom-flex-item ${!openRight ? 'custom-hide-item' : ''}`}>
                                                  <span>{item?.writerName}</span>
                                                     <img src={Like} alt="like-img"/><span className="custom-self-align">{item?.likeCount}</span>
-                                                 </div>
+                                                 </div> */}
                                                     
                                             </li>
                                         </ul>
@@ -822,7 +785,7 @@ function Faq() {
                                 <span>Writer : {user.name}</span>
                                 <textarea value={comment} onChange={(e)=>setComment(e.target.value)}/>
                             </div>
-                            <button onClick={()=>onAddComment(1,selectedList.faqId)}>Write</button>
+                            <button onClick={()=>onAddComment('upper',selectedList.faqId)}>Write</button>
                         </div>
                     </div>
                     <div className={`faq-comment-list ${isLoadingComment ? 'halfOpacity':''}`}>
@@ -840,7 +803,7 @@ function Faq() {
                                                 <span className="custom-flex-item">
                                                 {
                                                             comment.writerID===user.id &&
-                                                            <p className="cursor-btn" onClick={()=>onConfirmHandler(4,comment.commentId)}>Delete</p>
+                                                            <p className="cursor-btn" onClick={()=>onConfirmHandler('del-comment',comment.commentId)}>Delete</p>
                                                         }
                                                          <p className="cursor-btn" onClick={()=>{openCommentInput(idx); setSubComment('')}}>Answer</p>
                                                 </span>
@@ -873,7 +836,7 @@ function Faq() {
                                                                                             <span>{moment(sub.createdAt).format('MM.DD.YY')}</span>
                                                                                         </div>
                                                                                         <span className="custom-flex-item cursor-btn">
-                                                                                            {sub.writerID===user.id && <p onClick={()=>onConfirmHandler(4,sub.commentId)}>Delete</p>}
+                                                                                            {sub.writerID===user.id && <p onClick={()=>onConfirmHandler('del-comment',sub.commentId)}>Delete</p>}
                                                                                             {/* <p>Answer</p> */}
                                                                                         </span>
                                                                                     </div>
@@ -896,7 +859,7 @@ function Faq() {
                                                                         {/* <textarea value={subComment} onChange={(e)=>console.log(e.target.value)}/> */}
                                                                         <textarea defaultValue={subComment} onBlur={(e)=>setSubComment(e.target.value)} id={`sub-${comment.commentId}-${idx}`}  />
                                                                     </div>
-                                                                    <button onClick={()=>onAddComment(2, comment.commentId)}>Write</button>
+                                                                    <button onClick={()=>onAddComment('lower', comment.commentId)}>Write</button>
                                                                 </div>
                                                                 </div>
                                                          }
@@ -945,7 +908,10 @@ function Faq() {
                 warningModal &&
                 <Warning text={warningTxt} onClose={()=>setWarningModal(false)} />
             }
-            <Tab />
+            {
+                isFetching &&
+                <Loading />
+            }
         </Style>
         </>
     )
@@ -984,7 +950,6 @@ const Style = styled.div`
     }
     .board-list {
         padding : ${props => (props.openright ? '17px 30px;':'10px 30px;')}
-        max-height :  ${props => (props.openright ? '64px;':'42px;')}
-        height :  ${props => (props.openright ? '64px;':'42px;')}
+      
     }
 `
