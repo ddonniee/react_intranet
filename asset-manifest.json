@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/react_intranet/static/css/main.31b9013c.css",
-    "main.js": "/react_intranet/static/js/main.047ccd7e.js",
+    "main.js": "/react_intranet/static/js/main.ee385539.js",
     "static/css/218.8992ec95.chunk.css": "/react_intranet/static/css/218.8992ec95.chunk.css",
     "static/js/218.49ce60c9.chunk.js": "/react_intranet/static/js/218.49ce60c9.chunk.js",
     "static/js/547.311bfa7d.chunk.js": "/react_intranet/static/js/547.311bfa7d.chunk.js",
@@ -82,7 +82,7 @@
     "static/media/icon_radio.svg": "/react_intranet/static/media/icon_radio.dd37d20f1e57803274ab.svg",
     "static/media/icon_polygon.svg": "/react_intranet/static/media/icon_polygon.fc15ef8580e4199868d506a77de97bbb.svg",
     "main.31b9013c.css.map": "/react_intranet/static/css/main.31b9013c.css.map",
-    "main.047ccd7e.js.map": "/react_intranet/static/js/main.047ccd7e.js.map",
+    "main.ee385539.js.map": "/react_intranet/static/js/main.ee385539.js.map",
     "218.8992ec95.chunk.css.map": "/react_intranet/static/css/218.8992ec95.chunk.css.map",
     "218.49ce60c9.chunk.js.map": "/react_intranet/static/js/218.49ce60c9.chunk.js.map",
     "547.311bfa7d.chunk.js.map": "/react_intranet/static/js/547.311bfa7d.chunk.js.map",
@@ -106,6 +106,6 @@
   },
   "entrypoints": [
     "static/css/main.31b9013c.css",
-    "static/js/main.047ccd7e.js"
+    "static/js/main.ee385539.js"
   ]
 }
