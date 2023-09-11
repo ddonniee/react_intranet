@@ -29,6 +29,7 @@ import Close from '../../assets/svgs/icon_close2.svg'
 import Maximize from '../../assets/svgs/icon_screen.svg'
 
 import {UserContext} from '../../hooks/UserContext'
+import Footer from "../../components/Footer"
 
 
 function CStalk() {
@@ -934,6 +935,7 @@ function CStalk() {
 
     return (
         <Style openright={openRight} iswrite={isWrite || isModify}>
+            <Header />
         <div className="notice-container cstalk-container">
         <div className="inner-container">
             {/** auth 권한체크로 수정 필요 */}
@@ -1228,6 +1230,8 @@ function CStalk() {
             }
             </div>
         </div>
+        <Tab />
+        <Footer />
         </div>
         </Style>
     )

@@ -19,7 +19,7 @@ const FaqSetting =  React.lazy(()=>import('./views/Setting&Management/FaqSetting
  * 작성일 : 2023.07.15
  */
 const routes = [
-    { path:'/react-intranet', exact: true, name:'Main', element: Main}, 
+    { path:'/', exact: true, name:'Main', element: Main}, 
     // Login
     { path:'/login', name:'Login', element: Login},
     // Dashboard

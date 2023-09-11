@@ -44,8 +44,7 @@ function App({}) {
   return (
     <>
     <UserContext.Provider value={user}>
-      <BrowserRouter>
-      <Header />
+      <BrowserRouter basename={process.env.REACT_APP_PUBLIC_URL}>
         <Routes>
           {routes.map((route, index) => (
             <Route
@@ -58,8 +57,6 @@ function App({}) {
           ))}
            <Route path="*" element={<NotFound />} />
         </Routes>
-        <Tab />
-        <Footer />
       </BrowserRouter>
       </UserContext.Provider>
     </>
